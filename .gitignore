@@ -1,0 +1,14 @@
+node_modules
+dist
+
+# yarn 3 with module linker
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# idea
+.idea

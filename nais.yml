@@ -1,0 +1,31 @@
+apiVersion: 'nais.io/v1alpha1'
+kind: 'Application'
+metadata:
+  name: helsesjekk-bot
+  namespace: teamsykmelding
+  labels:
+    team: teamsykmelding
+spec:
+  image: {{image}}
+  port: 5000
+  ingresses:
+    - 'https://helsesjekk-bot.intern.nav.no'
+  replicas:
+    min: 1
+    max: 1
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi
+  accessPolicy:
+    outbound:
+      external:
+        - host: slack.com
+        - host: api.slack.com
+  liveness:
+    path: /internal/is_alive
+  readiness:
+    path: /internal/is_ready
