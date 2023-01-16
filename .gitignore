@@ -3,7 +3,8 @@ dist
 
 # yarn 3 with module linker
 .pnp.*
-.yarn/*
+.yarn/
+*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
@@ -12,3 +13,6 @@ dist
 
 # idea
 .idea
+
+# env
+.env

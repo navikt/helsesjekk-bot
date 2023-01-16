@@ -10,7 +10,8 @@
         "lint": "eslint src/**/*.ts"
     },
     "dependencies": {
-        "fastify": "^4.11.0",
+        "@slack/bolt": "^3.12.2",
+        "dotenv": "^16.0.3",
         "pino": "^8.8.0"
     },
     "devDependencies": {
@@ -26,9 +27,14 @@
     },
     "prettier": "@navikt/eslint-config-teamsykmelding/prettier",
     "eslintConfig": {
-      "root": true,
-      "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
-      "parser": "@typescript-eslint/parser",
-      "plugins": ["@typescript-eslint"]
+        "root": true,
+        "extends": [
+            "eslint:recommended",
+            "plugin:@typescript-eslint/recommended"
+        ],
+        "parser": "@typescript-eslint/parser",
+        "plugins": [
+            "@typescript-eslint"
+        ]
     }
 }

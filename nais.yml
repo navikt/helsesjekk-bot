@@ -29,3 +29,5 @@ spec:
     path: /internal/is_alive
   readiness:
     path: /internal/is_ready
+  envFrom:
+    - secret: helsesjekk-bot-secrets
