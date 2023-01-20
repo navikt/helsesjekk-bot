@@ -2,6 +2,7 @@ import { App } from '@slack/bolt'
 import { Logger, LogLevel } from '@slack/logger'
 import logger from './logger'
 import { config } from 'dotenv'
+import { isReady } from './db/prisma'
 
 if (process.env.NODE_ENV !== 'production') {
     // Load dev environment variables
@@ -37,9 +38,14 @@ const app = new App({
         {
             path: '/internal/is_ready',
             method: ['GET'],
-            handler: (req, res) => {
-                res.writeHead(200)
-                res.end('OK')
+            handler: async (req, res) => {
+                if (await isReady()) {
+                    res.writeHead(200)
+                    res.end('OK')
+                } else {
+                    res.writeHead(503)
+                    res.end('Not Ready')
+                }
             },
         },
     ],

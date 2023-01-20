@@ -6,10 +6,9 @@ const logger = (defaultConfig = {}): pino.Logger =>
         timestamp: false,
         formatters: {
             level: (label) => ({ level: label }),
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            log: (object: any) => {
+            log: (object: Record<string, unknown>) => {
                 if (object.err) {
-                    const err = pino.stdSerializers.err(object.err)
+                    const err = pino.stdSerializers.err(object.err as never)
                     object.stack_trace = err.stack
                     object.type = err.type
                     object.message = err.message
