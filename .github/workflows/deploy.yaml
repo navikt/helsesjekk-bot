@@ -72,7 +72,9 @@ jobs:
             "NPM_AUTH_TOKEN=${{ secrets.READER_TOKEN }}"
 
   deploy-bot-to-gcp:
-    if: github.ref == 'refs/heads/main'
+    #if: github.ref == 'refs/heads/main'
+    # disable deploy until base database schema is in place
+    if: false
     name: Deploy to prod
     needs: [build-and-publish, snyk-test]
     runs-on: ubuntu-latest

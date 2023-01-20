@@ -1,0 +1,32 @@
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Channel {
+    id        String     @id
+    name      String
+    questions Question[]
+}
+
+model Question {
+    id        String   @id
+    channel   Channel  @relation(fields: [channelId], references: [id])
+    channelId String
+    Answer    Answer[]
+}
+
+model Answer {
+    id         Int      @id @default(autoincrement())
+    question   Question @relation(fields: [questionId], references: [id])
+    userId     String
+    questionId String
+    answer     String
+
+    @@unique([userId, questionId], name: "questionAnsweredIdentifier")
+}
