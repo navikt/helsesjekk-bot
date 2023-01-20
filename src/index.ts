@@ -8,12 +8,14 @@ if (process.env.NODE_ENV !== 'production') {
     config({})
 }
 
+const slackLogger = logger.child({ x_isSlack: true })
+
 const loggerAdapter: Logger = {
-    debug: logger.debug,
-    info: logger.info,
-    warn: logger.warn,
-    error: logger.error,
-    getLevel: (): LogLevel => logger.level as LogLevel,
+    debug: (msg) => slackLogger.debug(msg),
+    info: (msg) => slackLogger.info(msg),
+    warn: (msg) => slackLogger.warn(msg),
+    error: (msg) => slackLogger.error(msg),
+    getLevel: (): LogLevel => slackLogger.level as LogLevel,
     setLevel: (): void => void 0,
     setName: (): void => void 0,
 }
