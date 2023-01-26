@@ -1,8 +1,8 @@
 import { App } from '../app'
-import { createTeam, getTeam, reactivateTeam, teamStatus } from '../db/prisma'
 import { createSettingsModal } from '../events/settings/settings-modal-builder'
 import { postToTeam, revealTeam } from '../messages/message-poster'
 import logger from '../logger'
+import { createTeam, getTeam, reactivateTeam, teamStatus } from '../db'
 
 export function configureCommandsHandler(app: App): void {
     // Handles the /helsesjekk command, it opens the settings modal

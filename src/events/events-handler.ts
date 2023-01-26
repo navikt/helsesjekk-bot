@@ -1,6 +1,6 @@
 import { App } from '../app'
 import logger from '../logger'
-import { deactivateTeam } from '../db/prisma'
+import { deactivateTeam } from '../db'
 
 export function configureEventsHandler(app: App): void {
     app.event('channel_left', async ({ event }) => {

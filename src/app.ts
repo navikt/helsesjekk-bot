@@ -2,7 +2,7 @@ import { Logger, LogLevel } from '@slack/logger'
 import { App as BoltApp } from '@slack/bolt'
 
 import logger from './logger'
-import { isReady } from './db/prisma'
+import { isReady } from './db'
 
 const slackLogger = logger.child({ x_isSlack: true })
 

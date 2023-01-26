@@ -1,5 +1,6 @@
 import { InputBlock, ModalView, Option, PlainTextOption } from '@slack/bolt'
-import { Team } from '@prisma/client'
+
+import { Team } from '../../db'
 import { plainHeader, textSection } from '../modal-utils'
 
 export const SettingsModalActions = {

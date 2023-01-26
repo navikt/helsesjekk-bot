@@ -1,5 +1,5 @@
 import { App } from '../../app'
-import { updateTeam } from '../../db/prisma'
+import { updateTeam } from '../../db'
 
 import { ModalStateTree, SettingsModalActions } from './settings-modal-builder'
 

@@ -2,8 +2,9 @@ import * as R from 'remeda'
 
 import { App } from '../../app'
 import { MessageActions } from '../../messages/message-builder'
-import { answerQuestions, getActiveAsk, getAnswer, getAsked, getTeam } from '../../db/prisma'
 import { answerFromJsonb } from '../../questions/jsonb-utils'
+import { getTeam, getActiveAsk, getAsked, answerQuestions, getAnswer } from '../../db'
+
 import { createHealthCheckModal, getIdValueFromAnswer, HealthcheckModalActions } from './healthcheck-modal-builder'
 
 export function configureHealthCheckEventsHandler(app: App): void {

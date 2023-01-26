@@ -1,6 +1,6 @@
 import { v4 as uuidV4 } from 'uuid'
 
-import { Question, QuestionType } from '../db/types'
+import { Question, QuestionType } from '../db'
 
 export function defaultQuestions(): Question[] {
     return [

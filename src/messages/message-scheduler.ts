@@ -3,7 +3,7 @@ import { getDay, getHours } from 'date-fns'
 
 import { App } from '../app'
 import logger from '../logger'
-import { getActiveTeams, hasActiveAsk } from '../db/prisma'
+import { getActiveTeams, hasActiveAsk } from '../db'
 
 import { postToTeam, revealTeam } from './message-poster'
 

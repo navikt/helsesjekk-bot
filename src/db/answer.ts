@@ -1,0 +1,53 @@
+import { Answer, Asked } from '@prisma/client'
+
+import { answerToJsonb, questionsFromJsonb } from '../questions/jsonb-utils'
+
+import { AnswerLevel, Question, QuestionAnswer } from './types'
+import { prisma } from './prisma'
+
+function mapToAnswers(answers: [questionId: string, value: string][], questions: Question[]): QuestionAnswer[] {
+    return answers.map(([questionId, value]) => {
+        const question = questions.find((question) => question.questionId === questionId)
+
+        if (question == null) {
+            throw new Error(`Unable to find question with id ${questionId}`)
+        }
+
+        return {
+            answer: value as AnswerLevel,
+            questionId: question.questionId,
+            type: question.type,
+        }
+    })
+}
+
+export async function answerQuestions(
+    asked: Asked,
+    answers: [questionId: string, value: string][],
+    userId: string,
+): Promise<void> {
+    const mappedAnswers = answerToJsonb(mapToAnswers(answers, questionsFromJsonb(asked.questions)))
+    await prisma.answer.upsert({
+        create: {
+            userId,
+            askedId: asked.id,
+            answeredAt: new Date(),
+            answers: mappedAnswers,
+        },
+        update: {
+            answers: mappedAnswers,
+        },
+        where: {
+            questionAnsweredIdentifier: {
+                userId,
+                askedId: asked.id,
+            },
+        },
+    })
+}
+
+export async function getAnswer(userId: string, askedId: number): Promise<Answer | null> {
+    return prisma.answer.findFirst({
+        where: { userId: userId, askedId: askedId },
+    })
+}
