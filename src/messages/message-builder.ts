@@ -1,5 +1,7 @@
 import { Block, KnownBlock } from '@slack/types'
 
+import { getWeekNumberNow } from '../utils/date'
+
 export const MessageActions = {
     FillButtonClicked: 'open_health_check_modal-action',
 }
@@ -14,7 +16,7 @@ export function createRootPostBlocks(teamName: string): (KnownBlock | Block)[] {
             type: 'header',
             text: {
                 type: 'plain_text',
-                text: `:health: Det er på tide med ukentlig helsesjekk for ${teamName}! :wave:`,
+                text: `:health: Det er på tide med helsesjekk uke ${getWeekNumberNow()} for ${teamName}! :wave:`,
                 emoji: true,
             },
         },
@@ -22,7 +24,7 @@ export function createRootPostBlocks(teamName: string): (KnownBlock | Block)[] {
             type: 'section',
             text: {
                 type: 'mrkdwn',
-                text: 'Hvordan står det til?\n🟢\n🟡\n🔴',
+                text: 'Alle på dette teamet inviteres til å svare på noen raske spørsmål for å dele hvordan de føler tilstanden på teaamet er. Svarene gis på trafikklys-format. ?\n\n🟢 Bra! \n🟡 Middels \n🔴 Dårlig ',
             },
         },
         {

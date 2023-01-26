@@ -4,9 +4,9 @@ import { App } from '../../app'
 import { MessageActions } from '../../messages/message-builder'
 import { answerFromJsonb } from '../../questions/jsonb-utils'
 import { getTeam, getActiveAsk, getAsked, answerQuestions, getAnswer } from '../../db'
+import { updateResponseCount } from "../../messages/message-poster";
 
 import { createHealthCheckModal, getIdValueFromAnswer, HealthcheckModalActions } from './healthcheck-modal-builder'
-import { updateResponseCount } from "../../messages/message-poster";
 
 export function configureHealthCheckEventsHandler(app: App): void {
     // User clicks fill out helsesjekk button, so we open the modal with the form

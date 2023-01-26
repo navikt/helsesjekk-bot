@@ -1,9 +1,10 @@
+import { Answer } from '@prisma/client'
+
 import logger from '../logger'
 import { questionsToJsonb } from '../questions/jsonb-utils'
 
 import { Asked, prisma } from './prisma'
 import { Question } from './types'
-import { Answer } from '@prisma/client'
 
 export async function hasActiveAsk(teamId: string): Promise<boolean> {
     const asked = getActiveAsk(teamId)

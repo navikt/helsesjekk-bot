@@ -1,14 +1,15 @@
 import { schedule } from 'node-cron'
-import { getDay, getHours } from 'date-fns'
+import { getHours } from 'date-fns'
 
 import { App } from '../app'
 import logger from '../logger'
 import { getActiveTeams, hasActiveAsk } from '../db'
+import { getDayCorrect, getNowInNorway } from '../utils/date'
 
 import { postToTeam, revealTeam } from './message-poster'
 
 const EVERY_HOUR = '0 */1 * * *'
-const EVERY_MINUTE = '*/1 * * * *'
+// const EVERY_MINUTE = '*/1 * * * *'
 
 export function configureMessageScheduler(app: App): void {
     /* We only support posting/revealing on every hour */
@@ -44,8 +45,8 @@ export function configureMessageScheduler(app: App): void {
 
 function isSameDayAndHour(day: number, hour: number): boolean {
     // Users are in Norway, so hackily convert to Norway time so hours will match the users settings
-    const now = new Date(new Date().toLocaleString('en', { timeZone: 'Europe/Oslo' }))
-    const dayNow = (getDay(now) + 6) % 7
+    const now = getNowInNorway()
+    const dayNow = getDayCorrect(now)
     const hoursNow = getHours(now)
 
     return dayNow === day && hoursNow === hour

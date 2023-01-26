@@ -1,7 +1,7 @@
 import logger from '../logger'
 import { App } from '../app'
 import { questionsFromJsonb } from '../questions/jsonb-utils'
-import { createAsked, getActiveAsk, getAsked, Team } from '../db'
+import { createAsked, getActiveAsk, Team } from '../db'
 
 import { createCountMetricsContext, createRootPostBlocks } from './message-builder'
 
