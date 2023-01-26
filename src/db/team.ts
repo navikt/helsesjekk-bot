@@ -1,10 +1,8 @@
-import { Team } from '@prisma/client'
-
 import { questionsToJsonb } from '../questions/jsonb-utils'
 import { defaultQuestions } from '../questions/default'
 
 import { Day } from './types'
-import { prisma } from './prisma'
+import { prisma, Team } from './prisma'
 
 export async function teamStatus(channelId: string): Promise<'NEW' | 'DEACTIVATED' | 'ACTIVE'> {
     const team = await getTeam(channelId)

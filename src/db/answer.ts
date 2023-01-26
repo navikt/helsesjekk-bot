@@ -1,9 +1,7 @@
-import { Answer, Asked } from '@prisma/client'
-
 import { answerToJsonb, questionsFromJsonb } from '../questions/jsonb-utils'
 
+import { Answer, Asked, prisma } from './prisma'
 import { AnswerLevel, Question, QuestionAnswer } from './types'
-import { prisma } from './prisma'
 
 function mapToAnswers(answers: [questionId: string, value: string][], questions: Question[]): QuestionAnswer[] {
     return answers.map(([questionId, value]) => {

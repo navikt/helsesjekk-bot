@@ -1,6 +1,4 @@
-import { Prisma } from '@prisma/client'
-
-import { QuestionAnswer, Question } from '../db'
+import { Prisma, QuestionAnswer, Question } from '../db'
 
 export function questionsToJsonb(questions: Question[]): Prisma.JsonArray {
     return questions as unknown as Prisma.JsonArray

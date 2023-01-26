@@ -1,9 +1,7 @@
-import { Team } from '@prisma/client'
-
 import logger from '../logger'
 import { App } from '../app'
 import { questionsFromJsonb } from '../questions/jsonb-utils'
-import { createAsked } from "../db";
+import { createAsked, Team } from '../db'
 
 import { createCountMetricsContext, createRootPostBlocks } from './message-builder'
 

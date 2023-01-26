@@ -1,9 +1,8 @@
 import { Block, KnownBlock } from '@slack/types'
 import { InputBlock, ModalView, Option } from '@slack/bolt'
-import { Team } from '@prisma/client'
 import { groupBy } from 'remeda'
 
-import { AnswerLevel, Question, QuestionAnswer } from '../../db'
+import { AnswerLevel, Team, Question, QuestionAnswer } from '../../db'
 import { questionsFromJsonb } from '../../questions/jsonb-utils'
 import { plainHeader, textSection } from '../modal-utils'
 
