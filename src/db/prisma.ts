@@ -81,6 +81,14 @@ export async function getActiveTeams(): Promise<Team[]> {
     return prisma.team.findMany({ where: { active: true } })
 }
 
+export async function hasActiveAsk(teamId: string): Promise<boolean> {
+    const asked = await prisma.asked.findFirst({ where: { teamId, revealed: false } })
+
+    logger.info(`Checking if team ${teamId} has active ask: ${asked != null}`)
+
+    return asked != null
+}
+
 export async function answerQuestion(
     asked: Asked,
     userId: string,
@@ -118,6 +126,7 @@ export async function createAsked(ts: string, teamId: string, questions: Questio
             messageTs: ts,
             timestamp: new Date(),
             questions: toJsonb(questions),
+            revealed: false,
         },
     })
 

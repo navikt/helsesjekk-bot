@@ -30,6 +30,7 @@ model Asked {
     teamId    String
     timestamp DateTime
     questions Json
+    revealed  Boolean
     Answer    Answer[]
 }
 
