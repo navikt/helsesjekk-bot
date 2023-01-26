@@ -1,5 +1,5 @@
 generator client {
-    provider = "prisma-client-js"
+    provider      = "prisma-client-js"
     binaryTargets = ["native"]
 }
 
@@ -8,25 +8,52 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Channel {
-    id        String     @id
-    name      String
-    questions Question[]
+model Team {
+    // Slack channel ID
+    id         String  @id
+    name       String
+    active     Boolean
+    postDay    Int
+    postHour   Int
+    revealDay  Int
+    revealHour Int
+    // In the future the team can edit the questions
+    questions  Json
+    Asked      Asked[]
 }
 
-model Question {
-    id        String   @id
-    channel   Channel  @relation(fields: [channelId], references: [id])
-    channelId String
+model Asked {
+    id        Int      @id @default(autoincrement())
+    team      Team     @relation(fields: [teamId], references: [id])
+    // Slack timestamp is used as message ID in the channel
+    messageTs String
+    teamId    String
+    timestamp DateTime
+    questions Json
     Answer    Answer[]
 }
 
 model Answer {
-    id         Int      @id @default(autoincrement())
-    question   Question @relation(fields: [questionId], references: [id])
-    userId     String
-    questionId String
-    answer     String
+    id           Int          @id @default(autoincrement())
+    answer       AnswerLevel
+    questionId   String
+    questionType QuestionType
+    answeredAt   DateTime
+    asked        Asked        @relation(fields: [askedId], references: [id])
+    askedId      Int
+    // Slack user ID, only used to keep answers unique per user
+    userId       String
 
-    @@unique([userId, questionId], name: "questionAnsweredIdentifier")
+    @@unique([userId, questionId, askedId], name: "questionAnsweredIdentifier")
+}
+
+enum AnswerLevel {
+    GOOD
+    MEDIUM
+    BAD
+}
+
+enum QuestionType {
+    TEAM_HEALTH
+    SPEED
 }
