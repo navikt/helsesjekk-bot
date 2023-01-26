@@ -57,6 +57,23 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
         return false
     }
 
+    if (asked.answers.length <= 3) {
+        await client.chat.postMessage({
+            channel: team.id,
+            thread_ts: asked.messageTs,
+            text: `Det er kun ${asked.answers.length} svar på helsesjekken. På grunn av personvern vil vi kun resultater med 4 eller flere svar vises.`,
+            reply_broadcast: true,
+        })
+        await client.chat.update({
+            channel: team.id,
+            ts: asked.messageTs,
+            text: `Ukentlig helsesjekk for team ${team.name} er nå avsluttet.`,
+            blocks: [...createRootPostBlocks(team.name, true), createCountMetricsContext(asked.answers.length)],
+        })
+        await markAskedRevealed(asked.id)
+        return false
+    }
+
     const message = await client.chat.update({
         channel: team.id,
         ts: asked.messageTs,
