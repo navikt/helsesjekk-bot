@@ -1,8 +1,9 @@
 import logger from '../logger'
 import { questionsToJsonb } from '../questions/jsonb-utils'
 
-import { prisma, Asked } from './prisma'
+import { Asked, prisma } from './prisma'
 import { Question } from './types'
+import { Answer } from '@prisma/client'
 
 export async function hasActiveAsk(teamId: string): Promise<boolean> {
     const asked = getActiveAsk(teamId)
@@ -12,8 +13,11 @@ export async function hasActiveAsk(teamId: string): Promise<boolean> {
     return asked != null
 }
 
-export async function getActiveAsk(teamId: string): Promise<Asked | null> {
-    return prisma.asked.findFirst({ where: { teamId, revealed: false } })
+export async function getActiveAsk(teamId: string): Promise<(Asked & { answers: Answer[] }) | null> {
+    return prisma.asked.findFirst({
+        where: { teamId, revealed: false },
+        include: { answers: true },
+    });
 }
 
 export async function getAsked(channelId: string, ts: string): Promise<Asked | null> {

@@ -31,7 +31,7 @@ model Asked {
     timestamp DateTime
     questions Json
     revealed  Boolean
-    Answer    Answer[]
+    answers   Answer[]
 }
 
 model Answer {

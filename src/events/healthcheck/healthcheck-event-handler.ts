@@ -6,6 +6,7 @@ import { answerFromJsonb } from '../../questions/jsonb-utils'
 import { getTeam, getActiveAsk, getAsked, answerQuestions, getAnswer } from '../../db'
 
 import { createHealthCheckModal, getIdValueFromAnswer, HealthcheckModalActions } from './healthcheck-modal-builder'
+import { updateResponseCount } from "../../messages/message-poster";
 
 export function configureHealthCheckEventsHandler(app: App): void {
     // User clicks fill out helsesjekk button, so we open the modal with the form
@@ -78,5 +79,6 @@ export function configureHealthCheckEventsHandler(app: App): void {
             text: 'Takk for svaret! :smile:',
             user: userId,
         })
+        await updateResponseCount(team, client)
     })
 }
