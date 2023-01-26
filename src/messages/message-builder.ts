@@ -1,6 +1,9 @@
 import { Block, KnownBlock } from '@slack/types'
+import { Team } from '@prisma/client'
 
 import { getWeekNumberNow } from '../utils/date'
+import { ScoredQuestion } from '../metrics/metrics'
+import { plainHeader, textSection } from '../events/modal-utils'
 
 export const MessageActions = {
     FillButtonClicked: 'open_health_check_modal-action',
@@ -16,6 +19,7 @@ export function createRootPostBlocks(teamName: string): (KnownBlock | Block)[] {
             type: 'header',
             text: {
                 type: 'plain_text',
+                // TODO: Bug: denne vil oppdatere ukesnummeret når noen svarer på søndag
                 text: `:health: Det er på tide med helsesjekk uke ${getWeekNumberNow()} for ${teamName}! :wave:`,
                 emoji: true,
             },
@@ -24,7 +28,7 @@ export function createRootPostBlocks(teamName: string): (KnownBlock | Block)[] {
             type: 'section',
             text: {
                 type: 'mrkdwn',
-                text: 'Alle på dette teamet inviteres til å svare på noen raske spørsmål for å dele hvordan de føler tilstanden på teaamet er. Svarene gis på trafikklys-format. ?\n\n🟢 Bra! \n🟡 Middels \n🔴 Dårlig ',
+                text: 'Alle på dette teamet inviteres til å svare på noen raske spørsmål for å dele hvordan de føler tilstanden på teaamet er. Svarene gis på trafikklys-format.\n\n🟢 Bra! \n🟡 Middels \n🔴 Dårlig ',
             },
         },
         {
@@ -51,6 +55,36 @@ export function createRootPostBlocks(teamName: string): (KnownBlock | Block)[] {
                 },
             ],
         },
+    ]
+}
+
+export function createCompletedBlocks(responses: number): (KnownBlock | Block)[] {
+    return [
+        {
+            type: 'header',
+            text: {
+                type: 'plain_text',
+                text: `:health: Takk for at du svarte på helsesjekken! Denne er nå stengt. :lock:`,
+                emoji: true,
+            },
+        },
+        {
+            type: 'section',
+            text: {
+                type: 'mrkdwn',
+                text: `Det var ${responses} svar på denne ukens helsesjekk.`,
+            },
+        },
+    ]
+}
+
+export function createScoreBlocks(team: Team, scoredQuestions: ScoredQuestion[]): (KnownBlock | Block)[] {
+    return [
+        plainHeader('Helsesjekk for uke TODO'),
+        textSection(`Team: ${team.name}`),
+        ...scoredQuestions.map((scoredQuestion) => {
+            return textSection(`*${scoredQuestion.question}* \n${scoredQuestion.score}`)
+        }),
     ]
 }
 

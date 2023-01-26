@@ -7,7 +7,9 @@ import { Asked, prisma } from './prisma'
 import { Question } from './types'
 
 export async function hasActiveAsk(teamId: string): Promise<boolean> {
-    const asked = getActiveAsk(teamId)
+    const asked = await prisma.asked.findFirst({
+        where: { teamId, revealed: false },
+    })
 
     logger.info(`Checking if team ${teamId} has active ask: ${asked != null}`)
 
@@ -18,7 +20,14 @@ export async function getActiveAsk(teamId: string): Promise<(Asked & { answers: 
     return prisma.asked.findFirst({
         where: { teamId, revealed: false },
         include: { answers: true },
-    });
+    })
+}
+
+export async function markAskedRevealed(id: number): Promise<void> {
+    await prisma.asked.update({
+        where: { id },
+        data: { revealed: true },
+    })
 }
 
 export async function getAsked(channelId: string, ts: string): Promise<Asked | null> {

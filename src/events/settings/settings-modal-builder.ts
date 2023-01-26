@@ -115,7 +115,7 @@ function postHourInput(team: Team) {
         element: {
             action_id: 'post_hour-action',
             type: 'timepicker',
-            initial_time: `${team.postHour}:00`,
+            initial_time: `${team.postHour.toString().padStart(2, '0')}:00`,
             placeholder: {
                 type: 'plain_text',
                 text: 'Velg tid',
@@ -157,7 +157,7 @@ function revealHourInput(team: Team) {
         element: {
             action_id: 'reveal_hour-action',
             type: 'timepicker',
-            initial_time: `${team.revealHour}:00`,
+            initial_time: `${team.revealHour.toString().padStart(2, '0')}:00`,
             placeholder: { type: 'plain_text', text: 'Velg tid' },
         },
     }

@@ -2,7 +2,8 @@ import { App } from '../app'
 import { createSettingsModal } from '../events/settings/settings-modal-builder'
 import { postToTeam, revealTeam } from '../messages/message-poster'
 import logger from '../logger'
-import { createTeam, getTeam, reactivateTeam, teamStatus } from '../db'
+import { createTeam, getActiveAsk, getTeam, reactivateTeam, teamStatus } from '../db'
+import { scoreQuestions } from '../metrics/metrics'
 
 export function configureCommandsHandler(app: App): void {
     // Handles the /helsesjekk command, it opens the settings modal
@@ -51,6 +52,16 @@ export function configureCommandsHandler(app: App): void {
                     if (team != null) {
                         await revealTeam(team, app.client)
                     }
+                }
+
+                if (event.text.endsWith('debug')) {
+                    const activeAsk = await getActiveAsk(event.channel)
+
+                    if (activeAsk == null) {
+                        return
+                    }
+
+                    scoreQuestions(activeAsk)
                 }
             }
         } catch (e) {

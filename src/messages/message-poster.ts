@@ -1,9 +1,15 @@
 import logger from '../logger'
 import { App } from '../app'
 import { questionsFromJsonb } from '../questions/jsonb-utils'
-import { createAsked, getActiveAsk, Team } from '../db'
+import { markAskedRevealed, createAsked, getActiveAsk, Team } from '../db'
+import { scoreQuestions } from '../metrics/metrics'
 
-import { createCountMetricsContext, createRootPostBlocks } from './message-builder'
+import {
+    createCompletedBlocks,
+    createCountMetricsContext,
+    createRootPostBlocks,
+    createScoreBlocks,
+} from './message-builder'
 
 export async function postToTeam(team: Team, client: App['client']): Promise<boolean> {
     const message = await client.chat.postMessage({
@@ -25,7 +31,7 @@ export async function updateResponseCount(team: Team, client: App['client']): Pr
     const asked = await getActiveAsk(team.id)
 
     if (asked == null) {
-        logger.error('Weird state: Found no asked when updating response count')
+        logger.error('Weird state: Found no active asked when updating response count')
         return false
     }
 
@@ -44,15 +50,27 @@ export async function updateResponseCount(team: Team, client: App['client']): Pr
 }
 
 export async function revealTeam(team: Team, client: App['client']): Promise<boolean> {
-    // Update message
+    const asked = await getActiveAsk(team.id)
 
-    // update asked boolean
+    if (asked == null) {
+        logger.error('Weird state: Found no active asked when trying to reveal')
+        return false
+    }
 
-    // post in thread
-
-    // oke 2ke
-
-    // q: how do we create a date in the users time zone?
+    const message = await client.chat.update({
+        channel: team.id,
+        ts: asked.messageTs,
+        text: `Ukentlig helsesjekk for team ${team.name} er nå avsluttet.`,
+        blocks: createCompletedBlocks(asked.answers.length),
+    })
+    await markAskedRevealed(asked.id)
+    await client.chat.postMessage({
+        channel: team.id,
+        thread_ts: message.ts,
+        text: `Svar på ukentlig helsesjekk for ${team.name}`,
+        blocks: createScoreBlocks(team, scoreQuestions(asked)),
+        reply_broadcast: true,
+    })
 
     return true
 }
