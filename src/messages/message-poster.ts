@@ -3,15 +3,15 @@ import { Team } from '@prisma/client'
 import logger from '../logger'
 import { createAsked } from '../db/prisma'
 import { App } from '../app'
-import { fromJsonb } from '../questions/jsonb-utils'
+import { questionsFromJsonb } from '../questions/jsonb-utils'
 
-import { createBlocks } from './message-builder'
+import { createCountMetricsContext, createRootPostBlocks } from './message-builder'
 
 export async function postToTeam(team: Team, client: App['client']): Promise<boolean> {
     const message = await client.chat.postMessage({
         channel: team.id,
         text: `Hvordan har ${team.name} det?`,
-        blocks: createBlocks(team.name, fromJsonb(team.questions)),
+        blocks: [...createRootPostBlocks(team.name), createCountMetricsContext(0)],
     })
 
     if (!message.ok || message.ts == null) {
@@ -19,6 +19,20 @@ export async function postToTeam(team: Team, client: App['client']): Promise<boo
         return false
     }
 
-    await createAsked(message.ts, team.id, fromJsonb(team.questions))
+    await createAsked(message.ts, team.id, questionsFromJsonb(team.questions))
+    return true
+}
+
+export async function revealTeam(team: Team, client: App['client']): Promise<boolean> {
+    // Update message
+
+    // update asked boolean
+
+    // post in thread
+
+    // oke 2ke
+
+    // q: how do we create a date in the users time zone?
+
     return true
 }

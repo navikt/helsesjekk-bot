@@ -1,6 +1,6 @@
 import { v4 as uuidV4 } from 'uuid'
 
-import { Question } from '../db/types'
+import { Question, QuestionType } from '../db/types'
 
 export function defaultQuestions(): Question[] {
     return [
@@ -12,7 +12,7 @@ export function defaultQuestions(): Question[] {
                 MID: 'Litt sånn midt i mellom',
                 LOW: 'Jeg er stresset og opplever ubehag i forbindelse med jobben',
             },
-            type: 'TEAM_HEALTH',
+            type: QuestionType.TEAM_HEALTH,
         },
         {
             questionId: uuidV4(),
@@ -22,7 +22,7 @@ export function defaultQuestions(): Question[] {
                 MID: 'Litt sånn midt i mellom',
                 LOW: 'Vi vet ikke hvordan vi skal gi hverandre feedback på en konstruktiv måte',
             },
-            type: 'TEAM_HEALTH',
+            type: QuestionType.TEAM_HEALTH,
         },
         {
             questionId: uuidV4(),
@@ -32,7 +32,7 @@ export function defaultQuestions(): Question[] {
                 MID: 'Litt sånn midt i mellom',
                 LOW: 'Vi er en gjeng individualister der alle driver på med sine egne greier. Jeg aner ikke hva de andre gjør',
             },
-            type: 'TEAM_HEALTH',
+            type: QuestionType.TEAM_HEALTH,
         },
         {
             questionId: uuidV4(),
@@ -42,7 +42,7 @@ export function defaultQuestions(): Question[] {
                 MID: 'Litt sånn midt i mellom',
                 LOW: 'Ting stopper opp hele tiden fordi vi må vente på andre',
             },
-            type: 'SPEED',
+            type: QuestionType.SPEED,
         },
         {
             questionId: uuidV4(),
@@ -52,7 +52,7 @@ export function defaultQuestions(): Question[] {
                 MID: 'Litt sånn midt i mellom',
                 LOW: 'Ting stopper opp hele tiden. Vi er aldri enige om hva som har prioritet eller hvordan ting skal løses',
             },
-            type: 'SPEED',
+            type: QuestionType.SPEED,
         },
         {
             questionId: uuidV4(),
@@ -62,7 +62,7 @@ export function defaultQuestions(): Question[] {
                 MID: 'Litt sånn midt i mellom',
                 LOW: 'Vi vet ikke helt hvor vi skal. Oppdraget vårt er lite tydelig og ikke inspirerende',
             },
-            type: 'SPEED',
+            type: QuestionType.SPEED,
         },
     ]
 }

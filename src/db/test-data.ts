@@ -1,6 +1,6 @@
 import logger from '../logger'
 import { defaultQuestions } from '../questions/default'
-import { toJsonb } from '../questions/jsonb-utils'
+import { questionsToJsonb } from '../questions/jsonb-utils'
 
 import { prisma } from './prisma'
 import { Day } from './types'
@@ -15,7 +15,7 @@ export async function createTestData() {
         data: {
             id: 'C04LN8Q5BPT',
             name: 'Test Team',
-            questions: toJsonb(defaultQuestions()),
+            questions: questionsToJsonb(defaultQuestions()),
             active: true,
             postDay: Day.FRIDAY,
             postHour: 14,

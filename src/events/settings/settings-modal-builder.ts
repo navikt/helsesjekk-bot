@@ -1,5 +1,10 @@
-import { HeaderBlock, InputBlock, ModalView, Option, PlainTextOption, SectionBlock } from '@slack/bolt'
+import { InputBlock, ModalView, Option, PlainTextOption } from '@slack/bolt'
 import { Team } from '@prisma/client'
+import { plainHeader, textSection } from '../modal-utils'
+
+export const SettingsModalActions = {
+    modalSubmit: 'helsesjekk_settings_modal-submit',
+}
 
 // This is VERY loosely coupled with the blocks below. Be careful.
 export interface ModalStateTree {
@@ -28,7 +33,7 @@ export function createSettingsModal(team: Team): ModalView {
 
     return {
         type: 'modal',
-        callback_id: 'helsesjekk_settings_modal',
+        callback_id: SettingsModalActions.modalSubmit,
         private_metadata: team.id,
         title: {
             type: 'plain_text',
@@ -54,16 +59,6 @@ export function createSettingsModal(team: Team): ModalView {
         close: {
             type: 'plain_text',
             text: 'Lukk',
-        },
-    }
-}
-
-function textSection(text: string): SectionBlock {
-    return {
-        type: 'section',
-        text: {
-            type: 'mrkdwn',
-            text,
         },
     }
 }
@@ -203,11 +198,4 @@ function createDayOptions(): PlainTextOption[] {
             value: index.toString(),
         }
     })
-}
-
-function plainHeader(text: string): HeaderBlock {
-    return {
-        type: 'header',
-        text: { text, type: 'plain_text' },
-    }
 }

@@ -1,76 +1,68 @@
 import { Block, KnownBlock } from '@slack/types'
-import { Option, SectionBlock } from '@slack/bolt'
-import { AnswerLevel } from '@prisma/client'
 
-import { Question } from '../db/types'
+export const MessageActions = {
+    FillButtonClicked: 'open_health_check_modal-action',
+}
 
-export function createBlocks(teamName: string, questions: Question[]): (KnownBlock | Block)[] {
+/**
+ * Blocks for the initial question. It contains a button that allows users to open
+ * up a modal to answer the quiz.
+ */
+export function createRootPostBlocks(teamName: string): (KnownBlock | Block)[] {
     return [
         {
             type: 'header',
             text: {
                 type: 'plain_text',
-                text: `Det er på tide med ukentlig helsesjekk for ${teamName}! :wave:`,
+                text: `:health: Det er på tide med ukentlig helsesjekk for ${teamName}! :wave:`,
                 emoji: true,
             },
         },
         {
             type: 'section',
             text: {
-                type: 'plain_text',
-                text: 'Hvordan står det til?',
-                emoji: true,
+                type: 'mrkdwn',
+                text: 'Hvordan står det til?\n🟢\n🟡\n🔴',
             },
         },
-        ...questions.map((question) => createSelectSectionBlock(question)),
+        {
+            type: 'actions',
+            elements: [
+                {
+                    action_id: MessageActions.FillButtonClicked,
+                    type: 'button',
+                    text: {
+                        type: 'plain_text',
+                        text: 'Svar på helsesjekk',
+                    },
+                    style: 'primary',
+                    value: 'click_me_123',
+                },
+            ],
+        },
         {
             type: 'context',
             elements: [
                 {
-                    type: 'plain_text',
+                    type: 'mrkdwn',
                     text: 'Hva du svarer deles ikke med noen. Det brukes kun til å lage helsemetrikker for teamet.',
-                    emoji: true,
                 },
             ],
         },
     ]
 }
 
-function createSelectSectionBlock(question: Question): SectionBlock {
+export function createCountMetricsContext(responses: number) {
     return {
-        type: 'section',
-        text: {
-            type: 'mrkdwn',
-            text: `*${question.question}*`,
-        },
-        accessory: {
-            action_id: 'radio-button-group-answer',
-            type: 'radio_buttons',
-            options: [
-                createRadioOption(question.questionId, `🟢 ${question.answers.HIGH}`, AnswerLevel.GOOD),
-                createRadioOption(question.questionId, `🟡 ${question.answers.MID}`, AnswerLevel.MEDIUM),
-                createRadioOption(question.questionId, `🔴 ${question.answers.LOW}`, AnswerLevel.BAD),
-            ],
-        },
+        type: 'context',
+        elements: [
+            {
+                type: 'mrkdwn',
+                text:
+                    responses === 0
+                        ? 'Ingen har svart enda. Det er på tide å svare!'
+                        : `${responses} har svart på helsesjekken!`,
+            },
+        ],
     }
-}
-
-function createRadioOption(id: string, text: string, value: AnswerLevel): Option {
-    return {
-        text: {
-            type: 'plain_text',
-            text,
-            emoji: true,
-        },
-        value: createIdValue(id, value),
-    }
-}
-
-function createIdValue(questionId: string, answerLevel: AnswerLevel): string {
-    return `${questionId}:${answerLevel}`
-}
-
-export function getIdValueFromAnswer(idValueString: string): [id: string, value: string] {
-    const [id, value] = idValueString.split(':')
-    return [id, value]
 }

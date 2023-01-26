@@ -1,10 +1,10 @@
-import { AnswerLevel, PrismaClient, Asked, Team } from '@prisma/client'
+import { PrismaClient, Asked, Team, Answer } from '@prisma/client'
 
 import logger from '../logger'
 import { defaultQuestions } from '../questions/default'
-import { fromJsonb, toJsonb } from '../questions/jsonb-utils'
+import { answerToJsonb, questionsFromJsonb, questionsToJsonb } from '../questions/jsonb-utils'
 
-import { Day, Question } from './types'
+import { AnswerLevel, Day, Question, QuestionAnswer } from './types'
 
 export const prisma = new PrismaClient()
 
@@ -34,7 +34,7 @@ export async function createTeam(channelId: string, name: string): Promise<Team>
             postHour: 14,
             revealDay: Day.MONDAY,
             revealHour: 10,
-            questions: toJsonb(defaultQuestions()),
+            questions: questionsToJsonb(defaultQuestions()),
         },
     })
 }
@@ -82,37 +82,52 @@ export async function getActiveTeams(): Promise<Team[]> {
 }
 
 export async function hasActiveAsk(teamId: string): Promise<boolean> {
-    const asked = await prisma.asked.findFirst({ where: { teamId, revealed: false } })
+    const asked = getActiveAsk(teamId)
 
     logger.info(`Checking if team ${teamId} has active ask: ${asked != null}`)
 
     return asked != null
 }
 
-export async function answerQuestion(
+export async function getActiveAsk(teamId: string): Promise<Asked | null> {
+    return prisma.asked.findFirst({ where: { teamId, revealed: false } })
+}
+
+function mapToAnswers(answers: [questionId: string, value: string][], questions: Question[]): QuestionAnswer[] {
+    return answers.map(([questionId, value]) => {
+        const question = questions.find((question) => question.questionId === questionId)
+
+        if (question == null) {
+            throw new Error(`Unable to find question with id ${questionId}`)
+        }
+
+        return {
+            answer: value as AnswerLevel,
+            questionId: question.questionId,
+            type: question.type,
+        }
+    })
+}
+
+export async function answerQuestions(
     asked: Asked,
+    answers: [questionId: string, value: string][],
     userId: string,
-    channelId: string,
-    questionId: string,
-    value: string,
 ): Promise<void> {
+    const mappedAnswers = answerToJsonb(mapToAnswers(answers, questionsFromJsonb(asked.questions)))
     await prisma.answer.upsert({
         create: {
             userId,
             askedId: asked.id,
-            // TODO get from asked
-            questionType: 'TEAM_HEALTH',
-            questionId,
-            answer: value as AnswerLevel,
             answeredAt: new Date(),
+            answers: mappedAnswers,
         },
         update: {
-            answer: value as AnswerLevel,
+            answers: mappedAnswers,
         },
         where: {
             questionAnsweredIdentifier: {
                 userId,
-                questionId,
                 askedId: asked.id,
             },
         },
@@ -125,7 +140,7 @@ export async function createAsked(ts: string, teamId: string, questions: Questio
             teamId: teamId,
             messageTs: ts,
             timestamp: new Date(),
-            questions: toJsonb(questions),
+            questions: questionsToJsonb(questions),
             revealed: false,
         },
     })
@@ -139,12 +154,10 @@ export async function getAsked(channelId: string, ts: string): Promise<Asked | n
     })
 }
 
-export async function hasUserAnsweredAllQuestionsForAsked(asked: Asked, userId: string): Promise<boolean> {
-    const answers = await prisma.answer.findMany({
-        where: { askedId: asked.id, userId: userId },
+export async function getAnswer(userId: string, askedId: number): Promise<Answer | null> {
+    return prisma.answer.findFirst({
+        where: { userId: userId, askedId: askedId },
     })
-
-    return answers.length === fromJsonb(asked.questions).length
 }
 
 export async function isReady(): Promise<boolean> {

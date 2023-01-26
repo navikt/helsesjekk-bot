@@ -35,26 +35,13 @@ model Asked {
 }
 
 model Answer {
-    id           Int          @id @default(autoincrement())
-    answer       AnswerLevel
-    questionId   String
-    questionType QuestionType
-    answeredAt   DateTime
-    asked        Asked        @relation(fields: [askedId], references: [id])
-    askedId      Int
+    id         Int      @id @default(autoincrement())
+    answeredAt DateTime
+    asked      Asked    @relation(fields: [askedId], references: [id])
+    askedId    Int
+    answers    Json
     // Slack user ID, only used to keep answers unique per user
-    userId       String
+    userId     String
 
-    @@unique([userId, questionId, askedId], name: "questionAnsweredIdentifier")
-}
-
-enum AnswerLevel {
-    GOOD
-    MEDIUM
-    BAD
-}
-
-enum QuestionType {
-    TEAM_HEALTH
-    SPEED
+    @@unique([userId, askedId], name: "questionAnsweredIdentifier")
 }

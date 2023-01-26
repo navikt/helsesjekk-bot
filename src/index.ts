@@ -2,8 +2,10 @@ import { config } from 'dotenv'
 
 import logger from './logger'
 import app from './app'
-import { configureAnswersHandlers } from './answers/answers-handler'
 import { configureMessageScheduler } from './messages/message-scheduler'
+import { configureHealthCheckEventsHandler } from './events/healthcheck/healthcheck-event-handler'
+import { configureSettingsEventsHandler } from './events/settings/settings-event-handler'
+import { configureCommandsHandler } from './commands/commands-handler'
 import { createTestData } from './db/test-data'
 import { configureEventsHandler } from './events/events-handler'
 
@@ -12,10 +14,16 @@ if (process.env.NODE_ENV !== 'production') {
     config({})
 }
 
+const handlers = [
+    configureCommandsHandler,
+    configureMessageScheduler,
+    configureEventsHandler,
+    configureSettingsEventsHandler,
+    configureHealthCheckEventsHandler,
+]
+
 async function start() {
-    configureEventsHandler(app)
-    configureAnswersHandlers(app)
-    configureMessageScheduler(app)
+    handlers.forEach((handler) => handler(app))
 
     if (process.env.NODE_ENV !== 'production') {
         logger.info('Is running locally, creating test data')

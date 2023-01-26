@@ -1,5 +1,3 @@
-import { QuestionType } from '@prisma/client'
-
 export enum Day {
     MONDAY = 0,
     TUESDAY = 1,
@@ -19,4 +17,21 @@ export interface Question {
         HIGH: string
     }
     type: QuestionType
+}
+
+export interface QuestionAnswer {
+    questionId: string
+    answer: AnswerLevel,
+    type: QuestionType
+}
+
+export enum AnswerLevel {
+    GOOD = 'GOOD',
+    MEDIUM = 'MEDIUM',
+    BAD = 'BAD',
+}
+
+export enum QuestionType {
+    TEAM_HEALTH = 'TEAM_HEALTH',
+    SPEED = 'SPEED',
 }
