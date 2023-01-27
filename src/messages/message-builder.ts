@@ -85,13 +85,36 @@ export function createCompletedBlocks(responses: number, dateForWeek: Date): (Kn
     ]
 }
 
-export function createScoreBlocks(team: Team, asked: Asked, scoredQuestions: ScoredQuestion[]): (KnownBlock | Block)[] {
+export function createScoreBlocks(
+    team: Team,
+    asked: Asked,
+    scoredQuestions: ScoredQuestion[],
+    totalScore: number,
+): (KnownBlock | Block)[] {
     return [
         plainHeader(`Helsesjekk for uke ${getWeekNumber(asked.timestamp)}`),
         textSection(`Team: ${team.name}`),
-        ...scoredQuestions.map((scoredQuestion) => {
-            return textSection(`*${scoredQuestion.question}* \n${scoredQuestion.score}`)
-        }),
+        {
+            type: 'section',
+            text: {
+                type: 'mrkdwn',
+                text: scoredQuestions
+                    .map(
+                        (question) =>
+                            `${scoreToEmoji(question.score)} *${question.question}*: ${question.score.toFixed(1)}`,
+                    )
+                    .join('\n'),
+            },
+        },
+        {
+            type: 'section',
+            text: {
+                type: 'mrkdwn',
+                text: `\n*Total score for ${team.name} i uke ${getWeekNumber(asked.timestamp)}*: ${scoreToEmoji(
+                    totalScore,
+                )} ${totalScore.toFixed(1)}`,
+            },
+        },
     ]
 }
 
@@ -107,5 +130,15 @@ export function createCountMetricsContext(responses: number) {
                         : `${responses} har svart på helsesjekken!`,
             },
         ],
+    }
+}
+
+function scoreToEmoji(score: number): string {
+    if (score < 2.6) {
+        return '🔴'
+    } else if (score < 4) {
+        return '🟡'
+    } else {
+        return '🟢'
     }
 }

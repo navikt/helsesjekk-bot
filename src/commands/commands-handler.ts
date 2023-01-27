@@ -1,8 +1,8 @@
 import { App } from '../app'
 import { createSettingsModal } from '../events/settings/settings-modal-builder'
-import { postToTeam, revealTeam } from '../messages/message-poster'
+import { postToTeam, revealTeam, updateResponseCount } from '../messages/message-poster'
 import logger from '../logger'
-import { createTeam, getActiveAsk, getTeam } from '../db'
+import { createTeam, getActiveAsk, getTeam, prisma } from '../db'
 import { scoreQuestions } from '../metrics/metrics'
 
 export function configureCommandsHandler(app: App): void {
@@ -49,6 +49,25 @@ export function configureCommandsHandler(app: App): void {
                     const team = await getTeam(event.channel)
                     if (team != null) {
                         await revealTeam(team, app.client)
+                    }
+                }
+
+                // dev tool for forcing the bot to reveal the answers
+                if (event.text.endsWith('unlock')) {
+                    const team = await getTeam(event.channel)
+                    if (team != null) {
+                        const toUpdate = await prisma.asked.findFirst({
+                            where: { teamId: team.id },
+                            orderBy: { timestamp: 'desc' },
+                        })
+                        if (!toUpdate) return
+
+                        await prisma.asked.update({
+                            data: { revealed: false },
+                            where: { id: toUpdate.id },
+                        })
+                        logger.info(`Unlocked ${team.name} (${team.id})`)
+                        await updateResponseCount(team, app.client)
                     }
                 }
 

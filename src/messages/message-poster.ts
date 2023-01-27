@@ -2,7 +2,7 @@ import logger from '../logger'
 import { App } from '../app'
 import { questionsFromJsonb } from '../questions/jsonb-utils'
 import { markAskedRevealed, createAsked, getActiveAsk, Team } from '../db'
-import { scoreQuestions } from '../metrics/metrics'
+import { overallScore, scoreQuestions } from '../metrics/metrics'
 
 import {
     createCompletedBlocks,
@@ -85,11 +85,15 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
         blocks: createCompletedBlocks(asked.answers.length, asked.timestamp),
     })
     await markAskedRevealed(asked.id)
+
+    const scoredQuestions = scoreQuestions(asked)
+    const totalScore = overallScore(scoredQuestions)
+
     await client.chat.postMessage({
         channel: team.id,
         thread_ts: message.ts,
         text: `Svar på ukentlig helsesjekk for ${team.name}`,
-        blocks: createScoreBlocks(team, asked, scoreQuestions(asked)),
+        blocks: createScoreBlocks(team, asked, scoredQuestions, totalScore),
         reply_broadcast: true,
     })
 
