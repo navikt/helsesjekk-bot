@@ -4,13 +4,16 @@ import { App } from '../../app'
 import { MessageActions } from '../../messages/message-builder'
 import { answerFromJsonb } from '../../questions/jsonb-utils'
 import { getTeam, getActiveAsk, getAsked, answerQuestions, getAnswer } from '../../db'
-import { updateResponseCount } from "../../messages/message-poster";
+import { updateResponseCount } from '../../messages/message-poster'
+import logger from '../../logger'
 
 import { createHealthCheckModal, getIdValueFromAnswer, HealthcheckModalActions } from './healthcheck-modal-builder'
 
 export function configureHealthCheckEventsHandler(app: App): void {
     // User clicks fill out helsesjekk button, so we open the modal with the form
     app.action(MessageActions.FillButtonClicked, async ({ ack, action, body, client }) => {
+        logger.info(`User clicked fill out helsesjekk button, opening modal`)
+
         if (action.type !== 'button' || body.type !== 'block_actions') {
             throw new Error(
                 `${MessageActions.FillButtonClicked} id used for something else than a button: ${action.type}, ${body.type}`,
@@ -25,6 +28,12 @@ export function configureHealthCheckEventsHandler(app: App): void {
         const asked = await getAsked(channelId, body.message?.ts ?? '')
 
         if (team == null || asked == null) {
+            logger.error(
+                `Someone tried to fill out a healthcheck, but we couldn't find the team or asked, team: ${channelId}, asked-ts: ${
+                    body.message?.ts ?? ''
+                }`,
+            )
+
             await client.chat.postEphemeral({
                 channel: channelId,
                 text: ':tennepaadass2: Det ser ut som du svarer på et spørsmål som aldri er spurt. :meow-shocked: Kan du ta kontakt i <#C04LG229SE7>? :smile:',
@@ -44,6 +53,8 @@ export function configureHealthCheckEventsHandler(app: App): void {
 
     // Health check modal submit, put the answers in the database. Slack makes sure we have all answers.
     app.view(HealthcheckModalActions.modalSubmit, async ({ ack, view, body, client }) => {
+        logger.info(`User submitted healthcheck modal`)
+
         const answers: [questionId: string, value: string][] = R.pipe(
             view.state.values,
             R.values,

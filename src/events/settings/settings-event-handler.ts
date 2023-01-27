@@ -1,11 +1,14 @@
 import { App } from '../../app'
 import { updateTeam } from '../../db'
+import logger from "../../logger";
 
 import { ModalStateTree, SettingsModalActions } from './settings-modal-builder'
 
 export function configureSettingsEventsHandler(app: App): void {
     // Handles users submitting the helsesjekk settings modal
     app.view(SettingsModalActions.modalSubmit, async ({ ack, view }) => {
+        logger.info(`User submitted settings modal`)
+
         const values: ModalStateTree = view.state.values as unknown as ModalStateTree
         const teamId = view.private_metadata
 

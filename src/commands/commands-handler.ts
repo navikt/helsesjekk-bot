@@ -2,15 +2,17 @@ import { App } from '../app'
 import { createSettingsModal } from '../events/settings/settings-modal-builder'
 import { postToTeam, revealTeam } from '../messages/message-poster'
 import logger from '../logger'
-import { createTeam, getActiveAsk, getTeam, reactivateTeam, teamStatus } from '../db'
+import { createTeam, getActiveAsk, getTeam } from '../db'
 import { scoreQuestions } from '../metrics/metrics'
 
 export function configureCommandsHandler(app: App): void {
     // Handles the /helsesjekk command, it opens the settings modal
     app.command(/(.*)/, async ({ command, ack, client }) => {
+        logger.info(`User used /helsesjekk command`)
+
         await ack()
 
-        const team = (await getTeam(command.channel_id)) ?? (await createTeam(command.channel_id, command.channel_name))
+        const team = (await getTeam(command.channel_id)) ?? (await createTeam(command.channel_id, '[Ditt Team]'))
 
         await client.views.open({
             trigger_id: command.trigger_id,
@@ -19,24 +21,10 @@ export function configureCommandsHandler(app: App): void {
     })
 
     // TODO inn i settings slash command?
-    app.event('app_mention', async ({ event, say, client }) => {
+    app.event('app_mention', async ({ event, say }) => {
+        logger.info(`User mentioned the bot in ${process.env.NODE_ENV}`)
+
         try {
-            const channelInfo = await client.conversations.info({ channel: event.channel })
-            const channelName = channelInfo.channel?.name ?? 'Ukjent! :('
-
-            if (event.text.endsWith('start')) {
-                const status = await teamStatus(event.channel)
-                if (status === 'ACTIVE') {
-                    await say('Botten er allerede klar til bruk. :thumbsup:')
-                } else if (status === 'NEW') {
-                    await createTeam(event.channel, channelName)
-                    await say(`Helsesjekk er klar til bruk for ${channelName}! :thumbsup:`)
-                } else {
-                    await reactivateTeam(event.channel)
-                    await say('Helsesjekk er reaktivert for teamet ditt! :thumbsup:')
-                }
-            }
-
             if (process.env.NODE_ENV !== 'production') {
                 // dev tool for forcing the bot to post questionnaire
                 if (event.text.endsWith('post')) {

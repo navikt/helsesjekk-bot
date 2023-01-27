@@ -1,18 +1,18 @@
 import { config } from 'dotenv'
 
+if (process.env.NODE_ENV !== 'production') {
+    // Load dev environment variables
+    config({})
+}
+
 import logger from './logger'
 import app from './app'
 import { configureMessageScheduler } from './messages/message-scheduler'
 import { configureHealthCheckEventsHandler } from './events/healthcheck/healthcheck-event-handler'
 import { configureSettingsEventsHandler } from './events/settings/settings-event-handler'
 import { configureCommandsHandler } from './commands/commands-handler'
-import { createTestData } from './db/test-data'
 import { configureEventsHandler } from './events/events-handler'
-
-if (process.env.NODE_ENV !== 'production') {
-    // Load dev environment variables
-    config({})
-}
+import { configureNaisHealthEndpoints } from './health'
 
 const handlers = [
     configureCommandsHandler,
@@ -25,14 +25,9 @@ const handlers = [
 async function start() {
     handlers.forEach((handler) => handler(app))
 
-    if (process.env.NODE_ENV !== 'production') {
-        logger.info('Is running locally, creating test data')
-        await createTestData()
-    }
-
-    const port = process.env.PORT || 5000
-    await app.start(port)
-    logger.info(`Started bolt app on port ${port}`)
+    await configureNaisHealthEndpoints()
+    await app.start()
+    logger.info(`Started bolt app in socket mode`)
 }
 
 start().catch((err) => {

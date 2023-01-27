@@ -12,7 +12,7 @@ spec:
     - 'https://helsesjekk-bot.intern.nav.no'
   replicas:
     min: 1
-    max: 1
+    max: 2
   resources:
     limits:
       cpu: 500m
@@ -25,17 +25,16 @@ spec:
       - type: POSTGRES_14
         databases:
           - name: helsesjekk-bot
-            envVarPrefix: DB
-
-# Might not need this if socket mode works:
-#  accessPolicy:
-#    outbound:
-#      external:
-#        - host: slack.com
-#        - host: api.slack.com
+  accessPolicy:
+    outbound:
+      external:
+        - host: slack.com
+        - host: api.slack.com
   liveness:
     path: /internal/is_alive
+    initialDelay: 10
   readiness:
     path: /internal/is_ready
+    initialDelay: 10
   envFrom:
     - secret: helsesjekk-bot-secrets
