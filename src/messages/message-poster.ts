@@ -88,7 +88,7 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
         channel: team.id,
         thread_ts: message.ts,
         text: `Svar på ukentlig helsesjekk for ${team.name}`,
-        blocks: createScoreBlocks(team, scoreQuestions(asked)),
+        blocks: createScoreBlocks(team, asked, scoreQuestions(asked)),
         reply_broadcast: true,
     })
 

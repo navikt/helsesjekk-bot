@@ -1,5 +1,5 @@
 import { Block, KnownBlock } from '@slack/types'
-import { Team } from '@prisma/client'
+import { Asked, Team } from '@prisma/client'
 
 import { getWeekNumber } from '../utils/date'
 import { ScoredQuestion } from '../metrics/metrics'
@@ -85,9 +85,9 @@ export function createCompletedBlocks(responses: number, dateForWeek: Date): (Kn
     ]
 }
 
-export function createScoreBlocks(team: Team, scoredQuestions: ScoredQuestion[]): (KnownBlock | Block)[] {
+export function createScoreBlocks(team: Team, asked: Asked, scoredQuestions: ScoredQuestion[]): (KnownBlock | Block)[] {
     return [
-        plainHeader('Helsesjekk for uke TODO'),
+        plainHeader(`Helsesjekk for uke ${getWeekNumber(asked.timestamp)}`),
         textSection(`Team: ${team.name}`),
         ...scoredQuestions.map((scoredQuestion) => {
             return textSection(`*${scoredQuestion.question}* \n${scoredQuestion.score}`)
