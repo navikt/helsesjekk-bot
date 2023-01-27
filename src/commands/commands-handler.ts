@@ -10,10 +10,20 @@ export function configureCommandsHandler(app: App): void {
     app.command(/(.*)/, async ({ command, ack, client }) => {
         logger.info(`User used /helsesjekk command`)
 
+        try {
+            await client.conversations.info({
+                channel: command.channel_id,
+            })
+        } catch (e) {
+            logger.info(
+                `Someone used /helsesjekk in a DM or a channel where it hasn't been added. Channel ID: ${command.channel_id}`,
+            )
+            await ack()
+            return
+        }
+
         await ack()
-
         const team = (await getTeam(command.channel_id)) ?? (await createTeam(command.channel_id, '[Ditt Team]'))
-
         await client.views.open({
             trigger_id: command.trigger_id,
             view: createSettingsModal(team),
