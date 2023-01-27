@@ -85,11 +85,6 @@ export function configureHealthCheckEventsHandler(app: App): void {
 
         await answerQuestions(asked, answers, body.user.id)
         await ack()
-        await client.chat.postEphemeral({
-            channel: channelId,
-            text: 'Takk for svaret! :smile:',
-            user: userId,
-        })
         await updateResponseCount(team, client)
     })
 }
