@@ -36,7 +36,7 @@ export async function answerQuestions(
             answers: mappedAnswers,
         },
         where: {
-            questionAnsweredIdentifier: {
+            userId_askedId: {
                 userId,
                 askedId: asked.id,
             },

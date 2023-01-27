@@ -8,7 +8,7 @@ import { getDayCorrect, getNowInNorway } from '../utils/date'
 
 import { postToTeam, revealTeam } from './message-poster'
 
-const EVERY_HOUR = '0 */1 * * *'
+const EVERY_HOUR = '1 */1 * * *'
 // const EVERY_MINUTE = '*/1 * * * *'
 
 export function configureMessageScheduler(app: App): void {
