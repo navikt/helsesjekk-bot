@@ -1,7 +1,7 @@
 import { getDay, getWeek } from 'date-fns'
 
-export function getWeekNumberNow(): number {
-    return getWeek(getNowInNorway(), { weekStartsOn: 1 }) - 1
+export function getWeekNumber(date: Date): number {
+    return getWeek(date, { weekStartsOn: 1 }) - 1
 }
 
 export function getNowInNorway() {

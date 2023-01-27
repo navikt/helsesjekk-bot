@@ -1,7 +1,7 @@
 import { Block, KnownBlock } from '@slack/types'
 import { Team } from '@prisma/client'
 
-import { getWeekNumberNow } from '../utils/date'
+import { getWeekNumber } from '../utils/date'
 import { ScoredQuestion } from '../metrics/metrics'
 import { plainHeader, textSection } from '../events/modal-utils'
 
@@ -13,14 +13,16 @@ export const MessageActions = {
  * Blocks for the initial question. It contains a button that allows users to open
  * up a modal to answer the quiz.
  */
-export function createRootPostBlocks(teamName: string, invalid = false): (KnownBlock | Block)[] {
+export function createRootPostBlocks(teamName: string, dateForWeek: Date, invalid = false): (KnownBlock | Block)[] {
     return [
         {
             type: 'header',
             text: {
                 type: 'plain_text',
                 // TODO: Bug: denne vil oppdatere ukesnummeret når noen svarer på søndag
-                text: `:health: Det er på tide med helsesjekk uke ${getWeekNumberNow()} for ${teamName}! :wave:`,
+                text: `:health: Det er på tide med helsesjekk uke ${getWeekNumber(
+                    dateForWeek,
+                )} for ${teamName}! :wave:`,
                 emoji: true,
             },
         },
@@ -61,13 +63,15 @@ export function createRootPostBlocks(teamName: string, invalid = false): (KnownB
     ]
 }
 
-export function createCompletedBlocks(responses: number): (KnownBlock | Block)[] {
+export function createCompletedBlocks(responses: number, dateForWeek: Date): (KnownBlock | Block)[] {
     return [
         {
             type: 'header',
             text: {
                 type: 'plain_text',
-                text: `:health: Takk for at du svarte på helsesjekken! Denne er nå stengt. :lock:`,
+                text: `:health: Takk for at du svarte på helsesjekken for uke ${getWeekNumber(
+                    dateForWeek,
+                )}! Denne er nå stengt. :lock:`,
                 emoji: true,
             },
         },

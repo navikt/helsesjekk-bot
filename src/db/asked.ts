@@ -36,8 +36,8 @@ export async function getAsked(channelId: string, ts: string): Promise<Asked | n
     })
 }
 
-export async function createAsked(ts: string, teamId: string, questions: Question[]): Promise<void> {
-    await prisma.asked.create({
+export async function createAsked(ts: string, teamId: string, questions: Question[]): Promise<Asked> {
+    return prisma.asked.create({
         data: {
             teamId: teamId,
             messageTs: ts,
@@ -46,6 +46,4 @@ export async function createAsked(ts: string, teamId: string, questions: Questio
             revealed: false,
         },
     })
-
-    return
 }

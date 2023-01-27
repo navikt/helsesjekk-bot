@@ -40,3 +40,14 @@ function answerToValue(answer: QuestionAnswer): number {
             return 1
     }
 }
+
+// Score to red/yellow/green emoji
+function scoreToEmoji(score: number): string {
+    if (score < 2) {
+        return ':red_circle:'
+    } else if (score < 4) {
+        return ':yellow_circle:'
+    } else {
+        return ':green_circle:'
+    }
+}
