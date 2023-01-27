@@ -25,11 +25,14 @@ spec:
       - type: POSTGRES_14
         databases:
           - name: helsesjekk-bot
-  accessPolicy:
-    outbound:
-      external:
-        - host: slack.com
-        - host: api.slack.com
+            envVarPrefix: DB
+
+# Might not need this if socket mode works:
+#  accessPolicy:
+#    outbound:
+#      external:
+#        - host: slack.com
+#        - host: api.slack.com
   liveness:
     path: /internal/is_alive
   readiness:
