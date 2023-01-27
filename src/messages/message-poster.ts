@@ -38,6 +38,7 @@ export async function updateResponseCount(team: Team, client: App['client']): Pr
     const message = await client.chat.update({
         channel: team.id,
         ts: asked.messageTs,
+        text: `Hvordan har ${team.name} det?`,
         blocks: [...createRootPostBlocks(team.name, asked.timestamp), createCountMetricsContext(asked.answers.length)],
     })
 
