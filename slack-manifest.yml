@@ -1,0 +1,31 @@
+display_information:
+  name: Helsesjekk
+  description: Henter inn anonym helsesjekk i ditt team, en gang i uken!
+  background_color: '#a35f00'
+features:
+  bot_user:
+    display_name: Helsesjekk
+    always_online: false
+  slash_commands:
+    - command: /helsesjekk
+      description: Rediger innstillingene for helsesjekk i denne kanalen
+      should_escape: false
+oauth_config:
+  scopes:
+    bot:
+      - chat:write
+      - app_mentions:read
+      - channels:read
+      - groups:read
+      - commands
+settings:
+  event_subscriptions:
+    bot_events:
+      - app_mention
+      - channel_left
+      - group_left
+  interactivity:
+    is_enabled: true
+  socket_mode_enabled: true
+  org_deploy_enabled: false
+  token_rotation_enabled: false
