@@ -5,6 +5,7 @@ import { App } from '../app'
 import logger from '../logger'
 import { getActiveTeams, hasActiveAsk } from '../db'
 import { getDayCorrect, getNowInNorway } from '../utils/date'
+import { isLeader } from '../utils/leader'
 
 import { postToTeam, revealTeam } from './message-poster'
 
@@ -15,6 +16,12 @@ export function configureMessageScheduler(app: App): void {
     /* We only support posting/revealing on every hour */
     schedule(EVERY_HOUR, async () => {
         logger.info('Running scheduled job, checking for mesasges to post')
+        try {
+            logger.info(`Am I leader? ${await isLeader()}`)
+        } catch (e) {
+            // ignore until we know if leader election works
+            logger.error(e)
+        }
 
         try {
             const activeTeams = await getActiveTeams()

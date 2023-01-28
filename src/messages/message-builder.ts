@@ -92,8 +92,7 @@ export function createScoreBlocks(
     totalScore: number,
 ): (KnownBlock | Block)[] {
     return [
-        plainHeader(`Helsesjekk for uke ${getWeekNumber(asked.timestamp)}`),
-        textSection(`Team: ${team.name}`),
+        plainHeader(`Helsesjekkresultat for team ${team.name} i uke ${getWeekNumber(asked.timestamp)}`),
         {
             type: 'section',
             text: {
