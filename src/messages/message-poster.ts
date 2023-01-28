@@ -62,7 +62,7 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
         await client.chat.postMessage({
             channel: team.id,
             thread_ts: asked.messageTs,
-            text: `Det er kun ${asked.answers.length} svar på helsesjekken. På grunn av personvern vil vi kun resultater med 4 eller flere svar vises.`,
+            text: `Det er kun ${asked.answers.length} svar på helsesjekken. Det kreves minimum 4 svar for at resultatene skal deles.`,
             reply_broadcast: true,
         })
         await client.chat.update({

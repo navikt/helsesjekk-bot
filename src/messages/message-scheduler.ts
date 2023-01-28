@@ -15,13 +15,13 @@ const EVERY_HOUR = '1 */1 * * *'
 export function configureMessageScheduler(app: App): void {
     /* We only support posting/revealing on every hour */
     schedule(EVERY_HOUR, async () => {
-        logger.info('Running scheduled job, checking for mesasges to post')
-        try {
-            logger.info(`Am I leader? ${await isLeader()}`)
-        } catch (e) {
-            // ignore until we know if leader election works
-            logger.error(e)
+        const isPodLeader = await isLeader()
+        if (!isPodLeader) {
+            logger.info('Not the pod leader, skipping scheduled job')
+            return
         }
+
+        logger.info('Running scheduled job, checking for messages to post')
 
         try {
             const activeTeams = await getActiveTeams()

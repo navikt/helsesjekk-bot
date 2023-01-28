@@ -50,7 +50,7 @@ export function createRootPostBlocks(teamName: string, dateForWeek: Date, invali
                       },
                   ],
               }
-            : textSection('Denne helsesjekken ikke nok svar, så resultatet ble aldri vist.'),
+            : textSection('Denne helsesjekken hadde ikke nok svar, så resultatet vil ikke bli delt.'),
         {
             type: 'context',
             elements: [
