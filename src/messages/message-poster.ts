@@ -58,7 +58,7 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
         return false
     }
 
-    if (asked.answers.length <= 3) {
+    if (asked.answers.length < 3) {
         await client.chat.postMessage({
             channel: team.id,
             thread_ts: asked.messageTs,
