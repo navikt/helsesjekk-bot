@@ -25,22 +25,23 @@ export function configureMessageScheduler(app: App): void {
 
         try {
             const activeTeams = await getActiveTeams()
-            logger.info(`There are ${activeTeams.length} active teams`)
+            logger.info(
+                `There are ${activeTeams.length} active teams:\n${activeTeams
+                    .map(
+                        (team) =>
+                            `${team.name} want to post at ${team.postHour} on ${team.postDay}, reveal at ${team.revealHour} on ${team.revealDay}`,
+                    )
+                    .join('\n')}`,
+            )
 
             for (const team of activeTeams) {
-                logger.info(
-                    `Checking if team ${team.name} should post, they want to post at ${team.postHour} on ${team.postDay}`,
-                )
                 if (isSameDayAndHour(team.postDay, team.postHour) && !(await hasActiveAsk(team.id))) {
-                    logger.info(`Posting message for team ${team.name}!`)
+                    logger.info(`It's time to post helsesjekk for team ${team.name}!`)
                     await postToTeam(team, app.client)
                 }
 
-                logger.info(
-                    `Checking if team ${team.name} should reveal, they want to reveal at ${team.revealHour} on ${team.revealDay}`,
-                )
                 if (isSameDayAndHour(team.revealDay, team.revealHour) && (await hasActiveAsk(team.id))) {
-                    logger.info(`Revealing for team ${team.name}!`)
+                    logger.info(`It's time to reveal helsesjekk for team ${team.name}!`)
                     await revealTeam(team, app.client)
                 }
             }
