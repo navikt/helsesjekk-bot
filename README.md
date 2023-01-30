@@ -12,6 +12,11 @@ Søk opp integrasjonen, den heter "Helsesjekk":
 
 Det siste du må gjøre er å skrive /helsesjekk i kanalen, da får du tilgang til å gi teamet ditt et navn, samt fortelle botten når du vil at helsesjekken skal postes!
 
+![image](https://user-images.githubusercontent.com/1507032/215425212-ac800637-4f73-4ad3-ad9d-b3d0a2011e37.png)
+
+![image](https://user-images.githubusercontent.com/1507032/215425338-4c307c6d-e00d-4972-a500-7a0733d7783f.png)
+
+
 ## Jeg fant noe feil!
 
 Ta kontakt på #helsesjekk-bot på NAV-IT slacken!
