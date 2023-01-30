@@ -1,5 +1,5 @@
 import { Block, KnownBlock } from '@slack/types'
-import { Asked, Team } from '@prisma/client'
+import { Answer, Asked, Team } from '@prisma/client'
 
 import { getWeekNumber } from '../utils/date'
 import { ScoredQuestion } from '../metrics/metrics'
@@ -87,7 +87,7 @@ export function createCompletedBlocks(responses: number, dateForWeek: Date): (Kn
 
 export function createScoreBlocks(
     team: Team,
-    asked: Asked,
+    asked: Asked & { answers: Answer[] },
     scoredQuestions: ScoredQuestion[],
     totalScore: number,
 ): (KnownBlock | Block)[] {
@@ -113,6 +113,15 @@ export function createScoreBlocks(
                     totalScore,
                 )} ${totalScore.toFixed(1)}`,
             },
+        },
+        {
+            type: 'context',
+            elements: [
+                {
+                    type: 'plain_text',
+                    text: `Det var ${asked.answers.length} svar på denne ukens helsesjekk.`,
+                },
+            ],
         },
     ]
 }
