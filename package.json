@@ -55,6 +55,7 @@
             "import"
         ],
         "rules": {
+            "no-console": "warn",
             "import/order": [
                 "warn",
                 {

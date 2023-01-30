@@ -3,29 +3,53 @@ import { InputBlock, ModalView, Option, PlainTextOption } from '@slack/bolt'
 import { Team } from '../../db'
 import { plainHeader, textSection } from '../modal-utils'
 
-export const SettingsModalActions = {
+export const SettingsKeys = {
     modalSubmit: 'helsesjekk_settings_modal-submit',
-}
+    teamName: {
+        block: 'team_name-block',
+        action: 'team_name-action',
+    },
+    postDay: {
+        block: 'post_day-block',
+        action: 'post_day-action',
+    },
+    postHour: {
+        block: 'post_hour-block',
+        action: 'post_hour-action',
+    },
+    revealDay: {
+        block: 'reveal_day-block',
+        action: 'reveal_day-action',
+    },
+    revealHour: {
+        block: 'reveal_hour-block',
+        action: 'reveal_hour-action',
+    },
+    active: {
+        block: 'active-block',
+        action: 'active-action',
+    },
+} as const
 
 // This is VERY loosely coupled with the blocks below. Be careful.
 export interface ModalStateTree {
-    'team_name-block': {
-        'team_name-action': { value: string }
+    [SettingsKeys.teamName.block]: {
+        [SettingsKeys.teamName.action]: { value: string }
     }
-    'post_day-block': {
-        'post_day-action': { selected_option: Option }
+    [SettingsKeys.postDay.block]: {
+        [SettingsKeys.postDay.action]: { selected_option: Option }
     }
-    'post_hour-block': {
-        'post_hour-action': { selected_time: string }
+    [SettingsKeys.postHour.block]: {
+        [SettingsKeys.postHour.action]: { selected_time: string }
     }
-    'reveal_day-block': {
-        'reveal_day-action': { selected_option: Option }
+    [SettingsKeys.revealDay.block]: {
+        [SettingsKeys.revealDay.action]: { selected_option: Option }
     }
-    'reveal_hour-block': {
-        'reveal_hour-action': { selected_time: string }
+    [SettingsKeys.revealHour.block]: {
+        [SettingsKeys.revealHour.action]: { selected_time: string }
     }
-    'active-block': {
-        'active-action': { selected_options: Option[] }
+    [SettingsKeys.active.block]: {
+        [SettingsKeys.active.action]: { selected_options: Option[] }
     }
 }
 
@@ -34,7 +58,7 @@ export function createSettingsModal(team: Team): ModalView {
 
     return {
         type: 'modal',
-        callback_id: SettingsModalActions.modalSubmit,
+        callback_id: SettingsKeys.modalSubmit,
         private_metadata: team.id,
         title: {
             type: 'plain_text',
@@ -66,11 +90,11 @@ export function createSettingsModal(team: Team): ModalView {
 
 function changeNameInput(team: Team): InputBlock {
     return {
-        block_id: 'team_name-block',
+        block_id: SettingsKeys.teamName.block,
         type: 'input',
         dispatch_action: false,
         element: {
-            action_id: 'team_name-action',
+            action_id: SettingsKeys.teamName.action,
             type: 'plain_text_input',
             initial_value: team.name,
         },
@@ -84,14 +108,14 @@ function changeNameInput(team: Team): InputBlock {
 
 function postDayInput(dayOptions: PlainTextOption[], team: Team) {
     return {
-        block_id: 'post_day-block',
+        block_id: SettingsKeys.postDay.block,
         type: 'input',
         label: {
             type: 'plain_text',
             text: 'Hvilken dag i uka skal helsesjekken sendes?',
         },
         element: {
-            action_id: 'post_day-action',
+            action_id: SettingsKeys.postDay.action,
             type: 'static_select',
             placeholder: {
                 type: 'plain_text',
@@ -106,14 +130,14 @@ function postDayInput(dayOptions: PlainTextOption[], team: Team) {
 
 function postHourInput(team: Team) {
     return {
-        block_id: 'post_hour-block',
+        block_id: SettingsKeys.postHour.block,
         type: 'input',
         label: {
             type: 'plain_text',
             text: 'Når skal helsesjekken sendes?',
         },
         element: {
-            action_id: 'post_hour-action',
+            action_id: SettingsKeys.postHour.action,
             type: 'timepicker',
             initial_time: `${team.postHour.toString().padStart(2, '0')}:00`,
             placeholder: {
@@ -126,14 +150,14 @@ function postHourInput(team: Team) {
 
 function revealDayInput(dayOptions: PlainTextOption[], team: Team) {
     return {
-        block_id: 'reveal_day-block',
+        block_id: SettingsKeys.revealDay.block,
         type: 'input',
         label: {
             type: 'plain_text',
             text: 'Hvilken dag i uka skal helsesjekken være ferdig?',
         },
         element: {
-            action_id: 'reveal_day-action',
+            action_id: SettingsKeys.revealDay.action,
             type: 'static_select',
             placeholder: {
                 type: 'plain_text',
@@ -148,14 +172,14 @@ function revealDayInput(dayOptions: PlainTextOption[], team: Team) {
 
 function revealHourInput(team: Team) {
     return {
-        block_id: 'reveal_hour-block',
+        block_id: SettingsKeys.revealHour.block,
         type: 'input',
         label: {
             type: 'plain_text',
             text: 'Når skal helsesjekken være ferdig?',
         },
         element: {
-            action_id: 'reveal_hour-action',
+            action_id: SettingsKeys.revealHour.action,
             type: 'timepicker',
             initial_time: `${team.revealHour.toString().padStart(2, '0')}:00`,
             placeholder: { type: 'plain_text', text: 'Velg tid' },
@@ -173,11 +197,11 @@ function activeCheckbox(team: Team): InputBlock {
     }
 
     return {
-        block_id: 'active-block',
+        block_id: SettingsKeys.active.block,
         type: 'input',
         optional: true,
         element: {
-            action_id: 'active-action',
+            action_id: SettingsKeys.active.action,
             type: 'checkboxes',
             initial_options: team.active ? [activeOption] : undefined,
             options: [activeOption],
