@@ -1,6 +1,6 @@
 import { App } from '../../app'
 import { updateTeam } from '../../db'
-import logger from "../../logger";
+import logger from '../../logger'
 
 import { ModalStateTree, SettingsModalActions } from './settings-modal-builder'
 

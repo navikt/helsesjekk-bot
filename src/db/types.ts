@@ -21,7 +21,7 @@ export interface Question {
 
 export interface QuestionAnswer {
     questionId: string
-    answer: AnswerLevel,
+    answer: AnswerLevel
     type: QuestionType
 }
 

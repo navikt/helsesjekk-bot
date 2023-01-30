@@ -29,7 +29,9 @@ export function configureMessageScheduler(app: App): void {
                 `There are ${activeTeams.length} active teams:\n${activeTeams
                     .map(
                         (team) =>
-                            `${team.name} want to post at ${team.postHour} on ${team.postDay}, reveal at ${team.revealHour} on ${team.revealDay}`,
+                            `${team.name} want to post at ${team.postHour}:00 on ${dayIndexToDay(
+                                team.postDay,
+                            )}, reveal at ${team.revealHour}:00 on ${dayIndexToDay(team.revealDay)}`,
                     )
                     .join('\n')}`,
             )
@@ -58,4 +60,10 @@ function isSameDayAndHour(day: number, hour: number): boolean {
     const hoursNow = getHours(now)
 
     return dayNow === day && hoursNow === hour
+}
+
+const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
+function dayIndexToDay(index: number) {
+    return days[index]
 }

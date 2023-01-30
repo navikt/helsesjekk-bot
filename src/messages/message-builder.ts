@@ -19,7 +19,6 @@ export function createRootPostBlocks(teamName: string, dateForWeek: Date, invali
             type: 'header',
             text: {
                 type: 'plain_text',
-                // TODO: Bug: denne vil oppdatere ukesnummeret når noen svarer på søndag
                 text: `:health: Det er på tide med helsesjekk uke ${getWeekNumber(
                     dateForWeek,
                 )} for ${teamName}! :wave:`,
@@ -33,7 +32,6 @@ export function createRootPostBlocks(teamName: string, dateForWeek: Date, invali
                 text: 'Alle på dette teamet inviteres til å svare på noen raske spørsmål for å dele hvordan de føler tilstanden på teaamet er. Svarene gis på trafikklys-format.\n\n🟢 Bra! \n🟡 Middels \n🔴 Dårlig ',
             },
         },
-
         !invalid
             ? {
                   type: 'actions',
