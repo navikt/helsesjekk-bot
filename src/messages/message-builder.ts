@@ -1,7 +1,7 @@
 import { Block, KnownBlock } from '@slack/types'
 import { Answer, Asked, Team } from '@prisma/client'
 
-import { getWeekNumber } from '../utils/date'
+import { dayIndexToDay, getWeekNumber } from '../utils/date'
 import { ScoredQuestion } from '../metrics/metrics'
 import { plainHeader, textSection } from '../events/modal-utils'
 
@@ -124,7 +124,7 @@ export function createScoreBlocks(
     ]
 }
 
-export function createCountMetricsContext(responses: number) {
+export function createCountMetricsContext(responses: number, revealHour: number, revealDay: number) {
     return {
         type: 'context',
         elements: [
@@ -133,7 +133,9 @@ export function createCountMetricsContext(responses: number) {
                 text:
                     responses === 0
                         ? 'Ingen har svart enda. Det er på tide å svare!'
-                        : `${responses} har svart på helsesjekken!`,
+                        : `${responses} har svart på helsesjekken! Svarene vil bli delt kl. ${revealHour}:00 på ${dayIndexToDay(
+                              revealDay,
+                          )}.`,
             },
         ],
     }

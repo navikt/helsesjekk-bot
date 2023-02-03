@@ -1,12 +1,14 @@
 import { App } from '../../app'
 import { updateTeam } from '../../db'
 import logger from '../../logger'
+import { dayIndexToDay } from '../../utils/date'
+import { updateResponseCount } from '../../messages/message-poster'
 
 import { ModalStateTree, SettingsKeys as Keys } from './settings-modal-builder'
 
 export function configureSettingsEventsHandler(app: App): void {
     // Handles users submitting the helsesjekk settings modal
-    app.view(Keys.modalSubmit, async ({ ack, view }) => {
+    app.view(Keys.modalSubmit, async ({ ack, view, client, body }) => {
         logger.info(`User submitted settings modal`)
 
         const values: ModalStateTree = view.state.values as unknown as ModalStateTree
@@ -21,8 +23,17 @@ export function configureSettingsEventsHandler(app: App): void {
             revealHour: hour(values[Keys.revealHour.block][Keys.revealHour.action].selected_time),
         }
 
-        await updateTeam(teamId, mappedValues)
+        const team = await updateTeam(teamId, mappedValues)
         await ack()
+
+        await client.chat.postEphemeral({
+            user: body.user.id,
+            channel: teamId,
+            text: `Lagret innstillingene for ${team.name}!\n\nJeg vil legge ut helsesjekken på ${dayIndexToDay(
+                team.postDay,
+            )} kl. ${team.postHour}:00 og vise svarene på ${dayIndexToDay(team.revealDay)} kl. ${team.revealHour}:00`,
+        })
+        await updateResponseCount(team, client)
     })
 }
 

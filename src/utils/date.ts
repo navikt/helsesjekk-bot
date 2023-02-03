@@ -11,3 +11,8 @@ export function getNowInNorway() {
 export function getDayCorrect(date: Date) {
     return (getDay(date) + 6) % 7
 }
+
+const days = ['mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag', 'søndag']
+export function dayIndexToDay(index: number) {
+    return days[index]
+}

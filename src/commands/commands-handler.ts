@@ -7,7 +7,7 @@ import { scoreQuestions } from '../metrics/metrics'
 
 export function configureCommandsHandler(app: App): void {
     // Handles the /helsesjekk command, it opens the settings modal
-    app.command(/(.*)/, async ({ command, ack, client }) => {
+    app.command(/(.*)/, async ({ command, ack, client, respond }) => {
         logger.info(`User used /helsesjekk command`)
 
         const isBotInChannel = await isBotAddedToChannel(command.channel_id, client)
@@ -16,6 +16,9 @@ export function configureCommandsHandler(app: App): void {
                 `Someone used /helsesjekk in a DM or a channel where it hasn't been added. Type: ${isBotInChannel} Channel ID: ${command.channel_id}`,
             )
             await ack()
+            await respond({
+                text: 'Ser ut som du prøver å ta i bruk helsesjekk i en kanal hvor jeg ikke er lagt til. :meow-shocked: Kan du legge meg til som en integrasjon først? :smile:',
+            })
             return
         }
 

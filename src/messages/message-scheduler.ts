@@ -4,7 +4,7 @@ import { getHours } from 'date-fns'
 import { App } from '../app'
 import logger from '../logger'
 import { getActiveTeams, hasActiveAsk } from '../db'
-import { getDayCorrect, getNowInNorway } from '../utils/date'
+import { dayIndexToDay, getDayCorrect, getNowInNorway } from '../utils/date'
 import { isLeader } from '../utils/leader'
 
 import { postToTeam, revealTeam } from './message-poster'
@@ -72,8 +72,4 @@ function isSameDayAndHour(day: number, hour: number): boolean {
     return dayNow === day && hoursNow === hour
 }
 
-const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
-function dayIndexToDay(index: number) {
-    return days[index]
-}

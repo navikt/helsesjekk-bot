@@ -15,7 +15,7 @@ export async function postToTeam(team: Team, client: App['client']): Promise<boo
     const message = await client.chat.postMessage({
         channel: team.id,
         text: `Hvordan har ${team.name} det?`,
-        blocks: [...createRootPostBlocks(team.name, new Date()), createCountMetricsContext(0)],
+        blocks: [...createRootPostBlocks(team.name, new Date()), createCountMetricsContext(0, team.revealHour, team.revealDay)],
     })
 
     if (!message.ok || message.ts == null) {
@@ -39,7 +39,7 @@ export async function updateResponseCount(team: Team, client: App['client']): Pr
         channel: team.id,
         ts: asked.messageTs,
         text: `Hvordan har ${team.name} det?`,
-        blocks: [...createRootPostBlocks(team.name, asked.timestamp), createCountMetricsContext(asked.answers.length)],
+        blocks: [...createRootPostBlocks(team.name, asked.timestamp), createCountMetricsContext(asked.answers.length, team.revealHour, team.revealDay)],
     })
 
     if (!message.ok) {
@@ -71,7 +71,7 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
             text: `Ukentlig helsesjekk for team ${team.name} er nå avsluttet.`,
             blocks: [
                 ...createRootPostBlocks(team.name, asked.timestamp, true),
-                createCountMetricsContext(asked.answers.length),
+                createCountMetricsContext(asked.answers.length, team.revealHour, team.revealDay),
             ],
         })
         await markAskedRevealed(asked.id)
