@@ -133,7 +133,7 @@ export function createCountMetricsContext(responses: number, revealHour: number,
                 text:
                     responses === 0
                         ? 'Ingen har svart enda. Det er på tide å svare!'
-                        : `${responses} har svart på helsesjekken! Svarene vil bli delt kl. ${revealHour}:00 på ${dayIndexToDay(
+                        : `${responses} har svart på helsesjekken! Metrikkene vil bli delt kl. ${revealHour}:00 på ${dayIndexToDay(
                               revealDay,
                           )}.`,
             },

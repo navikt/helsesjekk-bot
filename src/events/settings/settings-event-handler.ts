@@ -31,7 +31,7 @@ export function configureSettingsEventsHandler(app: App): void {
             channel: teamId,
             text: `Lagret innstillingene for ${team.name}!\n\nJeg vil legge ut helsesjekken på ${dayIndexToDay(
                 team.postDay,
-            )} kl. ${team.postHour}:00 og vise svarene på ${dayIndexToDay(team.revealDay)} kl. ${team.revealHour}:00`,
+            )} kl. ${team.postHour}:00 og vise metrikkene på ${dayIndexToDay(team.revealDay)} kl. ${team.revealHour}:00`,
         })
         await updateResponseCount(team, client)
     })
