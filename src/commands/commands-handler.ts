@@ -10,13 +10,10 @@ export function configureCommandsHandler(app: App): void {
     app.command(/(.*)/, async ({ command, ack, client }) => {
         logger.info(`User used /helsesjekk command`)
 
-        try {
-            await client.conversations.info({
-                channel: command.channel_id,
-            })
-        } catch (e) {
-            logger.info(
-                `Someone used /helsesjekk in a DM or a channel where it hasn't been added. Channel ID: ${command.channel_id}`,
+        const isBotInChannel = await isBotAddedToChannel(command.channel_id, client)
+        if (isBotInChannel !== true) {
+            logger.warn(
+                `Someone used /helsesjekk in a DM or a channel where it hasn't been added. Type: ${isBotInChannel} Channel ID: ${command.channel_id}`,
             )
             await ack()
             return
@@ -86,4 +83,33 @@ export function configureCommandsHandler(app: App): void {
             await say('Oi! Noe gikk galt i botten. :( Dersom det skjer igjen, ta kontakt i #helsesjekk-bot.')
         }
     })
+}
+
+async function isBotAddedToChannel(
+    channel: string,
+    client: App['client'],
+): Promise<true | 'not_in_private' | 'not_in_public' | 'unknown'> {
+    try {
+        const channelInfo = await client.conversations.info({
+            channel: channel,
+        })
+
+        if (channelInfo.ok && channelInfo.channel && !channelInfo.channel.is_member) {
+            return 'not_in_public'
+        }
+
+        if (!channelInfo.ok) {
+            logger.info(
+                `Unable to get channel info, integration not in channel, or is a DM?: ${
+                    channelInfo.error ?? 'No error'
+                }`,
+            )
+            return 'not_in_private'
+        }
+
+        return true
+    } catch (e) {
+        logger.error(new Error("Couldn't get channel info", { cause: e }))
+        return 'unknown'
+    }
 }
