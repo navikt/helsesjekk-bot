@@ -9,12 +9,13 @@ import { isLeader } from '../utils/leader'
 
 import { postToTeam, revealTeam } from './message-poster'
 
-const EVERY_HOUR = '1 */1 * * *'
+const EVERY_TENTH_MINUTE = '*/10 * * * *'
+// const EVERY_HOUR = '1 */1 * * *'
 // const EVERY_MINUTE = '*/1 * * * *'
 
 export function configureMessageScheduler(app: App): void {
     /* We only support posting/revealing on every hour */
-    schedule(EVERY_HOUR, async () => {
+    schedule(EVERY_TENTH_MINUTE, async () => {
         const isPodLeader = await isLeader()
         if (!isPodLeader) {
             logger.info('Not the pod leader, skipping scheduled job')
@@ -38,13 +39,23 @@ export function configureMessageScheduler(app: App): void {
 
             for (const team of activeTeams) {
                 if (isSameDayAndHour(team.postDay, team.postHour) && !(await hasActiveAsk(team.id))) {
-                    logger.info(`It's time to post helsesjekk for team ${team.name}!`)
-                    await postToTeam(team, app.client)
+                    try {
+                        logger.info(`It's time to post helsesjekk for team ${team.name}!`)
+                        await postToTeam(team, app.client)
+                    } catch (e) {
+                        logger.error(new Error(`Failed to post helsesjekk for team ${team.name}.`, { cause: e }))
+                        continue
+                    }
                 }
 
                 if (isSameDayAndHour(team.revealDay, team.revealHour) && (await hasActiveAsk(team.id))) {
-                    logger.info(`It's time to reveal helsesjekk for team ${team.name}!`)
-                    await revealTeam(team, app.client)
+                    try {
+                        logger.info(`It's time to reveal helsesjekk for team ${team.name}!`)
+                        await revealTeam(team, app.client)
+                    } catch (e) {
+                        logger.error(new Error(`Failed to reveal helsesjekk for team ${team.name}.`, { cause: e }))
+                        continue
+                    }
                 }
             }
         } catch (e) {
