@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Helsesjekk</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+    </head>
+    <body>
+        <div>
+            <canvas id="myChart"></canvas>
+        </div>
+        <script type="module">
+            const ctx = document.getElementById('myChart')
+
+            const teams = await fetch('/api/test').then((response) => response.json())
+            const data = {
+                datasets: teams.map((it) => ({
+                    label: it.name.replace('Team ', ''),
+                    data: it.scores.map((it) => ({
+                        x: it.timestamp,
+                        y: it.score,
+                    })),
+                })),
+            }
+
+            console.log(data)
+
+            const config = {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Område helse helsesjekk, teamscore over tid',
+                        },
+                    },
+                    scales: {
+                        y: {
+                            min: 3,
+                            max: 5,
+                        },
+                        x: {
+                            min: '2023-01-27',
+                            max: new Date().toISOString().slice(0, 10),
+                            type: 'time',
+                            time: {
+                                unit: 'week',
+                                isoWeekday: true,
+                            },
+                        },
+                    },
+                },
+            }
+
+            new Chart(ctx, config)
+        </script>
+    </body>
+</html>

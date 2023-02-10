@@ -14,6 +14,7 @@
         "prisma:migrate": "prisma migrate deploy"
     },
     "dependencies": {
+        "@fastify/static": "^6.8.0",
         "@prisma/client": "4.9.0",
         "@slack/bolt": "^3.12.2",
         "date-fns": "^2.29.3",

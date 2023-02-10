@@ -12,7 +12,7 @@ import { configureHealthCheckEventsHandler } from './events/healthcheck/healthch
 import { configureSettingsEventsHandler } from './events/settings/settings-event-handler'
 import { configureCommandsHandler } from './commands/commands-handler'
 import { configureEventsHandler } from './events/events-handler'
-import { configureNaisHealthEndpoints } from './health'
+import { configureFastify } from './fastify'
 
 const handlers = [
     configureCommandsHandler,
@@ -25,9 +25,9 @@ const handlers = [
 async function start() {
     handlers.forEach((handler) => handler(app))
 
-    await configureNaisHealthEndpoints()
-    await app.start()
-    logger.info(`Started bolt app in socket mode`)
+    await configureFastify()
+    // await app.start()
+    // logger.info(`Started bolt app in socket mode`)
 }
 
 start().catch((err) => {
