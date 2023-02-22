@@ -2,8 +2,9 @@ import { App } from '../app'
 import { createSettingsModal } from '../events/settings/settings-modal-builder'
 import { postToTeam, revealTeam, updateResponseCount } from '../messages/message-poster'
 import logger from '../logger'
-import { createTeam, getActiveAsk, getTeam, prisma } from '../db'
-import { scoreQuestions } from '../metrics/metrics'
+import { createTeam, getActiveAsk, getPreviousAsk, getTeam, prisma } from '../db'
+import { scoreAsked } from '../metrics/metrics'
+import { createScoreBlocks } from '../messages/message-builder'
 
 export function configureCommandsHandler(app: App): void {
     // Handles the /helsesjekk command, it opens the settings modal
@@ -73,12 +74,22 @@ export function configureCommandsHandler(app: App): void {
 
                 if (event.text.endsWith('debug')) {
                     const activeAsk = await getActiveAsk(event.channel)
+                    const team = await getTeam(event.channel)
 
-                    if (activeAsk == null) {
+                    if (activeAsk == null || team == null) {
                         return
                     }
 
-                    scoreQuestions(activeAsk)
+                    const previousAsked = await getPreviousAsk(activeAsk)
+                    const scoredAsk = scoreAsked(activeAsk)
+                    const previousScoredAsk = previousAsked ? scoreAsked(previousAsked) : null
+
+                    await app.client.chat.postMessage({
+                        channel: team.id,
+                        text: `Svar på ukentlig helsesjekk for ${team.name}`,
+                        blocks: createScoreBlocks(team, activeAsk, scoredAsk, previousScoredAsk),
+                        reply_broadcast: true,
+                    })
                 }
             }
         } catch (e) {

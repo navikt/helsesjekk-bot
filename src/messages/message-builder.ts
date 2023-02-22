@@ -2,7 +2,7 @@ import { Block, KnownBlock } from '@slack/types'
 import { Answer, Asked, Team } from '@prisma/client'
 
 import { dayIndexToDay, getWeekNumber } from '../utils/date'
-import { ScoredQuestion } from '../metrics/metrics'
+import { ScoredAsk, ScoredQuestion } from '../metrics/metrics'
 import { plainHeader, textSection } from '../events/modal-utils'
 
 export const MessageActions = {
@@ -86,8 +86,8 @@ export function createCompletedBlocks(responses: number, dateForWeek: Date): (Kn
 export function createScoreBlocks(
     team: Team,
     asked: Asked & { answers: Answer[] },
-    scoredQuestions: ScoredQuestion[],
-    totalScore: number,
+    scoredAsk: ScoredAsk,
+    previousScoredAsk: ScoredAsk | null,
 ): (KnownBlock | Block)[] {
     return [
         plainHeader(`Helsesjekkresultat for team ${team.name} i uke ${getWeekNumber(asked.timestamp)}`),
@@ -95,10 +95,12 @@ export function createScoreBlocks(
             type: 'section',
             text: {
                 type: 'mrkdwn',
-                text: scoredQuestions
+                text: scoredAsk.scoredQuestions
                     .map(
                         (question) =>
-                            `${scoreToEmoji(question.score)} *${question.question}*: ${question.score.toFixed(1)}`,
+                            `${scoreToEmoji(question.score)} *${question.question}*: ${question.score.toFixed(
+                                1,
+                            )} ${addQuestionDiff(question, previousScoredAsk)}`,
                     )
                     .join('\n'),
             },
@@ -108,8 +110,11 @@ export function createScoreBlocks(
             text: {
                 type: 'mrkdwn',
                 text: `\n*Total score for ${team.name} i uke ${getWeekNumber(asked.timestamp)}*: ${scoreToEmoji(
-                    totalScore,
-                )} ${totalScore.toFixed(1)}`,
+                    scoredAsk.totalScore,
+                )} ${scoredAsk.totalScore.toFixed(1)} ${addDiff(
+                    scoredAsk.totalScore,
+                    previousScoredAsk?.totalScore ?? null,
+                )}`,
             },
         },
         {
@@ -149,4 +154,22 @@ function scoreToEmoji(score: number): string {
     } else {
         return '🟢'
     }
+}
+
+function addQuestionDiff(question: ScoredQuestion, previousScoredAsk: ScoredAsk | null): string {
+    if (previousScoredAsk == null) return ''
+
+    const previousQuestion = previousScoredAsk.scoredQuestions.find((it) => it.id === question.id)
+
+    if (previousQuestion == null) return ''
+
+    return addDiff(question.score, previousQuestion.score)
+}
+
+function addDiff(scoreLeft: number, scoreRight: number | null): string {
+    if (scoreRight == null) return ''
+
+    const diff = scoreLeft - scoreRight
+
+    return `(${diff > 0 ? '+' : ''}${diff.toFixed(1)})`
 }

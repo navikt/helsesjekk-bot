@@ -1,8 +1,8 @@
 import logger from '../logger'
 import { App } from '../app'
 import { questionsFromJsonb } from '../questions/jsonb-utils'
-import { markAskedRevealed, createAsked, getActiveAsk, Team } from '../db'
-import { overallScore, scoreQuestions } from '../metrics/metrics'
+import { markAskedRevealed, createAsked, getActiveAsk, Team, getPreviousAsk } from '../db'
+import { scoreAsked } from '../metrics/metrics'
 
 import {
     createCompletedBlocks,
@@ -15,7 +15,10 @@ export async function postToTeam(team: Team, client: App['client']): Promise<boo
     const message = await client.chat.postMessage({
         channel: team.id,
         text: `Hvordan har ${team.name} det?`,
-        blocks: [...createRootPostBlocks(team.name, new Date()), createCountMetricsContext(0, team.revealHour, team.revealDay)],
+        blocks: [
+            ...createRootPostBlocks(team.name, new Date()),
+            createCountMetricsContext(0, team.revealHour, team.revealDay),
+        ],
     })
 
     if (!message.ok || message.ts == null) {
@@ -39,7 +42,10 @@ export async function updateResponseCount(team: Team, client: App['client']): Pr
         channel: team.id,
         ts: asked.messageTs,
         text: `Hvordan har ${team.name} det?`,
-        blocks: [...createRootPostBlocks(team.name, asked.timestamp), createCountMetricsContext(asked.answers.length, team.revealHour, team.revealDay)],
+        blocks: [
+            ...createRootPostBlocks(team.name, asked.timestamp),
+            createCountMetricsContext(asked.answers.length, team.revealHour, team.revealDay),
+        ],
     })
 
     if (!message.ok) {
@@ -86,14 +92,15 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
     })
     await markAskedRevealed(asked.id)
 
-    const scoredQuestions = scoreQuestions(asked)
-    const totalScore = overallScore(scoredQuestions)
+    const previousAsked = await getPreviousAsk(asked)
+    const scoredAsk = scoreAsked(asked)
+    const previousScoredAsk = previousAsked ? scoreAsked(previousAsked) : null
 
     await client.chat.postMessage({
         channel: team.id,
         thread_ts: message.ts,
         text: `Svar på ukentlig helsesjekk for ${team.name}`,
-        blocks: createScoreBlocks(team, asked, scoredQuestions, totalScore),
+        blocks: createScoreBlocks(team, asked, scoredAsk, previousScoredAsk),
         reply_broadcast: true,
     })
 

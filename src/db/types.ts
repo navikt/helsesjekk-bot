@@ -1,3 +1,5 @@
+import { Answer, Asked } from "@prisma/client";
+
 export enum Day {
     MONDAY = 0,
     TUESDAY = 1,
@@ -35,3 +37,5 @@ export enum QuestionType {
     TEAM_HEALTH = 'TEAM_HEALTH',
     SPEED = 'SPEED',
 }
+
+export type AskedWithAnswers = Asked & { answers: Answer[] }

@@ -23,6 +23,14 @@ export async function getActiveAsk(teamId: string): Promise<(Asked & { answers: 
     })
 }
 
+export async function getPreviousAsk(ask: Asked): Promise<(Asked & { answers: Answer[] }) | null> {
+    return prisma.asked.findFirst({
+        where: { teamId: ask.teamId, revealed: true, id: { not: ask.id } },
+        orderBy: { timestamp: 'desc' },
+        include: { answers: true },
+    })
+}
+
 export async function markAskedRevealed(id: number): Promise<void> {
     await prisma.asked.update({
         where: { id },
