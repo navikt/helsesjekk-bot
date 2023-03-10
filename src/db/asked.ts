@@ -38,6 +38,13 @@ export async function markAskedRevealed(id: number): Promise<void> {
     })
 }
 
+export async function markAskedAsNagged(id: number): Promise<void> {
+    await prisma.asked.update({
+        where: { id },
+        data: { nagged: true },
+    })
+}
+
 export async function getAsked(channelId: string, ts: string): Promise<Asked | null> {
     return prisma.asked.findFirst({
         where: { messageTs: ts, teamId: channelId },
@@ -52,6 +59,7 @@ export async function createAsked(ts: string, teamId: string, questions: Questio
             timestamp: new Date(),
             questions: questionsToJsonb(questions),
             revealed: false,
+            nagged: false,
         },
     })
 }

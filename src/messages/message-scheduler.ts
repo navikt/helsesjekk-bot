@@ -7,7 +7,7 @@ import { getActiveTeams, hasActiveAsk } from '../db'
 import { dayIndexToDay, getDayCorrect, getNowInNorway } from '../utils/date'
 import { isLeader } from '../utils/leader'
 
-import { postToTeam, revealTeam } from './message-poster'
+import { postToTeam, remindTeam, revealTeam } from './message-poster'
 
 const EVERY_HOUR = '1 */1 * * *'
 // const EVERY_MINUTE = '*/1 * * * *'
@@ -43,6 +43,16 @@ export function configureMessageScheduler(app: App): void {
                         await postToTeam(team, app.client)
                     } catch (e) {
                         logger.error(new Error(`Failed to post helsesjekk for team ${team.name}.`, { cause: e }))
+                        continue
+                    }
+                }
+
+                if (isSameDayAndHour(team.postDay, team.postHour - 1)  && (await hasActiveAsk(team.id))) {
+                    try {
+                        logger.info(`It's time to remind team ${team.name} to post helsesjekk!`)
+                        await remindTeam(team, app.client)
+                    } catch (e) {
+                        logger.error(new Error(`Failed to remind team ${team.name} to post helsesjekk.`, { cause: e }))
                         continue
                     }
                 }
