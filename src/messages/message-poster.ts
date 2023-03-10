@@ -1,7 +1,7 @@
 import logger from '../logger'
 import { App } from '../app'
 import { questionsFromJsonb } from '../questions/jsonb-utils'
-import { markAskedRevealed, createAsked, getActiveAsk, Team, getPreviousAsk } from '../db'
+import { markAskedRevealed, createAsked, getActiveAsk, Team, getPreviousAsk, markAskedAsNagged } from '../db'
 import { scoreAsked } from '../metrics/metrics'
 
 import {
@@ -27,6 +27,30 @@ export async function postToTeam(team: Team, client: App['client']): Promise<boo
     }
 
     await createAsked(message.ts, team.id, questionsFromJsonb(team.questions))
+    return true
+}
+
+export async function remindTeam(team: Team, client: App['client']): Promise<boolean> {
+    const asked = await getActiveAsk(team.id)
+
+    if (asked == null) {
+        logger.error('Weird state: Found no active asked when trying nag team')
+        return false
+    }
+
+    const message = await client.chat.postMessage({
+        channel: team.id,
+        thread_ts: asked.messageTs,
+        text: `:mega: Nå er det kun en time til helsesjekken stenges! :mega:`,
+        reply_broadcast: true,
+    })
+
+    if (!message.ok || message.ts == null) {
+        logger.error(`Unable to post message for team ${team.name}, error: ${message.error ?? 'Unknown error'}`)
+        return false
+    }
+
+    await markAskedAsNagged(asked.id)
     return true
 }
 
