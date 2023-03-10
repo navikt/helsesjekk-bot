@@ -1,8 +1,8 @@
 import { App } from '../app'
 import { createSettingsModal } from '../events/settings/settings-modal-builder'
-import { postToTeam, revealTeam, updateResponseCount } from '../messages/message-poster'
+import { postToTeam, remindTeam, revealTeam, updateResponseCount } from '../messages/message-poster'
 import logger from '../logger'
-import { createTeam, getActiveAsk, getPreviousAsk, getTeam, prisma } from '../db'
+import { createTeam, getActiveAsk, getPreviousAsk, getTeam, hasActiveUnnaggedAsk, prisma } from '../db'
 import { scoreAsked } from '../metrics/metrics'
 import { createScoreBlocks } from '../messages/message-builder'
 
@@ -69,6 +69,14 @@ export function configureCommandsHandler(app: App): void {
                         })
                         logger.info(`Unlocked ${team.name} (${team.id})`)
                         await updateResponseCount(team, app.client)
+                    }
+                }
+
+                if (event.text.endsWith('remind')) {
+                    const team = await getTeam(event.channel)
+                    if (team != null) {
+                        logger.info(`Would team have been nagged? ${await hasActiveUnnaggedAsk(team.id)}`)
+                        await remindTeam(team, app.client)
                     }
                 }
 
