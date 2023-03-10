@@ -41,7 +41,7 @@ export async function remindTeam(team: Team, client: App['client']): Promise<boo
     const message = await client.chat.postMessage({
         channel: team.id,
         thread_ts: asked.messageTs,
-        text: `:mega: Nå er det kun en time til helsesjekken stenges! :mega:`,
+        text: `:mega: Nå er det kun en time til helsesjekken stenges! :mega:\n\nDet er foreløpig ${asked.answers.length} som har svart.`,
         reply_broadcast: true,
     })
 

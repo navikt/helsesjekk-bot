@@ -16,6 +16,14 @@ export async function hasActiveAsk(teamId: string): Promise<boolean> {
     return asked != null
 }
 
+export async function hasActiveUnnaggedAsk(teamId: string): Promise<boolean> {
+    return (
+        (await prisma.asked.findFirst({
+            where: { teamId, revealed: false, nagged: false },
+        })) != null
+    )
+}
+
 export async function getActiveAsk(teamId: string): Promise<(Asked & { answers: Answer[] }) | null> {
     return prisma.asked.findFirst({
         where: { teamId, revealed: false },

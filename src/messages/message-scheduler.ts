@@ -3,7 +3,7 @@ import { getHours } from 'date-fns'
 
 import { App } from '../app'
 import logger from '../logger'
-import { getActiveTeams, hasActiveAsk } from '../db'
+import { getActiveTeams, hasActiveAsk, hasActiveUnnaggedAsk } from '../db'
 import { dayIndexToDay, getDayCorrect, getNowInNorway } from '../utils/date'
 import { isLeader } from '../utils/leader'
 
@@ -47,9 +47,9 @@ export function configureMessageScheduler(app: App): void {
                     }
                 }
 
-                if (isSameDayAndHour(team.postDay, team.postHour - 1)  && (await hasActiveAsk(team.id))) {
+                if (isSameDayAndHour(team.postDay, team.postHour - 1) && (await hasActiveUnnaggedAsk(team.id))) {
                     try {
-                        logger.info(`It's time to remind team ${team.name} to post helsesjekk!`)
+                        logger.info(`Nagging team ${team.name} about helsesjekk closing in an hour!!`)
                         await remindTeam(team, app.client)
                     } catch (e) {
                         logger.error(new Error(`Failed to remind team ${team.name} to post helsesjekk.`, { cause: e }))
@@ -81,5 +81,3 @@ function isSameDayAndHour(day: number, hour: number): boolean {
 
     return dayNow === day && hoursNow === hour
 }
-
-
