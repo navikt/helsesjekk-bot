@@ -47,7 +47,7 @@ export function configureMessageScheduler(app: App): void {
                     }
                 }
 
-                if (isSameDayAndHour(team.postDay, team.postHour - 1) && (await hasActiveUnnaggedAsk(team.id))) {
+                if (isSameDayAndHour(team.revealDay, team.revealHour - 1) && (await hasActiveUnnaggedAsk(team.id))) {
                     try {
                         logger.info(`Nagging team ${team.name} about helsesjekk closing in an hour!!`)
                         await remindTeam(team, app.client)
