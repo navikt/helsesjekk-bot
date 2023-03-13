@@ -9,12 +9,12 @@ import { isLeader } from '../utils/leader'
 
 import { postToTeam, remindTeam, revealTeam } from './message-poster'
 
-// const EVERY_HOUR = '1 */1 * * *'
-const EVERY_5TH_MINUTE = '*/5 * * * *'
+const EVERY_HOUR = '1 */1 * * *'
+// const EVERY_5TH_MINUTE = '*/5 * * * *'
 
 export function configureMessageScheduler(app: App): void {
     /* We only support posting/revealing on every hour */
-    schedule(EVERY_5TH_MINUTE, async () => {
+    schedule(EVERY_HOUR, async () => {
         const isPodLeader = await isLeader()
         if (!isPodLeader) {
             logger.info('Not the pod leader, skipping scheduled job')
