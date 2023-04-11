@@ -92,7 +92,7 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
         await client.chat.postMessage({
             channel: team.id,
             thread_ts: asked.messageTs,
-            text: `Det er kun ${asked.answers.length} svar på helsesjekken. Det kreves minimum 4 svar for at resultatene skal deles.`,
+            text: `Det er kun ${asked.answers.length} svar på helsesjekken. Det kreves minimum 3 svar for at resultatene skal deles.`,
             reply_broadcast: true,
         })
         await client.chat.update({
