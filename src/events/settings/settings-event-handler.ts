@@ -26,13 +26,24 @@ export function configureSettingsEventsHandler(app: App): void {
         const team = await updateTeam(teamId, mappedValues)
         await ack()
 
-        await client.chat.postEphemeral({
-            user: body.user.id,
-            channel: teamId,
-            text: `Lagret innstillingene for ${team.name}!\n\nJeg vil legge ut helsesjekken på ${dayIndexToDay(
-                team.postDay,
-            )} kl. ${team.postHour}:00 og vise metrikkene på ${dayIndexToDay(team.revealDay)} kl. ${team.revealHour}:00`,
-        })
+        if (!team.active) {
+            await client.chat.postEphemeral({
+                user: body.user.id,
+                channel: teamId,
+                text: `Lagret innstillingene for ${team.name}! Jeg er nå deaktivert og vil ikke lenger poste helsesjekker.`,
+            })
+        } else {
+            await client.chat.postEphemeral({
+                user: body.user.id,
+                channel: teamId,
+                text: `Lagret innstillingene for ${team.name}!\n\nJeg vil legge ut helsesjekken på ${dayIndexToDay(
+                    team.postDay,
+                )} kl. ${team.postHour}:00 og vise metrikkene på ${dayIndexToDay(team.revealDay)} kl. ${
+                    team.revealHour
+                }:00`,
+            })
+        }
+
         await updateResponseCount(team, client)
     })
 }
