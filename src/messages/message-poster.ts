@@ -114,8 +114,6 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
         text: `Ukentlig helsesjekk for team ${team.name} er nå avsluttet.`,
         blocks: createCompletedBlocks(asked.answers.length, asked.timestamp),
     })
-    await markAskedRevealed(asked.id)
-
     const previousAsked = await getPreviousAsk(asked)
     const scoredAsk = scoreAsked(asked)
     const previousScoredAsk = previousAsked ? scoreAsked(previousAsked) : null
@@ -127,6 +125,7 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
         blocks: createScoreBlocks(team, asked, scoredAsk, previousScoredAsk),
         reply_broadcast: true,
     })
+    await markAskedRevealed(asked.id)
 
     return true
 }
