@@ -116,7 +116,7 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
     })
     const previousAsked = await getPreviousAsk(asked)
     const scoredAsk = scoreAsked(asked)
-    const previousScoredAsk = previousAsked && previousAsked.answers.length !== 0 ? scoreAsked(previousAsked) : null
+    const previousScoredAsk = previousAsked ? scoreAsked(previousAsked) : null
 
     await client.chat.postMessage({
         channel: team.id,
