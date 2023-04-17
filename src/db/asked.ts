@@ -1,19 +1,16 @@
 import { Answer } from '@prisma/client'
 
-import logger from '../logger'
 import { questionsToJsonb } from '../questions/jsonb-utils'
 
 import { Asked, prisma } from './prisma'
 import { Question } from './types'
 
 export async function hasActiveAsk(teamId: string): Promise<boolean> {
-    const asked = await prisma.asked.findFirst({
-        where: { teamId, revealed: false },
-    })
-
-    logger.info(`Checking if team ${teamId} has active ask: ${asked != null}`)
-
-    return asked != null
+    return (
+        (await prisma.asked.findFirst({
+            where: { teamId, revealed: false },
+        })) != null
+    )
 }
 
 export async function hasActiveUnnaggedAsk(teamId: string): Promise<boolean> {
