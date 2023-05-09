@@ -11,7 +11,7 @@ const loggerAdapter: Logger = {
     info: (msg) => slackLogger.info(msg),
     warn: (msg) => slackLogger.warn(msg),
     error: (msg) => slackLogger.error(msg),
-    getLevel: (): LogLevel => slackLogger.level as LogLevel,
+    getLevel: (): LogLevel => LogLevel.DEBUG,
     setLevel: (): void => void 0,
     setName: (): void => void 0,
 }
@@ -22,6 +22,7 @@ const app = new BoltApp({
     signingSecret: process.env.SLACK_SIGNING_SECRET,
     appToken: process.env.SLACK_APP_TOKEN,
     logger: loggerAdapter,
+    logLevel: LogLevel.DEBUG,
 })
 
 export type App = typeof app
