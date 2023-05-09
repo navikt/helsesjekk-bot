@@ -276,7 +276,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@slack/socket-mode@npm:^1.3.0":
+"@slack/socket-mode@npm:1.3.2":
   version: 1.3.2
   resolution: "@slack/socket-mode@npm:1.3.2"
   dependencies:
@@ -291,6 +291,24 @@ __metadata:
     p-queue: ^2.4.2
     ws: ^7.5.3
   checksum: ab955ed97798e3c13973f984c1eaa2f58a542af0fc6b0ecc6210f049bdb01a6f2b8705312a4e04ff999f27f190e483d14610d12c7d41004ba2bd0e31c23caf16
+  languageName: node
+  linkType: hard
+
+"@slack/socket-mode@patch:@slack/socket-mode@npm%3A1.3.2#./.yarn/patches/@slack-socket-mode-npm-1.3.2-e3725781bc.patch::locator=helsesjekk%40workspace%3A.":
+  version: 1.3.2
+  resolution: "@slack/socket-mode@patch:@slack/socket-mode@npm%3A1.3.2#./.yarn/patches/@slack-socket-mode-npm-1.3.2-e3725781bc.patch::version=1.3.2&hash=207586&locator=helsesjekk%40workspace%3A."
+  dependencies:
+    "@slack/logger": ^3.0.0
+    "@slack/web-api": ^6.2.3
+    "@types/node": ">=12.0.0"
+    "@types/p-queue": ^2.3.2
+    "@types/ws": ^7.4.7
+    eventemitter3: ^3.1.0
+    finity: ^0.5.4
+    p-cancelable: ^1.1.0
+    p-queue: ^2.4.2
+    ws: ^7.5.3
+  checksum: aa4a902df420e47fb3c9262226fb9d1f9f997c82da01886eb1ad659ac29cc495556b8c1e94432468185b8e91741fc19c15c51ac81cc32d9d1c5e05d51949ff0f
   languageName: node
   linkType: hard
 

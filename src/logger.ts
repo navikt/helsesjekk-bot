@@ -3,6 +3,7 @@ import pino from 'pino'
 const logger = (defaultConfig = {}): pino.Logger =>
     pino({
         ...defaultConfig,
+        level: 'debug',
         timestamp: false,
         formatters: {
             level: (label) => ({ level: label }),
