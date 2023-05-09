@@ -62,8 +62,5 @@
                 }
             ]
         }
-    },
-    "resolutions": {
-        "@slack/socket-mode@^1.3.0": "patch:@slack/socket-mode@npm%3A1.3.2#./.yarn/patches/@slack-socket-mode-npm-1.3.2-e3725781bc.patch"
     }
 }
