@@ -36,6 +36,11 @@ spec:
             - name: websocket
               port: 443
               protocol: TCP
+        - host: wss-primary.slack.com
+          ports:
+            - name: websocket
+              port: 443
+              protocol: TCP
   liveness:
     path: /internal/is_alive
     initialDelay: 10
