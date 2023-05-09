@@ -4,33 +4,18 @@ env:
   DOCKER_IMAGE: ghcr.io/navikt/helsesjekk-bot:${{ github.sha }}
   NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 jobs:
-  snyk-monitor:
+  codeql-analysis:
     if: github.ref == 'refs/heads/main'
-    name: monitor dependencies
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor
-          args: --org=teamsykmelding --severity-threshold=high --all-projects
-  snyk-test:
-    name: analyze dependencies
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: test
-          args: --org=teamsykmelding --severity-threshold=high --all-projects
+      - uses: actions/checkout@v3
+      - uses: github/codeql-action/init@v2
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
   build-and-publish:
     name: Bygg, test og push Docker image
     runs-on: ubuntu-latest
@@ -74,7 +59,7 @@ jobs:
   deploy-bot-to-gcp:
     if: github.ref == 'refs/heads/main'
     name: Deploy to prod
-    needs: [build-and-publish, snyk-test]
+    needs: [build-and-publish, codeql-analysis]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
