@@ -22,7 +22,7 @@ jobs:
       contents: 'read'
       id-token: 'write'
     outputs:
-      image: ${{ steps.build-and-publish.outputs.image }}
+      image: ${{ steps.docker-build-push.outputs.image }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
