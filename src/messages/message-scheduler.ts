@@ -3,7 +3,7 @@ import { getHours } from 'date-fns'
 
 import { App } from '../app'
 import logger from '../logger'
-import { getActiveTeams, hasActiveAsk, hasActiveUnnaggedAsk } from '../db'
+import { deactivateTeam, getActiveTeams, hasActiveAsk, hasActiveUnnaggedAsk } from '../db'
 import { dayIndexToDay, getDayCorrect, getNowInNorway } from '../utils/date'
 import { isLeader } from '../utils/leader'
 
@@ -52,6 +52,12 @@ export function configureMessageScheduler(app: App): void {
                         logger.info(`Nagging team ${team.name} about helsesjekk closing in an hour!!`)
                         await remindTeam(team, app.client)
                     } catch (e) {
+                        if (e instanceof Error && e.message.includes('An API error occurred: is_archived')) {
+                            logger.info(`The team ${team.name} has been archived, marking team as inactive`)
+                            await deactivateTeam(team.id)
+                            continue
+                        }
+
                         logger.error(new Error(`Failed to remind team ${team.name} to post helsesjekk.`, { cause: e }))
                         continue
                     }
@@ -62,6 +68,12 @@ export function configureMessageScheduler(app: App): void {
                         logger.info(`It's time to reveal helsesjekk for team ${team.name}!`)
                         await revealTeam(team, app.client)
                     } catch (e) {
+                        if (e instanceof Error && e.message.includes('An API error occurred: is_archived')) {
+                            logger.info(`The team ${team.name} has been archived, marking team as inactive`)
+                            await deactivateTeam(team.id)
+                            continue
+                        }
+
                         logger.error(new Error(`Failed to reveal helsesjekk for team ${team.name}.`, { cause: e }))
                         continue
                     }
