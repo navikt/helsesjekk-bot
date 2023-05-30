@@ -3,7 +3,7 @@ import { getHours } from 'date-fns'
 
 import { App } from '../app'
 import logger from '../logger'
-import { deactivateTeam, getActiveTeams, hasActiveAsk, hasActiveUnnaggedAsk } from '../db'
+import { deactivateTeam, getActiveTeams, hasActiveAsk, hasActiveUnnaggedAsk, hasAskedToday } from '../db'
 import { dayIndexToDay, getDayCorrect, getNowInNorway } from '../utils/date'
 import { isLeader } from '../utils/leader'
 
@@ -37,10 +37,16 @@ export function configureMessageScheduler(app: App): void {
             )
 
             for (const team of activeTeams) {
-                if (isSameDayAndHour(team.postDay, team.postHour) && !(await hasActiveAsk(team.id))) {
+                if (
+                    isSameDayAndHour(team.postDay, team.postHour) &&
+                    !(await hasActiveAsk(team.id)) &&
+                    !(await hasAskedToday(team.id))
+                ) {
+                    logger.info(`It's time to post helsesjekk for team ${team.name}!`)
+
                     try {
-                        logger.info(`It's time to post helsesjekk for team ${team.name}!`)
                         await postToTeam(team, app.client)
+                        continue
                     } catch (e) {
                         logger.error(new Error(`Failed to post helsesjekk for team ${team.name}.`, { cause: e }))
                         continue
@@ -48,8 +54,9 @@ export function configureMessageScheduler(app: App): void {
                 }
 
                 if (isSameDayAndHour(team.revealDay, team.revealHour - 1) && (await hasActiveUnnaggedAsk(team.id))) {
+                    logger.info(`Nagging team ${team.name} about helsesjekk closing in an hour!!`)
+
                     try {
-                        logger.info(`Nagging team ${team.name} about helsesjekk closing in an hour!!`)
                         await remindTeam(team, app.client)
                     } catch (e) {
                         if (e instanceof Error && e.message.includes('An API error occurred: is_archived')) {
@@ -64,8 +71,9 @@ export function configureMessageScheduler(app: App): void {
                 }
 
                 if (isSameDayAndHour(team.revealDay, team.revealHour) && (await hasActiveAsk(team.id))) {
+                    logger.info(`It's time to reveal helsesjekk for team ${team.name}!`)
+
                     try {
-                        logger.info(`It's time to reveal helsesjekk for team ${team.name}!`)
                         await revealTeam(team, app.client)
                     } catch (e) {
                         if (e instanceof Error && e.message.includes('An API error occurred: is_archived')) {

@@ -1,4 +1,5 @@
 import { Answer } from '@prisma/client'
+import { startOfDay } from 'date-fns'
 
 import { questionsToJsonb } from '../questions/jsonb-utils'
 
@@ -9,6 +10,14 @@ export async function hasActiveAsk(teamId: string): Promise<boolean> {
     return (
         (await prisma.asked.findFirst({
             where: { teamId, revealed: false },
+        })) != null
+    )
+}
+
+export async function hasAskedToday(teamId: string): Promise<boolean> {
+    return (
+        (await prisma.asked.findFirst({
+            where: { teamId, timestamp: { gte: startOfDay(new Date()) } },
         })) != null
     )
 }
