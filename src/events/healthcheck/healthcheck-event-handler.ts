@@ -47,7 +47,7 @@ export function configureHealthCheckEventsHandler(app: App): void {
 
         await client.views.open({
             trigger_id: body.trigger_id,
-            view: createHealthCheckModal(team, userId, answers),
+            view: createHealthCheckModal(team, asked, userId, answers),
         })
     })
 

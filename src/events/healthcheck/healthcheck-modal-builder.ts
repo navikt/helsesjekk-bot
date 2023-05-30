@@ -2,7 +2,7 @@ import { Block, KnownBlock } from '@slack/types'
 import { InputBlock, ModalView, Option } from '@slack/bolt'
 import { groupBy } from 'remeda'
 
-import { AnswerLevel, Team, Question, QuestionAnswer } from '../../db'
+import { AnswerLevel, Team, Asked, Question, QuestionAnswer } from '../../db'
 import { questionsFromJsonb } from '../../questions/jsonb-utils'
 import { plainHeader, textSection } from '../modal-utils'
 
@@ -12,6 +12,7 @@ export const HealthcheckModalActions = {
 
 export function createHealthCheckModal(
     team: Team,
+    asked: Asked,
     userId: string,
     existingAnswers: QuestionAnswer[] | null,
 ): ModalView {
@@ -34,7 +35,7 @@ export function createHealthCheckModal(
             emoji: true,
         },
         private_metadata: team.id,
-        blocks: createHealthCheckModalBlocks(team.name, questionsFromJsonb(team.questions), userId, existingAnswers),
+        blocks: createHealthCheckModalBlocks(team.name, questionsFromJsonb(asked.questions), userId, existingAnswers),
     }
 }
 
