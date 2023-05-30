@@ -1,6 +1,7 @@
 name: Build and deploy
 on: push
-
+env:
+  NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 jobs:
   codeql-analysis:
     if: github.ref == 'refs/heads/main'
