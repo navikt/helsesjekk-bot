@@ -2,9 +2,9 @@ import { Block, KnownBlock } from '@slack/types'
 import { InputBlock, ModalView, Option } from '@slack/bolt'
 import { groupBy } from 'remeda'
 
-import { AnswerLevel, Team, Asked, Question, QuestionAnswer } from '../../db'
+import { AnswerLevel, Team, Asked, Question, QuestionAnswer, QuestionType } from '../../db'
 import { questionsFromJsonb } from '../../questions/jsonb-utils'
-import { plainHeader, textSection } from '../modal-utils'
+import { addIf, plainHeader, textSection } from '../modal-utils'
 
 export const HealthcheckModalActions = {
     modalSubmit: 'helsesjekk_form_modal-submit',
@@ -45,7 +45,7 @@ export function createHealthCheckModalBlocks(
     userId: string,
     existingAnswers: QuestionAnswer[] | null,
 ): (KnownBlock | Block)[] {
-    const grouped = groupBy(questions, (q) => q.type)
+    const grouped: Record<QuestionType, Question[]> = groupBy(questions, (q) => q.type)
 
     return [
         ...(existingAnswers != null
@@ -67,8 +67,28 @@ export function createHealthCheckModalBlocks(
         ...grouped.TEAM_HEALTH.map((question) => createSelectSectionBlock(question, false, existingAnswers)),
         plainHeader('Fart & flyt'),
         ...grouped.SPEED.map((question, index) =>
-            createSelectSectionBlock(question, index === grouped.SPEED.length - 1, existingAnswers),
+            createSelectSectionBlock(
+                question,
+                index === grouped.SPEED.length - 1 && grouped.TECH == null && grouped.OTHER == null,
+                existingAnswers,
+            ),
         ),
+        ...addIf(grouped.TECH && grouped.TECH.length > 0, () => [
+            plainHeader('Teknisk'),
+            ...grouped.TECH.map((question, index) =>
+                createSelectSectionBlock(
+                    question,
+                    index === grouped.TECH.length - 1 && grouped.OTHER == null,
+                    existingAnswers,
+                ),
+            ),
+        ]),
+        ...addIf(grouped.OTHER && grouped.OTHER.length > 0, () => [
+            plainHeader('Annet'),
+            ...grouped.OTHER.map((question, index) =>
+                createSelectSectionBlock(question, index === grouped.OTHER.length - 1, existingAnswers),
+            ),
+        ]),
         {
             type: 'context',
             elements: [
