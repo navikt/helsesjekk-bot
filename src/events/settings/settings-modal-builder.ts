@@ -1,7 +1,7 @@
 import { InputBlock, ModalView, Option, PlainTextOption, SectionBlock } from '@slack/bolt'
 import { Block, KnownBlock } from '@slack/types'
 
-import { Team } from '../../db'
+import { QuestionType, Team } from '../../db'
 import { addIf, plainHeader, textSection } from '../modal-utils'
 import { questionsFromJsonb } from '../../questions/jsonb-utils'
 import { text } from '../../utils/bolt-utils'
@@ -46,12 +46,14 @@ export const SettingsKeys = {
             answerHigh: 'new_question-answer_high-block',
             answerMid: 'new_question-answer_mid-block',
             answerLow: 'new_question-answer_low-block',
+            category: 'new_question-category-block',
         },
         actions: {
             question: 'new_question-action',
             answerHigh: 'new_question-answer_high-action',
             answerMid: 'new_question-answer_mid-action',
             answerLow: 'new_question-answer_low-action',
+            category: 'new_question-category-action',
         },
     },
     deleteQuestion: {
@@ -90,6 +92,9 @@ export interface ModalStateTree {
     }
     [SettingsKeys.newQuestion.blocks.answerLow]: {
         [SettingsKeys.newQuestion.actions.answerLow]: { value: string }
+    }
+    [SettingsKeys.newQuestion.blocks.category]: {
+        [SettingsKeys.newQuestion.actions.category]: { selected_option: Option }
     }
 }
 
@@ -334,6 +339,24 @@ function customQuestionsSection(team: Team, isAdding: boolean): (KnownBlock | Bl
                 },
                 label: text('🔴 Dårlig svar :('),
             },
+            {
+                type: 'input',
+                label: text('Spørsmålskategori (brukes til statistikk)'),
+                block_id: SettingsKeys.newQuestion.blocks.category,
+                element: {
+                    type: 'static_select',
+                    placeholder: text('Velg kategori'),
+                    options: Object.values(QuestionType).map((it) => ({
+                        text: text(it),
+                        value: it,
+                    })),
+                    initial_option: {
+                        text: text(QuestionType.SPEED),
+                        value: QuestionType.SPEED,
+                    },
+                    action_id: SettingsKeys.newQuestion.actions.category,
+                },
+            } satisfies InputBlock,
             {
                 type: 'actions',
                 block_id: SettingsKeys.skipAddQuestion.block,
