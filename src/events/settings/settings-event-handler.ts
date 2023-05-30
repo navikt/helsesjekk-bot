@@ -1,10 +1,10 @@
 import { App } from '../../app'
-import { updateTeam } from '../../db'
+import { deleteQuestion, getTeam, updateTeam } from '../../db'
 import logger from '../../logger'
 import { dayIndexToDay } from '../../utils/date'
 import { updateResponseCount } from '../../messages/message-poster'
 
-import { ModalStateTree, SettingsKeys as Keys } from './settings-modal-builder'
+import { createSettingsModal, ModalStateTree, SettingsKeys, SettingsKeys as Keys } from './settings-modal-builder'
 
 export function configureSettingsEventsHandler(app: App): void {
     // Handles users submitting the helsesjekk settings modal
@@ -23,7 +23,9 @@ export function configureSettingsEventsHandler(app: App): void {
             revealHour: hour(values[Keys.revealHour.block][Keys.revealHour.action].selected_time),
         }
 
-        const team = await updateTeam(teamId, mappedValues)
+        const newQuestionMappedValues = values[Keys.newQuestion.blocks.question] ? newQuestionValues(values) : null
+
+        const team = await updateTeam(teamId, mappedValues, newQuestionMappedValues)
         await ack()
 
         if (!team.active) {
@@ -46,6 +48,87 @@ export function configureSettingsEventsHandler(app: App): void {
 
         await updateResponseCount(team, client)
     })
+
+    // Handles new custom question click
+    app.action(
+        { block_id: Keys.addQuestion.block, action_id: Keys.addQuestion.action },
+        async ({ ack, body, client }) => {
+            if (body.type !== 'block_actions' || !body.view) {
+                await ack()
+
+                return
+            }
+
+            const team = await getTeam(body.view.private_metadata)
+            if (team == null) {
+                throw new Error('Unable to update view for team that does not exist')
+            }
+
+            await ack()
+            await client.views.update({
+                view_id: body.view.id,
+                hash: body.view.hash,
+                view: createSettingsModal(team, true),
+            })
+        },
+    )
+
+    // Handles closing new question form insidie modal
+    app.action(
+        { block_id: Keys.skipAddQuestion.block, action_id: Keys.skipAddQuestion.action },
+        async ({ ack, body, client }) => {
+            if (body.type !== 'block_actions' || !body.view) {
+                await ack()
+
+                return
+            }
+
+            const team = await getTeam(body.view.private_metadata)
+            if (team == null) {
+                throw new Error('Unable to update view for team that does not exist')
+            }
+
+            await ack()
+            await client.views.update({
+                view_id: body.view.id,
+                hash: body.view.hash,
+                view: createSettingsModal(team, false),
+            })
+        },
+    )
+
+    app.action(SettingsKeys.deleteQuestion.action, async ({ ack, body, client }) => {
+        if (body.type !== 'block_actions' || !body.view) {
+            await ack()
+
+            return
+        }
+
+        const teamId = body.view.private_metadata
+        const questionId = body.actions.at(0)?.block_id
+
+        if (!questionId) {
+            throw new Error('Unable to find question id')
+        }
+
+        await ack()
+
+        const updatedTeam = await deleteQuestion(teamId, questionId)
+        await client.views.update({
+            view_id: body.view.id,
+            hash: body.view.hash,
+            view: createSettingsModal(updatedTeam, false),
+        })
+    })
+}
+
+function newQuestionValues(values: ModalStateTree) {
+    return {
+        question: values[Keys.newQuestion.blocks.question][Keys.newQuestion.actions.question].value,
+        high: values[Keys.newQuestion.blocks.answerHigh][Keys.newQuestion.actions.answerHigh].value,
+        mid: values[Keys.newQuestion.blocks.answerMid][Keys.newQuestion.actions.answerMid].value,
+        low: values[Keys.newQuestion.blocks.answerLow][Keys.newQuestion.actions.answerLow].value,
+    }
 }
 
 function hour(value: string): number {
