@@ -52,12 +52,13 @@ export async function updateTeam(
         high: string
         mid: string
         low: string
+        category: QuestionType
     },
 ): Promise<Team> {
     return await prisma.$transaction(async (prisma) => {
         const team = await prisma.team.findFirstOrThrow({ where: { id: channelId } })
 
-        const updatedTeam = prisma.team.update({
+        return prisma.team.update({
             data: {
                 name: values.name,
                 active: values.active,
@@ -77,7 +78,7 @@ export async function updateTeam(
                                       MID: newQuestion.mid,
                                       HIGH: newQuestion.high,
                                   },
-                                  type: QuestionType.SPEED,
+                                  type: newQuestion.category,
                                   custom: true,
                               } satisfies Question,
                           ])
@@ -85,8 +86,6 @@ export async function updateTeam(
             },
             where: { id: channelId },
         })
-
-        return updatedTeam
     })
 }
 

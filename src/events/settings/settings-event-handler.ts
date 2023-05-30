@@ -1,5 +1,5 @@
 import { App } from '../../app'
-import { deleteQuestion, getTeam, updateTeam } from '../../db'
+import { deleteQuestion, getTeam, QuestionType, updateTeam } from '../../db'
 import logger from '../../logger'
 import { dayIndexToDay } from '../../utils/date'
 import { updateResponseCount } from '../../messages/message-poster'
@@ -128,6 +128,8 @@ function newQuestionValues(values: ModalStateTree) {
         high: values[Keys.newQuestion.blocks.answerHigh][Keys.newQuestion.actions.answerHigh].value,
         mid: values[Keys.newQuestion.blocks.answerMid][Keys.newQuestion.actions.answerMid].value,
         low: values[Keys.newQuestion.blocks.answerLow][Keys.newQuestion.actions.answerLow].value,
+        category: values[Keys.newQuestion.blocks.category][Keys.newQuestion.actions.category].selected_option
+            .value as QuestionType,
     }
 }
 
