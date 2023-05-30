@@ -16,3 +16,11 @@ export function textSection(text: string): SectionBlock {
         },
     }
 }
+
+export function addIf<T>(condition: boolean, block: () => T | T[]): T[] {
+    if (condition) {
+        const result = block()
+        return Array.isArray(result) ? result : [result]
+    }
+    return []
+}

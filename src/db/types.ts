@@ -1,4 +1,4 @@
-import { Answer, Asked } from "@prisma/client";
+import { Answer, Asked } from '@prisma/client'
 
 export enum Day {
     MONDAY = 0,
@@ -19,6 +19,7 @@ export interface Question {
         HIGH: string
     }
     type: QuestionType
+    custom?: boolean
 }
 
 export interface QuestionAnswer {

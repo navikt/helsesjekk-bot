@@ -1,7 +1,9 @@
-import { questionsToJsonb } from '../questions/jsonb-utils'
+import { randomUUID } from 'crypto'
+
+import { questionsFromJsonb, questionsToJsonb } from '../questions/jsonb-utils'
 import { defaultQuestions } from '../questions/default'
 
-import { Day } from './types'
+import { Day, Question, QuestionType } from './types'
 import { prisma, Team } from './prisma'
 
 export async function teamStatus(channelId: string): Promise<'NEW' | 'DEACTIVATED' | 'ACTIVE'> {
@@ -45,17 +47,63 @@ export async function updateTeam(
         revealDay: number
         revealHour: number
     },
+    newQuestion: null | {
+        question: string
+        high: string
+        mid: string
+        low: string
+    },
 ): Promise<Team> {
-    return prisma.team.update({
-        data: {
-            name: values.name,
-            active: values.active,
-            postDay: values.postDay,
-            postHour: values.postHour,
-            revealDay: values.revealDay,
-            revealHour: values.revealHour,
-        },
-        where: { id: channelId },
+    return await prisma.$transaction(async (prisma) => {
+        const team = await prisma.team.findFirstOrThrow({ where: { id: channelId } })
+
+        const updatedTeam = prisma.team.update({
+            data: {
+                name: values.name,
+                active: values.active,
+                postDay: values.postDay,
+                postHour: values.postHour,
+                revealDay: values.revealDay,
+                revealHour: values.revealHour,
+                questions:
+                    newQuestion != null
+                        ? questionsToJsonb([
+                              ...questionsFromJsonb(team.questions),
+                              {
+                                  questionId: randomUUID(),
+                                  question: newQuestion.question,
+                                  answers: {
+                                      LOW: newQuestion.low,
+                                      MID: newQuestion.mid,
+                                      HIGH: newQuestion.high,
+                                  },
+                                  type: QuestionType.SPEED,
+                                  custom: true,
+                              } satisfies Question,
+                          ])
+                        : undefined,
+            },
+            where: { id: channelId },
+        })
+
+        return updatedTeam
+    })
+}
+
+export function deleteQuestion(teamId: string, questionId: string): Promise<Team> {
+    return prisma.$transaction(async (prisma) => {
+        const team = await prisma.team.findFirstOrThrow({ where: { id: teamId } })
+
+        const updatedTeam = prisma.team.update({
+            data: {
+                questions: questionsToJsonb(
+                    questionsFromJsonb(team.questions).filter((q) => q.questionId !== questionId),
+                ),
+            },
+            where: { id: teamId },
+        })
+
+        return updatedTeam
     })
 }
 

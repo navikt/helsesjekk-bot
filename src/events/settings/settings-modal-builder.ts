@@ -1,7 +1,10 @@
-import { InputBlock, ModalView, Option, PlainTextOption } from '@slack/bolt'
+import { InputBlock, ModalView, Option, PlainTextOption, SectionBlock } from '@slack/bolt'
+import { Block, KnownBlock } from '@slack/types'
 
 import { Team } from '../../db'
-import { plainHeader, textSection } from '../modal-utils'
+import { addIf, plainHeader, textSection } from '../modal-utils'
+import { questionsFromJsonb } from '../../questions/jsonb-utils'
+import { text } from '../../utils/bolt-utils'
 
 export const SettingsKeys = {
     modalSubmit: 'helsesjekk_settings_modal-submit',
@@ -29,6 +32,31 @@ export const SettingsKeys = {
         block: 'active-block',
         action: 'active-action',
     },
+    addQuestion: {
+        block: 'add_question-block',
+        action: 'add_question-action',
+    },
+    skipAddQuestion: {
+        block: 'skip_question-block',
+        action: 'skip_question-action',
+    },
+    newQuestion: {
+        blocks: {
+            question: 'new_question-block',
+            answerHigh: 'new_question-answer_high-block',
+            answerMid: 'new_question-answer_mid-block',
+            answerLow: 'new_question-answer_low-block',
+        },
+        actions: {
+            question: 'new_question-action',
+            answerHigh: 'new_question-answer_high-action',
+            answerMid: 'new_question-answer_mid-action',
+            answerLow: 'new_question-answer_low-action',
+        },
+    },
+    deleteQuestion: {
+        action: 'delete_question-action',
+    },
 } as const
 
 // This is VERY loosely coupled with the blocks below. Be careful.
@@ -51,9 +79,21 @@ export interface ModalStateTree {
     [SettingsKeys.active.block]: {
         [SettingsKeys.active.action]: { selected_options: Option[] }
     }
+    [SettingsKeys.newQuestion.blocks.question]: {
+        [SettingsKeys.newQuestion.actions.question]: { value: string }
+    }
+    [SettingsKeys.newQuestion.blocks.answerHigh]: {
+        [SettingsKeys.newQuestion.actions.answerHigh]: { value: string }
+    }
+    [SettingsKeys.newQuestion.blocks.answerMid]: {
+        [SettingsKeys.newQuestion.actions.answerMid]: { value: string }
+    }
+    [SettingsKeys.newQuestion.blocks.answerLow]: {
+        [SettingsKeys.newQuestion.actions.answerLow]: { value: string }
+    }
 }
 
-export function createSettingsModal(team: Team): ModalView {
+export function createSettingsModal(team: Team, isAdding = false): ModalView {
     const dayOptions = createDayOptions()
 
     return {
@@ -76,6 +116,7 @@ export function createSettingsModal(team: Team): ModalView {
             postHourInput(team),
             revealDayInput(dayOptions, team),
             revealHourInput(team),
+            ...customQuestionsSection(team, isAdding),
         ],
         submit: {
             type: 'plain_text',
@@ -213,13 +254,118 @@ function activeCheckbox(team: Team): InputBlock {
     }
 }
 
+function customQuestionsSection(team: Team, isAdding: boolean): (KnownBlock | Block)[] {
+    const customQuestions = questionsFromJsonb(team.questions).filter((it) => it.custom)
+
+    return [
+        {
+            type: 'header',
+            text: {
+                type: 'plain_text',
+                text: 'Egendefinerte spørsmål',
+                emoji: true,
+            },
+        },
+        ...addIf(customQuestions.length > 0, () =>
+            customQuestions.map(
+                (it) =>
+                    ({
+                        block_id: it.questionId,
+                        type: 'section',
+                        text: {
+                            type: 'mrkdwn',
+                            text: `*${it.question}*\n🟢 ${it.answers.HIGH}\n🟡 ${it.answers.MID}\n🔴 ${it.answers.LOW}`,
+                        },
+                        accessory: {
+                            type: 'button',
+                            text: text('Slett spørsmål'),
+                            confirm: {
+                                text: text(`Er du sikker på at du vil slette spørsmålet "${it.question}"`),
+                            },
+                            style: 'danger',
+                            action_id: SettingsKeys.deleteQuestion.action,
+                        },
+                    } satisfies SectionBlock),
+            ),
+        ),
+        ...addIf(customQuestions.length === 0 && !isAdding, () => ({
+            type: 'context',
+            elements: [text('Ingen egendefinerte spørsmål')],
+        })),
+        ...addIf(isAdding, () => [
+            {
+                block_id: SettingsKeys.newQuestion.blocks.question,
+                type: 'input',
+                element: {
+                    type: 'plain_text_input',
+                    action_id: SettingsKeys.newQuestion.actions.question,
+                    placeholder: text('F.eks: Kodekvalitet'),
+                },
+                label: text('Spørsmål'),
+            },
+            {
+                block_id: SettingsKeys.newQuestion.blocks.answerHigh,
+                type: 'input',
+                element: {
+                    type: 'plain_text_input',
+                    action_id: SettingsKeys.newQuestion.actions.answerHigh,
+                    placeholder: text('Jeg synes at...'),
+                },
+                label: text('🟢 Bra svar'),
+            },
+            {
+                block_id: SettingsKeys.newQuestion.blocks.answerMid,
+                type: 'input',
+                element: {
+                    type: 'plain_text_input',
+                    action_id: SettingsKeys.newQuestion.actions.answerMid,
+                    placeholder: text('Vi er et...'),
+                },
+
+                label: text('🟡 Medium svar'),
+            },
+            {
+                block_id: SettingsKeys.newQuestion.blocks.answerLow,
+                type: 'input',
+                element: {
+                    type: 'plain_text_input',
+                    action_id: SettingsKeys.newQuestion.actions.answerLow,
+                    placeholder: text('Ting er...'),
+                },
+                label: text('🔴 Dårlig svar :('),
+            },
+            {
+                type: 'actions',
+                block_id: SettingsKeys.skipAddQuestion.block,
+                elements: [
+                    {
+                        type: 'button',
+                        text: text('Avbryt nytt spørsmål'),
+                        value: 'regret-add-question',
+                        action_id: SettingsKeys.skipAddQuestion.action,
+                    },
+                ],
+            },
+        ]),
+        ...addIf(!isAdding, () => ({
+            type: 'actions',
+            block_id: SettingsKeys.addQuestion.block,
+            elements: [
+                {
+                    type: 'button',
+                    text: text('Legg til spørsmål'),
+                    value: 'add-question',
+                    action_id: SettingsKeys.addQuestion.action,
+                },
+            ],
+        })),
+    ]
+}
+
 function createDayOptions(): PlainTextOption[] {
     return ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag'].map((label, index) => {
         return {
-            text: {
-                type: 'plain_text',
-                text: label,
-            },
+            text: text(label),
             value: index.toString(),
         }
     })
