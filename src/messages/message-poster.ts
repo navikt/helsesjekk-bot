@@ -58,7 +58,6 @@ export async function updateResponseCount(team: Team, client: App['client']): Pr
     const asked = await getActiveAsk(team.id)
 
     if (asked == null) {
-        logger.error('Weird state: Found no active asked when updating response count')
         return false
     }
 
