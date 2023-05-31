@@ -5,6 +5,7 @@ import { groupBy } from 'remeda'
 import { AnswerLevel, Team, Asked, Question, QuestionAnswer, QuestionType } from '../../db'
 import { questionsFromJsonb } from '../../questions/jsonb-utils'
 import { addIf, plainHeader, textSection } from '../modal-utils'
+import { questionTypeToText } from '../../utils/asked'
 
 export const HealthcheckModalActions = {
     modalSubmit: 'helsesjekk_form_modal-submit',
@@ -63,9 +64,9 @@ export function createHealthCheckModalBlocks(
                 emoji: true,
             },
         },
-        plainHeader('Teamhelse'),
+        plainHeader(questionTypeToText(QuestionType.TEAM_HEALTH)),
         ...grouped.TEAM_HEALTH.map((question) => createSelectSectionBlock(question, false, existingAnswers)),
-        plainHeader('Fart & flyt'),
+        plainHeader(questionTypeToText(QuestionType.SPEED)),
         ...grouped.SPEED.map((question, index) =>
             createSelectSectionBlock(
                 question,
@@ -74,7 +75,7 @@ export function createHealthCheckModalBlocks(
             ),
         ),
         ...addIf(grouped.TECH && grouped.TECH.length > 0, () => [
-            plainHeader('Teknisk'),
+            plainHeader(questionTypeToText(QuestionType.TECH)),
             ...grouped.TECH.map((question, index) =>
                 createSelectSectionBlock(
                     question,
@@ -84,7 +85,7 @@ export function createHealthCheckModalBlocks(
             ),
         ]),
         ...addIf(grouped.OTHER && grouped.OTHER.length > 0, () => [
-            plainHeader('Annet'),
+            plainHeader(questionTypeToText(QuestionType.OTHER)),
             ...grouped.OTHER.map((question, index) =>
                 createSelectSectionBlock(question, index === grouped.OTHER.length - 1, existingAnswers),
             ),

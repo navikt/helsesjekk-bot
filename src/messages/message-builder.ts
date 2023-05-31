@@ -1,9 +1,13 @@
 import { Block, KnownBlock } from '@slack/types'
 import { Answer, Asked, Team } from '@prisma/client'
+import * as R from 'remeda'
 
 import { dayIndexToDay, getWeekNumber } from '../utils/date'
 import { ScoredAsk, ScoredQuestion } from '../metrics/metrics'
 import { plainHeader, textSection } from '../events/modal-utils'
+import { QuestionType } from '../db'
+import { questionTypeToText } from '../utils/asked'
+import { toPairsTyped } from '../utils/remeda'
 
 export const MessageActions = {
     FillButtonClicked: 'open_health_check_modal-action',
@@ -100,14 +104,7 @@ export function createScoreBlocks(
             type: 'section',
             text: {
                 type: 'mrkdwn',
-                text: scoredAsk.scoredQuestions
-                    .map(
-                        (question) =>
-                            `${scoreToEmoji(question.score)} *${question.question}*: ${question.score.toFixed(
-                                1,
-                            )} ${addQuestionDiff(question, previousScoredAsk)}`,
-                    )
-                    .join('\n'),
+                text: createScoreMrkdwn(scoredAsk, previousScoredAsk),
             },
         },
         {
@@ -149,6 +146,24 @@ export function createCountMetricsContext(responses: number, revealHour: number,
             },
         ],
     }
+}
+
+function createScoreMrkdwn(scoredAsk: ScoredAsk, previousScoredAsk: ScoredAsk | null): string {
+    const grouped = R.pipe(
+        scoredAsk.scoredQuestions,
+        R.groupBy(R.prop('type')),
+        toPairsTyped<QuestionType, ScoredQuestion[]>,
+    )
+
+    const createScoreLine = (question: ScoredQuestion) =>
+        `${scoreToEmoji(question.score)} *${question.question}*: ${question.score.toFixed(1)} ${addQuestionDiff(
+            question,
+            previousScoredAsk,
+        )}`
+
+    return `${grouped
+        .map(([type, questions]) => `*${questionTypeToText(type)}*:\n${questions.map(createScoreLine).join('\n')}`)
+        .join('\n')}`
 }
 
 function scoreToEmoji(score: number): string {

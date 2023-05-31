@@ -2,7 +2,7 @@ import { App } from '../app'
 import { createSettingsModal } from '../events/settings/settings-modal-builder'
 import { postToTeam, remindTeam, revealTeam, updateResponseCount } from '../messages/message-poster'
 import logger from '../logger'
-import { createTeam, getActiveAsk, getPreviousAsk, getTeam, hasActiveUnnaggedAsk, prisma } from '../db'
+import { createTeam, getPreviousAsk, getTeam, hasActiveUnnaggedAsk, prisma } from '../db'
 import { scoreAsked } from '../metrics/metrics'
 import { createScoreBlocks } from '../messages/message-builder'
 
@@ -81,21 +81,29 @@ export function configureCommandsHandler(app: App): void {
                 }
 
                 if (event.text.endsWith('debug')) {
-                    const activeAsk = await getActiveAsk(event.channel)
                     const team = await getTeam(event.channel)
-
-                    if (activeAsk == null || team == null) {
+                    if (team == null) {
                         return
                     }
 
-                    const previousAsked = await getPreviousAsk(activeAsk)
-                    const scoredAsk = scoreAsked(activeAsk)
+                    const ask = await prisma.asked.findFirst({
+                        where: { teamId: team.id },
+                        orderBy: { timestamp: 'desc' },
+                        include: { answers: true },
+                    })
+
+                    if (ask == null) {
+                        return
+                    }
+
+                    const previousAsked = await getPreviousAsk(ask)
+                    const scoredAsk = scoreAsked(ask)
                     const previousScoredAsk = previousAsked ? scoreAsked(previousAsked) : null
 
                     await app.client.chat.postMessage({
                         channel: team.id,
                         text: `Svar på ukentlig helsesjekk for ${team.name}`,
-                        blocks: createScoreBlocks(team, activeAsk, scoredAsk, previousScoredAsk),
+                        blocks: createScoreBlocks(team, ask, scoredAsk, previousScoredAsk),
                         reply_broadcast: true,
                     })
                 }
