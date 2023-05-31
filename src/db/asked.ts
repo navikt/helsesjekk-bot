@@ -45,10 +45,10 @@ export async function getPreviousAsk(ask: Asked): Promise<(Asked & { answers: An
     })
 }
 
-export async function markAskedRevealed(id: number): Promise<void> {
+export async function markAskedRevealed(id: number, skipped = false): Promise<void> {
     await prisma.asked.update({
         where: { id },
-        data: { revealed: true },
+        data: { revealed: true, skipped },
     })
 }
 
