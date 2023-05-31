@@ -103,7 +103,7 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
                 createCountMetricsContext(asked.answers.length, team.revealHour, team.revealDay),
             ],
         })
-        await markAskedRevealed(asked.id)
+        await markAskedRevealed(asked.id, true)
         return false
     }
 
