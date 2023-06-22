@@ -15,10 +15,9 @@ spec:
     max: 2
   resources:
     limits:
-      cpu: 500m
-      memory: 256Mi
+      memory: 512Mi
     requests:
-      cpu: 200m
+      cpu: 5m
       memory: 256Mi
   leaderElection: true
   gcp:
