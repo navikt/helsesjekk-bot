@@ -17,10 +17,6 @@ prisma.$on('warn', (e) => {
     logger.error(e)
 })
 
-prisma.$on('beforeExit', async () => {
-    logger.info('Prisma client is shutting down (for some reason)')
-})
-
 export async function isReady(): Promise<boolean> {
     try {
         await prisma.$connect()
