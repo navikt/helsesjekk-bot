@@ -48,6 +48,12 @@ export function configureMessageScheduler(app: App): void {
                         await postToTeam(team, app.client)
                         continue
                     } catch (e) {
+                        if (e instanceof Error && e.message.includes('An API error occurred: is_archived')) {
+                            logger.info(`The team ${team.name} has been archived, marking team as inactive`)
+                            await deactivateTeam(team.id)
+                            continue
+                        }
+
                         logger.error(new Error(`Failed to post helsesjekk for team ${team.name}.`, { cause: e }))
                         continue
                     }
