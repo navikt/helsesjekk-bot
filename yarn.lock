@@ -281,11 +281,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@slack/bolt@npm:^3.13.3":
-  version: 3.13.3
-  resolution: "@slack/bolt@npm:3.13.3"
+"@slack/bolt@npm:^3.14.0":
+  version: 3.14.0
+  resolution: "@slack/bolt@npm:3.14.0"
   dependencies:
-    "@slack/logger": ^3.0.0
+    "@slack/logger": ^4.0.0
     "@slack/oauth": ^2.6.1
     "@slack/socket-mode": ^1.3.2
     "@slack/types": ^2.8.0
@@ -300,7 +300,7 @@ __metadata:
     promise.allsettled: ^1.0.2
     raw-body: ^2.3.3
     tsscmp: ^1.0.6
-  checksum: b364beea86fcbbf1c34d6233a724b69e3f793f379c8057ddedd677b8007f3685f5c5f02624cde5c61c1f57f88796aec44500d37910ad32b5e6bae0e1cb8da457
+  checksum: 2f8775cc244b09b5f74d0586f94acca2e86b1d68d695839a1951b77a75e874a64aa7ce0b09305d53edfb37e8b8beb802cd55524f1e39c70dc60b229705177497
   languageName: node
   linkType: hard
 
@@ -310,6 +310,15 @@ __metadata:
   dependencies:
     "@types/node": ">=12.0.0"
   checksum: 6512d0e9e4be47ea465705ab9b6e6901f36fa981da0d4a657fde649d452b567b351002049b5ee0a22569b5119bf6c2f61befd5b8022d878addb7a99c91b03389
+  languageName: node
+  linkType: hard
+
+"@slack/logger@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@slack/logger@npm:4.0.0"
+  dependencies:
+    "@types/node": ">=18.0.0"
+  checksum: dc79e9d2032c4bf9ce01d96cc72882f003dd376d036f172d4169662cfc2c9b384a80d5546b06021578dd473e7059f064303f0ba851eeb153387f2081a1e3062e
   languageName: node
   linkType: hard
 
@@ -498,6 +507,13 @@ __metadata:
   version: 18.17.7
   resolution: "@types/node@npm:18.17.7"
   checksum: cb327da222eb9dc2a8e86c957bef58b16f20a2f6b109e43ff10267e83b342bcba5257e800438dd54deb2bd66bb7815539a759c6dcf91e1b0b08b3add1d5886c8
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:>=18.0.0":
+  version: 20.6.3
+  resolution: "@types/node@npm:20.6.3"
+  checksum: 444a6f1f41cfa8d3e20ce0108e6e43960fb2ae0e481f233bb1c14d6252aa63a92e021de561cd317d9fdb411688f871065f40175a1f18763282dee2613a08f8a3
   languageName: node
   linkType: hard
 
@@ -2917,7 +2933,7 @@ __metadata:
   dependencies:
     "@navikt/eslint-config-teamsykmelding": ^4.3.0
     "@prisma/client": 5.3.0
-    "@slack/bolt": ^3.13.3
+    "@slack/bolt": ^3.14.0
     "@types/node": ^18.17.15
     "@types/node-cron": ^3.0.8
     "@types/uuid": ^9.0.3
