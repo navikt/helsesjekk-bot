@@ -2935,7 +2935,7 @@ __metadata:
     prettier: ^3.0.3
     prettier-plugin-prisma: ^5.0.0
     prisma: 5.3.0
-    remeda: ^1.26.0
+    remeda: ^1.27.0
     ts-node: ^10.9.1
     typescript: ^5.2.2
     uuid: ^9.0.1
@@ -4748,10 +4748,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remeda@npm:^1.26.0":
-  version: 1.26.0
-  resolution: "remeda@npm:1.26.0"
-  checksum: cff62665970c18ab2916801c4f586abbd9b61cf1ff4c50a04437c02c22ac8544098c28537c16a14f2881c460a3266eb76e60bb2fd1e8419acf736ac4b94ae476
+"remeda@npm:^1.27.0":
+  version: 1.27.0
+  resolution: "remeda@npm:1.27.0"
+  checksum: 0298aba3ade1d5694bf5a8ca592c735f5ed17325d1f1ee8e4bfc5d80384de47cf6cc42093167f8c512dc4e453896f0ac59685598222328545d7c047c990120a4
   languageName: node
   linkType: hard
 
