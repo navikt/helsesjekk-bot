@@ -131,7 +131,7 @@ export function createScoreBlocks(
     ]
 }
 
-export function createCountMetricsContext(responses: number, revealHour: number, revealDay: number) {
+export function createCountMetricsContext(responses: number, revealHour: number, revealDay: number): KnownBlock {
     return {
         type: 'context',
         elements: [
@@ -155,7 +155,7 @@ function createScoreMrkdwn(scoredAsk: ScoredAsk, previousScoredAsk: ScoredAsk | 
         toPairsTyped<QuestionType, ScoredQuestion[]>,
     )
 
-    const createScoreLine = (question: ScoredQuestion) =>
+    const createScoreLine = (question: ScoredQuestion): string =>
         `${scoreToEmoji(question.score)} *${question.question}*: ${question.score.toFixed(1)} ${addQuestionDiff(
             question,
             previousScoredAsk,

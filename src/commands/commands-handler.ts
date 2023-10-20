@@ -1,7 +1,8 @@
-import { App } from '../app'
+import { logger } from '@navikt/next-logger'
+
+import { App } from '../bot/app'
 import { createSettingsModal } from '../events/settings/settings-modal-builder'
 import { postToTeam, remindTeam, revealTeam, updateResponseCount } from '../messages/message-poster'
-import logger from '../logger'
 import { createTeam, getPreviousAsk, getTeam, hasActiveUnnaggedAsk, prisma } from '../db'
 import { scoreAsked } from '../metrics/metrics'
 import { createScoreBlocks } from '../messages/message-builder'

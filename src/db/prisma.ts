@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-
-import logger from '../logger'
+import { logger } from '@navikt/next-logger'
 
 export const prisma = new PrismaClient({
     log: [
