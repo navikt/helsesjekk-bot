@@ -152,7 +152,7 @@ function changeNameInput(team: Team): InputBlock {
     }
 }
 
-function postDayInput(dayOptions: PlainTextOption[], team: Team) {
+function postDayInput(dayOptions: PlainTextOption[], team: Team): KnownBlock {
     return {
         block_id: SettingsKeys.postDay.block,
         type: 'input',
@@ -174,7 +174,7 @@ function postDayInput(dayOptions: PlainTextOption[], team: Team) {
     }
 }
 
-function postHourInput(team: Team) {
+function postHourInput(team: Team): KnownBlock {
     return {
         block_id: SettingsKeys.postHour.block,
         type: 'input',
@@ -194,7 +194,7 @@ function postHourInput(team: Team) {
     }
 }
 
-function revealDayInput(dayOptions: PlainTextOption[], team: Team) {
+function revealDayInput(dayOptions: PlainTextOption[], team: Team): KnownBlock {
     return {
         block_id: SettingsKeys.revealDay.block,
         type: 'input',
@@ -216,7 +216,7 @@ function revealDayInput(dayOptions: PlainTextOption[], team: Team) {
     }
 }
 
-function revealHourInput(team: Team) {
+function revealHourInput(team: Team): KnownBlock {
     return {
         block_id: SettingsKeys.revealHour.block,
         type: 'input',
@@ -290,7 +290,7 @@ function customQuestionsSection(team: Team, isAdding: boolean): (KnownBlock | Bl
                             style: 'danger',
                             action_id: SettingsKeys.deleteQuestion.action,
                         },
-                    } satisfies SectionBlock),
+                    }) satisfies SectionBlock,
             ),
         ),
         ...addIf(customQuestions.length === 0 && !isAdding, () => ({

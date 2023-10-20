@@ -1,5 +1,6 @@
-import { App } from '../app'
-import logger from '../logger'
+import { logger } from '@navikt/next-logger'
+
+import { App } from '../bot/app'
 import { deactivateTeam } from '../db'
 
 export function configureEventsHandler(app: App): void {

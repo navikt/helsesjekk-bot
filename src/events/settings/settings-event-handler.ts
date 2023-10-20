@@ -1,6 +1,7 @@
-import { App } from '../../app'
+import { logger } from '@navikt/next-logger'
+
+import { App } from '../../bot/app'
 import { deleteQuestion, getTeam, QuestionType, updateTeam } from '../../db'
-import logger from '../../logger'
 import { dayIndexToDay } from '../../utils/date'
 import { updateResponseCount } from '../../messages/message-poster'
 
@@ -122,7 +123,13 @@ export function configureSettingsEventsHandler(app: App): void {
     })
 }
 
-function newQuestionValues(values: ModalStateTree) {
+function newQuestionValues(values: ModalStateTree): {
+    question: string
+    high: string
+    mid: string
+    low: string
+    category: QuestionType
+} {
     return {
         question: values[Keys.newQuestion.blocks.question][Keys.newQuestion.actions.question].value,
         high: values[Keys.newQuestion.blocks.answerHigh][Keys.newQuestion.actions.answerHigh].value,

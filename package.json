@@ -1,27 +1,30 @@
 {
     "name": "helsesjekk",
     "version": "1.0.0",
-    "main": "dist/index.js",
     "license": "MIT",
     "packageManager": "yarn@3.3.1",
     "scripts": {
-        "build": "tsc",
-        "dev": "nodemon src/index.ts | pino-pretty",
-        "lint": "eslint src/**/*.ts",
-        "start:migrate": "yarn prisma:migrate && yarn start:prod",
-        "start:prod": "node index.js",
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "start:migrate": "yarn prisma:migrate && yarn start",
         "prisma:generate": "prisma generate",
         "prisma:migrate": "prisma migrate deploy"
     },
     "dependencies": {
+        "@navikt/next-logger": "^1.19.0",
         "@prisma/client": "5.4.2",
         "@slack/bolt": "^3.14.0",
         "date-fns": "^2.30.0",
-        "dotenv": "^16.3.1",
-        "fastify": "^4.24.2",
+        "next": "latest",
+        "next-logger": "^3.0.2",
+        "nextleton": "^0.6.1",
         "node-cron": "^3.0.2",
         "pino": "^8.16.0",
         "prisma": "5.4.2",
+        "react": "latest",
+        "react-dom": "latest",
         "remeda": "^1.27.1",
         "uuid": "^9.0.1"
     },
@@ -29,10 +32,12 @@
         "@navikt/eslint-config-teamsykmelding": "^4.3.0",
         "@types/node": "^18.18.5",
         "@types/node-cron": "^3.0.9",
+        "@types/react": "18.2.31",
         "@types/uuid": "^9.0.5",
         "@typescript-eslint/eslint-plugin": "^6.7.5",
         "@typescript-eslint/parser": "^6.7.5",
         "eslint": "^8.51.0",
+        "eslint-config-next": "^13.5.6",
         "eslint-plugin-import": "^2.28.1",
         "nodemon": "^3.0.1",
         "pino-pretty": "^10.2.3",
@@ -41,26 +46,14 @@
         "ts-node": "^10.9.1",
         "typescript": "^5.2.2"
     },
+    "resolutions": {
+        "eslint-plugin-react-hooks": "5.0.0-canary-7118f5dd7-20230705"
+    },
     "prettier": "@navikt/eslint-config-teamsykmelding/prettier",
     "eslintConfig": {
-        "root": true,
         "extends": [
-            "eslint:recommended",
-            "plugin:@typescript-eslint/recommended"
-        ],
-        "parser": "@typescript-eslint/parser",
-        "plugins": [
-            "@typescript-eslint",
-            "import"
-        ],
-        "rules": {
-            "no-console": "warn",
-            "import/order": [
-                "warn",
-                {
-                    "newlines-between": "always"
-                }
-            ]
-        }
+            "@navikt/eslint-config-teamsykmelding",
+            "next/core-web-vitals"
+        ]
     }
 }

@@ -1,7 +1,7 @@
 import { Logger, LogLevel } from '@slack/logger'
 import { App as BoltApp } from '@slack/bolt'
-
-import logger from './logger'
+import { logger } from '@navikt/next-logger'
+import { lazyNextleton } from 'nextleton'
 
 const slackLogger = logger.child({ x_isSlack: true })
 
@@ -16,13 +16,17 @@ const loggerAdapter: Logger = {
     setName: (): void => void 0,
 }
 
-const app = new BoltApp({
-    socketMode: true,
-    token: process.env.SLACK_BOT_TOKEN,
-    signingSecret: process.env.SLACK_SIGNING_SECRET,
-    appToken: process.env.SLACK_APP_TOKEN,
-    logger: loggerAdapter,
-})
+const app = lazyNextleton(
+    'bolt',
+    () =>
+        new BoltApp({
+            socketMode: true,
+            token: process.env.SLACK_BOT_TOKEN,
+            signingSecret: process.env.SLACK_SIGNING_SECRET,
+            appToken: process.env.SLACK_APP_TOKEN,
+            logger: loggerAdapter,
+        }),
+)
 
-export type App = typeof app
+export type App = BoltApp
 export default app

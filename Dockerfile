@@ -28,8 +28,8 @@ COPY --from=build /app/.yarn /app/.yarn
 COPY --from=build /app/package.json /app/
 COPY --from=build /app/node_modules /app/node_modules
 COPY --from=build /app/prisma /app/prisma
-COPY dist /app/
+COPY .next /app/.next
 
 EXPOSE 5000
 
-CMD ["yarn", "start:migrate"]
+CMD ["yarn", "start"]

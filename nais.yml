@@ -32,10 +32,10 @@ spec:
         - host: api.slack.com
         - host: wss-primary.slack.com
   liveness:
-    path: /internal/is_alive
+    path: /api/internal/is_alive
     initialDelay: 10
   readiness:
-    path: /internal/is_ready
+    path: /api/internal/is_ready
     initialDelay: 10
   envFrom:
     - secret: helsesjekk-bot-secrets

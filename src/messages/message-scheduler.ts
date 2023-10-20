@@ -1,8 +1,8 @@
 import { schedule } from 'node-cron'
 import { getHours } from 'date-fns'
+import { logger } from '@navikt/next-logger'
 
-import { App } from '../app'
-import logger from '../logger'
+import { App } from '../bot/app'
 import { deactivateTeam, getActiveTeams, hasActiveAsk, hasActiveUnnaggedAsk, hasAskedToday } from '../db'
 import { dayIndexToDay, getDayCorrect, getNowInNorway } from '../utils/date'
 import { isLeader } from '../utils/leader'

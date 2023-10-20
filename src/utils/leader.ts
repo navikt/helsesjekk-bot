@@ -1,6 +1,6 @@
 import * as os from 'node:os'
 
-import logger from '../logger'
+import { logger } from '@navikt/next-logger'
 
 export async function isLeader(): Promise<boolean> {
     if (process.env.NODE_ENV !== 'production') return true
