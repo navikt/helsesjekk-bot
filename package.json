@@ -18,7 +18,7 @@
         "@slack/bolt": "^3.14.0",
         "date-fns": "^2.30.0",
         "dotenv": "^16.3.1",
-        "fastify": "^4.24.2",
+        "fastify": "^4.24.3",
         "node-cron": "^3.0.2",
         "pino": "^8.16.0",
         "prisma": "5.4.2",
