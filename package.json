@@ -13,19 +13,26 @@
         "prisma:migrate": "prisma migrate deploy"
     },
     "dependencies": {
+        "@navikt/aksel-icons": "^5.7.6",
+        "@navikt/ds-css": "^5.7.6",
+        "@navikt/ds-react": "^5.7.6",
+        "@navikt/ds-tailwind": "^5.7.6",
         "@navikt/next-logger": "^1.19.0",
         "@prisma/client": "5.4.2",
         "@slack/bolt": "^3.14.0",
+        "autoprefixer": "^10.4.16",
         "date-fns": "^2.30.0",
         "next": "latest",
         "next-logger": "^3.0.2",
         "nextleton": "^0.6.1",
         "node-cron": "^3.0.2",
         "pino": "^8.16.0",
+        "postcss": "^8.4.31",
         "prisma": "5.4.2",
         "react": "latest",
         "react-dom": "latest",
         "remeda": "^1.27.1",
+        "tailwindcss": "^3.3.5",
         "uuid": "^9.0.1"
     },
     "devDependencies": {
