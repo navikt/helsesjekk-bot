@@ -1,47 +1,48 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("NAIS_DATABASE_HELSESJEKK_BOT_HELSESJEKK_BOT_URL")
+  provider = "postgresql"
+  url      = env("NAIS_DATABASE_HELSESJEKK_BOT_HELSESJEKK_BOT_URL")
 }
 
 model Team {
-    // Slack channel ID
-    id         String  @id
-    name       String
-    active     Boolean
-    postDay    Int
-    postHour   Int
-    revealDay  Int
-    revealHour Int
-    // In the future the team can edit the questions
-    questions  Json
-    Asked      Asked[]
+  // Slack channel ID
+  id              String  @id
+  name            String
+  active          Boolean
+  postDay         Int
+  postHour        Int
+  revealDay       Int
+  revealHour      Int
+  assosiatedGroup String?
+  // In the future the team can edit the questions
+  questions       Json
+  Asked           Asked[]
 }
 
 model Asked {
-    id        Int      @id @default(autoincrement())
-    team      Team     @relation(fields: [teamId], references: [id])
-    // Slack timestamp is used as message ID in the channel
-    messageTs String
-    teamId    String
-    timestamp DateTime
-    questions Json
-    revealed  Boolean
-    nagged    Boolean  @default(false)
-    skipped   Boolean  @default(false)
-    answers   Answer[]
+  id        Int      @id @default(autoincrement())
+  team      Team     @relation(fields: [teamId], references: [id])
+  // Slack timestamp is used as message ID in the channel
+  messageTs String
+  teamId    String
+  timestamp DateTime
+  questions Json
+  revealed  Boolean
+  nagged    Boolean  @default(false)
+  skipped   Boolean  @default(false)
+  answers   Answer[]
 }
 
 model Answer {
-    answeredAt DateTime
-    asked      Asked    @relation(fields: [askedId], references: [id])
-    askedId    Int
-    answers    Json
-    // Slack user ID, only used to keep answers unique per user
-    userId     String
+  answeredAt DateTime
+  asked      Asked    @relation(fields: [askedId], references: [id])
+  askedId    Int
+  answers    Json
+  // Slack user ID, only used to keep answers unique per user
+  userId     String
 
-    @@id([userId, askedId])
+  @@id([userId, askedId])
 }
