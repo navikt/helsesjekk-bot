@@ -12,7 +12,7 @@ export function configureCommandsHandler(app: App): void {
     app.command(/(.*)/, async ({ command, ack, client, respond }) => {
         logger.info(`User used /helsesjekk command`)
 
-        if (command.command.startsWith('assign')) {
+        if (command.command.trim().startsWith('assign')) {
             const groupId = command.command.replace('assign', '').trim()
             if (groupId.length === 0) {
                 await ack()
