@@ -30,6 +30,9 @@ COPY --from=build /app/node_modules /app/node_modules
 COPY --from=build /app/prisma /app/prisma
 COPY .next /app/.next
 
-EXPOSE 5000
+ENV NODE_ENV=production
+ENV NODE_OPTIONS '-r next-logger'
 
-CMD ["yarn", "start"]
+EXPOSE 3000
+
+CMD ["yarn", "start:migrate"]

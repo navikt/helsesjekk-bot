@@ -9,13 +9,13 @@ spec:
   image: {{image}}
   port: 3000
   ingresses:
-    - 'https://helsesjekk-bot.intern.nav.no'
+    - 'https://helsesjekk-bot.intern.dev.nav.no'
   replicas:
     min: 1
     max: 2
   resources:
     limits:
-      memory: 512Mi
+      memory: 256Mi
     requests:
       cpu: 5m
       memory: 256Mi
@@ -25,6 +25,16 @@ spec:
       - type: POSTGRES_14
         databases:
           - name: helsesjekk-bot
+  azure:
+    application:
+      enabled: true
+      tenant: trygdeetaten.no
+      allowAllUsers: true
+      claims:
+        extra:
+          - 'NAVident'
+    sidecar:
+      enabled: true
   accessPolicy:
     outbound:
       external:

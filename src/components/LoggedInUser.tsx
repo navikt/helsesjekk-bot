@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react'
+
 import { Skeleton, BodyShort, Detail } from 'aksel-server'
 
 async function LoggedInUser(): Promise<ReactElement> {
