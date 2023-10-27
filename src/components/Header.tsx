@@ -1,14 +1,15 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, Suspense } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Heading, Detail } from 'aksel-server'
 
 import logo from '../images/logo.png'
 
-import { Heading, Detail } from './aksel-server'
+import LoggedInUser, { LoggedInUserSkeleton } from './LoggedInUser'
 
 function Header(): ReactElement {
     return (
-        <header>
+        <header className="flex justify-between">
             <Link href="/" className="flex w-full p-4 text-grayalpha-900">
                 <Image className="object-contain" src={logo} alt="" aria-hidden height={48} />
                 <div className="pl-4">
@@ -16,6 +17,11 @@ function Header(): ReactElement {
                     <Detail>En helsesjekk-bot for ditt autotome team</Detail>
                 </div>
             </Link>
+            <div>
+                <Suspense fallback={<LoggedInUserSkeleton />}>
+                    <LoggedInUser />
+                </Suspense>
+            </div>
         </header>
     )
 }
