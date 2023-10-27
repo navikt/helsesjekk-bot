@@ -19,6 +19,10 @@ spec:
     requests:
       cpu: 5m
       memory: 256Mi
+  filesFrom:
+    - emptyDir:
+        medium: Memory
+      mountPath: /app/.next/cache
   leaderElection: true
   gcp:
     sqlInstances:

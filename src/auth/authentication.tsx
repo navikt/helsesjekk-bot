@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 
 import { isLocal } from '../utils/env'
 import { raise } from '../utils/ts-utils'
+import { fakeToken } from './fake-token'
 
 export async function verifyUserLoggedIn(redirectPath: string): Promise<void> {
     logger.info('Getting headers')
@@ -36,10 +37,25 @@ export async function verifyUserLoggedIn(redirectPath: string): Promise<void> {
 }
 
 export function getToken(headers: Headers): string {
-    if (isLocal) return 'fake-token'
+    if (isLocal) return fakeToken
 
     return (
         headers.get('authorization')?.replace('Bearer ', '') ??
         raise(new Error('Tried to get token, but header is missing'))
     )
+}
+
+export function getUser(): {
+    name: string
+    email: string
+    adGroups: string[]
+} {
+    const token = getToken(headers())
+    const jwt = JSON.parse(atob(token.split('.')[1]))
+
+    return {
+        name: jwt.name,
+        email: jwt.preferred_username,
+        adGroups: jwt.groups,
+    }
 }
