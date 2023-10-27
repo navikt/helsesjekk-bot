@@ -22,6 +22,10 @@
       }
     ]
   },
+  "paths": {
+    "aksel-client": ["./src/components/aksel"],
+    "aksel-server": ["./src/components/aksel-server"]
+  },
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
