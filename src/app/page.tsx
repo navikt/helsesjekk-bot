@@ -1,5 +1,4 @@
 import { ReactElement } from 'react'
-import { headers } from 'next/headers'
 
 import { getUser, verifyUserLoggedIn } from '../auth/authentication'
 import { getTeamByAdGroup } from '../db'
@@ -9,7 +8,6 @@ import { List, ListItem } from 'aksel-client'
 
 export default async function Page(): Promise<ReactElement> {
     await verifyUserLoggedIn('/')
-    const authHeader = headers().get('authorization')
 
     const user = getUser()
     const assosiatedTeam = await getTeamByAdGroup(user.adGroups)
