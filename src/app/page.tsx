@@ -2,6 +2,7 @@ import { ReactElement } from 'react'
 
 import { getUser, verifyUserLoggedIn } from '../auth/authentication'
 import { getTeamByAdGroup } from '../db'
+import TeamCard from '../components/TeamCard'
 
 import { Heading, BodyShort } from 'aksel-server'
 import { List, ListItem } from 'aksel-client'
@@ -14,9 +15,11 @@ export default async function Page(): Promise<ReactElement> {
 
     return (
         <div>
-            <Heading size="large">Dine team</Heading>
+            <Heading size="large" spacing>
+                Dine team ({assosiatedTeam.length})
+            </Heading>
             {assosiatedTeam.length > 0 ? (
-                <pre>{JSON.stringify(assosiatedTeam, null, 2)}</pre>
+                assosiatedTeam.map((team) => <TeamCard key={team.id} team={team} />)
             ) : (
                 <div>
                     <BodyShort>Du er ikke medlem i et team</BodyShort>

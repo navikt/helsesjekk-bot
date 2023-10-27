@@ -28,6 +28,7 @@ export function configureCommandsHandler(app: App): void {
             await respond({
                 text: `Denne kanalen har blitt koblet til ad-gruppe "${groupId}"`,
             })
+            return
         }
 
         const isBotInChannel = await isBotAddedToChannel(command.channel_id, client)
