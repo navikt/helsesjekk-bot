@@ -43,6 +43,13 @@ export async function createTeam(channelId: string, name: string): Promise<Team>
     })
 }
 
+export async function updateTeamGroupAssociation(channelId: string, group: string): Promise<Team> {
+    return prisma.team.update({
+        data: { assosiatedGroup: group },
+        where: { id: channelId },
+    })
+}
+
 export async function updateTeam(
     channelId: string,
     values: {

@@ -3,7 +3,7 @@ import { logger } from '@navikt/next-logger'
 import { App } from '../bot/app'
 import { createSettingsModal } from '../events/settings/settings-modal-builder'
 import { postToTeam, remindTeam, revealTeam, updateResponseCount } from '../messages/message-poster'
-import { createTeam, getPreviousAsk, getTeam, hasActiveUnnaggedAsk, prisma } from '../db'
+import { createTeam, getPreviousAsk, getTeam, hasActiveUnnaggedAsk, prisma, updateTeamGroupAssociation } from '../db'
 import { scoreAsked } from '../metrics/metrics'
 import { createScoreBlocks } from '../messages/message-builder'
 
@@ -11,6 +11,24 @@ export function configureCommandsHandler(app: App): void {
     // Handles the /helsesjekk command, it opens the settings modal
     app.command(/(.*)/, async ({ command, ack, client, respond }) => {
         logger.info(`User used /helsesjekk command`)
+
+        if (command.command.startsWith('assign')) {
+            const groupId = command.command.replace('assign', '').trim()
+            if (groupId.length === 0) {
+                await ack()
+                await respond({
+                    text: 'Du må skrive inn en ad-gruppe etter kommandoen. :meow_sob:',
+                })
+                return
+            }
+
+            logger.info(`User wants to connect ${command.channel_id} to ${groupId}`)
+            await ack()
+            await updateTeamGroupAssociation(command.channel_id, groupId)
+            await respond({
+                text: `Denne kanalen har blitt koblet til ad-gruppe "${groupId}"`,
+            })
+        }
 
         const isBotInChannel = await isBotAddedToChannel(command.channel_id, client)
         if (isBotInChannel !== true) {
