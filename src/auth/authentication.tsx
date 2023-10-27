@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 
 import { isLocal } from '../utils/env'
 import { raise } from '../utils/ts-utils'
+
 import { fakeToken } from './fake-token'
 
 export async function verifyUserLoggedIn(redirectPath: string): Promise<void> {

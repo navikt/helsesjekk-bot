@@ -1,7 +1,5 @@
 import { randomUUID } from 'crypto'
 
-import { logger } from '@navikt/next-logger'
-
 import { questionsFromJsonb, questionsToJsonb } from '../questions/jsonb-utils'
 import { defaultQuestions } from '../questions/default'
 
@@ -68,7 +66,7 @@ export async function updateTeam(
         category: QuestionType
     },
 ): Promise<Team> {
-    return await prisma.$transaction(async (prisma) => {
+    return prisma.$transaction(async (prisma) => {
         const team = await prisma.team.findFirstOrThrow({ where: { id: channelId } })
 
         return prisma.team.update({
