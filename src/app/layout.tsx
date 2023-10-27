@@ -3,13 +3,13 @@ import './global.css'
 
 import { PropsWithChildren, ReactElement } from 'react'
 
+import Header from '../components/Header'
+
 export default function RootLayout({ children }: PropsWithChildren): ReactElement {
     return (
         <html lang="en">
             <body>
-                <header>
-                    <h1 className="p-16">Header</h1>
-                </header>
+                <Header />
                 <main>{children}</main>
             </body>
         </html>
