@@ -1,7 +1,5 @@
 name: Build and deploy
 on: push
-env:
-  NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 jobs:
   codeql-analysis:
     if: github.ref == 'refs/heads/main'
@@ -15,8 +13,10 @@ jobs:
         uses: github/codeql-action/autobuild@v2
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
+
   build-and-publish:
-    name: Bygg, test og push Docker image
+    if: github.ref == 'refs/heads/main'
+    name: "Prod: Bygg, test og push Docker image"
     runs-on: ubuntu-latest
     permissions:
       packages: 'write'
@@ -25,18 +25,9 @@ jobs:
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
         with:
-          node-version: 18.x
-      - uses: actions/cache@v3
-        id: yarn-cache
-        with:
-          path: .yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - run: yarn --immutable
+          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - run: yarn lint
 #      - run: yarn test
       - run: yarn build
@@ -48,6 +39,30 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           image_suffix: prod
+
+  build-and-publish-dev:
+    name: "Dev: Bygg, test og push Docker image"
+    runs-on: ubuntu-latest
+    permissions:
+      packages: 'write'
+      contents: 'read'
+      id-token: 'write'
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - run: yarn lint
+      - run: yarn build
+      - name: Push docker image to GAR
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: teamsykmelding
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          image_suffix: dev
 
   deploy-bot-to-gcp:
     if: github.ref == 'refs/heads/main'
@@ -62,3 +77,18 @@ jobs:
           CLUSTER: prod-gcp
           RESOURCE: nais.yml
           VAR: image=${{ needs.build-and-publish.outputs.image }}
+
+
+  deploy-bot-to-gcp-dev:
+    if: github.ref != 'refs/heads/main'
+    name: Deploy to dev
+    needs: [build-and-publish-dev]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: nais-dev.yml
+          VAR: image=${{ needs.build-and-publish-dev.outputs.image }}
