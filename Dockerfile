@@ -29,6 +29,7 @@ COPY --from=build /app/package.json /app/
 COPY --from=build /app/node_modules /app/node_modules
 COPY --from=build /app/prisma /app/prisma
 COPY next-logger.config.js /app/
+COPY public /app/public/
 COPY .next /app/.next
 
 ENV NODE_ENV=production
