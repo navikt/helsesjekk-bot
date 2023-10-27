@@ -15,27 +15,27 @@ export default async function Page(): Promise<ReactElement> {
     const assosiatedTeam = await getTeamByAdGroup(user.adGroups)
 
     return (
-        <div className="container mx-auto">
-            <Heading size="large">Your teams</Heading>
+        <div>
+            <Heading size="large">Dine team</Heading>
             {assosiatedTeam.length > 0 ? (
                 <pre>{JSON.stringify(assosiatedTeam, null, 2)}</pre>
             ) : (
                 <div>
-                    <BodyShort>Not a member of any team</BodyShort>
+                    <BodyShort>Du er ikke medlem i et team</BodyShort>
 
-                    <List title="These are your ad-groups" className="mt-4">
+                    <List title="Dette er ad-gruppene du er medlem i" className="mt-4">
                         {user.adGroups.map((adGroup) => (
                             <ListItem key={adGroup}>{adGroup}</ListItem>
                         ))}
                     </List>
 
                     <BodyShort>
-                        Connect any of these using <code className="bg-gray-100 p-1">/helsesjekk assign group-id</code>{' '}
-                        in the channel where the bot is active.
+                        Du kan koble teamet ditt sin kanal til et team ved å bruke{' '}
+                        <code className="bg-gray-100 p-1">/helsesjekk assign gruppe-id</code> i kanalen hvor botten er
+                        aktivert.
                     </BodyShort>
                 </div>
             )}
-            <pre className="mt-16">Authorization header: {authHeader ?? 'Missing'}</pre>
         </div>
     )
 }
