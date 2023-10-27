@@ -1,7 +1,11 @@
 import { ReactElement } from 'react'
 import { headers } from 'next/headers'
 
-export default function Page(): ReactElement {
+import { verifyUserLoggedIn } from '../auth/authentication'
+
+export default async function Page(): Promise<ReactElement> {
+    await verifyUserLoggedIn('/')
+
     const authHeader = headers().get('authorization')
 
     return (
