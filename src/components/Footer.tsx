@@ -11,7 +11,7 @@ function Footer(): ReactElement {
             <Image className="object-contain" src={logo} alt="" aria-hidden height={128} quality={100} />
             <div className="pl-4 mt-4">
                 <Heading size="medium" level="2">
-                    Helsesjekk bot er utviklet og vedilkehold av Team Sykmelding.
+                    Helsesjekk bot er utviklet og vedlikeholdt av Team Sykmelding.
                 </Heading>
                 <BodyShort>
                     Feedback og bugs kan rapporteres på slack på{' '}
