@@ -10,7 +10,7 @@ export default function RootLayout({ children }: PropsWithChildren): ReactElemen
         <html lang="en">
             <body>
                 <Header />
-                <main className="container mx-auto">{children}</main>
+                <main className="container mx-auto p-4">{children}</main>
             </body>
         </html>
     )
