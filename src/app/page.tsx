@@ -1,12 +1,12 @@
 import { ReactElement } from 'react'
 import { Metadata } from 'next'
+import Link from 'next/link'
 
 import { getUser, verifyUserLoggedIn } from '../auth/authentication'
 import { getTeamsByAdGroups, Team } from '../db'
 import TeamCard from '../components/TeamCard'
 
 import { Heading, BodyShort } from 'aksel-server'
-import { List, ListItem } from 'aksel-client'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Dine team',
@@ -29,16 +29,14 @@ export default async function Page(): Promise<ReactElement> {
                 <TeamsView teams={assosiatedTeam} />
             ) : (
                 <div>
-                    <BodyShort>Du er ikke medlem i et team</BodyShort>
-
-                    <List title="Dette er ad-gruppene du er medlem i" className="mt-4">
-                        {user.adGroups.map((adGroup) => (
-                            <ListItem key={adGroup}>{adGroup}</ListItem>
-                        ))}
-                    </List>
-
+                    <BodyShort spacing>Du er ikke medlem i et team</BodyShort>
+                    <BodyShort spacing>
+                        Se på <Link href="/kom-i-gang">Kom i gang</Link> for å se hvordan du kan assosiere et team med
+                        din innlogging. Du finner detaljer om hvilke grupper du er medlem i på{' '}
+                        <Link href="/kom-i-gang/grupper">Kom i gang - Grupper</Link>
+                    </BodyShort>
                     <BodyShort>
-                        Du kan koble teamet ditt sin kanal til et team ved å bruke{' '}
+                        Dersom du allerede vet hvilken gruppe-id du skal bruke, kan du koble til teamet ditt ved å bruke
                         <code className="bg-gray-100 p-1">/helsesjekk assign gruppe-id</code> i kanalen hvor botten er
                         aktivert.
                     </BodyShort>

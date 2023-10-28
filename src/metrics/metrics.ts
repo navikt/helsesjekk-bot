@@ -14,6 +14,7 @@ export interface ScoredQuestion {
 export type ScoredAsk = {
     totalScore: number
     scoredQuestions: ScoredQuestion[]
+    answerCount: number
 }
 
 export function scoreAsked(asked: AskedWithAnswers): ScoredAsk {
@@ -35,6 +36,7 @@ export function scoreAsked(asked: AskedWithAnswers): ScoredAsk {
     return {
         totalScore: overallScore(scoredQuestions),
         scoredQuestions,
+        answerCount: asked.answers.length,
     }
 }
 

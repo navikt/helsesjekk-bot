@@ -1,15 +1,17 @@
 import * as R from 'remeda'
 import React, { ReactElement } from 'react'
-import { BodyLong, BodyShort, Heading } from '@navikt/ds-react'
+import { Heading } from '@navikt/ds-react'
 import { Metadata } from 'next'
+import Link from 'next/link'
 
-import { Question, getTeamByAdGroup, QuestionType } from '../../../db'
+import { getTeamByAdGroup, Question, QuestionType } from '../../../db'
 import { userHasAdGroup } from '../../../auth/authentication'
 import { questionTypeToText } from '../../../utils/asked'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
 import BackLink from '../../../components/core/BackLink'
 import EditableTeamName from '../../../components/edit/EditableTeamName'
 import EditableTime from '../../../components/edit/EditableTime'
+import { TeamNotAccesible, TeamNotFound } from '../../../components/errors/ErrorMessages'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team',
@@ -46,6 +48,7 @@ async function Page({ params }: Props): Promise<ReactElement> {
         <div className="max-w-prose">
             <BackLink href="/" />
             <Heading size="large">Ditt team</Heading>
+            <Link href={`/team/${params.groupId}/graph`}>Se helsegraf</Link>
             <EditableTeamName teamId={team.id} name={team.name} />
             <EditableTime teamId={team.id} hour={team.postHour} day={team.postDay} type="ask" />
             <EditableTime teamId={team.id} hour={team.revealHour} day={team.revealDay} type="reveal" />
@@ -94,37 +97,6 @@ function Questions({ questions }: { questions: Question[] }): ReactElement {
                     </div>
                 ))}
             </div>
-        </div>
-    )
-}
-
-function TeamNotAccesible(): ReactElement {
-    return (
-        <div>
-            <Heading size="large" spacing>
-                Du har ikke tilgang til dette teamet
-            </Heading>
-            <BodyShort spacing>Teamet kan også ikke finnes.</BodyShort>
-            <BodyLong>
-                Du kan koble teamet ditt sin kanal til et team ved å bruke{' '}
-                <code className="bg-gray-100 p-1">/helsesjekk assign gruppe-id</code> i kanalen hvor botten er aktivert.
-            </BodyLong>
-        </div>
-    )
-}
-
-function TeamNotFound(): ReactElement {
-    return (
-        <div>
-            <Heading size="large" spacing>
-                Teamet finnes ikke
-            </Heading>
-            <BodyShort spacing>Teamet kan også ikke finnes.</BodyShort>
-            <BodyLong spacing>
-                Du kan koble teamet ditt sin kanal til et team ved å bruke{' '}
-                <code className="bg-gray-100 p-1">/helsesjekk assign gruppe-id</code> i kanalen hvor botten er aktivert.
-            </BodyLong>
-            <BodyLong>Dersom du har koblet til et team, så kan det være at du har brukt feil gruppe-id.</BodyLong>
         </div>
     )
 }
