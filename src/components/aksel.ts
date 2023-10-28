@@ -6,4 +6,4 @@ export * from '@navikt/ds-react/esm/table'
 export * from '@navikt/ds-react/esm/list'
 export * from '@navikt/ds-react/esm/list/ListItem'
 
-export { StethoscopeIcon, LineGraphStackedIcon, TableIcon } from '@navikt/aksel-icons'
+export { QuestionmarkIcon, GavelIcon } from '@navikt/aksel-icons'

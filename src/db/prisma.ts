@@ -1,12 +1,17 @@
 import { PrismaClient } from '@prisma/client'
 import { logger } from '@navikt/next-logger'
+import { nextleton } from 'nextleton'
 
-export const prisma = new PrismaClient({
-    log: [
-        { emit: 'event', level: 'warn' },
-        { emit: 'event', level: 'error' },
-    ],
-})
+export const prisma = nextleton(
+    'prisma',
+    () =>
+        new PrismaClient({
+            log: [
+                { emit: 'event', level: 'warn' },
+                { emit: 'event', level: 'error' },
+            ],
+        }),
+)
 
 prisma.$on('error', (e) => {
     logger.error(e)
