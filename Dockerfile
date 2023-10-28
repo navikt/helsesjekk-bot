@@ -1,4 +1,4 @@
-FROM node:18-alpine as build
+FROM node:20-alpine as build
 
 RUN apk add --no-cache bash
 
@@ -9,11 +9,14 @@ COPY .yarn /app/.yarn
 COPY .yarnrc.yml /app/
 COPY yarn.lock /app/
 COPY prisma /app/prisma
+COPY scripts /app/scripts
+
+ENV NODE_ENV=production
 
 RUN yarn workspaces focus -A --production
 RUN yarn prisma:generate
 
-FROM node:18-alpine as runner
+FROM node:20-alpine as runner
 
 RUN apk add --no-cache bash
 

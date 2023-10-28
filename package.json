@@ -2,7 +2,10 @@
     "name": "helsesjekk",
     "version": "1.0.0",
     "license": "MIT",
-    "packageManager": "yarn@3.3.1",
+    "packageManager": "yarn@4.0.0",
+    "engines": {
+        "node": "20"
+    },
     "scripts": {
         "dev": "next dev | pino-pretty",
         "build": "next build",
@@ -19,7 +22,7 @@
         "@navikt/ds-react": "^5.7.6",
         "@navikt/ds-tailwind": "^5.7.6",
         "@navikt/next-auth-wonderwall": "^1.5.0",
-        "@navikt/next-logger": "^1.19.0",
+        "@navikt/next-logger": "^1.21.0",
         "@prisma/client": "5.5.2",
         "@slack/bolt": "^3.14.0",
         "autoprefixer": "^10.4.16",
@@ -40,7 +43,7 @@
     },
     "devDependencies": {
         "@navikt/eslint-config-teamsykmelding": "^4.5.0",
-        "@types/node": "^18.18.7",
+        "@types/node": "^20.8.9",
         "@types/node-cron": "^3.0.10",
         "@types/react": "18.2.33",
         "@types/uuid": "^9.0.6",
