@@ -1,19 +1,24 @@
 'use client'
 
+import * as R from 'remeda'
 import React, { ReactElement } from 'react'
 import { useParams } from 'next/navigation'
 
-import { editTeamName } from './actions'
+import { dayIndexToDay } from '../../utils/date'
 
-import { Heading } from 'aksel-server'
-import { Button, TextField, PencilIcon, PersonTallShortIcon, XMarkIcon } from 'aksel-client'
+import { editTime } from './actions'
+
+import { Heading, BodyShort } from 'aksel-server'
+import { Button, PencilIcon, QuestionmarkIcon, GavelIcon, Select, XMarkIcon } from 'aksel-client'
 
 type Props = {
     teamId: string
-    name: string
+    type: 'reveal' | 'ask'
+    hour: number
+    day: number
 }
 
-function EditableTeamName({ teamId, name }: Props): ReactElement {
+function EditableTime({ teamId, type, hour, day }: Props): ReactElement {
     const params = useParams<{ groupId: string }>()
     const [edit, setEdit] = React.useState(false)
 
@@ -22,13 +27,13 @@ function EditableTeamName({ teamId, name }: Props): ReactElement {
             {!edit && (
                 <div>
                     <div className="flex gap-1 items-center">
-                        <PersonTallShortIcon aria-hidden />
-                        <Heading size="small">Navn</Heading>
+                        <Icon type={type} />
+                        <Heading size="small">{type === 'ask' ? 'Spør' : 'Viser'}</Heading>
                     </div>
                     <div className="flex gap-2">
-                        <Heading size="medium" level="2">
-                            {name}
-                        </Heading>
+                        <BodyShort>
+                            {dayIndexToDay(day)} kl. {hour}:00
+                        </BodyShort>
                         <Button
                             className="absolute top-2 right-2"
                             icon={<PencilIcon />}
@@ -44,23 +49,25 @@ function EditableTeamName({ teamId, name }: Props): ReactElement {
                 <>
                     <form
                         action={async (data) => {
-                            await editTeamName(params.groupId, teamId, data)
+                            await editTime(params.groupId, teamId, type, data)
                             setEdit(false)
                         }}
                         className="flex gap-2 items-end"
                     >
-                        <TextField
-                            name="new_name"
-                            className="grow"
-                            label="Nytt team navn"
-                            defaultValue={name}
-                            autoFocus
-                            onKeyUp={(e) => {
-                                if (e.keyCode === 27) {
-                                    setEdit(false)
-                                }
-                            }}
-                        />
+                        <Select label="Dag" name="day" className="grow" defaultValue={day}>
+                            {R.range(0, 7).map((it) => (
+                                <option key={it} value={it}>
+                                    {dayIndexToDay(it)}
+                                </option>
+                            ))}
+                        </Select>
+                        <Select label="Klokkeslett" name="hour" className="grow" defaultValue={hour}>
+                            {R.range(0, 23).map((it) => (
+                                <option key={it} value={it}>
+                                    {it}:00
+                                </option>
+                            ))}
+                        </Select>
                         <Button type="submit" variant="secondary-neutral">
                             Lagre
                         </Button>
@@ -79,4 +86,12 @@ function EditableTeamName({ teamId, name }: Props): ReactElement {
     )
 }
 
-export default EditableTeamName
+function Icon({ type }: { type: Props['type'] }): ReactElement {
+    if (type === 'ask') {
+        return <QuestionmarkIcon aria-hidden />
+    } else {
+        return <GavelIcon aria-hidden />
+    }
+}
+
+export default EditableTime

@@ -125,6 +125,14 @@ export async function setTeamName(teamId: string, name: string): Promise<Team> {
     return prisma.team.update({ data: { name }, where: { id: teamId } })
 }
 
+export async function setRevealTime(teamId: string, hour: number, day: number): Promise<Team> {
+    return prisma.team.update({ data: { revealHour: hour, revealDay: day }, where: { id: teamId } })
+}
+
+export async function setAskTime(teamId: string, hour: number, day: number): Promise<Team> {
+    return prisma.team.update({ data: { postHour: hour, postDay: day }, where: { id: teamId } })
+}
+
 export async function reactivateTeam(channelId: string): Promise<void> {
     await prisma.team.update({
         data: { active: true },
