@@ -1,10 +1,10 @@
 import { InputBlock, ModalView, Option, PlainTextOption, SectionBlock } from '@slack/bolt'
 import { Block, KnownBlock } from '@slack/types'
 
-import { QuestionType, Team } from '../../db'
+import { QuestionType, Team } from '../../../db'
 import { addIf, plainHeader, textSection } from '../modal-utils'
-import { questionsFromJsonb } from '../../questions/jsonb-utils'
-import { text } from '../../utils/bolt-utils'
+import { questionsFromJsonb } from '../../../questions/jsonb-utils'
+import { text } from '../../../utils/bolt-utils'
 
 export const SettingsKeys = {
     modalSubmit: 'helsesjekk_settings_modal-submit',

@@ -2,13 +2,13 @@ import { Block, KnownBlock } from '@slack/types'
 import { Answer, Asked, Team } from '@prisma/client'
 import * as R from 'remeda'
 
-import { dayIndexToDay, getWeekNumber } from '../utils/date'
-import { ScoredAsk, ScoredQuestion } from '../metrics/metrics'
+import { dayIndexToDay, getWeekNumber } from '../../utils/date'
+import { ScoredAsk, ScoredQuestion } from '../../metrics/metrics'
 import { plainHeader, textSection } from '../events/modal-utils'
-import { QuestionType } from '../db'
-import { questionTypeToText } from '../utils/asked'
-import { toPairsTyped } from '../utils/remeda'
-import { scoreToEmoji } from '../utils/score'
+import { QuestionType } from '../../db'
+import { questionTypeToText } from '../../utils/asked'
+import { toPairsTyped } from '../../utils/remeda'
+import { scoreToEmoji } from '../../utils/score'
 
 export const MessageActions = {
     FillButtonClicked: 'open_health_check_modal-action',

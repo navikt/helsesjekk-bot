@@ -1,9 +1,9 @@
 import { logger } from '@navikt/next-logger'
 
-import { App } from '../bot/app'
-import { questionsFromJsonb } from '../questions/jsonb-utils'
-import { markAskedRevealed, createAsked, getActiveAsk, Team, getPreviousAsk, markAskedAsNagged } from '../db'
-import { scoreAsked } from '../metrics/metrics'
+import { App } from '../app'
+import { questionsFromJsonb } from '../../questions/jsonb-utils'
+import { markAskedRevealed, createAsked, getActiveAsk, Team, getPreviousAsk, markAskedAsNagged } from '../../db'
+import { scoreAsked } from '../../metrics/metrics'
 
 import {
     createCompletedBlocks,
