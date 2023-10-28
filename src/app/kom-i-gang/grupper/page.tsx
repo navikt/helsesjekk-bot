@@ -1,14 +1,13 @@
 import React, { ReactElement, Suspense } from 'react'
 import * as R from 'remeda'
-import { headers } from 'next/headers'
-import { grantAzureOboToken, isInvalidTokenSet } from '@navikt/next-auth-wonderwall'
-import { logger } from '@navikt/next-logger'
 import { Metadata } from 'next'
+import Link from 'next/link'
 
-import { getToken } from '../../../auth/authentication'
-import { isLocal } from '../../../utils/env'
+import { getUser } from '../../../auth/authentication'
+import { getMembersOf, MsGraphGroup } from '../../../auth/ms-graph'
 
-import { Alert, Heading, Skeleton } from 'aksel-server'
+import { Alert, Detail, Heading, Skeleton, BodyLong } from 'aksel-server'
+import { CopyButton, CaretLeftIcon } from 'aksel-client'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Dine grupper',
@@ -18,16 +17,22 @@ export const metadata: Metadata = {
 function Page(): ReactElement {
     return (
         <div>
-            <Heading size="large" spacing>
-                Dine grupper
-            </Heading>
+            <Link href="/kom-i-gang" className="flex gap-1 items-center transform -translate-y-full absolute">
+                <CaretLeftIcon aria-hidden />
+                Tilbake
+            </Link>
             <Suspense
                 fallback={
-                    <div>
-                        {R.range(0, 30).map((it) => (
-                            <Skeleton key={it} width={100} />
-                        ))}
-                    </div>
+                    <>
+                        <Heading size="large" spacing>
+                            Dine grupper
+                        </Heading>
+                        <div>
+                            {R.range(0, 30).map((it) => (
+                                <Skeleton key={it} width={100} />
+                            ))}
+                        </div>
+                    </>
                 }
             >
                 <UserAdGroups />
@@ -37,67 +42,64 @@ function Page(): ReactElement {
 }
 
 async function UserAdGroups(): Promise<ReactElement> {
-    if (isLocal) {
-        return <Alert variant="warning">Local development</Alert>
+    const user = getUser()
+    const membersOf = await getMembersOf()
+
+    if ('error' in membersOf) {
+        return <UserGroupsError error={membersOf} />
     }
 
-    const token = getToken(headers())
-    const tokenSet = await grantAzureOboToken(token, 'https://graph.microsoft.com/.default')
-    if (isInvalidTokenSet(tokenSet)) {
-        return <Alert variant="warning">{JSON.stringify(tokenSet, null, 2)}</Alert>
-    }
+    const relevantGroups = membersOf.value.filter((it) => user.adGroups.includes(it.id))
 
-    logger.info(`DEBUG: tokenSet ${tokenSet}`)
-    const response = await fetch('https://graph.microsoft.com/v1.0/groups', {
-        headers: {
-            Authorization: `Bearer ${tokenSet}`,
-        },
-    })
-
-    if (!response.ok) {
-        return (
-            <div>
-                <pre>
-                    {response.status} {response.statusText}
-                </pre>
-                <pre>{response.json().catch(() => 'unable to parse json body')}</pre>
-                <Alert variant="warning">{JSON.stringify(response, null, 2)}</Alert>
-            </div>
-        )
-    }
-
-    const result: MsGraphGroupsResponse = await response.json()
     return (
         <div>
-            <pre>{JSON.stringify(result, null, 2)}</pre>
+            <Heading size="large" spacing>
+                Dine grupper ({relevantGroups.length})
+            </Heading>
+            {relevantGroups.map((group) => (
+                <GroupListItem key={group.id} group={group} />
+            ))}
         </div>
     )
 }
 
-type MsGraphGroupsResponse = {
-    '@odata.context': string
-    '@odata.nextLink': string
-    value: {
-        id: string
-        createdDateTime: string
-        description?: string
-        displayName: string
-        groupTypes: string[]
-        mail?: string
-        mailEnabled: boolean
-        mailNickname: string
-        onPremisesDomainName?: string
-        onPremisesLastSyncDateTime?: string
-        onPremisesNetBiosName?: string
-        onPremisesSamAccountName?: string
-        onPremisesSecurityIdentifier?: string
-        onPremisesSyncEnabled?: boolean
-        proxyAddresses: string[]
-        renewedDateTime: string
-        securityEnabled: boolean
-        securityIdentifier: string
-        visibility?: string
-    }[]
+function GroupListItem({ group }: { group: MsGraphGroup }): ReactElement {
+    return (
+        <div className="bg-bg-subtle rounded p-4">
+            <Heading size="small">{group.displayName}</Heading>
+            <BodyLong className="mb-2">{group.description}</BodyLong>
+            <Detail>Koble denne gruppen til teamet ditt</Detail>
+            <div className="bg-white flex justify-between items-center p-2">
+                <pre className="overflow-hidden">/helsesjekk assign {group.id}</pre>
+                <CopyButton size="small" copyText={`/helsesjekk assign ${group.id}`} />
+            </div>
+        </div>
+    )
+}
+
+function UserGroupsError({
+    error: { statusText, error, status },
+}: {
+    error: { error: string; status?: number; statusText?: string }
+}): ReactElement {
+    return (
+        <div>
+            <Heading size="large" spacing>
+                Dine grupper
+            </Heading>
+            <Alert variant="warning">
+                <Heading size="medium" spacing>
+                    Kunne ikke laste dine grupper
+                </Heading>
+                <BodyLong>{error}</BodyLong>
+                {status && statusText && (
+                    <Detail>
+                        {status} {statusText}
+                    </Detail>
+                )}
+            </Alert>
+        </div>
+    )
 }
 
 export default Page
