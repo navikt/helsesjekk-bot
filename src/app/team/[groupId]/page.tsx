@@ -1,12 +1,18 @@
 import * as R from 'remeda'
 import React, { ReactElement } from 'react'
 import { BodyLong, BodyShort, Heading } from '@navikt/ds-react'
+import { Metadata } from 'next'
 
 import { Question, getTeamByAdGroup, QuestionType } from '../../../db'
 import { userHasAdGroup } from '../../../auth/authentication'
 import { dayIndexToDay } from '../../../utils/date'
 import { questionTypeToText } from '../../../utils/asked'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
+
+export const metadata: Metadata = {
+    title: 'Helsesjekk | Team',
+    description: 'Detaljer for ditt team i helsesjekk bot',
+}
 
 type Props = {
     params: {

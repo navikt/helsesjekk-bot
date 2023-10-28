@@ -1,4 +1,5 @@
 import { ReactElement } from 'react'
+import { Metadata } from 'next'
 
 import { getUser, verifyUserLoggedIn } from '../auth/authentication'
 import { getTeamsByAdGroups, Team } from '../db'
@@ -6,6 +7,11 @@ import TeamCard from '../components/TeamCard'
 
 import { Heading, BodyShort } from 'aksel-server'
 import { List, ListItem } from 'aksel-client'
+
+export const metadata: Metadata = {
+    title: 'Helsesjekk | Dine team',
+    description: 'Oversikt over team du er medlem av i helsesjekk-bot',
+}
 
 export default async function Page(): Promise<ReactElement> {
     await verifyUserLoggedIn('/')
