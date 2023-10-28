@@ -9,6 +9,8 @@ import { dayIndexToDay } from '../../../utils/date'
 import { questionTypeToText } from '../../../utils/asked'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
 
+import { QuestionmarkIcon, GavelIcon } from 'aksel-client'
+
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team',
     description: 'Detaljer for ditt team i helsesjekk bot',
@@ -33,12 +35,14 @@ async function Page({ params }: Props): Promise<ReactElement> {
     return (
         <div>
             <Heading size="large" spacing>
-                {team.name}
+                Ditt team: {team.name}
             </Heading>
-            <BodyShort spacing>
+            <BodyShort spacing className="flex items-center">
+                <QuestionmarkIcon aria-hidden className="mr-2" />
                 Spør på {dayIndexToDay(team.postDay)} kl. {team.postHour}:00
             </BodyShort>
-            <BodyShort spacing>
+            <BodyShort spacing className="flex items-center">
+                <GavelIcon aria-hidden className="mr-2" />
                 Viser svar på {dayIndexToDay(team.revealDay)} kl. {team.revealHour}:00
             </BodyShort>
             <Questions questions={questionsFromJsonb(team.questions)} />
