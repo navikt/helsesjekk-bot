@@ -43,7 +43,9 @@ function GroupFinder(): ReactElement {
                 .
             </BodyLong>
             <BodyLong spacing>Dersom du ikke finner gruppen din der, kan du se alle dine ad-grupper her:</BodyLong>
-            <LinkButton href="/kom-i-gang/grupper">Finn mine grupper</LinkButton>
+            <LinkButton href="/kom-i-gang/grupper" prefetch={false}>
+                Finn mine grupper
+            </LinkButton>
         </div>
     )
 }

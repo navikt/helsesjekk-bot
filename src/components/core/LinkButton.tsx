@@ -7,12 +7,13 @@ import { Button } from 'aksel-client'
 
 type Props = {
     className?: string
+    prefetch?: boolean
     href: string
 }
 
-function LinkButton({ className, children, href }: PropsWithChildren<Props>): ReactElement {
+function LinkButton({ className, prefetch, children, href }: PropsWithChildren<Props>): ReactElement {
     return (
-        <Button as={Link} href={href} className={className}>
+        <Button as={Link} href={href} className={className} prefetch={prefetch}>
             {children}
         </Button>
     )
