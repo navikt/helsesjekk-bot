@@ -16,7 +16,6 @@ Det siste du må gjøre er å skrive /helsesjekk i kanalen, da får du tilgang t
 
 ![image](https://user-images.githubusercontent.com/1507032/215425338-4c307c6d-e00d-4972-a500-7a0733d7783f.png)
 
-
 ## Jeg fant noe feil!
 
 Ta kontakt på #helsesjekk-bot på NAV-IT slacken!
@@ -49,6 +48,6 @@ Uff! Dumt for deg! Men det er håp. Det er noen steg du må gjennom.
 
 Utviklingsflyten vil være å interaktere med slack botten gjennom ditt private slack workspace. F.eks. ved å legge botten til som en integrasjon på en testkanal, kjøre /helsesjekk i den kanalen, og fylle ut helsesjekken.
 
-Det er noen verktøy i [./src/commands/commands-handler.ts](./src/commands/commands-handler.ts) som kan være nyttige for å teste ut funksjonalitet. F.eks. kan du kjøre `/helsesjekk test` for triggre ting som eller ser cron-basert.
+Det er noen verktøy i [./src/commands/commands-handler.ts](src/bot/commands/commands-handler.ts) som kan være nyttige for å teste ut funksjonalitet. F.eks. kan du kjøre `/helsesjekk test` for triggre ting som eller ser cron-basert.
 
 Ikke nøl med å ta kontakt på #helsesjekk-bot på NAV-IT slacken om du trenger hjelp!

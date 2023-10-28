@@ -1,7 +1,7 @@
 import { logger } from '@navikt/next-logger'
 
-import { App } from '../bot/app'
-import { deactivateTeam } from '../db'
+import { App } from '../app'
+import { deactivateTeam } from '../../db'
 
 export function configureEventsHandler(app: App): void {
     app.event('channel_archive', async ({ event }) => {

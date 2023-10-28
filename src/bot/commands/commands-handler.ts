@@ -1,10 +1,10 @@
 import { logger } from '@navikt/next-logger'
 
-import { App } from '../bot/app'
+import { App } from '../app'
 import { createSettingsModal } from '../events/settings/settings-modal-builder'
 import { postToTeam, remindTeam, revealTeam, updateResponseCount } from '../messages/message-poster'
-import { createTeam, getPreviousAsk, getTeam, hasActiveUnnaggedAsk, prisma, updateTeamGroupAssociation } from '../db'
-import { scoreAsked } from '../metrics/metrics'
+import { createTeam, getPreviousAsk, getTeam, hasActiveUnnaggedAsk, prisma, updateTeamGroupAssociation } from '../../db'
+import { scoreAsked } from '../../metrics/metrics'
 import { createScoreBlocks } from '../messages/message-builder'
 
 export function configureCommandsHandler(app: App): void {

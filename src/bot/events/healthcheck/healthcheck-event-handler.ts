@@ -1,10 +1,10 @@
 import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
-import { App } from '../../bot/app'
+import { App } from '../../app'
 import { MessageActions } from '../../messages/message-builder'
-import { answerFromJsonb } from '../../questions/jsonb-utils'
-import { getTeam, getActiveAsk, getAsked, answerQuestions, getAnswer } from '../../db'
+import { answerFromJsonb } from '../../../questions/jsonb-utils'
+import { getTeam, getActiveAsk, getAsked, answerQuestions, getAnswer } from '../../../db'
 import { updateResponseCount } from '../../messages/message-poster'
 
 import { createHealthCheckModal, getIdValueFromAnswer, HealthcheckModalActions } from './healthcheck-modal-builder'
