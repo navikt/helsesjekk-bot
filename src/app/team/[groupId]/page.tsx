@@ -5,13 +5,11 @@ import { Metadata } from 'next'
 
 import { Question, getTeamByAdGroup, QuestionType } from '../../../db'
 import { userHasAdGroup } from '../../../auth/authentication'
-import { dayIndexToDay } from '../../../utils/date'
 import { questionTypeToText } from '../../../utils/asked'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
 import BackLink from '../../../components/core/BackLink'
 import EditableTeamName from '../../../components/edit/EditableTeamName'
-
-import { QuestionmarkIcon, GavelIcon } from 'aksel-client'
+import EditableTime from '../../../components/edit/EditableTime'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team',
@@ -45,18 +43,12 @@ async function Page({ params }: Props): Promise<ReactElement> {
     }
 
     return (
-        <div>
+        <div className="max-w-prose">
             <BackLink href="/" />
             <Heading size="large">Ditt team</Heading>
             <EditableTeamName teamId={team.id} name={team.name} />
-            <BodyShort spacing className="flex items-center">
-                <QuestionmarkIcon aria-hidden className="mr-2" />
-                Spør på {dayIndexToDay(team.postDay)} kl. {team.postHour}:00
-            </BodyShort>
-            <BodyShort spacing className="flex items-center">
-                <GavelIcon aria-hidden className="mr-2" />
-                Viser svar på {dayIndexToDay(team.revealDay)} kl. {team.revealHour}:00
-            </BodyShort>
+            <EditableTime teamId={team.id} hour={team.postHour} day={team.postDay} type="ask" />
+            <EditableTime teamId={team.id} hour={team.revealHour} day={team.revealDay} type="reveal" />
             <Questions questions={questionsFromJsonb(team.questions)} />
         </div>
     )
