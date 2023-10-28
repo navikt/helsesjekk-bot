@@ -13,6 +13,8 @@ import EditableTeamName from '../../../components/edit/EditableTeamName'
 import EditableTime from '../../../components/edit/EditableTime'
 import { TeamNotAccesible, TeamNotFound } from '../../../components/errors/ErrorMessages'
 
+import { LinkPanelDescription, LinkPanelTitle, LinkPanel } from 'aksel-client'
+
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team',
     description: 'Detaljer for ditt team i helsesjekk bot',
@@ -48,7 +50,10 @@ async function Page({ params }: Props): Promise<ReactElement> {
         <div className="max-w-prose">
             <BackLink href="/" />
             <Heading size="large">Ditt team</Heading>
-            <Link href={`/team/${params.groupId}/graph`}>Se helsegraf</Link>
+            <LinkPanel as={Link} href={`/team/${params.groupId}/graph`} border className="my-2">
+                <LinkPanelTitle>Se helsegraf</LinkPanelTitle>
+                <LinkPanelDescription>Se utviklingen av teamhelse over tid</LinkPanelDescription>
+            </LinkPanel>
             <EditableTeamName teamId={team.id} name={team.name} />
             <EditableTime teamId={team.id} hour={team.postHour} day={team.postDay} type="ask" />
             <EditableTime teamId={team.id} hour={team.revealHour} day={team.revealDay} type="reveal" />
