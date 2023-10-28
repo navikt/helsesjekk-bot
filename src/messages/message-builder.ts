@@ -8,6 +8,7 @@ import { plainHeader, textSection } from '../events/modal-utils'
 import { QuestionType } from '../db'
 import { questionTypeToText } from '../utils/asked'
 import { toPairsTyped } from '../utils/remeda'
+import { scoreToEmoji } from '../utils/score'
 
 export const MessageActions = {
     FillButtonClicked: 'open_health_check_modal-action',
@@ -164,16 +165,6 @@ function createScoreMrkdwn(scoredAsk: ScoredAsk, previousScoredAsk: ScoredAsk | 
     return `${grouped
         .map(([type, questions]) => `*${questionTypeToText(type)}*:\n${questions.map(createScoreLine).join('\n')}`)
         .join('\n')}`
-}
-
-function scoreToEmoji(score: number): string {
-    if (score < 2.6) {
-        return '🔴'
-    } else if (score < 4) {
-        return '🟡'
-    } else {
-        return '🟢'
-    }
 }
 
 function addQuestionDiff(question: ScoredQuestion, previousScoredAsk: ScoredAsk | null): string {
