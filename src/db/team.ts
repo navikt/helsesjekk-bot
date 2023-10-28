@@ -121,6 +121,10 @@ export function deleteQuestion(teamId: string, questionId: string): Promise<Team
     })
 }
 
+export async function setTeamName(teamId: string, name: string): Promise<Team> {
+    return prisma.team.update({ data: { name }, where: { id: teamId } })
+}
+
 export async function reactivateTeam(channelId: string): Promise<void> {
     await prisma.team.update({
         data: { active: true },
