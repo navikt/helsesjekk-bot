@@ -22,8 +22,12 @@ export async function getTeam(channelId: string): Promise<Team | null> {
     return prisma.team.findFirst({ where: { id: channelId } })
 }
 
-export async function getTeamByAdGroup(groups: string[]): Promise<Team[] | null> {
+export async function getTeamsByAdGroups(groups: string[]): Promise<Team[] | null> {
     return prisma.team.findMany({ where: { assosiatedGroup: { in: groups } } })
+}
+
+export async function getTeamByAdGroup(groupId: string): Promise<Team | null> {
+    return prisma.team.findFirst({ where: { assosiatedGroup: { contains: groupId } } })
 }
 
 export async function createTeam(channelId: string, name: string): Promise<Team> {

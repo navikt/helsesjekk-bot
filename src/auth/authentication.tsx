@@ -60,3 +60,7 @@ export function getUser(): {
         adGroups: jwt.groups,
     }
 }
+
+export function userHasAdGroup(groupId: string): boolean {
+    return getUser().adGroups.includes(groupId)
+}

@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 
 import { getUser, verifyUserLoggedIn } from '../auth/authentication'
-import { getTeamByAdGroup } from '../db'
+import { getTeamsByAdGroups } from '../db'
 import TeamCard from '../components/TeamCard'
 
 import { Heading, BodyShort } from 'aksel-server'
@@ -11,7 +11,7 @@ export default async function Page(): Promise<ReactElement> {
     await verifyUserLoggedIn('/')
 
     const user = getUser()
-    const assosiatedTeam = await getTeamByAdGroup(user.adGroups)
+    const assosiatedTeam = await getTeamsByAdGroups(user.adGroups)
 
     return (
         <div>
