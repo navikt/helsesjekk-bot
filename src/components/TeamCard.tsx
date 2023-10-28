@@ -12,7 +12,7 @@ type Props = {
 
 function TeamCard({ team }: Props): ReactElement {
     return (
-        <LinkPanel as={Link} href={`/team/${team.assosiatedGroup}`} className="max-w-sm">
+        <LinkPanel as={Link} href={`/team/${team.assosiatedGroup}`} className="max-w-sm grow">
             <Heading size="small">{team.name}</Heading>
             <div>
                 <Detail>Spør på</Detail>

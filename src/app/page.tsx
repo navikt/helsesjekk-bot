@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 
 import { getUser, verifyUserLoggedIn } from '../auth/authentication'
-import { getTeamsByAdGroups } from '../db'
+import { getTeamsByAdGroups, Team } from '../db'
 import TeamCard from '../components/TeamCard'
 
 import { Heading, BodyShort } from 'aksel-server'
@@ -18,8 +18,9 @@ export default async function Page(): Promise<ReactElement> {
             <Heading size="large" spacing>
                 Dine team ({assosiatedTeam.length})
             </Heading>
+
             {assosiatedTeam.length > 0 ? (
-                assosiatedTeam.map((team) => <TeamCard key={team.id} team={team} />)
+                <TeamsView teams={assosiatedTeam} />
             ) : (
                 <div>
                     <BodyShort>Du er ikke medlem i et team</BodyShort>
@@ -37,6 +38,18 @@ export default async function Page(): Promise<ReactElement> {
                     </BodyShort>
                 </div>
             )}
+        </div>
+    )
+}
+
+function TeamsView({ teams }: { teams: Team[] }): ReactElement {
+    return (
+        <div>
+            <div className="flex gap-4 flex-wrap">
+                {teams.map((team) => (
+                    <TeamCard key={team.id} team={team} />
+                ))}
+            </div>
         </div>
     )
 }
