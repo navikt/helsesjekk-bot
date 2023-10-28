@@ -8,6 +8,7 @@ import { userHasAdGroup } from '../../../auth/authentication'
 import { dayIndexToDay } from '../../../utils/date'
 import { questionTypeToText } from '../../../utils/asked'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
+import BackLink from '../../../components/core/BackLink'
 
 import { QuestionmarkIcon, GavelIcon } from 'aksel-client'
 
@@ -24,16 +25,27 @@ type Props = {
 
 async function Page({ params }: Props): Promise<ReactElement> {
     if (!userHasAdGroup(params.groupId)) {
-        return <TeamNotAccesible />
+        return (
+            <div>
+                <BackLink href="/" />
+                <TeamNotAccesible />
+            </div>
+        )
     }
 
     const team = await getTeamByAdGroup(params.groupId)
     if (!team) {
-        return <TeamNotFound />
+        return (
+            <div>
+                <BackLink href="/" />
+                <TeamNotFound />
+            </div>
+        )
     }
 
     return (
         <div>
+            <BackLink href="/" />
             <Heading size="large" spacing>
                 Ditt team: {team.name}
             </Heading>

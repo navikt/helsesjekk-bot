@@ -1,13 +1,13 @@
 import React, { ReactElement, Suspense } from 'react'
 import * as R from 'remeda'
 import { Metadata } from 'next'
-import Link from 'next/link'
 
 import { getUser } from '../../../auth/authentication'
 import { getMembersOf, MsGraphGroup } from '../../../auth/ms-graph'
+import BackLink from '../../../components/core/BackLink'
 
 import { Alert, Detail, Heading, Skeleton, BodyLong } from 'aksel-server'
-import { CopyButton, CaretLeftIcon } from 'aksel-client'
+import { CopyButton } from 'aksel-client'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Dine grupper',
@@ -17,19 +17,16 @@ export const metadata: Metadata = {
 function Page(): ReactElement {
     return (
         <div>
-            <Link href="/kom-i-gang" className="flex gap-1 items-center transform -translate-y-full absolute">
-                <CaretLeftIcon aria-hidden />
-                Tilbake
-            </Link>
+            <BackLink href="/kom-i-gang" />
             <Suspense
                 fallback={
                     <>
                         <Heading size="large" spacing>
                             Dine grupper
                         </Heading>
-                        <div>
-                            {R.range(0, 30).map((it) => (
-                                <Skeleton key={it} width={100} />
+                        <div className="flex flex-col gap-3">
+                            {R.range(0, 10).map((it) => (
+                                <Skeleton key={it} variant="rounded" height={164} />
                             ))}
                         </div>
                     </>
@@ -42,6 +39,8 @@ function Page(): ReactElement {
 }
 
 async function UserAdGroups(): Promise<ReactElement> {
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
     const user = getUser()
     const membersOf = await getMembersOf()
 
@@ -56,9 +55,11 @@ async function UserAdGroups(): Promise<ReactElement> {
             <Heading size="large" spacing>
                 Dine grupper ({relevantGroups.length})
             </Heading>
-            {relevantGroups.map((group) => (
-                <GroupListItem key={group.id} group={group} />
-            ))}
+            <div className="flex flex-col gap-3">
+                {relevantGroups.map((group) => (
+                    <GroupListItem key={group.id} group={group} />
+                ))}
+            </div>
         </div>
     )
 }
