@@ -9,6 +9,7 @@ import { dayIndexToDay } from '../../../utils/date'
 import { questionTypeToText } from '../../../utils/asked'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
 import BackLink from '../../../components/core/BackLink'
+import EditableTeamName from '../../../components/edit/EditableTeamName'
 
 import { QuestionmarkIcon, GavelIcon } from 'aksel-client'
 
@@ -46,9 +47,8 @@ async function Page({ params }: Props): Promise<ReactElement> {
     return (
         <div>
             <BackLink href="/" />
-            <Heading size="large" spacing>
-                Ditt team: {team.name}
-            </Heading>
+            <Heading size="large">Ditt team</Heading>
+            <EditableTeamName teamId={team.id} name={team.name} />
             <BodyShort spacing className="flex items-center">
                 <QuestionmarkIcon aria-hidden className="mr-2" />
                 Spør på {dayIndexToDay(team.postDay)} kl. {team.postHour}:00
