@@ -13,6 +13,7 @@ export * from '@navikt/ds-react/esm/tooltip'
 export * from '@navikt/ds-react/esm/form/TextField'
 export * from '@navikt/ds-react/esm/form/Select'
 export * from '@navikt/ds-react/esm/form/Switch'
+export * from '@navikt/ds-react/esm/form/ConfirmationPanel'
 
 export {
     QuestionmarkIcon,
@@ -23,4 +24,5 @@ export {
     XMarkIcon,
     PlusIcon,
     SparklesIcon,
+    TrashIcon,
 } from '@navikt/aksel-icons'

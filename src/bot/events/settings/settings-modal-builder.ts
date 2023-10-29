@@ -5,7 +5,7 @@ import { Team } from '../../../db'
 import { addIf, plainHeader, textSection } from '../modal-utils'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
 import { text } from '../../../utils/bolt-utils'
-import { QuestionType } from '../../../components/safe-types'
+import { QuestionType } from '../../../safe-types'
 
 export const SettingsKeys = {
     modalSubmit: 'helsesjekk_settings_modal-submit',

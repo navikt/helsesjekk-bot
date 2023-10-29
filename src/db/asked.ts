@@ -2,9 +2,9 @@ import { Answer } from '@prisma/client'
 import { startOfDay } from 'date-fns'
 
 import { questionsToJsonb } from '../questions/jsonb-utils'
+import { Question } from '../safe-types'
 
 import { Asked, prisma } from './prisma'
-import { Question } from './types'
 
 export async function hasActiveAsk(teamId: string): Promise<boolean> {
     return (

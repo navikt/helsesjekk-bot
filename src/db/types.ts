@@ -1,6 +1,6 @@
 import { Answer, Asked } from '@prisma/client'
 
-import { QuestionType } from '../components/safe-types'
+import { QuestionType } from '../safe-types'
 
 export enum Day {
     MONDAY = 0,
@@ -10,18 +10,6 @@ export enum Day {
     FRIDAY = 4,
     SATURDAY = 5,
     SUNDAY = 6,
-}
-
-export interface Question {
-    questionId: string
-    question: string
-    answers: {
-        LOW: string
-        MID: string
-        HIGH: string
-    }
-    type: QuestionType
-    custom?: boolean
 }
 
 export interface QuestionAnswer {

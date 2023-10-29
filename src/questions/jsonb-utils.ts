@@ -1,4 +1,5 @@
-import { Prisma, QuestionAnswer, Question } from '../db'
+import { Prisma, QuestionAnswer } from '../db'
+import { Question } from '../safe-types'
 
 export function questionsToJsonb(questions: Question[]): Prisma.JsonArray {
     return questions as unknown as Prisma.JsonArray

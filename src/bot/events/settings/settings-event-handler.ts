@@ -1,10 +1,10 @@
 import { logger } from '@navikt/next-logger'
 
 import { App } from '../../app'
-import { deleteQuestion, getTeam, updateTeam } from '../../../db'
+import { deleteQuestionFromTeam, getTeam, updateTeam } from '../../../db'
 import { dayIndexToDay } from '../../../utils/date'
 import { updateResponseCount } from '../../messages/message-poster'
-import { QuestionType } from '../../../components/safe-types'
+import { QuestionType } from '../../../safe-types'
 
 import { createSettingsModal, ModalStateTree, SettingsKeys, SettingsKeys as Keys } from './settings-modal-builder'
 
@@ -115,7 +115,7 @@ export function configureSettingsEventsHandler(app: App): void {
 
         await ack()
 
-        const updatedTeam = await deleteQuestion(teamId, questionId)
+        const updatedTeam = await deleteQuestionFromTeam(teamId, questionId)
         await client.views.update({
             view_id: body.view.id,
             hash: body.view.hash,

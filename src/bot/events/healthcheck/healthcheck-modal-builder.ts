@@ -2,11 +2,11 @@ import { Block, KnownBlock } from '@slack/types'
 import { InputBlock, ModalView, Option } from '@slack/bolt'
 import { groupBy } from 'remeda'
 
-import { AnswerLevel, Team, Asked, Question, QuestionAnswer } from '../../../db'
+import { AnswerLevel, Team, Asked, QuestionAnswer } from '../../../db'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
 import { addIf, plainHeader, textSection } from '../modal-utils'
 import { questionTypeToText } from '../../../utils/asked'
-import { QuestionType } from '../../../components/safe-types'
+import { Question, QuestionType } from '../../../safe-types'
 
 export const HealthcheckModalActions = {
     modalSubmit: 'helsesjekk_form_modal-submit',

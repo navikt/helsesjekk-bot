@@ -4,7 +4,7 @@ import { Heading } from '@navikt/ds-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 
-import { getTeamByAdGroup, Question } from '../../../db'
+import { getTeamByAdGroup } from '../../../db'
 import { userHasAdGroup, verifyUserLoggedIn } from '../../../auth/authentication'
 import { questionTypeToText } from '../../../utils/asked'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
@@ -14,9 +14,10 @@ import EditableTime from '../../../components/edit/EditableTime'
 import EditableStatus from '../../../components/edit/EditableStatus'
 import { TeamNotAccesible, TeamNotFound } from '../../../components/errors/ErrorMessages'
 import AddQuestion from '../../../components/edit/AddQuestion'
-import { QuestionType } from '../../../components/safe-types'
+import { Question, QuestionType } from '../../../safe-types'
+import DeletableQuestion from '../../../components/edit/DeletableQuestion'
 
-import { LinkPanelDescription, LinkPanelTitle, LinkPanel, SparklesIcon, Tooltip } from 'aksel-client'
+import { LinkPanelDescription, LinkPanelTitle, LinkPanel } from 'aksel-client'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team',
@@ -68,22 +69,13 @@ async function Page({ params }: Props): Promise<ReactElement> {
     )
 }
 
-function QuestionListItem({ text, emoji }: { text: string; emoji: string }): ReactElement {
-    return (
-        <li className="flex items-center">
-            <span className="pr-2">{emoji}</span>
-            <span className="mb-0.5">{text}</span>
-        </li>
-    )
-}
-
 function Questions({ teamId, questions }: { teamId: string; questions: Question[] }): ReactElement {
     const groups = R.groupBy.strict(questions, R.prop('type'))
 
     return (
         <div>
             <Heading size="medium" level="2" spacing>
-                Spørsmål
+                Spørsmål ({questions.length})
             </Heading>
             <div className="flex flex-col gap-4">
                 {R.toPairs.strict(groups).map(([type, questions]) => (
@@ -93,25 +85,8 @@ function Questions({ teamId, questions }: { teamId: string; questions: Question[
                         </Heading>
                         <ul className="flex flex-col gap-3">
                             {questions.map((question) => (
-                                <li key={question.questionId} className="bg-bg-subtle p-3 pt-2 rounded">
-                                    <Heading
-                                        size="small"
-                                        level="4"
-                                        spacing
-                                        className="mt-0 flex justify-between items-center"
-                                    >
-                                        {question.question}
-                                        {question.custom && (
-                                            <Tooltip content="Dette er et spørsmål dere har lagt til selv">
-                                                <SparklesIcon title="Dette er et egetlagd spørsmål" />
-                                            </Tooltip>
-                                        )}
-                                    </Heading>
-                                    <ul className="flex flex-col gap-3">
-                                        <QuestionListItem emoji="🟢" text={question.answers.HIGH} />
-                                        <QuestionListItem emoji="🟡" text={question.answers.MID} />
-                                        <QuestionListItem emoji="🔴" text={question.answers.LOW} />
-                                    </ul>
+                                <li key={question.questionId} className="bg-bg-subtle p-3 pt-2 rounded relative">
+                                    <DeletableQuestion teamId={teamId} question={question} />
                                 </li>
                             ))}
                         </ul>

@@ -1,4 +1,4 @@
-import { QuestionType } from '../components/safe-types'
+import { QuestionType } from '../safe-types'
 
 export function questionTypeToText(type: QuestionType): string {
     switch (type) {

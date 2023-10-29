@@ -3,7 +3,7 @@ import { Answer } from '@prisma/client'
 
 import { answerFromJsonb, questionsFromJsonb } from '../questions/jsonb-utils'
 import { AnswerLevel, AskedWithAnswers, QuestionAnswer } from '../db'
-import { QuestionType } from '../components/safe-types'
+import { QuestionType } from '../safe-types'
 
 export interface ScoredQuestion {
     id: string

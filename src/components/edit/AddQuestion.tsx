@@ -7,7 +7,7 @@ import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
 import { questionTypeToText } from '../../utils/asked'
-import { QuestionType } from '../safe-types'
+import { QuestionType } from '../../safe-types'
 
 import { addQuestion } from './actions'
 

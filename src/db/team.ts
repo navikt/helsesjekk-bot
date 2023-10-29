@@ -2,9 +2,9 @@ import { randomUUID } from 'crypto'
 
 import { questionsFromJsonb, questionsToJsonb } from '../questions/jsonb-utils'
 import { defaultQuestions } from '../questions/default'
-import { QuestionType } from '../components/safe-types'
+import { Question, QuestionType } from '../safe-types'
 
-import { Day, Question } from './types'
+import { Day } from './types'
 import { prisma, Team } from './prisma'
 
 export async function teamStatus(channelId: string): Promise<'NEW' | 'DEACTIVATED' | 'ACTIVE'> {
@@ -109,7 +109,7 @@ export async function updateTeam(
     })
 }
 
-export function deleteQuestion(teamId: string, questionId: string): Promise<Team> {
+export function deleteQuestionFromTeam(teamId: string, questionId: string): Promise<Team> {
     return prisma.$transaction(async (prisma) => {
         const team = await prisma.team.findFirstOrThrow({ where: { id: teamId } })
 
