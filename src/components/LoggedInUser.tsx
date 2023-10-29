@@ -1,10 +1,19 @@
 import React, { ReactElement } from 'react'
 
-import { getUser } from '../auth/authentication'
+import { getUser, isUserLoggedIn } from '../auth/authentication'
 
-import { Skeleton, BodyShort, Detail } from 'aksel-server'
+import { Skeleton, BodyShort, Detail, Link as AkselLink } from 'aksel-server'
 
 async function LoggedInUser(): Promise<ReactElement> {
+    if (!isUserLoggedIn()) {
+        return (
+            <div className="flex flex-col items-end p-4">
+                <BodyShort className="w-32 text-right">Ikke logget inn</BodyShort>
+                <AkselLink href="/oauth2/login?redirect=/kom-i-gang">Logg inn</AkselLink>
+            </div>
+        )
+    }
+
     const user = getUser()
 
     return (

@@ -2,7 +2,7 @@ import React, { ReactElement, Suspense } from 'react'
 import * as R from 'remeda'
 import { Metadata } from 'next'
 
-import { getUser } from '../../../auth/authentication'
+import { getUser, verifyUserLoggedIn } from '../../../auth/authentication'
 import { getMembersOf, MsGraphGroup } from '../../../auth/ms-graph'
 import BackLink from '../../../components/core/BackLink'
 
@@ -14,7 +14,9 @@ export const metadata: Metadata = {
     description: 'Dine grupper i azure ad',
 }
 
-function Page(): ReactElement {
+async function Page(): Promise<ReactElement> {
+    await verifyUserLoggedIn('/kom-i-gang/grupper')
+
     return (
         <div>
             <BackLink href="/kom-i-gang" />

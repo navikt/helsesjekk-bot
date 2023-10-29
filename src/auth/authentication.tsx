@@ -61,6 +61,15 @@ export function getUser(): {
     }
 }
 
+export function isUserLoggedIn(): boolean {
+    try {
+        getUser()
+        return true
+    } catch (e) {
+        return false
+    }
+}
+
 export function userHasAdGroup(groupId: string): boolean {
     return getUser().adGroups.includes(groupId)
 }

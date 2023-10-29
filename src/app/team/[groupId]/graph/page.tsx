@@ -2,7 +2,7 @@ import * as R from 'remeda'
 import React, { ReactElement, Suspense } from 'react'
 
 import { TeamNotAccesible, TeamNotFound } from '../../../../components/errors/ErrorMessages'
-import { userHasAdGroup } from '../../../../auth/authentication'
+import { userHasAdGroup, verifyUserLoggedIn } from '../../../../auth/authentication'
 import BackLink from '../../../../components/core/BackLink'
 import { getTeamByAdGroup } from '../../../../db'
 import { getTeamScorePerQuestion, getTeamScoreTimeline } from '../../../../db/score'
@@ -19,6 +19,8 @@ type Props = {
 }
 
 async function Page({ params }: Props): Promise<ReactElement> {
+    await verifyUserLoggedIn(`/team/${params.groupId}/graph`)
+
     if (!userHasAdGroup(params.groupId)) {
         return (
             <div>

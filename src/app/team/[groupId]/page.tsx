@@ -5,7 +5,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 
 import { getTeamByAdGroup, Question, QuestionType } from '../../../db'
-import { userHasAdGroup } from '../../../auth/authentication'
+import { userHasAdGroup, verifyUserLoggedIn } from '../../../auth/authentication'
 import { questionTypeToText } from '../../../utils/asked'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
 import BackLink from '../../../components/core/BackLink'
@@ -28,6 +28,8 @@ type Props = {
 }
 
 async function Page({ params }: Props): Promise<ReactElement> {
+    await verifyUserLoggedIn(`/team/${params.groupId}`)
+
     if (!userHasAdGroup(params.groupId)) {
         return (
             <div>
