@@ -55,11 +55,14 @@ async function UserAdGroups(): Promise<ReactElement> {
                 Dine grupper ({membersOf.value.length})
             </Heading>
             <div className="flex flex-col gap-3">
-                {R.sortBy(membersOf.value, [(it) => it.displayName.toLowerCase().includes('team'), 'desc']).map(
-                    (group) => (
+                {R.sortBy
+                    .strict(membersOf.value, [
+                        (it: MsGraphGroup) => it.displayName?.toLowerCase().includes('team'),
+                        'desc',
+                    ])
+                    .map((group) => (
                         <GroupListItem key={group.id} group={group} />
-                    ),
-                )}
+                    ))}
             </div>
         </div>
     )
@@ -68,7 +71,7 @@ async function UserAdGroups(): Promise<ReactElement> {
 function GroupListItem({ group }: { group: MsGraphGroup }): ReactElement {
     return (
         <div className="bg-bg-subtle rounded p-4">
-            <Heading size="small">{group.displayName}</Heading>
+            <Heading size="small">{group.displayName ?? '<gruppe uten navn>'}</Heading>
             <BodyLong className="mb-2">{group.description}</BodyLong>
             <Detail>Koble denne gruppen til teamet ditt</Detail>
             <div className="bg-white flex justify-between items-center p-2">

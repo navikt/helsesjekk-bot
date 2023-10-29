@@ -8,7 +8,7 @@ export const fakeMembersOfResponse = {
             creationOptions: [],
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.',
-            displayName: '0000-GA-RANDOM-EXAMPLE-THINGY',
+            displayName: null,
             groupTypes: [],
             mailEnabled: false,
             mailNickname: '0000-RANDOM-EXAMPLE-THINGY-NICKNAME',

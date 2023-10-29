@@ -42,7 +42,7 @@ export type MsGraphGroup = {
     id: string
     createdDateTime: string
     description?: string
-    displayName: string
+    displayName: string | null
     groupTypes: string[]
     mail?: string
     mailEnabled: boolean
