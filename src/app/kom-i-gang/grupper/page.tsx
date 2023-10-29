@@ -2,7 +2,7 @@ import React, { ReactElement, Suspense } from 'react'
 import * as R from 'remeda'
 import { Metadata } from 'next'
 
-import { getUser, verifyUserLoggedIn } from '../../../auth/authentication'
+import { verifyUserLoggedIn } from '../../../auth/authentication'
 import { getMembersOf, MsGraphGroup } from '../../../auth/ms-graph'
 import BackLink from '../../../components/core/BackLink'
 
@@ -43,24 +43,23 @@ async function Page(): Promise<ReactElement> {
 async function UserAdGroups(): Promise<ReactElement> {
     await new Promise((resolve) => setTimeout(resolve, 1000))
 
-    const user = getUser()
     const membersOf = await getMembersOf()
 
     if ('error' in membersOf) {
         return <UserGroupsError error={membersOf} />
     }
 
-    const relevantGroups = membersOf.value.filter((it) => user.adGroups.includes(it.id))
-
     return (
         <div>
             <Heading size="large" spacing>
-                Dine grupper ({relevantGroups.length})
+                Dine grupper ({membersOf.value.length})
             </Heading>
             <div className="flex flex-col gap-3">
-                {relevantGroups.map((group) => (
-                    <GroupListItem key={group.id} group={group} />
-                ))}
+                {R.sortBy(membersOf.value, [(it) => it.displayName.toLowerCase().includes('team'), 'desc']).map(
+                    (group) => (
+                        <GroupListItem key={group.id} group={group} />
+                    ),
+                )}
             </div>
         </div>
     )

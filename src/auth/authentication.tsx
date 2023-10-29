@@ -7,6 +7,7 @@ import { isLocal } from '../utils/env'
 import { raise } from '../utils/ts-utils'
 
 import { fakeToken } from './fake-token'
+import { getMembersOf } from './ms-graph'
 
 export async function verifyUserLoggedIn(redirectPath: string): Promise<void> {
     logger.info('Getting headers')
@@ -52,7 +53,7 @@ export function getUser(): {
     adGroups: string[]
 } {
     const token = getToken(headers())
-    const jwt = JSON.parse(atob(token.split('.')[1]))
+    const jwt = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString('utf8'))
 
     return {
         name: jwt.name,
@@ -70,6 +71,17 @@ export function isUserLoggedIn(): boolean {
     }
 }
 
-export function userHasAdGroup(groupId: string): boolean {
-    return getUser().adGroups.includes(groupId)
+export async function userHasAdGroup(groupId: string): Promise<boolean> {
+    const membersOf = await getMembersOf()
+
+    if ('error' in membersOf) {
+        throw new Error(
+            `Failed to get groups for user, MS responded with ${membersOf.status} ${membersOf.statusText}`,
+            {
+                cause: membersOf.error,
+            },
+        )
+    }
+
+    return membersOf.value.some((group) => group.id === groupId)
 }

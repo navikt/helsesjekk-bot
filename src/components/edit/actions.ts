@@ -7,7 +7,7 @@ import { setTeamName, setRevealTime, setAskTime, setTeamStatus } from '../../db'
 import { userHasAdGroup } from '../../auth/authentication'
 
 export async function editTeamName(groupId: string, teamId: string, formData: FormData): Promise<void> {
-    if (!userHasAdGroup(groupId)) {
+    if (!(await userHasAdGroup(groupId))) {
         throw new Error('User does not have access to edit team name')
     }
 
@@ -26,7 +26,7 @@ export async function editTime(
     type: 'ask' | 'reveal',
     formData: FormData,
 ): Promise<void> {
-    if (!userHasAdGroup(groupId)) {
+    if (!(await userHasAdGroup(groupId))) {
         throw new Error('User does not have access to edit team name')
     }
 
@@ -45,7 +45,7 @@ export async function editTime(
 }
 
 export async function toggleTeamStatus(groupId: string, teamId: string, active: boolean): Promise<void> {
-    if (!userHasAdGroup(groupId)) {
+    if (!(await userHasAdGroup(groupId))) {
         throw new Error('User does not have access to edit team name')
     }
 

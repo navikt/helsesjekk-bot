@@ -30,7 +30,7 @@ type Props = {
 async function Page({ params }: Props): Promise<ReactElement> {
     await verifyUserLoggedIn(`/team/${params.groupId}`)
 
-    if (!userHasAdGroup(params.groupId)) {
+    if (!(await userHasAdGroup(params.groupId))) {
         return (
             <div>
                 <BackLink href="/" />
