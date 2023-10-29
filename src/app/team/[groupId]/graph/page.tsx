@@ -55,7 +55,7 @@ async function Page({ params }: Props): Promise<ReactElement> {
 async function OverallGraph({ teamId }: { teamId: string }): Promise<ReactElement> {
     const scoreTimeline = await getTeamScoreTimeline(teamId)
 
-    if (scoreTimeline.length === 0) {
+    if ('error' in scoreTimeline || scoreTimeline.length === 0) {
         return (
             <div className="max-w-prose">
                 <Heading size="medium" level="3">
@@ -90,9 +90,9 @@ async function OverallGraph({ teamId }: { teamId: string }): Promise<ReactElemen
 }
 
 async function PerQuestionGraph({ teamId }: { teamId: string }): Promise<ReactElement> {
-    const { scoredQuestions, maxQuestions, questions } = await getTeamScorePerQuestion(teamId)
+    const teamMetrics = await getTeamScorePerQuestion(teamId)
 
-    if (scoredQuestions.length === 0) {
+    if ('error' in teamMetrics) {
         return (
             <div className="max-w-prose">
                 <Heading size="medium" level="3">
@@ -108,6 +108,8 @@ async function PerQuestionGraph({ teamId }: { teamId: string }): Promise<ReactEl
             </div>
         )
     }
+
+    const { scoredQuestions, maxQuestions, questions } = teamMetrics
 
     const earliest = R.minBy(scoredQuestions, (it) => it.timestamp.getTime())
     return (
