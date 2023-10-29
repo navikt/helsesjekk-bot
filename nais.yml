@@ -15,16 +15,27 @@ spec:
     max: 2
   resources:
     limits:
-      memory: 512Mi
+      memory: 1024Mi
     requests:
-      cpu: 5m
+      cpu: 100m
       memory: 256Mi
+  filesFrom:
+    - emptyDir:
+        medium: Memory
+      mountPath: /app/.next/cache
   leaderElection: true
   gcp:
     sqlInstances:
       - type: POSTGRES_14
         databases:
           - name: helsesjekk-bot
+  azure:
+    application:
+      allowAllUsers: true
+      enabled: true
+      tenant: nav.no
+    sidecar:
+      enabled: true
   accessPolicy:
     outbound:
       external:
