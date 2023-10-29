@@ -1,9 +1,10 @@
 import { logger } from '@navikt/next-logger'
 
 import { App } from '../../app'
-import { deleteQuestion, getTeam, QuestionType, updateTeam } from '../../../db'
+import { deleteQuestion, getTeam, updateTeam } from '../../../db'
 import { dayIndexToDay } from '../../../utils/date'
 import { updateResponseCount } from '../../messages/message-poster'
+import { QuestionType } from '../../../components/safe-types'
 
 import { createSettingsModal, ModalStateTree, SettingsKeys, SettingsKeys as Keys } from './settings-modal-builder'
 

@@ -1,5 +1,7 @@
 import { Answer, Asked } from '@prisma/client'
 
+import { QuestionType } from '../components/safe-types'
+
 export enum Day {
     MONDAY = 0,
     TUESDAY = 1,
@@ -32,13 +34,6 @@ export enum AnswerLevel {
     GOOD = 'GOOD',
     MEDIUM = 'MEDIUM',
     BAD = 'BAD',
-}
-
-export enum QuestionType {
-    TEAM_HEALTH = 'TEAM_HEALTH',
-    SPEED = 'SPEED',
-    TECH = 'TECH',
-    OTHER = 'OTHER',
 }
 
 export type AskedWithAnswers = Asked & { answers: Answer[] }

@@ -2,7 +2,8 @@ import * as R from 'remeda'
 import { Answer } from '@prisma/client'
 
 import { answerFromJsonb, questionsFromJsonb } from '../questions/jsonb-utils'
-import { AnswerLevel, AskedWithAnswers, QuestionAnswer, QuestionType } from '../db'
+import { AnswerLevel, AskedWithAnswers, QuestionAnswer } from '../db'
+import { QuestionType } from '../components/safe-types'
 
 export interface ScoredQuestion {
     id: string

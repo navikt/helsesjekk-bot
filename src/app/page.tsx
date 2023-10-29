@@ -29,7 +29,7 @@ export default async function Page(): Promise<ReactElement> {
             {assosiatedTeam.length > 0 ? (
                 <TeamsView teams={assosiatedTeam} />
             ) : (
-                <div>
+                <div className="max-w-prose">
                     <BodyShort spacing>Du er ikke medlem i et team</BodyShort>
                     <BodyShort spacing>
                         Se på <Link href="/kom-i-gang">Kom i gang</Link> for å se hvordan du kan assosiere et team med

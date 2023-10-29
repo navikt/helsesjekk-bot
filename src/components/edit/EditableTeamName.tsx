@@ -18,7 +18,7 @@ function EditableTeamName({ teamId, name }: Props): ReactElement {
     const [edit, setEdit] = React.useState(false)
 
     return (
-        <div className="p-2 bg-bg-subtle rounded my-4 relative">
+        <div className="p-3 bg-bg-subtle rounded my-4 relative">
             {!edit && (
                 <div>
                     <div className="flex gap-1 items-center">

@@ -21,4 +21,6 @@ export {
     PencilIcon,
     PersonTallShortIcon,
     XMarkIcon,
+    PlusIcon,
+    SparklesIcon,
 } from '@navikt/aksel-icons'

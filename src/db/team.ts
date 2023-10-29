@@ -2,8 +2,9 @@ import { randomUUID } from 'crypto'
 
 import { questionsFromJsonb, questionsToJsonb } from '../questions/jsonb-utils'
 import { defaultQuestions } from '../questions/default'
+import { QuestionType } from '../components/safe-types'
 
-import { Day, Question, QuestionType } from './types'
+import { Day, Question } from './types'
 import { prisma, Team } from './prisma'
 
 export async function teamStatus(channelId: string): Promise<'NEW' | 'DEACTIVATED' | 'ACTIVE'> {
@@ -28,6 +29,10 @@ export async function getTeamsByAdGroups(groups: string[]): Promise<Team[] | nul
 
 export async function getTeamByAdGroup(groupId: string): Promise<Team | null> {
     return prisma.team.findFirst({ where: { assosiatedGroup: { contains: groupId } } })
+}
+
+export async function getTeamById(teamId: string): Promise<Team | null> {
+    return prisma.team.findFirst({ where: { id: teamId } })
 }
 
 export async function createTeam(channelId: string, name: string): Promise<Team> {
@@ -135,6 +140,39 @@ export async function setAskTime(teamId: string, hour: number, day: number): Pro
 
 export async function setTeamStatus(teamId: string, active: boolean): Promise<Team> {
     return prisma.team.update({ data: { active }, where: { id: teamId } })
+}
+
+export async function addQuestionToTeam(
+    teamId: string,
+    question: {
+        question: string
+        type: string
+        high: string
+        mid: string
+        low: string
+    },
+): Promise<Team> {
+    const team = await getTeamById(teamId)
+    const existingQuestions = questionsFromJsonb(team.questions)
+    const updatedQuestions = [
+        ...existingQuestions,
+        {
+            questionId: randomUUID(),
+            question: question.question,
+            answers: {
+                LOW: question.low,
+                MID: question.mid,
+                HIGH: question.high,
+            },
+            type: question.type as QuestionType,
+            custom: true,
+        } satisfies Question,
+    ]
+
+    return prisma.team.update({
+        data: { questions: questionsToJsonb(updatedQuestions) },
+        where: { id: teamId },
+    })
 }
 
 export async function reactivateTeam(channelId: string): Promise<void> {

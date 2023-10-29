@@ -5,10 +5,10 @@ import * as R from 'remeda'
 import { dayIndexToDay, getWeekNumber } from '../../utils/date'
 import { ScoredAsk, ScoredQuestion } from '../../metrics/metrics'
 import { plainHeader, textSection } from '../events/modal-utils'
-import { QuestionType } from '../../db'
 import { questionTypeToText } from '../../utils/asked'
 import { toPairsTyped } from '../../utils/remeda'
 import { scoreToEmoji } from '../../utils/score'
+import { QuestionType } from '../../components/safe-types'
 
 export const MessageActions = {
     FillButtonClicked: 'open_health_check_modal-action',

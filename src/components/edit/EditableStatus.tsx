@@ -20,7 +20,7 @@ function EditableStatus({ teamId, active }: Props): ReactElement {
     const [loading, setLoading] = React.useState(false)
 
     return (
-        <div className="p-2 bg-bg-subtle rounded my-4">
+        <div className="p-3 bg-bg-subtle rounded my-4">
             <div className="flex items-center justify-between">
                 <div>
                     <div className="flex gap-2 items-center">

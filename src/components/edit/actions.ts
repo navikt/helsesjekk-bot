@@ -3,7 +3,7 @@
 import { logger } from '@navikt/next-logger'
 import { revalidatePath } from 'next/cache'
 
-import { setTeamName, setRevealTime, setAskTime, setTeamStatus } from '../../db'
+import { setTeamName, setRevealTime, setAskTime, setTeamStatus, addQuestionToTeam } from '../../db'
 import { userHasAdGroup } from '../../auth/authentication'
 
 export async function editTeamName(groupId: string, teamId: string, formData: FormData): Promise<void> {
@@ -50,6 +50,27 @@ export async function toggleTeamStatus(groupId: string, teamId: string, active: 
     }
 
     await setTeamStatus(teamId, active)
+
+    revalidatePath(`/team/${groupId}`)
+}
+
+export async function addQuestion(groupId: string, teamId: string, formData: FormData): Promise<void> {
+    if (!(await userHasAdGroup(groupId))) {
+        throw new Error('User does not have access to edit team name')
+    }
+
+    // TODO ZOD this
+    const question = {
+        question: formData.get('question').toString(),
+        type: formData.get('type').toString(),
+        high: formData.get('high').toString(),
+        mid: formData.get('mid').toString(),
+        low: formData.get('low').toString(),
+    }
+
+    logger.info(`User is adding question of type: ${question.type}`)
+
+    await addQuestionToTeam(teamId, question)
 
     revalidatePath(`/team/${groupId}`)
 }
