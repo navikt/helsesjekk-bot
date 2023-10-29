@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { getUser, verifyUserLoggedIn } from '../auth/authentication'
 import { getTeamsByAdGroups, Team } from '../db'
 import TeamCard from '../components/TeamCard'
+import Code from '../components/core/Code'
 
 import { Heading, BodyShort } from 'aksel-server'
 
@@ -37,8 +38,7 @@ export default async function Page(): Promise<ReactElement> {
                     </BodyShort>
                     <BodyShort>
                         Dersom du allerede vet hvilken gruppe-id du skal bruke, kan du koble til teamet ditt ved å bruke
-                        <code className="bg-gray-100 p-1">/helsesjekk assign gruppe-id</code> i kanalen hvor botten er
-                        aktivert.
+                        <Code>/helsesjekk assign gruppe-id</Code> i kanalen hvor botten er aktivert.
                     </BodyShort>
                 </div>
             )}

@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react'
 import { Metadata } from 'next'
 
 import LinkButton from '../../components/core/LinkButton'
+import HowToGuide from '../../components/guide/HowToGuide'
 
 import { Heading, BodyLong } from 'aksel-server'
 
@@ -14,7 +15,7 @@ function Page(): ReactElement {
     return (
         <div>
             <Heading size="large">Kom i gang med helsesjekk-bot for ditt team</Heading>
-            <BodyLong>Kommer...</BodyLong>
+            <HowToGuide />
             <GroupFinder />
         </div>
     )

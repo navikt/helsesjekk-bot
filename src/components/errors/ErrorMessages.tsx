@@ -1,5 +1,7 @@
 import React, { ReactElement } from 'react'
 
+import Code from '../core/Code'
+
 import { BodyLong, BodyShort, Heading } from 'aksel-server'
 
 export function TeamNotAccesible(): ReactElement {
@@ -10,8 +12,8 @@ export function TeamNotAccesible(): ReactElement {
             </Heading>
             <BodyShort spacing>Teamet kan også ikke finnes.</BodyShort>
             <BodyLong>
-                Du kan koble teamet ditt sin kanal til et team ved å bruke{' '}
-                <code className="bg-gray-100 p-1">/helsesjekk assign gruppe-id</code> i kanalen hvor botten er aktivert.
+                Du kan koble teamet ditt sin kanal til et team ved å bruke <Code>/helsesjekk assign gruppe-id</Code> i
+                kanalen hvor botten er aktivert.
             </BodyLong>
         </div>
     )
@@ -25,8 +27,8 @@ export function TeamNotFound(): ReactElement {
             </Heading>
             <BodyShort spacing>Teamet kan også ikke finnes.</BodyShort>
             <BodyLong spacing>
-                Du kan koble teamet ditt sin kanal til et team ved å bruke{' '}
-                <code className="bg-gray-100 p-1">/helsesjekk assign gruppe-id</code> i kanalen hvor botten er aktivert.
+                Du kan koble teamet ditt sin kanal til et team ved å bruke <Code>/helsesjekk assign gruppe-id</Code> i
+                kanalen hvor botten er aktivert.
             </BodyLong>
             <BodyLong>Dersom du har koblet til et team, så kan det være at du har brukt feil gruppe-id.</BodyLong>
         </div>
