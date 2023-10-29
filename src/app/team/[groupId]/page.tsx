@@ -55,7 +55,7 @@ async function Page({ params }: Props): Promise<ReactElement> {
         <div className="max-w-prose">
             <BackLink href="/" />
             <Heading size="large">Ditt team</Heading>
-            <LinkPanel as={Link} href={`/team/${params.groupId}/graph`} border className="my-2">
+            <LinkPanel as={Link} href={`/team/${params.groupId}/graph`} border className="my-2" prefetch={false}>
                 <LinkPanelTitle>Se helsegraf</LinkPanelTitle>
                 <LinkPanelDescription>Se utviklingen av teamhelse over tid</LinkPanelDescription>
             </LinkPanel>
