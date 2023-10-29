@@ -2,7 +2,7 @@ import { ReactElement } from 'react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 
-import { getUser, verifyUserLoggedIn } from '../auth/authentication'
+import { getUsersGroups, verifyUserLoggedIn } from '../auth/authentication'
 import { getTeamsByAdGroups, Team } from '../db'
 import TeamCard from '../components/TeamCard'
 import Code from '../components/core/Code'
@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 export default async function Page(): Promise<ReactElement> {
     await verifyUserLoggedIn('/')
 
-    const user = getUser()
-    const assosiatedTeam = await getTeamsByAdGroups(user.adGroups)
+    const userGroups = await getUsersGroups()
+    const assosiatedTeam = await getTeamsByAdGroups(userGroups)
 
     return (
         <div>

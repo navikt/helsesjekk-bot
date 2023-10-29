@@ -50,7 +50,6 @@ export function getToken(headers: Headers): string {
 export function getUser(): {
     name: string
     email: string
-    adGroups: string[]
 } {
     const token = getToken(headers())
     const jwt = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString('utf8'))
@@ -58,8 +57,22 @@ export function getUser(): {
     return {
         name: jwt.name,
         email: jwt.preferred_username,
-        adGroups: jwt.groups,
     }
+}
+
+export async function getUsersGroups(): Promise<string[]> {
+    const membersOf = await getMembersOf()
+
+    if ('error' in membersOf) {
+        throw new Error(
+            `Failed to get groups for user, MS responded with ${membersOf.status} ${membersOf.statusText}`,
+            {
+                cause: membersOf.error,
+            },
+        )
+    }
+
+    return membersOf.value.map((group) => group.id)
 }
 
 export function isUserLoggedIn(): boolean {
