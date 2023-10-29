@@ -1,0 +1,55 @@
+'use client'
+
+import React, { ReactElement, startTransition } from 'react'
+import { useParams } from 'next/navigation'
+
+import { InactiveDot, PingDot } from '../core/Dots'
+
+import { toggleTeamStatus } from './actions'
+
+import { Heading, BodyShort } from 'aksel-server'
+import { Switch } from 'aksel-client'
+
+type Props = {
+    teamId: string
+    active: boolean
+}
+
+function EditableStatus({ teamId, active }: Props): ReactElement {
+    const params = useParams<{ groupId: string }>()
+    const [loading, setLoading] = React.useState(false)
+
+    return (
+        <div className="p-2 bg-bg-subtle rounded my-4">
+            <div className="flex items-center justify-between">
+                <div>
+                    <div className="flex gap-2 items-center">
+                        <div className="ml-1">{active ? <PingDot /> : <InactiveDot />}</div>
+                        <Heading size="small">Status</Heading>
+                    </div>
+                    <div className="flex gap-2">
+                        <BodyShort>{active ? 'Aktiv' : 'Inaktiv'}</BodyShort>
+                    </div>
+                </div>
+                <Switch
+                    position="right"
+                    hideLabel
+                    checked={active}
+                    loading={loading}
+                    onChange={(event) => {
+                        setLoading(true)
+                        startTransition(() => {
+                            toggleTeamStatus(params.groupId, teamId, event.target.checked).finally(() => {
+                                setLoading(false)
+                            })
+                        })
+                    }}
+                >
+                    Endre status
+                </Switch>
+            </div>
+        </div>
+    )
+}
+
+export default EditableStatus

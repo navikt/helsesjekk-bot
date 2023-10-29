@@ -57,7 +57,7 @@ async function OverallGraph({ teamId }: { teamId: string }): Promise<ReactElemen
 
     if ('error' in scoreTimeline || scoreTimeline.length === 0) {
         return (
-            <div className="max-w-prose">
+            <div className="max-w-prose mb-4">
                 <Heading size="medium" level="3">
                     Total score per uke
                 </Heading>
@@ -94,7 +94,7 @@ async function PerQuestionGraph({ teamId }: { teamId: string }): Promise<ReactEl
 
     if ('error' in teamMetrics) {
         return (
-            <div className="max-w-prose">
+            <div className="max-w-prose mb-4">
                 <Heading size="medium" level="3">
                     Score per spørsmål per uke
                 </Heading>

@@ -11,6 +11,7 @@ import { questionsFromJsonb } from '../../../questions/jsonb-utils'
 import BackLink from '../../../components/core/BackLink'
 import EditableTeamName from '../../../components/edit/EditableTeamName'
 import EditableTime from '../../../components/edit/EditableTime'
+import EditableStatus from '../../../components/edit/EditableStatus'
 import { TeamNotAccesible, TeamNotFound } from '../../../components/errors/ErrorMessages'
 
 import { LinkPanelDescription, LinkPanelTitle, LinkPanel } from 'aksel-client'
@@ -54,6 +55,7 @@ async function Page({ params }: Props): Promise<ReactElement> {
                 <LinkPanelTitle>Se helsegraf</LinkPanelTitle>
                 <LinkPanelDescription>Se utviklingen av teamhelse over tid</LinkPanelDescription>
             </LinkPanel>
+            <EditableStatus teamId={team.id} active={team.active} />
             <EditableTeamName teamId={team.id} name={team.name} />
             <EditableTime teamId={team.id} hour={team.postHour} day={team.postDay} type="ask" />
             <EditableTime teamId={team.id} hour={team.revealHour} day={team.revealDay} type="reveal" />
