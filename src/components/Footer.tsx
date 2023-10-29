@@ -8,10 +8,17 @@ import { Heading, BodyShort } from 'aksel-server'
 function Footer(): ReactElement {
     return (
         <footer className="border-t border-t-border-subtle mt-4 p-4 flex">
-            <Image className="object-contain" src={logo} alt="" aria-hidden height={128} quality={100} />
+            <Image
+                className="object-contain grayscale hover:grayscale-0 transition-all"
+                src={logo}
+                alt=""
+                aria-hidden
+                height={128}
+                quality={100}
+            />
             <div className="pl-4 mt-4">
                 <Heading size="medium" level="2">
-                    Helsesjekk bot er utviklet og vedlikeholdt av Team Sykmelding.
+                    Helsesjekk er utviklet og vedlikeholdt av Team Sykmelding.
                 </Heading>
                 <BodyShort>
                     Feedback og bugs kan rapporteres på slack på{' '}
