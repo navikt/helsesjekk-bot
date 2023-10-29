@@ -6,6 +6,7 @@ import { getUsersGroups, verifyUserLoggedIn } from '../auth/authentication'
 import { getTeamsByAdGroups, Team } from '../db'
 import TeamCard from '../components/TeamCard'
 import Code from '../components/core/Code'
+import Stats from '../components/Stats'
 
 import { Heading, BodyShort } from 'aksel-server'
 
@@ -42,6 +43,7 @@ export default async function Page(): Promise<ReactElement> {
                     </BodyShort>
                 </div>
             )}
+            <Stats />
         </div>
     )
 }
