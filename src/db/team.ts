@@ -133,6 +133,10 @@ export async function setAskTime(teamId: string, hour: number, day: number): Pro
     return prisma.team.update({ data: { postHour: hour, postDay: day }, where: { id: teamId } })
 }
 
+export async function setTeamStatus(teamId: string, active: boolean): Promise<Team> {
+    return prisma.team.update({ data: { active }, where: { id: teamId } })
+}
+
 export async function reactivateTeam(channelId: string): Promise<void> {
     await prisma.team.update({
         data: { active: true },

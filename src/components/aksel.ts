@@ -12,6 +12,7 @@ export * from '@navikt/ds-react/esm/copybutton'
 export * from '@navikt/ds-react/esm/tooltip'
 export * from '@navikt/ds-react/esm/form/TextField'
 export * from '@navikt/ds-react/esm/form/Select'
+export * from '@navikt/ds-react/esm/form/Switch'
 
 export {
     QuestionmarkIcon,

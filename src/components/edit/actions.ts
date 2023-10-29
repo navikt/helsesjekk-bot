@@ -3,7 +3,7 @@
 import { logger } from '@navikt/next-logger'
 import { revalidatePath } from 'next/cache'
 
-import { setTeamName, setRevealTime, setAskTime } from '../../db'
+import { setTeamName, setRevealTime, setAskTime, setTeamStatus } from '../../db'
 import { userHasAdGroup } from '../../auth/authentication'
 
 export async function editTeamName(groupId: string, teamId: string, formData: FormData): Promise<void> {
@@ -40,6 +40,16 @@ export async function editTime(
     } else {
         await setRevealTime(teamId, Number(hour), Number(day))
     }
+
+    revalidatePath(`/team/${groupId}`)
+}
+
+export async function toggleTeamStatus(groupId: string, teamId: string, active: boolean): Promise<void> {
+    if (!userHasAdGroup(groupId)) {
+        throw new Error('User does not have access to edit team name')
+    }
+
+    await setTeamStatus(teamId, active)
 
     revalidatePath(`/team/${groupId}`)
 }
