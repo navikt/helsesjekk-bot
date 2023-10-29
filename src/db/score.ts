@@ -5,11 +5,12 @@ import { scoreAsked } from '../metrics/metrics'
 import { prisma } from './prisma'
 
 export async function getTeamScoreTimeline(teamId: string): Promise<
-    {
-        timestamp: Date
-        score: number
-        answers: number
-    }[]
+    | {
+          timestamp: Date
+          score: number
+          answers: number
+      }[]
+    | { error: string }
 > {
     const team = await prisma.team.findFirst({
         where: { active: true, id: teamId },
@@ -20,6 +21,18 @@ export async function getTeamScoreTimeline(teamId: string): Promise<
             },
         },
     })
+
+    if (team == null) {
+        return {
+            error: 'Fant ikke ditt team',
+        }
+    }
+
+    if (team.Asked.length === 0) {
+        return {
+            error: 'Teamet ditt har ingen spørringer enda.',
+        }
+    }
 
     const scores = R.sortBy(
         team.Asked
@@ -43,11 +56,14 @@ type WeekWithQuestionScores = {
     timestamp: Date
 } & Record<number, { id: string; score: number | null }>
 
-export async function getTeamScorePerQuestion(teamId: string): Promise<{
-    scoredQuestions: WeekWithQuestionScores[]
-    questions: { id: string; question: string }[]
-    maxQuestions: number
-}> {
+export async function getTeamScorePerQuestion(teamId: string): Promise<
+    | {
+          scoredQuestions: WeekWithQuestionScores[]
+          questions: { id: string; question: string }[]
+          maxQuestions: number
+      }
+    | { error: string }
+> {
     const team = await prisma.team.findFirst({
         where: { active: true, id: teamId },
         include: {
@@ -57,6 +73,18 @@ export async function getTeamScorePerQuestion(teamId: string): Promise<{
             },
         },
     })
+
+    if (team == null) {
+        return {
+            error: 'Fant ikke ditt team',
+        }
+    }
+
+    if (team.Asked.length === 0) {
+        return {
+            error: 'Teamet ditt har ingen spørringer enda.',
+        }
+    }
 
     const scoredAsks = R.pipe(
         team.Asked,
