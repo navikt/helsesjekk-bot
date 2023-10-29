@@ -15,6 +15,7 @@ export type ScoredAsk = {
     totalScore: number
     scoredQuestions: ScoredQuestion[]
     answerCount: number
+    timestamp: Date
 }
 
 export function scoreAsked(asked: AskedWithAnswers): ScoredAsk {
@@ -37,6 +38,7 @@ export function scoreAsked(asked: AskedWithAnswers): ScoredAsk {
         totalScore: overallScore(scoredQuestions),
         scoredQuestions,
         answerCount: asked.answers.length,
+        timestamp: asked.timestamp,
     }
 }
 

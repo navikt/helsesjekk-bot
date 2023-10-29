@@ -5,9 +5,10 @@ import { TeamNotAccesible, TeamNotFound } from '../../../../components/errors/Er
 import { userHasAdGroup } from '../../../../auth/authentication'
 import BackLink from '../../../../components/core/BackLink'
 import { getTeamByAdGroup } from '../../../../db'
-import { getTeamScoreTimeline } from '../../../../db/score'
+import { getTeamScorePerQuestion, getTeamScoreTimeline } from '../../../../db/score'
 import OverallScoreGraph from '../../../../components/graphs/OverallScoreGraph'
 import { getWeekNumber } from '../../../../utils/date'
+import ScorePerQuestion from '../../../../components/graphs/ScorePerQuestion'
 
 import { Heading, Skeleton, BodyLong, Detail } from 'aksel-server'
 
@@ -44,6 +45,9 @@ async function Page({ params }: Props): Promise<ReactElement> {
             <Suspense fallback={<Skeleton height={300} variant="rounded" />}>
                 <OverallGraph teamId={team.id} />
             </Suspense>
+            <Suspense fallback={<Skeleton height={300} variant="rounded" />}>
+                <PerQuestionGraph teamId={team.id} />
+            </Suspense>
         </div>
     )
 }
@@ -54,7 +58,10 @@ async function OverallGraph({ teamId }: { teamId: string }): Promise<ReactElemen
     if (scoreTimeline.length === 0) {
         return (
             <div className="max-w-prose">
-                <Heading size="medium" level="3" spacing>
+                <Heading size="medium" level="3">
+                    Total score per uke
+                </Heading>
+                <Heading size="medium" level="4" spacing>
                     Teamet ditt har ingen data
                 </Heading>
                 <BodyLong>
@@ -69,7 +76,7 @@ async function OverallGraph({ teamId }: { teamId: string }): Promise<ReactElemen
     return (
         <div>
             <Heading size="medium" level="3">
-                Score per uke
+                Total score per uke
             </Heading>
             <Detail>
                 {scoreTimeline.length} målinger siden Uke {getWeekNumber(earliest.timestamp)},{' '}
@@ -77,6 +84,43 @@ async function OverallGraph({ teamId }: { teamId: string }): Promise<ReactElemen
             </Detail>
             <div className="mt-4">
                 <OverallScoreGraph data={scoreTimeline} />
+            </div>
+        </div>
+    )
+}
+
+async function PerQuestionGraph({ teamId }: { teamId: string }): Promise<ReactElement> {
+    const { scoredQuestions, maxQuestions, questions } = await getTeamScorePerQuestion(teamId)
+
+    if (scoredQuestions.length === 0) {
+        return (
+            <div className="max-w-prose">
+                <Heading size="medium" level="3">
+                    Score per spørsmål per uke
+                </Heading>
+                <Heading size="medium" level="3" spacing>
+                    Teamet ditt har ingen data
+                </Heading>
+                <BodyLong>
+                    Det er ingen data å vise for teamet ditt. Dette kan skyldes at teamet ditt ikke har svart på noen
+                    spørsmål enda.
+                </BodyLong>
+            </div>
+        )
+    }
+
+    const earliest = R.minBy(scoredQuestions, (it) => it.timestamp.getTime())
+    return (
+        <div>
+            <Heading size="medium" level="3">
+                Score per spørsmål per uke
+            </Heading>
+            <Detail>
+                {scoredQuestions.length} målinger siden Uke {getWeekNumber(earliest.timestamp)},{' '}
+                {earliest.timestamp.getFullYear()}
+            </Detail>
+            <div className="mt-4">
+                <ScorePerQuestion maxQuestions={maxQuestions} questions={questions} data={scoredQuestions} />
             </div>
         </div>
     )
