@@ -25,4 +25,5 @@ export {
     PlusIcon,
     SparklesIcon,
     TrashIcon,
+    LinkIcon,
 } from '@navikt/aksel-icons'

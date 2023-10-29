@@ -9,6 +9,7 @@ import step3 from './step3.png'
 import step4 from './step4.png'
 
 import { Heading, BodyLong, BodyShort } from 'aksel-server'
+import { CopyButton, LinkIcon } from 'aksel-client'
 
 function HowToGuide(): ReactElement {
     return (
@@ -74,8 +75,16 @@ function HowToGuide(): ReactElement {
                 Nå er botten klar til bruk. Første spørring vil bli spurt på dagen du har valgt.
             </BodyShort>
 
-            <Heading size="medium" level="2">
+            <Heading size="medium" level="2" id="koble-til" className="flex items-center gap-2">
                 Koble botten til denne nettsiden, så du kan se grafene dine og endre på innstillingene.
+                <div>
+                    <CopyButton
+                        copyText="https://helsesjekk-bot.intern.nav.no/kom-i-gang#koble-til"
+                        activeText="Lenken er kopiert"
+                        size="small"
+                        icon={<LinkIcon aria-hidden />}
+                    />
+                </div>
             </Heading>
 
             <BodyLong spacing>

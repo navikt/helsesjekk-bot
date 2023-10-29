@@ -5,6 +5,7 @@ import LinkButton from '../../components/core/LinkButton'
 import HowToGuide from '../../components/guide/HowToGuide'
 
 import { Heading, BodyLong } from 'aksel-server'
+import { CopyButton, LinkIcon } from 'aksel-client'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Kom i gang',
@@ -23,16 +24,24 @@ function Page(): ReactElement {
 
 function GroupFinder(): ReactElement {
     return (
-        <div className="mt-8">
-            <Heading size="medium" level="2">
+        <div className="mt-8 max-w-prose">
+            <Heading size="medium" level="2" id="finn-gruppe" className="flex items-center gap-3">
                 Finn din gruppe
+                <div>
+                    <CopyButton
+                        copyText="https://helsesjekk-bot.intern.nav.no/kom-i-gang#finn-gruppe"
+                        activeText="Lenken er kopiert"
+                        size="small"
+                        icon={<LinkIcon aria-hidden />}
+                    />
+                </div>
             </Heading>
-            <BodyLong spacing className="max-w-prose">
+            <BodyLong spacing>
                 For å gi teamet ditt tilgang til å kunne se info om sitt team, må du finne en felles ad-gruppe for
                 teamet. Din bruker kan være knyttet til titalls grupper, men teamet ditt har mest sannsynligvis en
                 gruppe som alle er medlem i. Denne gruppen heter typisk noe alà team-navnet ditt.
             </BodyLong>
-            <BodyLong spacing className="max-w-prose">
+            <BodyLong spacing>
                 En måte å finne denne gruppen på er å sjekke på{' '}
                 <a
                     href="https://myaccount.microsoft.com/groups/groups-i-belong-to"
