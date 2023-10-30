@@ -13,7 +13,7 @@ function Header(): ReactElement {
         <div>
             <header className="flex justify-between">
                 <Link href="/" className="flex w-full p-4 text-grayalpha-900">
-                    <Image className="object-contain" src={logo} alt="" aria-hidden height={48} />
+                    <Image className="w-auto" src={logo} alt="" aria-hidden width={64} />
                     <div className="pl-4">
                         <Heading size="large">Helsesjekk</Heading>
                         <Detail>En helsesjekk-bot for ditt autonome team</Detail>
@@ -25,10 +25,11 @@ function Header(): ReactElement {
                     </Suspense>
                 </div>
             </header>
-            <div className="ml-20 mb-8 flex gap-4">
+            <div className="ml-20 mb-8 flex gap-6">
                 <Link href="/">Mine team</Link>
                 <Link href="/hva-er-helsesjekk">Hva er helsesjekk</Link>
                 <Link href="/kom-i-gang">Kom i gang</Link>
+                <Link href="/global-helse">NAV Helse</Link>
                 <Link href="/kom-i-gang/grupper">Mine grupper</Link>
             </div>
         </div>

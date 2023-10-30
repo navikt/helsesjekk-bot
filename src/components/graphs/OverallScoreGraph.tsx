@@ -60,7 +60,7 @@ function OverallScoreGraph({ data }: Props): ReactElement {
                         stroke="rgb(0, 103, 197, 0.5)"
                         strokeWidth={2}
                         isAnimationActive={false}
-                        dot={CustomDot}
+                        dot={({ key, ...rest }) => <CustomDot key={key} {...rest} />}
                     />
                     <Legend formatter={(value) => (value === 'answers' ? 'Antall svar' : 'Team score')} />
                 </ComposedChart>

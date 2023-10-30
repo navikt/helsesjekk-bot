@@ -1,6 +1,9 @@
 import * as R from 'remeda'
+import { getYear } from 'date-fns'
 
 import { scoreAsked } from '../metrics/metrics'
+import { getWeekNumber } from '../utils/date'
+import { QuestionType } from '../safe-types'
 
 import { prisma } from './prisma'
 
@@ -141,4 +144,49 @@ export async function getTeamScorePerQuestion(teamId: string): Promise<
     )
 
     return { scoredQuestions: scores, maxQuestions: maxIndex, questions }
+}
+
+export async function getGlobalScoreTimeline(): Promise<
+    ({
+        timestamp: Date
+        score: number
+        answers: number
+    } & Record<QuestionType, number>)[]
+> {
+    const completedAsks = await prisma.asked.findMany({
+        where: { revealed: true, skipped: false },
+        include: { answers: true },
+    })
+
+    const scoresPerWeek = R.pipe(
+        completedAsks,
+        R.filter((asked) => asked.answers.length > 0),
+        R.sortBy(R.prop('timestamp')),
+        R.groupBy((it) => `${getYear(it.timestamp)}-${getWeekNumber(it.timestamp)}`),
+        R.toPairs,
+        R.fromPairs.strict,
+        R.mapValues(R.map(scoreAsked)),
+        R.mapValues((scoredAsks) => {
+            const sum = R.sumBy(scoredAsks, R.prop('totalScore'))
+            const scorePerCategory = R.pipe(
+                scoredAsks,
+                R.flatMap((it) => it.scoredQuestions),
+                R.groupBy.strict(R.prop('type')),
+                R.mapValues((it) => {
+                    const sum = R.sumBy(it, R.prop('score'))
+                    return sum / it.length
+                }),
+            )
+
+            return {
+                timestamp: scoredAsks[0].timestamp,
+                score: sum / scoredAsks.length,
+                answers: R.sumBy(scoredAsks, (it) => it.answerCount),
+                ...scorePerCategory,
+            }
+        }),
+        R.values,
+    )
+
+    return scoresPerWeek
 }

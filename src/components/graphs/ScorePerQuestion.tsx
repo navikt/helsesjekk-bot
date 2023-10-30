@@ -63,7 +63,7 @@ function OverallScoreGraph({ maxQuestions, questions, data }: Props): ReactEleme
                             stroke={index < 10 ? colorsLineIndex[index] : 'rgba(205, 92, 92, 0.5)'}
                             strokeWidth={2}
                             isAnimationActive={false}
-                            dot={CustomDot}
+                            dot={({ key, ...rest }) => <CustomDot key={key} {...rest} />}
                         />
                     ))}
                     <Legend formatter={(_value, _entry, index) => indexQuestionLookup[index]} />
