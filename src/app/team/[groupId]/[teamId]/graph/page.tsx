@@ -60,17 +60,19 @@ async function OverallGraph({ teamId }: { teamId: string }): Promise<ReactElemen
 
     if ('error' in scoreTimeline || scoreTimeline.length === 0) {
         return (
-            <div className="max-w-prose mb-4">
+            <div className="mb-4">
                 <Heading size="medium" level="3">
                     Total score per uke
                 </Heading>
-                <Heading size="medium" level="4" spacing>
-                    Teamet ditt har ingen data
-                </Heading>
-                <BodyLong>
-                    Det er ingen data å vise for teamet ditt. Dette kan skyldes at teamet ditt ikke har svart på noen
-                    spørsmål enda.
-                </BodyLong>
+                <div className="w-full aspect-video relative flex items-center justify-center flex-col border rounded border-border-subtle">
+                    <Heading size="medium" level="4" spacing>
+                        Teamet ditt har ingen data
+                    </Heading>
+                    <BodyLong>
+                        Det er ingen data å vise for teamet ditt. Dette kan skyldes at teamet ditt ikke har svart på
+                        noen spørsmål enda.
+                    </BodyLong>
+                </div>
             </div>
         )
     }
@@ -97,17 +99,19 @@ async function PerQuestionGraph({ teamId }: { teamId: string }): Promise<ReactEl
 
     if ('error' in teamMetrics) {
         return (
-            <div className="max-w-prose mb-4">
+            <div className="mb-4">
                 <Heading size="medium" level="3">
                     Score per spørsmål per uke
                 </Heading>
-                <Heading size="medium" level="3" spacing>
-                    Teamet ditt har ingen data
-                </Heading>
-                <BodyLong>
-                    Det er ingen data å vise for teamet ditt. Dette kan skyldes at teamet ditt ikke har svart på noen
-                    spørsmål enda.
-                </BodyLong>
+                <div className="w-full aspect-video relative flex items-center justify-center flex-col border rounded border-border-subtle">
+                    <Heading size="medium" level="3" spacing>
+                        Teamet ditt har ingen data
+                    </Heading>
+                    <BodyLong>
+                        Det er ingen data å vise for teamet ditt. Dette kan skyldes at teamet ditt ikke har svart på
+                        noen spørsmål enda.
+                    </BodyLong>
+                </div>
             </div>
         )
     }

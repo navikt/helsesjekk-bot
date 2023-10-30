@@ -27,6 +27,7 @@ function Header(): ReactElement {
             </header>
             <div className="ml-20 mb-8 flex gap-4">
                 <Link href="/">Mine team</Link>
+                <Link href="/hva-er-helsesjekk">Hva er helsesjekk</Link>
                 <Link href="/kom-i-gang">Kom i gang</Link>
                 <Link href="/kom-i-gang/grupper">Mine grupper</Link>
             </div>
