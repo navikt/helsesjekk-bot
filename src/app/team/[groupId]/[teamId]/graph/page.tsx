@@ -1,36 +1,28 @@
 import * as R from 'remeda'
 import React, { ReactElement, Suspense } from 'react'
 
-import { TeamNotAccesible, TeamNotFound } from '../../../../components/errors/ErrorMessages'
-import { userHasAdGroup, verifyUserLoggedIn } from '../../../../auth/authentication'
-import BackLink from '../../../../components/core/BackLink'
-import { getTeamByAdGroup } from '../../../../db'
-import { getTeamScorePerQuestion, getTeamScoreTimeline } from '../../../../db/score'
-import OverallScoreGraph from '../../../../components/graphs/OverallScoreGraph'
-import { getWeekNumber } from '../../../../utils/date'
-import ScorePerQuestion from '../../../../components/graphs/ScorePerQuestion'
+import { TeamNotAccesible, TeamNotFound } from '../../../../../components/errors/ErrorMessages'
+import { userHasAdGroup, verifyUserLoggedIn } from '../../../../../auth/authentication'
+import BackLink from '../../../../../components/core/BackLink'
+import { getTeamByAdGroupAndTeamId } from '../../../../../db'
+import { getTeamScorePerQuestion, getTeamScoreTimeline } from '../../../../../db/score'
+import OverallScoreGraph from '../../../../../components/graphs/OverallScoreGraph'
+import { getWeekNumber } from '../../../../../utils/date'
+import ScorePerQuestion from '../../../../../components/graphs/ScorePerQuestion'
 
 import { Heading, Skeleton, BodyLong, Detail } from 'aksel-server'
 
 type Props = {
     params: {
         groupId: string
+        teamId: string
     }
 }
 
 async function Page({ params }: Props): Promise<ReactElement> {
-    await verifyUserLoggedIn(`/team/${params.groupId}/graph`)
+    await verifyUserLoggedIn(`/team/${params.groupId}/${params.teamId}/graph`)
 
-    if (!(await userHasAdGroup(params.groupId))) {
-        return (
-            <div>
-                <BackLink href="/" />
-                <TeamNotAccesible />
-            </div>
-        )
-    }
-
-    const team = await getTeamByAdGroup(params.groupId)
+    const team = await getTeamByAdGroupAndTeamId(params.groupId, params.teamId)
     if (!team) {
         return (
             <div>
@@ -40,9 +32,18 @@ async function Page({ params }: Props): Promise<ReactElement> {
         )
     }
 
+    if (!(await userHasAdGroup(team.assosiatedGroup))) {
+        return (
+            <div>
+                <BackLink href="/" />
+                <TeamNotAccesible />
+            </div>
+        )
+    }
+
     return (
         <div>
-            <BackLink href={`/team/${params.groupId}`} />
+            <BackLink href={`/team/${params.groupId}/${params.teamId}`} />
             <Heading size="large">Helsegraf for {team.name}</Heading>
             <Suspense fallback={<Skeleton height={300} variant="rounded" />}>
                 <OverallGraph teamId={team.id} />

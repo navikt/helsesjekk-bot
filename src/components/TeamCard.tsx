@@ -15,7 +15,7 @@ type Props = {
 
 function TeamCard({ team }: Props): ReactElement {
     return (
-        <LinkPanel as={Link} href={`/team/${team.assosiatedGroup}`} className="max-w-sm grow relative">
+        <LinkPanel as={Link} href={`/team/${team.assosiatedGroup}/${team.id}`} className="max-w-sm grow relative">
             <Tooltip content={`Teamet er ${team.active ? 'aktivt' : 'deaktivert'}`}>
                 <div className="flex gap-3 items-center">
                     {team.active ? <PingDot /> : <InactiveDot />}
