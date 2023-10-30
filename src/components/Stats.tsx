@@ -20,18 +20,7 @@ function Stats(): ReactElement {
                 Botten i NAV
             </Heading>
             <Detail spacing>Noen interessante tall om botten i NAV</Detail>
-            <Suspense
-                fallback={
-                    <div className="grid grid-cols-2 gap-3">
-                        <Skeleton variant="rounded" height="84px" />
-                        <Skeleton variant="rounded" height="84px" />
-                        <Skeleton variant="rounded" height="84px" />
-                        <Skeleton variant="rounded" height="84px" />
-                        <Skeleton variant="rounded" height="84px" />
-                        <Skeleton variant="rounded" height="84px" />
-                    </div>
-                }
-            >
+            <Suspense fallback={<StatsSkeleton />}>
                 <StatsView />
             </Suspense>
         </section>
@@ -39,6 +28,11 @@ function Stats(): ReactElement {
 }
 
 async function StatsView(): Promise<ReactElement> {
+    //  Hack to not prerender stats on build
+    if (process.env.NAIS_DATABASE_HELSESJEKK_BOT_HELSESJEKK_BOT_URL === undefined) {
+        return <StatsSkeleton />
+    }
+
     const stats = await funStats()
 
     return (
@@ -99,6 +93,19 @@ async function StatsView(): Promise<ReactElement> {
                     <BodyShort>{stats.dashboardTeams} team</BodyShort>
                 </div>
             </div>
+        </div>
+    )
+}
+
+function StatsSkeleton(): ReactElement {
+    return (
+        <div className="grid grid-cols-2 gap-3">
+            <Skeleton variant="rounded" height="84px" />
+            <Skeleton variant="rounded" height="84px" />
+            <Skeleton variant="rounded" height="84px" />
+            <Skeleton variant="rounded" height="84px" />
+            <Skeleton variant="rounded" height="84px" />
+            <Skeleton variant="rounded" height="84px" />
         </div>
     )
 }
