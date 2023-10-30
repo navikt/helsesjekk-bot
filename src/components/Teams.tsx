@@ -32,7 +32,12 @@ async function Teams(): Promise<ReactElement> {
         <Suspense
             fallback={
                 <div>
-                    <Skeleton />
+                    <Heading size="large" spacing>
+                        Dine team
+                    </Heading>
+                    <div className="flex gap-4 flex-wrap">
+                        <Skeleton variant="rounded" height={106} className="max-w-sm grow relative" />
+                    </div>
                 </div>
             }
         >
