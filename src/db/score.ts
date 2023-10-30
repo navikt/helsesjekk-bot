@@ -154,7 +154,7 @@ export async function getGlobalScoreTimeline(): Promise<
     } & Record<QuestionType, number>)[]
 > {
     const completedAsks = await prisma.asked.findMany({
-        where: { revealed: true, skipped: false },
+        where: { revealed: true, skipped: false, team: { active: true } },
         include: { answers: true },
     })
 
