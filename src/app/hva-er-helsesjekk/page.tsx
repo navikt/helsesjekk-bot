@@ -1,12 +1,18 @@
 import React, { ReactElement } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Metadata } from 'next'
 
 import ask from './ask.png'
 import reveal from './reveal.png'
 import locked from './locked.png'
 
 import { Heading, BodyLong } from 'aksel-server'
+
+export const metadata: Metadata = {
+    title: 'Helsesjekk | Hva er helsesjekk',
+    description: 'En introduksjon til helsesjekk',
+}
 
 function Page(): ReactElement {
     return (

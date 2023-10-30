@@ -29,7 +29,7 @@ function Header(): ReactElement {
                 <Link href="/">Mine team</Link>
                 <Link href="/hva-er-helsesjekk">Hva er helsesjekk</Link>
                 <Link href="/kom-i-gang">Kom i gang</Link>
-                <Link href="/global-helse">NAV Helse</Link>
+                <Link href="/global-helse">Helse i NAV</Link>
                 <Link href="/kom-i-gang/grupper">Mine grupper</Link>
             </div>
         </div>
