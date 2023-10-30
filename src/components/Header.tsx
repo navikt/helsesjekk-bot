@@ -16,7 +16,7 @@ function Header(): ReactElement {
                     <Image className="object-contain" src={logo} alt="" aria-hidden height={48} />
                     <div className="pl-4">
                         <Heading size="large">Helsesjekk</Heading>
-                        <Detail>En helsesjekk-bot for ditt autotome team</Detail>
+                        <Detail>En helsesjekk-bot for ditt autonome team</Detail>
                     </div>
                 </Link>
                 <div>
