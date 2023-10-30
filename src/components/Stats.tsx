@@ -4,7 +4,14 @@ import { Skeleton } from '@navikt/ds-react'
 import { funStats } from '../db/stats'
 
 import { Detail, Heading, BodyShort } from 'aksel-server'
-import { PersonTallShortIcon, QuestionmarkIcon, GavelIcon, HouseHeartIcon } from 'aksel-client'
+import {
+    PersonTallShortIcon,
+    QuestionmarkIcon,
+    GavelIcon,
+    HouseHeartIcon,
+    HandShakeHeartIcon,
+    TenancyIcon,
+} from 'aksel-client'
 
 function Stats(): ReactElement {
     return (
@@ -16,6 +23,8 @@ function Stats(): ReactElement {
             <Suspense
                 fallback={
                     <div className="grid grid-cols-2 gap-3">
+                        <Skeleton variant="rounded" height="84px" />
+                        <Skeleton variant="rounded" height="84px" />
                         <Skeleton variant="rounded" height="84px" />
                         <Skeleton variant="rounded" height="84px" />
                         <Skeleton variant="rounded" height="84px" />
@@ -70,6 +79,24 @@ async function StatsView(): Promise<ReactElement> {
                 </div>
                 <div className="flex gap-2">
                     <BodyShort>{stats.biggestTeam} medlemmer</BodyShort>
+                </div>
+            </div>
+            <div className="bg-bg-subtle rounded p-4">
+                <div className="flex gap-1 items-center">
+                    <TenancyIcon aria-hidden />
+                    <Heading size="small">Flest spørsmål i team</Heading>
+                </div>
+                <div className="flex gap-2">
+                    <BodyShort>{stats.mostQuestions} spørsmål</BodyShort>
+                </div>
+            </div>
+            <div className="bg-bg-subtle rounded p-4">
+                <div className="flex gap-1 items-center">
+                    <HandShakeHeartIcon aria-hidden />
+                    <Heading size="small">Helsesjekk Dashboard</Heading>
+                </div>
+                <div className="flex gap-2">
+                    <BodyShort>{stats.dashboardTeams} team</BodyShort>
                 </div>
             </div>
         </div>

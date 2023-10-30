@@ -5,8 +5,10 @@ export async function funStats(): Promise<{
     totalAsks: number
     totalAnswers: number
     biggestTeam: number
+    dashboardTeams: number
+    mostQuestions: number
 }> {
-    const [activeTeams, totalAsks, totalAnswers, biggestTeam] = await Promise.all([
+    const [activeTeams, totalAsks, totalAnswers, biggestTeam, dashboardTeams, mostQuestions] = await Promise.all([
         await prisma.team.count({
             where: { active: true },
         }),
@@ -26,6 +28,10 @@ export async function funStats(): Promise<{
                 },
             })
         )._count.answers,
+        await prisma.team.count({
+            where: { active: true, assosiatedGroup: { not: null } },
+        }),
+        (await prisma.$queryRaw`SELECT MAX(jsonb_array_length(questions)) FROM "Team";`)[0]?.max,
     ])
 
     return {
@@ -33,5 +39,7 @@ export async function funStats(): Promise<{
         totalAsks,
         totalAnswers,
         biggestTeam,
+        dashboardTeams,
+        mostQuestions,
     }
 }
