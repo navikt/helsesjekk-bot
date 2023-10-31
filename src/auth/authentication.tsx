@@ -10,7 +10,6 @@ import { fakeToken } from './fake-token'
 import { getMembersOf } from './ms-graph'
 
 export async function verifyUserLoggedIn(redirectPath: string): Promise<void> {
-    logger.info('Getting headers')
     const requestHeaders = headers()
 
     if (isLocal) {

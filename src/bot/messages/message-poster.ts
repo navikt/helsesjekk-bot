@@ -1,9 +1,8 @@
-import { logger } from '@navikt/next-logger'
-
 import { App } from '../app'
 import { questionsFromJsonb } from '../../questions/jsonb-utils'
 import { markAskedRevealed, createAsked, getActiveAsk, Team, getPreviousAsk, markAskedAsNagged } from '../../db'
 import { scoreAsked } from '../../metrics/metrics'
+import { botLogger } from '../bot-logger'
 
 import {
     createCompletedBlocks,
@@ -23,7 +22,7 @@ export async function postToTeam(team: Team, client: App['client']): Promise<boo
     })
 
     if (!message.ok || message.ts == null) {
-        logger.error(`Unable to post message for team ${team.name}, error: ${message.error ?? 'Unknown error'}`)
+        botLogger.error(`Unable to post message for team ${team.name}, error: ${message.error ?? 'Unknown error'}`)
         return false
     }
 
@@ -35,7 +34,7 @@ export async function remindTeam(team: Team, client: App['client']): Promise<boo
     const asked = await getActiveAsk(team.id)
 
     if (asked == null) {
-        logger.error('Weird state: Found no active asked when trying nag team')
+        botLogger.error('Weird state: Found no active asked when trying nag team')
         return false
     }
 
@@ -47,7 +46,7 @@ export async function remindTeam(team: Team, client: App['client']): Promise<boo
     })
 
     if (!message.ok || message.ts == null) {
-        logger.error(`Unable to post message for team ${team.name}, error: ${message.error ?? 'Unknown error'}`)
+        botLogger.error(`Unable to post message for team ${team.name}, error: ${message.error ?? 'Unknown error'}`)
         return false
     }
 
@@ -73,7 +72,7 @@ export async function updateResponseCount(team: Team, client: App['client']): Pr
     })
 
     if (!message.ok) {
-        logger.error(`Unable to update message for team ${team.name}, error: ${message.error ?? 'Unknown error'}`)
+        botLogger.error(`Unable to update message for team ${team.name}, error: ${message.error ?? 'Unknown error'}`)
         return false
     }
 
@@ -84,7 +83,7 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
     const asked = await getActiveAsk(team.id)
 
     if (asked == null) {
-        logger.error('Weird state: Found no active asked when trying to reveal')
+        botLogger.error('Weird state: Found no active asked when trying to reveal')
         return false
     }
 

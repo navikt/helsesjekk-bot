@@ -1,9 +1,9 @@
 import { Logger, LogLevel } from '@slack/logger'
 import { App as BoltApp } from '@slack/bolt'
-import { logger } from '@navikt/next-logger'
 import { lazyNextleton } from 'nextleton'
+import { logger } from '@navikt/next-logger'
 
-const slackLogger = logger.child({ x_isSlack: true })
+const slackLogger = logger.child({ x_context: 'slack-bot', x_isSlack: true })
 
 // Custom logger adapter because Bolt didn't like the pino logger
 const loggerAdapter: Logger = {

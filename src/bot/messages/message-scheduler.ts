@@ -1,11 +1,11 @@
 import { schedule } from 'node-cron'
 import { getHours } from 'date-fns'
-import { logger } from '@navikt/next-logger'
 
 import { App } from '../app'
 import { deactivateTeam, getActiveTeams, hasActiveAsk, hasActiveUnnaggedAsk, hasAskedToday } from '../../db'
 import { dayIndexToDay, getDayCorrect, getNowInNorway } from '../../utils/date'
 import { isLeader } from '../../utils/leader'
+import { botLogger } from '../bot-logger'
 
 import { postToTeam, remindTeam, revealTeam } from './message-poster'
 
@@ -17,15 +17,15 @@ export function configureMessageScheduler(app: App): void {
     schedule(EVERY_5TH_MINUTE, async () => {
         const isPodLeader = await isLeader()
         if (!isPodLeader) {
-            logger.info('Not the pod leader, skipping scheduled job')
+            botLogger.info('Not the pod leader, skipping scheduled job')
             return
         }
 
-        logger.info('Running scheduled job, checking for messages to post')
+        botLogger.info('Running scheduled job, checking for messages to post')
 
         try {
             const activeTeams = await getActiveTeams()
-            logger.info(
+            botLogger.info(
                 `There are ${activeTeams.length} active teams:\n${activeTeams
                     .map(
                         (team) =>
@@ -42,59 +42,61 @@ export function configureMessageScheduler(app: App): void {
                     !(await hasActiveAsk(team.id)) &&
                     !(await hasAskedToday(team.id))
                 ) {
-                    logger.info(`It's time to post helsesjekk for team ${team.name}!`)
+                    botLogger.info(`It's time to post helsesjekk for team ${team.name}!`)
 
                     try {
                         await postToTeam(team, app.client)
                         continue
                     } catch (e) {
                         if (e instanceof Error && e.message.includes('An API error occurred: is_archived')) {
-                            logger.info(`The team ${team.name} has been archived, marking team as inactive`)
+                            botLogger.info(`The team ${team.name} has been archived, marking team as inactive`)
                             await deactivateTeam(team.id)
                             continue
                         }
 
-                        logger.error(new Error(`Failed to post helsesjekk for team ${team.name}.`, { cause: e }))
+                        botLogger.error(new Error(`Failed to post helsesjekk for team ${team.name}.`, { cause: e }))
                         continue
                     }
                 }
 
                 if (isSameDayAndHour(team.revealDay, team.revealHour - 1) && (await hasActiveUnnaggedAsk(team.id))) {
-                    logger.info(`Nagging team ${team.name} about helsesjekk closing in an hour!!`)
+                    botLogger.info(`Nagging team ${team.name} about helsesjekk closing in an hour!!`)
 
                     try {
                         await remindTeam(team, app.client)
                     } catch (e) {
                         if (e instanceof Error && e.message.includes('An API error occurred: is_archived')) {
-                            logger.info(`The team ${team.name} has been archived, marking team as inactive`)
+                            botLogger.info(`The team ${team.name} has been archived, marking team as inactive`)
                             await deactivateTeam(team.id)
                             continue
                         }
 
-                        logger.error(new Error(`Failed to remind team ${team.name} to post helsesjekk.`, { cause: e }))
+                        botLogger.error(
+                            new Error(`Failed to remind team ${team.name} to post helsesjekk.`, { cause: e }),
+                        )
                         continue
                     }
                 }
 
                 if (isSameDayAndHour(team.revealDay, team.revealHour) && (await hasActiveAsk(team.id))) {
-                    logger.info(`It's time to reveal helsesjekk for team ${team.name}!`)
+                    botLogger.info(`It's time to reveal helsesjekk for team ${team.name}!`)
 
                     try {
                         await revealTeam(team, app.client)
                     } catch (e) {
                         if (e instanceof Error && e.message.includes('An API error occurred: is_archived')) {
-                            logger.info(`The team ${team.name} has been archived, marking team as inactive`)
+                            botLogger.info(`The team ${team.name} has been archived, marking team as inactive`)
                             await deactivateTeam(team.id)
                             continue
                         }
 
-                        logger.error(new Error(`Failed to reveal helsesjekk for team ${team.name}.`, { cause: e }))
+                        botLogger.error(new Error(`Failed to reveal helsesjekk for team ${team.name}.`, { cause: e }))
                         continue
                     }
                 }
             }
         } catch (e) {
-            logger.error(new Error('Scheduled job failed at root.', { cause: e }))
+            botLogger.error(new Error('Scheduled job failed at root.', { cause: e }))
         }
     })
 }

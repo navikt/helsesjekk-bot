@@ -1,6 +1,6 @@
 'use server'
 
-import { logger } from '@navikt/next-logger'
+import { logger as baseLogger } from '@navikt/next-logger'
 import { revalidatePath } from 'next/cache'
 
 import {
@@ -12,6 +12,8 @@ import {
     deleteQuestionFromTeam,
 } from '../../db'
 import { userHasAdGroup } from '../../auth/authentication'
+
+const logger = baseLogger.child({ x_context: 'server-actions' })
 
 export async function editTeamName(groupId: string, teamId: string, formData: FormData): Promise<void> {
     if (!(await userHasAdGroup(groupId))) {
@@ -56,6 +58,8 @@ export async function toggleTeamStatus(groupId: string, teamId: string, active: 
         throw new Error('User does not have access to edit team name')
     }
 
+    logger.info(`User is toggling team status for team ${teamId}, new status: ${active}`)
+
     await setTeamStatus(teamId, active)
 
     revalidatePath(`/team/${groupId}`)
@@ -86,6 +90,8 @@ export async function deleteQuestion(groupId: string, teamId: string, questionId
     if (!(await userHasAdGroup(groupId))) {
         throw new Error('User does not have access to edit team name')
     }
+
+    logger.info(`User is deleting question for team ${teamId} ${questionId}`)
 
     await deleteQuestionFromTeam(teamId, questionId)
 

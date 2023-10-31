@@ -1,16 +1,15 @@
-import { logger } from '@navikt/next-logger'
-
 import { App } from '../app'
 import { createSettingsModal } from '../events/settings/settings-modal-builder'
 import { postToTeam, remindTeam, revealTeam, updateResponseCount } from '../messages/message-poster'
 import { createTeam, getPreviousAsk, getTeam, hasActiveUnnaggedAsk, prisma, updateTeamGroupAssociation } from '../../db'
 import { scoreAsked } from '../../metrics/metrics'
 import { createScoreBlocks } from '../messages/message-builder'
+import { botLogger } from '../bot-logger'
 
 export function configureCommandsHandler(app: App): void {
     // Handles the /helsesjekk command, it opens the settings modal
     app.command(/(.*)/, async ({ command, ack, client, respond }) => {
-        logger.info(`User used /helsesjekk command`)
+        botLogger.info(`User used /helsesjekk command`)
 
         if (command.text.trim().startsWith('assign')) {
             const groupId = command.text.replace('assign', '').trim()
@@ -22,7 +21,7 @@ export function configureCommandsHandler(app: App): void {
                 return
             }
 
-            logger.info(`User wants to connect ${command.channel_id} to ${groupId}`)
+            botLogger.info(`User wants to connect ${command.channel_id} to ${groupId}`)
             await ack()
             await updateTeamGroupAssociation(command.channel_id, groupId)
             await respond({
@@ -33,7 +32,7 @@ export function configureCommandsHandler(app: App): void {
 
         const isBotInChannel = await isBotAddedToChannel(command.channel_id, client)
         if (isBotInChannel !== true) {
-            logger.warn(
+            botLogger.warn(
                 `Someone used /helsesjekk in a DM or a channel where it hasn't been added. Type: ${isBotInChannel} Channel ID: ${command.channel_id}`,
             )
             await ack()
@@ -53,7 +52,7 @@ export function configureCommandsHandler(app: App): void {
 
     // TODO inn i settings slash command?
     app.event('app_mention', async ({ event, say }) => {
-        logger.info(`User mentioned the bot in ${process.env.NODE_ENV}`)
+        botLogger.info(`User mentioned the bot in ${process.env.NODE_ENV}`)
 
         try {
             if (process.env.NODE_ENV !== 'production') {
@@ -87,7 +86,7 @@ export function configureCommandsHandler(app: App): void {
                             data: { revealed: false },
                             where: { id: toUpdate.id },
                         })
-                        logger.info(`Unlocked ${team.name} (${team.id})`)
+                        botLogger.info(`Unlocked ${team.name} (${team.id})`)
                         await updateResponseCount(team, app.client)
                     }
                 }
@@ -95,7 +94,7 @@ export function configureCommandsHandler(app: App): void {
                 if (event.text.endsWith('remind')) {
                     const team = await getTeam(event.channel)
                     if (team != null) {
-                        logger.info(`Would team have been nagged? ${await hasActiveUnnaggedAsk(team.id)}`)
+                        botLogger.info(`Would team have been nagged? ${await hasActiveUnnaggedAsk(team.id)}`)
                         await remindTeam(team, app.client)
                     }
                 }
@@ -129,7 +128,7 @@ export function configureCommandsHandler(app: App): void {
                 }
             }
         } catch (e) {
-            logger.error(e)
+            botLogger.error(e)
             await say('Oi! Noe gikk galt i botten. :( Dersom det skjer igjen, ta kontakt i #helsesjekk-bot.')
         }
     })
@@ -149,7 +148,7 @@ async function isBotAddedToChannel(
         }
 
         if (!channelInfo.ok) {
-            logger.info(
+            botLogger.info(
                 `Unable to get channel info, integration not in channel, or is a DM?: ${
                     channelInfo.error ?? 'No error'
                 }`,
@@ -159,7 +158,7 @@ async function isBotAddedToChannel(
 
         return true
     } catch (e) {
-        logger.error(new Error("Couldn't get channel info", { cause: e }))
+        botLogger.error(new Error("Couldn't get channel info", { cause: e }))
         return 'unknown'
     }
 }
