@@ -118,6 +118,9 @@ export function createSettingsModal(team: Team, isAdding = false): ModalView {
             textSection(
                 'Det er fint å sende helsesjekken på fredag, gjerne etter friday wins. Helsesjekken vil låses og vise statistikken, dette burde man ha klart før monday commits.',
             ),
+            textSection(
+                'For å endre på frekvensen på helsesjekken og andre innstillinger, besøk https://helsesjekk-bot.intern.nav.no/',
+            ),
             postDayInput(dayOptions, team),
             postHourInput(team),
             revealDayInput(dayOptions, team),

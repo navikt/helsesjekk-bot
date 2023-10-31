@@ -142,6 +142,10 @@ export async function setTeamStatus(teamId: string, active: boolean): Promise<Te
     return prisma.team.update({ data: { active }, where: { id: teamId } })
 }
 
+export async function setTeamFrequency(teamId: string, frequency: number, weekSkew: number): Promise<Team> {
+    return prisma.team.update({ data: { frequency, weekSkew }, where: { id: teamId } })
+}
+
 export async function addQuestionToTeam(
     teamId: string,
     question: {

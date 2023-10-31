@@ -6,18 +6,19 @@ import Link from 'next/link'
 
 import { LinkPanelDescription, LinkPanelTitle, LinkPanel } from 'aksel-client'
 
+import { Question, QuestionType } from '../../../../safe-types'
 import { getTeamByAdGroupAndTeamId } from '../../../../db'
 import { userHasAdGroup, verifyUserLoggedIn } from '../../../../auth/authentication'
 import { questionTypeToText } from '../../../../utils/asked'
 import { questionsFromJsonb } from '../../../../questions/jsonb-utils'
+import { TeamNotAccesible, TeamNotFound } from '../../../../components/errors/ErrorMessages'
 import BackLink from '../../../../components/core/BackLink'
 import EditableTeamName from '../../../../components/edit/EditableTeamName'
 import EditableTime from '../../../../components/edit/EditableTime'
 import EditableStatus from '../../../../components/edit/EditableStatus'
-import { TeamNotAccesible, TeamNotFound } from '../../../../components/errors/ErrorMessages'
 import AddQuestion from '../../../../components/edit/AddQuestion'
-import { Question, QuestionType } from '../../../../safe-types'
 import DeletableQuestion from '../../../../components/edit/DeletableQuestion'
+import EditableFrequency from '../../../../components/edit/EditableFrequency'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team',
@@ -68,6 +69,13 @@ async function Page({ params }: Props): Promise<ReactElement> {
                 <LinkPanelDescription>Se utviklingen av teamhelse over tid</LinkPanelDescription>
             </LinkPanel>
             <EditableStatus teamId={team.id} active={team.active} />
+            <EditableFrequency
+                teamId={team.id}
+                postDay={team.postDay}
+                postHour={team.postHour}
+                frequency={team.frequency}
+                weekSkew={team.weekSkew}
+            />
             <EditableTeamName teamId={team.id} name={team.name} />
             <EditableTime teamId={team.id} hour={team.postHour} day={team.postDay} type="ask" />
             <EditableTime teamId={team.id} hour={team.revealHour} day={team.revealDay} type="reveal" />
