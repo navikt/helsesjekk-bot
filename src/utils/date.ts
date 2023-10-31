@@ -1,4 +1,4 @@
-import { getDay, getWeek } from 'date-fns'
+import { getDay, getWeek, differenceInDays } from 'date-fns'
 
 export function getWeekNumber(date: Date): number {
     return getWeek(date, { weekStartsOn: 1 }) - 1
@@ -15,4 +15,9 @@ export function getDayCorrect(date: Date): number {
 const days = ['mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag', 'søndag']
 export function dayIndexToDay(index: number): string {
     return days[index]
+}
+
+export function daysUntil(date: Date): number {
+    const now = getNowInNorway()
+    return differenceInDays(date, now)
 }
