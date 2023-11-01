@@ -6,7 +6,7 @@ import { deactivateTeam, getActiveTeams, hasActiveAsk, hasActiveUnnaggedAsk, has
 import { dayIndexToDay, getDayCorrect, getNowInNorway } from '../../utils/date'
 import { isLeader } from '../../utils/leader'
 import { botLogger } from '../bot-logger'
-import { nextAsk } from '../../utils/frequency'
+import { nextOccurrence } from '../../utils/frequency'
 
 import { postToTeam, remindTeam, revealTeam } from './message-poster'
 
@@ -27,12 +27,19 @@ export function configureMessageScheduler(app: App): void {
         try {
             const activeTeams = await getActiveTeams()
             const thisWeekTeams = activeTeams.filter((team) => {
-                const [, isThisWeek] = nextAsk({
-                    postDay: team.postDay,
+                const [, postThisWeek] = nextOccurrence({
+                    hour: team.postHour,
+                    day: team.postDay,
                     frequency: team.frequency,
                     weekSkew: team.weekSkew,
                 })
-                return isThisWeek
+                const [, revealThisWeek] = nextOccurrence({
+                    hour: team.revealHour,
+                    day: team.revealDay,
+                    frequency: team.frequency,
+                    weekSkew: team.weekSkew,
+                })
+                return revealThisWeek || postThisWeek
             })
             botLogger.info(
                 `There are ${activeTeams.length} active teams:\n${activeTeams

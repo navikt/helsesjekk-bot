@@ -5,6 +5,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 
 import { LinkPanelDescription, LinkPanelTitle, LinkPanel } from 'aksel-client'
+import { BodyShort } from 'aksel-server'
 
 import { Question, QuestionType } from '../../../../safe-types'
 import { getTeamByAdGroupAndTeamId } from '../../../../db'
@@ -19,6 +20,8 @@ import EditableStatus from '../../../../components/edit/EditableStatus'
 import AddQuestion from '../../../../components/edit/AddQuestion'
 import DeletableQuestion from '../../../../components/edit/DeletableQuestion'
 import EditableFrequency from '../../../../components/edit/EditableFrequency'
+import { PingDot } from '../../../../components/core/Dots'
+import { createPermalink } from '../../../../utils/slack'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team',
@@ -69,17 +72,42 @@ async function Page({ params }: Props): Promise<ReactElement> {
                 <LinkPanelDescription>Se utviklingen av teamhelse over tid</LinkPanelDescription>
             </LinkPanel>
             <EditableStatus teamId={team.id} active={team.active} />
+            {team.activeAskTs != null && <ActiveAsk teamId={team.id} askTs={team.activeAskTs} />}
+            <EditableTeamName teamId={team.id} name={team.name} />
             <EditableFrequency
                 teamId={team.id}
                 postDay={team.postDay}
                 postHour={team.postHour}
                 frequency={team.frequency}
                 weekSkew={team.weekSkew}
+                hasActiveAsk={team.activeAskTs != null}
             />
-            <EditableTeamName teamId={team.id} name={team.name} />
             <EditableTime teamId={team.id} hour={team.postHour} day={team.postDay} type="ask" />
             <EditableTime teamId={team.id} hour={team.revealHour} day={team.revealDay} type="reveal" />
             <Questions teamId={team.id} questions={questionsFromJsonb(team.questions)} />
+        </div>
+    )
+}
+
+function ActiveAsk({ teamId, askTs }: { teamId: string; askTs: string }): ReactElement {
+    return (
+        <div className="p-3 bg-bg-subtle rounded my-4">
+            <div className="flex items-center justify-between">
+                <div>
+                    <div className="flex gap-2 items-center">
+                        <div className="ml-1">
+                            <PingDot />
+                        </div>
+                        <Heading size="small">Aktiv spørring akkurat nå</Heading>
+                    </div>
+                    <div className="flex gap-2">
+                        <BodyShort>Teamet ditt har en aktiv spørring</BodyShort>
+                        <a href={createPermalink(teamId, askTs)} target="_blank" rel="noreferrer">
+                            Gå til spørring (Slack)
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

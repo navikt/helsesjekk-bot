@@ -27,8 +27,18 @@ export async function getTeamsByAdGroups(groups: string[]): Promise<Team[] | nul
     return prisma.team.findMany({ where: { assosiatedGroup: { in: groups } } })
 }
 
-export async function getTeamByAdGroupAndTeamId(groupId: string, teamId: string): Promise<Team | null> {
-    return prisma.team.findFirst({ where: { id: teamId, assosiatedGroup: { contains: groupId } } })
+export async function getTeamByAdGroupAndTeamId(
+    groupId: string,
+    teamId: string,
+): Promise<(Team & { activeAskTs: string | null }) | null> {
+    const team = await prisma.team.findFirst({
+        where: { id: teamId, assosiatedGroup: { contains: groupId } },
+        include: { Asked: { where: { revealed: false, skipped: false } } },
+    })
+
+    if (team == null) return null
+
+    return { ...team, activeAskTs: team.Asked.length > 0 ? team.Asked[0].messageTs : null }
 }
 
 export async function getTeamById(teamId: string): Promise<Team | null> {
