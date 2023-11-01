@@ -4,10 +4,10 @@ import React, { ReactElement, useState } from 'react'
 import { useParams } from 'next/navigation'
 
 import { Heading, BodyShort, Detail } from 'aksel-server'
-import { Button, PencilIcon, PersonTallShortIcon, Select, XMarkIcon } from 'aksel-client'
+import { Button, PencilIcon, PersonTallShortIcon, Select, XMarkIcon, Tooltip, PadlockLockedIcon } from 'aksel-client'
 
-import { nextAsk } from '../../utils/frequency'
-import { dayIndexToDay, daysUntil } from '../../utils/date'
+import { nextOccurrence } from '../../utils/frequency'
+import { dayIndexToDay, daysUntil, hoursUntil } from '../../utils/date'
 
 import { editFrequency } from './actions'
 
@@ -17,9 +17,10 @@ type Props = {
     postHour: number
     frequency: number
     weekSkew: number
+    hasActiveAsk: boolean
 }
 
-function EditableStatus({ teamId, frequency, weekSkew, postDay, postHour }: Props): ReactElement {
+function EditableStatus({ teamId, frequency, weekSkew, postDay, postHour, hasActiveAsk }: Props): ReactElement {
     const [edit, setEdit] = useState(false)
 
     return (
@@ -36,7 +37,11 @@ function EditableStatus({ teamId, frequency, weekSkew, postDay, postHour }: Prop
                     onComplete={() => setEdit(false)}
                 />
             )}
-            {edit ? (
+            {hasActiveAsk ? (
+                <Tooltip content="Frekvens kan ikke redigeres når det er en aktiv spRring">
+                    <PadlockLockedIcon className="absolute top-3 right-3 text-2xl" />
+                </Tooltip>
+            ) : edit ? (
                 <Button
                     className="absolute top-2 right-2"
                     icon={<XMarkIcon />}
@@ -59,13 +64,20 @@ function EditableStatus({ teamId, frequency, weekSkew, postDay, postHour }: Prop
     )
 }
 
-function FrequencyStatus({ frequency, weekSkew, postDay, postHour }: Omit<Props, 'teamId'>): ReactElement {
-    const [nextDate] = nextAsk({
+function FrequencyStatus({
+    frequency,
+    weekSkew,
+    postDay,
+    postHour,
+}: Omit<Props, 'teamId' | 'hasActiveAsk'>): ReactElement {
+    const [nextDate] = nextOccurrence({
         frequency,
         weekSkew: weekSkew,
-        postDay,
+        day: postDay,
+        hour: postHour,
     })
     const days = daysUntil(nextDate)
+    const hours = hoursUntil(nextDate)
 
     return (
         <div>
@@ -76,7 +88,7 @@ function FrequencyStatus({ frequency, weekSkew, postDay, postHour }: Omit<Props,
             <BodyShort>{frequency === 1 ? 'Hver uke' : `Hver ${frequency}. uke`}</BodyShort>
             <Detail>
                 Neste spørring er {`${dayIndexToDay(postDay)} kl. ${postHour}:00`}{' '}
-                {days === 0 ? 'i dag' : `om ${days + 1} dager`}
+                {hours < 24 ? `om ${hours} timer` : days === 0 ? 'i dag' : `om ${days + 1} dager`}
             </Detail>
         </div>
     )
@@ -89,22 +101,24 @@ function EditableFrequencyForm({
     postHour,
     teamId,
     onComplete,
-}: Props & { onComplete: () => void }): ReactElement {
+}: Omit<Props, 'hasActiveAsk'> & { onComplete: () => void }): ReactElement {
     const params = useParams<{ groupId: string }>()
     const [newFrequency, setNewFrequency] = useState<number>(frequency)
     const [newOffset, setNewOffset] = useState<number>(weekSkew)
 
-    const [nextDateNew] = nextAsk({
+    const [nextDateNew] = nextOccurrence({
         frequency: newFrequency,
         weekSkew: newOffset,
-        postDay,
+        day: postDay,
+        hour: postHour,
     })
     const daysNew = daysUntil(nextDateNew)
+    const hours = hoursUntil(nextDateNew)
 
     return (
         <form
-            action={async (data) => {
-                await editFrequency(params.groupId, teamId, data)
+            action={async () => {
+                await editFrequency(params.groupId, teamId, newFrequency, newOffset)
                 onComplete()
             }}
         >
@@ -143,7 +157,7 @@ function EditableFrequencyForm({
             </div>
             <Detail className="mt-1">
                 Neste spørring blir {`${dayIndexToDay(postDay)} kl. ${postHour}:00`}{' '}
-                {daysNew === 0 ? 'i dag' : `om ${daysNew + 1} dager`}
+                {hours < 24 ? `om ${hours} timer` : daysNew === 0 ? 'i dag' : `om ${daysNew + 1} dager`}
             </Detail>
         </form>
     )
