@@ -6,8 +6,8 @@ import { useParams } from 'next/navigation'
 import { Heading, BodyShort, Detail } from 'aksel-server'
 import { Button, PencilIcon, PersonTallShortIcon, Select, XMarkIcon, Tooltip, PadlockLockedIcon } from 'aksel-client'
 
-import { nextOccurrence } from '../../utils/frequency'
-import { dayIndexToDay, daysUntil, hoursUntil } from '../../utils/date'
+import { nextOccurenceText, nextOccurrence } from '../../utils/frequency'
+import { dayIndexToDay } from '../../utils/date'
 
 import { editFrequency } from './actions'
 
@@ -76,8 +76,6 @@ function FrequencyStatus({
         day: postDay,
         hour: postHour,
     })
-    const days = daysUntil(nextDate)
-    const hours = hoursUntil(nextDate)
 
     return (
         <div>
@@ -87,8 +85,7 @@ function FrequencyStatus({
             </div>
             <BodyShort>{frequency === 1 ? 'Hver uke' : `Hver ${frequency}. uke`}</BodyShort>
             <Detail>
-                Neste spørring er {`${dayIndexToDay(postDay)} kl. ${postHour}:00`}{' '}
-                {hours < 24 ? `om ${hours} timer` : days === 0 ? 'i dag' : `om ${days + 1} dager`}
+                Neste spørring er {`${dayIndexToDay(postDay)} kl. ${postHour}:00`} {nextOccurenceText(nextDate)}
             </Detail>
         </div>
     )
@@ -112,8 +109,6 @@ function EditableFrequencyForm({
         day: postDay,
         hour: postHour,
     })
-    const daysNew = daysUntil(nextDateNew)
-    const hours = hoursUntil(nextDateNew)
 
     return (
         <form
@@ -156,8 +151,7 @@ function EditableFrequencyForm({
                 </Button>
             </div>
             <Detail className="mt-1">
-                Neste spørring blir {`${dayIndexToDay(postDay)} kl. ${postHour}:00`}{' '}
-                {hours < 24 ? `om ${hours} timer` : daysNew === 0 ? 'i dag' : `om ${daysNew + 1} dager`}
+                Neste spørring blir {`${dayIndexToDay(postDay)} kl. ${postHour}:00`} {nextOccurenceText(nextDateNew)}
             </Detail>
         </form>
     )
