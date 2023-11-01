@@ -4,6 +4,7 @@ import { dayIndexToDay } from '../../../utils/date'
 import { updateResponseCount } from '../../messages/message-poster'
 import { QuestionType } from '../../../safe-types'
 import { botLogger } from '../../bot-logger'
+import { nextOccurenceText, nextOccurrence } from '../../../utils/frequency'
 
 import { createSettingsModal, ModalStateTree, SettingsKeys, SettingsKeys as Keys } from './settings-modal-builder'
 
@@ -36,14 +37,20 @@ export function configureSettingsEventsHandler(app: App): void {
                 text: `Lagret innstillingene for ${team.name}! Jeg er nå deaktivert og vil ikke lenger poste helsesjekker.`,
             })
         } else {
+            const [nextDate] = nextOccurrence({
+                day: team.postDay,
+                hour: team.postHour,
+                frequency: team.frequency,
+                weekSkew: team.weekSkew,
+            })
             await client.chat.postEphemeral({
                 user: body.user.id,
                 channel: teamId,
                 text: `Lagret innstillingene for ${team.name}!\n\nJeg vil legge ut helsesjekken på ${dayIndexToDay(
                     team.postDay,
-                )} kl. ${team.postHour}:00 og vise metrikkene på ${dayIndexToDay(team.revealDay)} kl. ${
-                    team.revealHour
-                }:00`,
+                )} kl. ${team.postHour}:00 ${nextOccurenceText(nextDate)} og vise metrikkene påfølgende ${dayIndexToDay(
+                    team.revealDay,
+                )} kl. ${team.revealHour}:00`,
             })
         }
 

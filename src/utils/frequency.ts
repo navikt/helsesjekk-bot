@@ -1,7 +1,7 @@
 import * as R from 'remeda'
 import { getISOWeeksInYear, setWeekWithOptions, setDayWithOptions, setHours, getDay } from 'date-fns/fp'
 
-import { getNowInNorway, getWeekNumber } from './date'
+import { daysUntil, getNowInNorway, getWeekNumber, hoursUntil } from './date'
 
 export function nextOccurrence({
     day,
@@ -51,3 +51,9 @@ const setWeekDayHour = (week: number, day: number, hour: number): ((date: Date) 
 
 const setDayHour = (day: number, hour: number): ((date: Date) => Date) =>
     R.createPipe(setHours(hour), setDayWithOptions({ weekStartsOn: 1 })(day))
+
+export function nextOccurenceText(occurence: Date): string {
+    const days = daysUntil(occurence)
+    const hours = hoursUntil(occurence)
+    return hours < 24 ? `om ${hours} timer` : days === 0 ? 'i dag' : `om ${days + 1} dager`
+}
