@@ -1,7 +1,8 @@
 import { getDay, getWeek, differenceInDays, differenceInHours } from 'date-fns'
+import { nb } from 'date-fns/locale'
 
 export function getWeekNumber(date: Date): number {
-    return getWeek(date, { weekStartsOn: 1 }) - 1
+    return getWeek(date, { weekStartsOn: 1, locale: nb })
 }
 
 export function getNowInNorway(): Date {
