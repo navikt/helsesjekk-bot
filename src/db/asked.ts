@@ -9,7 +9,7 @@ import { Asked, prisma } from './prisma'
 export async function hasActiveAsk(teamId: string): Promise<boolean> {
     return (
         (await prisma.asked.findFirst({
-            where: { teamId, revealed: false },
+            where: { teamId, revealed: false, skipped: false },
         })) != null
     )
 }
@@ -32,7 +32,7 @@ export async function hasActiveUnnaggedAsk(teamId: string): Promise<boolean> {
 
 export async function getActiveAsk(teamId: string): Promise<(Asked & { answers: Answer[] }) | null> {
     return prisma.asked.findFirst({
-        where: { teamId, revealed: false },
+        where: { teamId, revealed: false, skipped: false },
         include: { answers: true },
     })
 }
