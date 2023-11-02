@@ -3,7 +3,7 @@ import { getHours } from 'date-fns'
 
 import { App } from '../app'
 import { deactivateTeam, getActiveTeams, hasActiveAsk, hasActiveUnnaggedAsk, hasAskedToday, prisma } from '../../db'
-import { dayIndexToDay, getDayCorrect, getNowInNorway, getWeekNumber } from '../../utils/date'
+import { dayIndexToDay, getDayCorrect, getNowInNorway } from '../../utils/date'
 import { isLeader } from '../../utils/leader'
 import { botLogger } from '../bot-logger'
 
@@ -99,61 +99,15 @@ export function configureMessageScheduler(app: App): void {
             botLogger.error(new Error('Scheduled job failed at root.', { cause: e }))
         }
 
-        // Temporary code to resolve some broken asks
-        const brokenAsks = await prisma.asked.findMany({
-            where: { revealed: false, skipped: true },
-        })
-
-        if (brokenAsks.length > 0) {
-            botLogger.warn(`Found ${brokenAsks.length} broken asks, resolving these`)
-
-            for (const asked of brokenAsks) {
-                botLogger.warn(
-                    `Resolving broken ask for team ${asked.teamId}, ask id ${
-                        asked.id
-                    }, timestamp: ${asked.timestamp.toISOString()}`,
-                )
-
-                await prisma.asked.update({
-                    data: {
-                        revealed: true,
-                        skipped: true,
-                    },
-                    where: {
-                        id: asked.id,
-                    },
-                })
-
-                await app.client.chat.postMessage({
-                    channel: asked.teamId,
-                    thread_ts: asked.messageTs,
-                    text: `Denne helsesjekken ble hoppet over grunnet krøll i Helsesjekk-botten. Vi beklager!\n\n Håper dere fortsetter å bruke botten neste uke som vanlig. :)`,
-                })
-                await app.client.chat.update({
-                    channel: asked.teamId,
-                    ts: asked.messageTs,
-                    text: `Helsesjekk lukket på grunn av krøll med Helsesjekk-botten.`,
-                    blocks: [
-                        {
-                            type: 'header',
-                            text: {
-                                type: 'plain_text',
-                                text: `:warning: Helsesjekk for uke ${getWeekNumber(
-                                    asked.timestamp,
-                                )} ble automatisk lukket på grunn av krøll med Helsesjekk-botten. :warning:`,
-                                emoji: true,
-                            },
-                        },
-                        {
-                            type: 'section',
-                            text: {
-                                type: 'mrkdwn',
-                                text: 'Problemet skal være løst, og vil fungere som vanlig neste spørring. Ta kontakt på #helsesjekk-bot dersom det skulle være noe.',
-                            },
-                        },
-                    ],
-                })
+        try {
+            const brokenAsks = await prisma.asked.findMany({
+                where: { revealed: false, skipped: true },
+            })
+            if (brokenAsks.length > 0) {
+                botLogger.error(`Found ${brokenAsks.length} asks: ${brokenAsks.map((it) => it.id).join(', ')}`)
             }
+        } catch (e) {
+            botLogger.error(new Error('Scheduled job failed at dirty check', { cause: e }))
         }
     })
 }
