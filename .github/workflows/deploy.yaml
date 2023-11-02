@@ -14,9 +14,21 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
 
+  test:
+    name: 'Run bun tests'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@node-20
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: canary
+      - run: yarn test
+
   build-and-publish:
     if: github.ref == 'refs/heads/main'
-    name: "Prod: Bygg, test og push Docker image"
+    name: 'Prod: Bygg, test og push Docker image'
     runs-on: ubuntu-latest
     permissions:
       packages: 'write'
@@ -29,7 +41,6 @@ jobs:
         with:
           NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - run: yarn lint
-#      - run: yarn test
       - run: yarn build
       - name: Push docker image to GAR
         uses: nais/docker-build-push@v0
@@ -41,7 +52,7 @@ jobs:
           image_suffix: prod
 
   build-and-publish-dev:
-    name: "Dev: Bygg, test og push Docker image"
+    name: 'Dev: Bygg, test og push Docker image'
     runs-on: ubuntu-latest
     permissions:
       packages: 'write'
@@ -67,7 +78,7 @@ jobs:
   deploy-bot-to-gcp:
     if: github.ref == 'refs/heads/main'
     name: Deploy to prod
-    needs: [build-and-publish, codeql-analysis]
+    needs: [build-and-publish, codeql-analysis, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -78,11 +89,10 @@ jobs:
           RESOURCE: nais.yml
           VAR: image=${{ needs.build-and-publish.outputs.image }}
 
-
   deploy-bot-to-gcp-dev:
     if: github.ref != 'refs/heads/main'
     name: Deploy to dev
-    needs: [build-and-publish-dev]
+    needs: [build-and-publish-dev, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

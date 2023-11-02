@@ -2030,6 +2030,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bun-types@npm:1.0.7-canary.20231101T140123":
+  version: 1.0.7-canary.20231101T140123
+  resolution: "bun-types@npm:1.0.7-canary.20231101T140123"
+  checksum: a7dbf2dc63d2fee24357eb9597297d2e6d2422c1bdf5aa18544c3f2365b882378243fdd62c34ae34aadafb0ab41a648bfd5e0842b6cb536c7020b7b11e0fb870
+  languageName: node
+  linkType: hard
+
 "bundle-name@npm:^3.0.0":
   version: 3.0.0
   resolution: "bundle-name@npm:3.0.0"
@@ -4136,6 +4143,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^6.9.1"
     "@typescript-eslint/parser": "npm:^6.9.1"
     autoprefixer: "npm:^10.4.16"
+    bun-types: "npm:1.0.7-canary.20231101T140123"
     date-fns: "npm:^2.30.0"
     eslint: "npm:^8.52.0"
     eslint-config-next: "npm:^14.0.1"

@@ -1,24 +1,38 @@
 import * as R from 'remeda'
-import { getISOWeeksInYear, setWeekWithOptions, setDayWithOptions, setHours, getDay } from 'date-fns/fp'
+import {
+    getISOWeeksInYear,
+    setWeekWithOptions,
+    setDayWithOptions,
+    setHours,
+    getDay,
+    getHours,
+    isBefore,
+} from 'date-fns/fp'
+import { nb } from 'date-fns/locale'
 
 import { daysUntil, getNowInNorway, getWeekNumber, hoursUntil } from './date'
 
-export function nextOccurrence({
-    day,
-    hour,
-    frequency,
-    weekSkew,
-}: {
+export enum Frequency {
+    WEEKLY = 1,
+    BIWEEKLY = 2,
+    TRIWEEKLY = 3,
+    FOURWEEKLY = 4,
+}
+
+type NextOccurence = {
     day: number
     hour: number
     frequency: number
     weekSkew: number
-}): [date: Date, isThisWeek: boolean] {
+}
+
+export function nextOccurrence({ day, hour, frequency, weekSkew }: NextOccurence): [date: Date, isThisWeek: boolean] {
     const now = getNowInNorway()
     const currentWeek = getWeekNumber(now)
-    if (frequency === 1) {
-        if (getDay(now) > day + 1) {
-            return [setWeekDayHour(currentWeek + 2, day + 1, hour)(now), false]
+
+    if (frequency === Frequency.WEEKLY) {
+        if (getDay(now) > day + 1 || getHours(now) > hour) {
+            return [setWeekDayHour(currentWeek + 1, day + 1, hour)(now), false]
         } else {
             return [setDayHour(day + 1, hour)(now), true]
         }
@@ -28,25 +42,22 @@ export function nextOccurrence({
         .filter((week) => week % frequency === 0)
         .map((week) => week + weekSkew)
 
-    const nextWeek = relevantWeeks.find((week) => week >= currentWeek)
+    const relevantWeek = relevantWeeks.find((week) => week >= currentWeek)
+    const relevantWeekDate = setWeekDayHour(relevantWeek, day + 1, hour)(now)
 
-    if (nextWeek === currentWeek) {
-        if (getDay(now) > day + 1) {
-            return [setWeekDayHour(currentWeek + 2, day + 1, hour)(now), false]
-        } else {
-            return [setDayHour(day + 1, hour)(now), true]
-        }
+    if (isBefore(now, relevantWeekDate)) {
+        const upcomingRelevantWeek = relevantWeeks.find((week) => week > currentWeek)
+        return [setWeekDayHour(upcomingRelevantWeek, day + 1, hour)(now), false]
+    } else {
+        return [relevantWeekDate, relevantWeek === currentWeek]
     }
-
-    const nextWeekDate = setWeekDayHour(nextWeek + 2, day + 1, hour)(now)
-    return [nextWeekDate, false]
 }
 
 const setWeekDayHour = (week: number, day: number, hour: number): ((date: Date) => Date) =>
     R.createPipe(
+        setWeekWithOptions({ weekStartsOn: 1, locale: nb })(week),
+        setDayWithOptions({ weekStartsOn: 1, locale: nb })(day),
         setHours(hour),
-        setDayWithOptions({ weekStartsOn: 1 })(day),
-        setWeekWithOptions({ weekStartsOn: 1 })(week),
     )
 
 const setDayHour = (day: number, hour: number): ((date: Date) => Date) =>
@@ -55,5 +66,10 @@ const setDayHour = (day: number, hour: number): ((date: Date) => Date) =>
 export function nextOccurenceText(occurence: Date): string {
     const days = daysUntil(occurence)
     const hours = hoursUntil(occurence)
+
+    if (hours === 0) {
+        return 'denne timen, eller har allerede blitt lagt ut'
+    }
+
     return hours < 24 ? `om ${hours} timer` : days === 0 ? 'i dag' : `om ${days + 1} dager`
 }

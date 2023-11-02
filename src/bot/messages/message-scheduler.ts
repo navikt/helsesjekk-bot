@@ -42,14 +42,14 @@ export function configureMessageScheduler(app: App): void {
                 return revealThisWeek || postThisWeek
             })
             botLogger.info(
-                `There are ${activeTeams.length} active teams:\n${activeTeams
+                `Current time is ${getNowInNorway()}\nThere are ${activeTeams.length} active teams:\n${activeTeams
                     .map(
                         (team) =>
                             `${team.name} want to post at ${team.postHour}:00 on ${dayIndexToDay(
                                 team.postDay,
                             )}, reveal at ${team.revealHour}:00 on ${dayIndexToDay(team.revealDay)}`,
                     )
-                    .join('\n')}\n, ${thisWeekTeams.length} of them want to post this week`,
+                    .join('\n')}\n\n${thisWeekTeams.length} of them want to post or reveal this week`,
             )
 
             for (const team of activeTeams) {
