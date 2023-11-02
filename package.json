@@ -8,12 +8,14 @@
     },
     "scripts": {
         "dev": "next dev | pino-pretty",
+        "dev:db": "docker run -e POSTGRES_PASSWORD=postgres -p 5432:5432 -it postgres:14",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
         "start:migrate": "yarn prisma:migrate && yarn start",
         "prisma:generate": "prisma generate",
         "prisma:migrate": "prisma migrate deploy",
+        "prisma:migrate-dev": "prisma migrate dev",
         "prisma:seed": "bun run seed/seed.ts | pino-pretty",
         "postinstall": "node ./scripts/postinstall.js"
     },

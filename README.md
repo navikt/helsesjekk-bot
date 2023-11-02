@@ -1,4 +1,6 @@
-# Område Helse Helsesjekk 🤖
+# Helsesjekk Bot 🤖
+
+# Er du NAV ansatt?
 
 ## Jeg vil bruke den!
 
@@ -20,9 +22,26 @@ Det siste du må gjøre er å skrive /helsesjekk i kanalen, da får du tilgang t
 
 Ta kontakt på #helsesjekk-bot på NAV-IT slacken!
 
-## Jeg vil utvikle på den!
+# Utenfor NAV
 
-Uff! Dumt for deg! Men det er håp. Det er noen steg du må gjennom.
+Botten er hostet som en intern app på NAV sin IT-plattform. Selve bot-brukeren er en intern slack-app.
+
+Dersom du ønsker å bruke botten, kan du ta sette opp din egen bot-bruker på din Slack ved å bruke [slack-manifest.yml](./slack-manifest.yml) som utgangspunkt.
+
+Når det kommer til selve botten, så kan du gjøre følgende:
+
+1. Fork dette Github-repoet
+2. Fjern filene:
+    1. nais.yml og nais-dev.yaml
+3. Konfigurer opp en egen CI/CD-løsning for å deploye botten i [deploy.yaml](./.github/workflows/deploy.yaml)
+4. Konfigurer opp [env.ts](./src/utils/env.ts) med miljøvariablene din platform trenger
+5. Tweak [authentication.ts](./src/auth/authentication.tsx) og [ms-graph.ts](./src/auth/ms-graph.ts) til å fungere med deres env løsning.
+
+Det er sikkert andre ting som må justeres på også.
+
+# Jeg vil utvikle på den!
+
+### Utvikle selve botten:
 
 1. Først så trenger du ditt helt eget slack workspace du har admin tilgang til.
 2. Deretter kan du opprette en ny bot i Slack, bruk slack-manifest.yml i dette repoet til å kickstarte alle permissions du trenger.
@@ -35,7 +54,7 @@ Uff! Dumt for deg! Men det er håp. Det er noen steg du må gjennom.
     ```
 4. Start opp en lokal postgres-database:
     ```bash
-    docker run -e POSTGRES_PASSWORD=postgres -p 5432:5432 -it postgres:14
+    yarn dev:db
     ```
 5. Kjør prisma-migreringene mot databasen:
     ```bash
@@ -45,9 +64,40 @@ Uff! Dumt for deg! Men det er håp. Det er noen steg du må gjennom.
     ```bash
     yarn dev
     ```
+7. Gjør en curl request mot `/api/internal/is_ready` for å starte slack-integrasjonen.
+    ```bash
+    curl -X POST http://localhost:3000/api/internal/is_ready
+    ```
 
 Utviklingsflyten vil være å interaktere med slack botten gjennom ditt private slack workspace. F.eks. ved å legge botten til som en integrasjon på en testkanal, kjøre /helsesjekk i den kanalen, og fylle ut helsesjekken.
 
 Det er noen verktøy i [./src/commands/commands-handler.ts](src/bot/commands/commands-handler.ts) som kan være nyttige for å teste ut funksjonalitet. F.eks. kan du kjøre `/helsesjekk test` for triggre ting som eller ser cron-basert.
+
+### Utvikle Dashboardet
+
+Dette er litt enklere å jobbe med.
+
+1. Opprett en `.env`-fil på rot i repoet, og legg til følgende:
+    ```env
+    NAIS_DATABASE_HELSESJEKK_BOT_HELSESJEKK_BOT_URL="postgresql://postgres:postgres@localhost:5432/postgres"
+    ```
+2. Start opp en lokal postgres-database:
+    ```bash
+    yarn dev:db
+    ```
+3. Kjør prisma-migreringene mot databasen:
+    ```bash
+    yarn prisma:migrate-dev
+    ```
+4. Seed databasen:
+    ```bash
+    yarn prisma:seed
+    ```
+5. Kjør opp nextjs dev server:
+    ```bash
+    yarn dev
+    ```
+
+Besøk [localhost:3000](http://localhost:3000) for å se dashboardet.
 
 Ikke nøl med å ta kontakt på #helsesjekk-bot på NAV-IT slacken om du trenger hjelp!
