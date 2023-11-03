@@ -4,12 +4,12 @@ import React, { ReactElement, startTransition, useState } from 'react'
 import { BodyLong } from '@navikt/ds-react'
 import { useParams } from 'next/navigation'
 
+import { Alert, Heading } from 'aksel-server'
+import { SparklesIcon, Tooltip, TrashIcon, Button, XMarkIcon, ConfirmationPanel } from 'aksel-client'
+
 import { Question } from '../../safe-types'
 
 import { deleteQuestion } from './actions'
-
-import { Alert, Heading } from 'aksel-server'
-import { SparklesIcon, Tooltip, TrashIcon, Button, XMarkIcon, ConfirmationPanel } from 'aksel-client'
 
 type Props = {
     teamId: string

@@ -4,13 +4,13 @@ import * as R from 'remeda'
 import React, { ReactElement, useMemo, useState } from 'react'
 import { Bar, ComposedChart, CartesianGrid, Line, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from 'recharts'
 
+import { Switch } from 'aksel-client'
+import { Detail } from 'aksel-server'
+
 import { getWeekNumber } from '../../utils/date'
 import { scoreToEmoji } from '../../utils/score'
 import { QuestionType } from '../../safe-types'
 import { questionTypeToText } from '../../utils/asked'
-
-import { Switch } from 'aksel-client'
-import { Detail } from 'aksel-server'
 
 type Props = {
     data: ({

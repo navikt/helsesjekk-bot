@@ -1,15 +1,15 @@
 import React, { ReactElement } from 'react'
 import Image from 'next/image'
 
+import { Heading, BodyLong, BodyShort } from 'aksel-server'
+import { CopyButton, LinkIcon } from 'aksel-client'
+
 import Code from '../core/Code'
 
 import step1 from './step1.png'
 import step2 from './step2.png'
 import step3 from './step3.png'
 import step4 from './step4.png'
-
-import { Heading, BodyLong, BodyShort } from 'aksel-server'
-import { CopyButton, LinkIcon } from 'aksel-client'
 
 function HowToGuide(): ReactElement {
     return (

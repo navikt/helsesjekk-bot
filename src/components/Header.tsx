@@ -2,11 +2,11 @@ import React, { ReactElement, Suspense } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { Heading, Detail } from 'aksel-server'
+
 import logo from '../images/logo.png'
 
 import LoggedInUser, { LoggedInUserSkeleton } from './LoggedInUser'
-
-import { Heading, Detail } from 'aksel-server'
 
 function Header(): ReactElement {
     return (

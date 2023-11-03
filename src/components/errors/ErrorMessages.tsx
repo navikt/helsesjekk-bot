@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 
-import Code from '../core/Code'
-
 import { BodyLong, BodyShort, Heading } from 'aksel-server'
+
+import Code from '../core/Code'
 
 export function TeamNotAccesible(): ReactElement {
     return (

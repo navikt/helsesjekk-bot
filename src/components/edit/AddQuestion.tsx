@@ -6,13 +6,13 @@ import { useParams } from 'next/navigation'
 import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 
+import { Heading } from 'aksel-server'
+import { PlusIcon, Select, TextField, XMarkIcon } from 'aksel-client'
+
 import { questionTypeToText } from '../../utils/asked'
 import { QuestionType } from '../../safe-types'
 
 import { addQuestion } from './actions'
-
-import { Heading } from 'aksel-server'
-import { PlusIcon, Select, TextField, XMarkIcon } from 'aksel-client'
 
 type Props = {
     teamId: string

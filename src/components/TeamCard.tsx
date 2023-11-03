@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react'
 import Link from 'next/link'
 
+import { BodyShort, Detail, Heading, LinkPanel } from 'aksel-server'
+import { GavelIcon, QuestionmarkIcon, Tooltip } from 'aksel-client'
+
 import { Team } from '../db'
 import { dayIndexToDay } from '../utils/date'
 
 import { InactiveDot, PingDot } from './core/Dots'
-
-import { BodyShort, Detail, Heading, LinkPanel } from 'aksel-server'
-import { GavelIcon, QuestionmarkIcon, Tooltip } from 'aksel-client'
 
 type Props = {
     team: Team

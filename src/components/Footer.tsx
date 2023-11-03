@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react'
 import Image from 'next/image'
 
-import logo from '../images/logo.png'
-
 import { Heading, BodyShort } from 'aksel-server'
+
+import logo from '../images/logo.png'
 
 function Footer(): ReactElement {
     return (

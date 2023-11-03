@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react'
 import { Metadata } from 'next'
 
-import LinkButton from '../../components/core/LinkButton'
-import HowToGuide from '../../components/guide/HowToGuide'
-
 import { Heading, BodyLong } from 'aksel-server'
 import { CopyButton, LinkIcon } from 'aksel-client'
+
+import LinkButton from '../../components/core/LinkButton'
+import HowToGuide from '../../components/guide/HowToGuide'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Kom i gang',

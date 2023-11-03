@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 
-import { getUser, isUserLoggedIn } from '../auth/authentication'
-
 import { Skeleton, BodyShort, Detail, Link as AkselLink } from 'aksel-server'
+
+import { getUser, isUserLoggedIn } from '../auth/authentication'
 
 async function LoggedInUser(): Promise<ReactElement> {
     if (!isUserLoggedIn()) {

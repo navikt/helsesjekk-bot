@@ -2,11 +2,11 @@ import React, { ReactElement, Suspense } from 'react'
 import { unstable_noStore as noStore } from 'next/cache'
 import { Metadata } from 'next'
 
+import { Heading, Skeleton } from 'aksel-server'
+
 import BackLink from '../../components/core/BackLink'
 import { getGlobalScoreTimeline } from '../../db/score'
 import GlobalScoreGraph from '../../components/graphs/GlobalScoreGraph'
-
-import { Heading, Skeleton } from 'aksel-server'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Helse i NAV',

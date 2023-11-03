@@ -1,6 +1,8 @@
 import * as R from 'remeda'
 import React, { ReactElement, Suspense } from 'react'
 
+import { Heading, Skeleton, BodyLong, Detail } from 'aksel-server'
+
 import { TeamNotAccesible, TeamNotFound } from '../../../../../components/errors/ErrorMessages'
 import { userHasAdGroup, verifyUserLoggedIn } from '../../../../../auth/authentication'
 import BackLink from '../../../../../components/core/BackLink'
@@ -9,8 +11,6 @@ import { getTeamScorePerQuestion, getTeamScoreTimeline } from '../../../../../db
 import OverallScoreGraph from '../../../../../components/graphs/OverallScoreGraph'
 import { getWeekNumber } from '../../../../../utils/date'
 import ScorePerQuestion from '../../../../../components/graphs/ScorePerQuestion'
-
-import { Heading, Skeleton, BodyLong, Detail } from 'aksel-server'
 
 type Props = {
     params: {

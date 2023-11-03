@@ -3,12 +3,12 @@
 import React, { ReactElement, startTransition } from 'react'
 import { useParams } from 'next/navigation'
 
+import { Heading, BodyShort } from 'aksel-server'
+import { Switch } from 'aksel-client'
+
 import { InactiveDot, PingDot } from '../core/Dots'
 
 import { toggleTeamStatus } from './actions'
-
-import { Heading, BodyShort } from 'aksel-server'
-import { Switch } from 'aksel-client'
 
 type Props = {
     teamId: string

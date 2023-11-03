@@ -1,8 +1,6 @@
 import React, { ReactElement, Suspense } from 'react'
 import { Skeleton } from '@navikt/ds-react'
 
-import { funStats } from '../db/stats'
-
 import { Detail, Heading, BodyShort } from 'aksel-server'
 import {
     PersonTallShortIcon,
@@ -12,6 +10,8 @@ import {
     HandShakeHeartIcon,
     TenancyIcon,
 } from 'aksel-client'
+
+import { funStats } from '../db/stats'
 
 function Stats(): ReactElement {
     return (

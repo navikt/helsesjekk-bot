@@ -3,11 +3,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Metadata } from 'next'
 
+import { Heading, BodyLong } from 'aksel-server'
+
 import ask from './ask.png'
 import reveal from './reveal.png'
 import locked from './locked.png'
-
-import { Heading, BodyLong } from 'aksel-server'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Hva er helsesjekk',

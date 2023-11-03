@@ -1,14 +1,14 @@
 import React, { ReactElement, Suspense } from 'react'
 import Link from 'next/link'
 
+import { Button } from 'aksel-client'
+import { BodyShort, Heading, Skeleton } from 'aksel-server'
+
 import { getTeamsByAdGroups } from '../db'
 import { getUsersGroups, isUserLoggedIn } from '../auth/authentication'
 
 import Code from './core/Code'
 import TeamCard from './TeamCard'
-
-import { Button } from 'aksel-client'
-import { BodyShort, Heading, Skeleton } from 'aksel-server'
 
 async function Teams(): Promise<ReactElement> {
     if (!isUserLoggedIn()) {

@@ -4,6 +4,8 @@ import { Heading } from '@navikt/ds-react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 
+import { LinkPanelDescription, LinkPanelTitle, LinkPanel } from 'aksel-client'
+
 import { getTeamByAdGroupAndTeamId } from '../../../../db'
 import { userHasAdGroup, verifyUserLoggedIn } from '../../../../auth/authentication'
 import { questionTypeToText } from '../../../../utils/asked'
@@ -16,8 +18,6 @@ import { TeamNotAccesible, TeamNotFound } from '../../../../components/errors/Er
 import AddQuestion from '../../../../components/edit/AddQuestion'
 import { Question, QuestionType } from '../../../../safe-types'
 import DeletableQuestion from '../../../../components/edit/DeletableQuestion'
-
-import { LinkPanelDescription, LinkPanelTitle, LinkPanel } from 'aksel-client'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team',

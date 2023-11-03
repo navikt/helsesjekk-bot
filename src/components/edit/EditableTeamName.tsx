@@ -3,10 +3,10 @@
 import React, { ReactElement } from 'react'
 import { useParams } from 'next/navigation'
 
-import { editTeamName } from './actions'
-
 import { Heading } from 'aksel-server'
 import { Button, TextField, PencilIcon, PersonTallShortIcon, XMarkIcon } from 'aksel-client'
+
+import { editTeamName } from './actions'
 
 type Props = {
     teamId: string

@@ -4,10 +4,10 @@ import * as R from 'remeda'
 import React, { ReactElement, useMemo } from 'react'
 import { Bar, LineChart, CartesianGrid, Line, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from 'recharts'
 
+import { Detail } from 'aksel-server'
+
 import { getWeekNumber } from '../../utils/date'
 import { scoreToEmoji } from '../../utils/score'
-
-import { Detail } from 'aksel-server'
 
 type Props = {
     maxQuestions: number

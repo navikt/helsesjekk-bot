@@ -2,12 +2,12 @@ import React, { ReactElement, Suspense } from 'react'
 import * as R from 'remeda'
 import { Metadata } from 'next'
 
+import { Alert, Detail, Heading, Skeleton, BodyLong } from 'aksel-server'
+import { CopyButton } from 'aksel-client'
+
 import { verifyUserLoggedIn } from '../../../auth/authentication'
 import { getMembersOf, MsGraphGroup } from '../../../auth/ms-graph'
 import BackLink from '../../../components/core/BackLink'
-
-import { Alert, Detail, Heading, Skeleton, BodyLong } from 'aksel-server'
-import { CopyButton } from 'aksel-client'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Dine grupper',

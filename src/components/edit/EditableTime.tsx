@@ -4,12 +4,12 @@ import * as R from 'remeda'
 import React, { ReactElement } from 'react'
 import { useParams } from 'next/navigation'
 
+import { Heading, BodyShort } from 'aksel-server'
+import { Button, PencilIcon, QuestionmarkIcon, GavelIcon, Select, XMarkIcon } from 'aksel-client'
+
 import { dayIndexToDay } from '../../utils/date'
 
 import { editTime } from './actions'
-
-import { Heading, BodyShort } from 'aksel-server'
-import { Button, PencilIcon, QuestionmarkIcon, GavelIcon, Select, XMarkIcon } from 'aksel-client'
 
 type Props = {
     teamId: string
