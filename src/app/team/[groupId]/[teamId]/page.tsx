@@ -22,6 +22,7 @@ import DeletableQuestion from '../../../../components/edit/DeletableQuestion'
 import EditableFrequency from '../../../../components/edit/EditableFrequency'
 import { PingDot } from '../../../../components/core/Dots'
 import { createPermalink } from '../../../../utils/slack'
+import { dayIndexToDay } from '../../../../utils/date'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team',
@@ -72,7 +73,14 @@ async function Page({ params }: Props): Promise<ReactElement> {
                 <LinkPanelDescription>Se utviklingen av teamhelse over tid</LinkPanelDescription>
             </LinkPanel>
             <EditableStatus teamId={team.id} active={team.active} />
-            {team.activeAskTs != null && <ActiveAsk teamId={team.id} askTs={team.activeAskTs} />}
+            {team.activeAskTs != null && (
+                <ActiveAsk
+                    teamId={team.id}
+                    askTs={team.activeAskTs}
+                    revealDay={team.revealDay}
+                    revealHour={team.revealHour}
+                />
+            )}
             <EditableTeamName teamId={team.id} name={team.name} />
             <EditableFrequency
                 teamId={team.id}
@@ -89,7 +97,17 @@ async function Page({ params }: Props): Promise<ReactElement> {
     )
 }
 
-function ActiveAsk({ teamId, askTs }: { teamId: string; askTs: string }): ReactElement {
+function ActiveAsk({
+    teamId,
+    askTs,
+    revealDay,
+    revealHour,
+}: {
+    teamId: string
+    askTs: string
+    revealDay: number
+    revealHour: number
+}): ReactElement {
     return (
         <div className="p-3 bg-bg-subtle rounded my-4">
             <div className="flex items-center justify-between">
@@ -100,12 +118,12 @@ function ActiveAsk({ teamId, askTs }: { teamId: string; askTs: string }): ReactE
                         </div>
                         <Heading size="small">Aktiv spørring akkurat nå</Heading>
                     </div>
-                    <div className="flex gap-2">
-                        <BodyShort>Teamet ditt har en aktiv spørring</BodyShort>
-                        <a href={createPermalink(teamId, askTs)} target="_blank" rel="noreferrer">
-                            Gå til spørring (Slack)
-                        </a>
-                    </div>
+                    <BodyShort spacing>
+                        Spørringen blir lukket og vist på {dayIndexToDay(revealDay)} kl. {revealHour}
+                    </BodyShort>
+                    <a href={createPermalink(teamId, askTs)} target="_blank" rel="noreferrer">
+                        Gå til spørring (Slack)
+                    </a>
                 </div>
             </div>
         </div>
