@@ -37,17 +37,39 @@ export function createHealthCheckModal(
             emoji: true,
         },
         private_metadata: team.id,
-        blocks: createHealthCheckModalBlocks(team.name, questionsFromJsonb(asked.questions), userId, existingAnswers),
+        blocks: createHealthCheckModalBlocks(questionsFromJsonb(asked.questions), existingAnswers),
     }
 }
 
 export function createHealthCheckModalBlocks(
-    teamName: string,
     questions: Question[],
-    userId: string,
     existingAnswers: QuestionAnswer[] | null,
 ): (KnownBlock | Block)[] {
     const grouped: Record<QuestionType, Question[]> = groupBy(questions, (q) => q.type)
+    const allQuestionBlocks = [
+        ...addIf(grouped.TEAM_HEALTH && grouped.TEAM_HEALTH.length > 0, () => [
+            plainHeader(questionTypeToText(QuestionType.TEAM_HEALTH)),
+            ...grouped.TEAM_HEALTH.map((question) => createSelectSectionBlock(question, existingAnswers)),
+        ]),
+        ...addIf(grouped.SPEED && grouped.SPEED.length > 0, () => [
+            plainHeader(questionTypeToText(QuestionType.SPEED)),
+            ...grouped.SPEED.map((question) => createSelectSectionBlock(question, existingAnswers)),
+        ]),
+        ...addIf(grouped.TECH && grouped.TECH.length > 0, () => [
+            plainHeader(questionTypeToText(QuestionType.TECH)),
+            ...grouped.TECH.map((question) => createSelectSectionBlock(question, existingAnswers)),
+        ]),
+        ...addIf(grouped.OTHER && grouped.OTHER.length > 0, () => [
+            plainHeader(questionTypeToText(QuestionType.OTHER)),
+            ...grouped.OTHER.map((question) => createSelectSectionBlock(question, existingAnswers)),
+        ]),
+    ]
+
+    // Only the last question needs block_id, used for error handling in the Slack UI.
+    const questionBlocks = [
+        ...allQuestionBlocks.slice(0, 1),
+        ...allQuestionBlocks.slice(-1).map((it) => ({ ...it, block_id: `feedback-block` })),
+    ]
 
     return [
         ...(existingAnswers != null
@@ -65,32 +87,7 @@ export function createHealthCheckModalBlocks(
                 emoji: true,
             },
         },
-        plainHeader(questionTypeToText(QuestionType.TEAM_HEALTH)),
-        ...grouped.TEAM_HEALTH.map((question) => createSelectSectionBlock(question, false, existingAnswers)),
-        plainHeader(questionTypeToText(QuestionType.SPEED)),
-        ...grouped.SPEED.map((question, index) =>
-            createSelectSectionBlock(
-                question,
-                index === grouped.SPEED.length - 1 && grouped.TECH == null && grouped.OTHER == null,
-                existingAnswers,
-            ),
-        ),
-        ...addIf(grouped.TECH && grouped.TECH.length > 0, () => [
-            plainHeader(questionTypeToText(QuestionType.TECH)),
-            ...grouped.TECH.map((question, index) =>
-                createSelectSectionBlock(
-                    question,
-                    index === grouped.TECH.length - 1 && grouped.OTHER == null,
-                    existingAnswers,
-                ),
-            ),
-        ]),
-        ...addIf(grouped.OTHER && grouped.OTHER.length > 0, () => [
-            plainHeader(questionTypeToText(QuestionType.OTHER)),
-            ...grouped.OTHER.map((question, index) =>
-                createSelectSectionBlock(question, index === grouped.OTHER.length - 1, existingAnswers),
-            ),
-        ]),
+        ...questionBlocks,
         {
             type: 'context',
             elements: [
@@ -104,11 +101,7 @@ export function createHealthCheckModalBlocks(
     ]
 }
 
-function createSelectSectionBlock(
-    question: Question,
-    isLast = false,
-    existingAnswers: QuestionAnswer[] | null,
-): InputBlock {
+function createSelectSectionBlock(question: Question, existingAnswers: QuestionAnswer[] | null): InputBlock {
     const existingAnswer = existingAnswers?.find((a) => a.questionId === question.questionId)
     const options = {
         [AnswerLevel.GOOD]: createRadioOption(question.questionId, `🟢 ${question.answers.HIGH}`, AnswerLevel.GOOD),
@@ -122,7 +115,6 @@ function createSelectSectionBlock(
             type: 'plain_text',
             text: `${question.question}`,
         },
-        block_id: isLast ? `feedback-block` : undefined,
         element: {
             action_id: 'radio-button-group-answer',
             type: 'radio_buttons',
