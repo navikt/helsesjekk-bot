@@ -206,3 +206,7 @@ export async function deactivateTeam(channelId: string): Promise<void> {
 export async function getActiveTeams(): Promise<Team[]> {
     return prisma.team.findMany({ where: { active: true } })
 }
+
+export async function getTeamsToReveal(): Promise<Team[]> {
+    return prisma.team.findMany({ where: { active: true, Asked: { some: { revealed: false, skipped: false } } } })
+}

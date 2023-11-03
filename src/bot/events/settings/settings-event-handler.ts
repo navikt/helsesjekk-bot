@@ -37,9 +37,8 @@ export function configureSettingsEventsHandler(app: App): void {
                 text: `Lagret innstillingene for ${team.name}! Jeg er nå deaktivert og vil ikke lenger poste helsesjekker.`,
             })
         } else {
-            const [nextDate] = nextOccurrence({
-                day: team.postDay,
-                hour: team.postHour,
+            const { postDate } = nextOccurrence({
+                team,
                 frequency: team.frequency,
                 weekSkew: team.weekSkew,
             })
@@ -48,7 +47,7 @@ export function configureSettingsEventsHandler(app: App): void {
                 channel: teamId,
                 text: `Lagret innstillingene for ${team.name}!\n\nJeg vil legge ut helsesjekken på ${dayIndexToDay(
                     team.postDay,
-                )} kl. ${team.postHour}:00 ${nextOccurenceText(nextDate)} og vise metrikkene påfølgende ${dayIndexToDay(
+                )} kl. ${team.postHour}:00 ${nextOccurenceText(postDate)} og vise metrikkene påfølgende ${dayIndexToDay(
                     team.revealDay,
                 )} kl. ${team.revealHour}:00`,
             })
