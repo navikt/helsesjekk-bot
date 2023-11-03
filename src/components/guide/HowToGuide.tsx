@@ -98,11 +98,6 @@ function HowToGuide(): ReactElement {
             </BodyLong>
 
             <BodyLong spacing>
-                Dette må gjøres via en gruppe i Microsoft-innloggingen, såkalte AD-grupper. Din slack kanal har ikke en
-                egen gruppe i seg selv, men teamet ditt har mest sannsynligvis en gruppe som alle er medlem i.
-            </BodyLong>
-
-            <BodyLong spacing>
                 Dersom du allerede har en AD-gruppe ID, kan du koble denne til teamet ditt ved å kjøre kommandoen{' '}
                 <Code>/helsesjekk assign gruppe-id</Code> i kanalen hvor botten er aktivert.
             </BodyLong>
