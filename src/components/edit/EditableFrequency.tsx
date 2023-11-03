@@ -70,11 +70,13 @@ function FrequencyStatus({
     postDay,
     postHour,
 }: Omit<Props, 'teamId' | 'hasActiveAsk'>): ReactElement {
-    const [nextDate] = nextOccurrence({
+    const { postDate } = nextOccurrence({
+        team: {
+            postDay,
+            postHour,
+        },
         frequency,
-        weekSkew: weekSkew,
-        day: postDay,
-        hour: postHour,
+        weekSkew,
     })
 
     return (
@@ -85,7 +87,7 @@ function FrequencyStatus({
             </div>
             <BodyShort>{frequency === 1 ? 'Hver uke' : `Hver ${frequency}. uke`}</BodyShort>
             <Detail>
-                Neste spørring er {`${dayIndexToDay(postDay)} kl. ${postHour}:00`} {nextOccurenceText(nextDate)}
+                Neste spørring er {`${dayIndexToDay(postDay)} kl. ${postHour}:00`} {nextOccurenceText(postDate)}
             </Detail>
         </div>
     )
@@ -103,11 +105,13 @@ function EditableFrequencyForm({
     const [newFrequency, setNewFrequency] = useState<number>(frequency)
     const [newOffset, setNewOffset] = useState<number>(weekSkew)
 
-    const [nextDateNew] = nextOccurrence({
+    const { postDate } = nextOccurrence({
+        team: {
+            postDay,
+            postHour,
+        },
         frequency: newFrequency,
         weekSkew: newOffset,
-        day: postDay,
-        hour: postHour,
     })
 
     return (
@@ -151,7 +155,7 @@ function EditableFrequencyForm({
                 </Button>
             </div>
             <Detail className="mt-1">
-                Neste spørring blir {`${dayIndexToDay(postDay)} kl. ${postHour}:00`} {nextOccurenceText(nextDateNew)}
+                Neste spørring blir {`${dayIndexToDay(postDay)} kl. ${postHour}:00`} {nextOccurenceText(postDate)}
             </Detail>
         </form>
     )

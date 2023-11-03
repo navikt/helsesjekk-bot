@@ -20,21 +20,31 @@ export enum Frequency {
 }
 
 type NextOccurence = {
-    day: number
-    hour: number
+    team: {
+        postDay: number
+        postHour: number
+    }
     frequency: number
     weekSkew: number
 }
 
-export function nextOccurrence({ day, hour, frequency, weekSkew }: NextOccurence): [date: Date, isThisWeek: boolean] {
+type NextOccurencePeriod = {
+    postDate: Date
+    isThisWeekRelevant: boolean
+}
+
+export function nextOccurrence({ team, frequency, weekSkew }: NextOccurence): NextOccurencePeriod {
     const now = getNowInNorway()
     const currentWeek = getWeekNumber(now)
 
     if (frequency === Frequency.WEEKLY) {
-        if (getDay(now) > day + 1 || getHours(now) > hour) {
-            return [setWeekDayHour(currentWeek + 1, day + 1, hour)(now), false]
+        if (getDay(now) > team.postDay + 1 || getHours(now) > team.postHour) {
+            return {
+                postDate: setWeekDayHour(currentWeek + 1, team.postDay + 1, team.postHour)(now),
+                isThisWeekRelevant: false,
+            }
         } else {
-            return [setDayHour(day + 1, hour)(now), true]
+            return { postDate: setDayHour(team.postDay + 1, team.postHour)(now), isThisWeekRelevant: true }
         }
     }
 
@@ -43,13 +53,16 @@ export function nextOccurrence({ day, hour, frequency, weekSkew }: NextOccurence
         .map((week) => week + weekSkew)
 
     const relevantWeek = relevantWeeks.find((week) => week >= currentWeek)
-    const relevantWeekDate = setWeekDayHour(relevantWeek, day + 1, hour)(now)
+    const relevantWeekDate = setWeekDayHour(relevantWeek, team.postDay + 1, team.postHour)(now)
 
     if (isBefore(now, relevantWeekDate)) {
         const upcomingRelevantWeek = relevantWeeks.find((week) => week > currentWeek)
-        return [setWeekDayHour(upcomingRelevantWeek, day + 1, hour)(now), false]
+        return {
+            postDate: setWeekDayHour(upcomingRelevantWeek, team.postDay + 1, team.postHour)(now),
+            isThisWeekRelevant: false,
+        }
     } else {
-        return [relevantWeekDate, relevantWeek === currentWeek]
+        return { postDate: relevantWeekDate, isThisWeekRelevant: relevantWeek === currentWeek }
     }
 }
 

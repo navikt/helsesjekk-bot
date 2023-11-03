@@ -103,9 +103,8 @@ export interface ModalStateTree {
 
 export function createSettingsModal(team: Team, isAdding = false): ModalView {
     const dayOptions = createDayOptions()
-    const [nextDate] = nextOccurrence({
-        day: team.postDay,
-        hour: team.postHour,
+    const { postDate } = nextOccurrence({
+        team,
         frequency: team.frequency,
         weekSkew: team.weekSkew,
     })
@@ -134,7 +133,7 @@ export function createSettingsModal(team: Team, isAdding = false): ModalView {
             textSection(
                 `Dersom botten er aktiv, er neste helsesjekk ${dayIndexToDay(team.postDay)} kl. ${
                     team.postHour
-                }:00 ${nextOccurenceText(nextDate)}`,
+                }:00 ${nextOccurenceText(postDate)}`,
             ),
             postDayInput(dayOptions, team),
             postHourInput(team),
