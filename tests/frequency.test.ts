@@ -1,7 +1,9 @@
-import { describe, test, expect, mock } from 'bun:test'
+import { describe, expect, test } from 'bun:test'
 import { parseISO } from 'date-fns'
 
-import { Frequency, nextOccurrence } from '../src/utils/frequency.ts'
+import { Frequency, nextOccurrence } from '../src/utils/frequency'
+
+import { mockDate } from './utils'
 
 describe('weekly frequency', () => {
     test('same day, should provide today as nextDate', () => {
@@ -298,9 +300,3 @@ describe('four-weekly frequency', () => {
         expect(isThisWeekRelevant).toBeFalse()
     })
 })
-
-function mockDate(date: Date): void {
-    mock.module('../src/utils/date.ts', () => ({
-        getNowInNorway: () => date,
-    }))
-}
