@@ -5,7 +5,7 @@ import { defaultQuestions } from '../questions/default'
 import { Question, QuestionType } from '../safe-types'
 
 import { Day } from './types'
-import { prisma, Team } from './prisma'
+import { prisma, Team, Asked } from './prisma'
 
 export async function teamStatus(channelId: string): Promise<'NEW' | 'DEACTIVATED' | 'ACTIVE'> {
     const team = await getTeam(channelId)
@@ -209,4 +209,10 @@ export async function getActiveTeams(): Promise<Team[]> {
 
 export async function getTeamsToReveal(): Promise<Team[]> {
     return prisma.team.findMany({ where: { active: true, Asked: { some: { revealed: false, skipped: false } } } })
+}
+
+export async function getBrokenAsks(): Promise<Asked[]> {
+    return prisma.asked.findMany({
+        where: { revealed: false, skipped: true },
+    })
 }
