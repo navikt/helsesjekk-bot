@@ -2,13 +2,17 @@
 
 import React, { ReactElement, useState } from 'react'
 import { useParams } from 'next/navigation'
-import * as R from 'remeda'
-import { getISOWeeksInYear } from 'date-fns/fp'
 
 import { Heading, BodyShort, Detail } from 'aksel-server'
 import { Button, PencilIcon, PersonTallShortIcon, Select, XMarkIcon, Tooltip, PadlockLockedIcon } from 'aksel-client'
 
-import { Frequency, getRelevantWeeks, nextOccurenceText, nextOccurrence } from '../../utils/frequency'
+import {
+    Frequency,
+    getRelevantWeeks,
+    getWeekNumbersInYear,
+    nextOccurenceText,
+    nextOccurrence,
+} from '../../utils/frequency'
 import { dayIndexToDay, getNowInNorway, getWeekNumber } from '../../utils/date'
 import { cn } from '../../utils/tw-utils'
 
@@ -171,7 +175,7 @@ function WeeksToPostGrid({ frequency, offset }: { frequency: number; offset: num
 
     const now = getNowInNorway()
     const currentWeek = getWeekNumber(now)
-    const allWeeks = R.range(1, getISOWeeksInYear(now))
+    const allWeeks = getWeekNumbersInYear(now)
     const relevantWeeks = getRelevantWeeks(now, frequency, offset)
     return (
         <div className="mb-2">
