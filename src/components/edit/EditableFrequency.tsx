@@ -2,12 +2,15 @@
 
 import React, { ReactElement, useState } from 'react'
 import { useParams } from 'next/navigation'
+import * as R from 'remeda'
+import { getISOWeeksInYear } from 'date-fns/fp'
 
 import { Heading, BodyShort, Detail } from 'aksel-server'
 import { Button, PencilIcon, PersonTallShortIcon, Select, XMarkIcon, Tooltip, PadlockLockedIcon } from 'aksel-client'
 
-import { nextOccurenceText, nextOccurrence } from '../../utils/frequency'
-import { dayIndexToDay } from '../../utils/date'
+import { Frequency, getRelevantWeeks, nextOccurenceText, nextOccurrence } from '../../utils/frequency'
+import { dayIndexToDay, getNowInNorway, getWeekNumber } from '../../utils/date'
+import { cn } from '../../utils/tw-utils'
 
 import { editFrequency } from './actions'
 
@@ -86,6 +89,7 @@ function FrequencyStatus({
                 <Heading size="small">Frekvens</Heading>
             </div>
             <BodyShort>{frequency === 1 ? 'Hver uke' : `Hver ${frequency}. uke`}</BodyShort>
+            <WeeksToPostGrid frequency={frequency} offset={weekSkew} />
             <Detail>
                 Neste spørring er {`${dayIndexToDay(postDay)} kl. ${postHour}:00`} {nextOccurenceText(postDate)}
             </Detail>
@@ -154,10 +158,38 @@ function EditableFrequencyForm({
                     Lagre
                 </Button>
             </div>
+            <WeeksToPostGrid frequency={newFrequency} offset={newOffset} />
             <Detail className="mt-1">
                 Neste spørring blir {`${dayIndexToDay(postDay)} kl. ${postHour}:00`} {nextOccurenceText(postDate)}
             </Detail>
         </form>
+    )
+}
+
+function WeeksToPostGrid({ frequency, offset }: { frequency: number; offset: number }): ReactElement {
+    if (frequency === Frequency.WEEKLY) return null
+
+    const now = getNowInNorway()
+    const currentWeek = getWeekNumber(now)
+    const allWeeks = R.range(1, getISOWeeksInYear(now))
+    const relevantWeeks = getRelevantWeeks(now, frequency, offset)
+    return (
+        <div className="mb-2">
+            <Detail>Uker som spørres på</Detail>
+            <div className="grid grid-cols-26 gap-1">
+                {allWeeks.map((week) => (
+                    <div
+                        key={week}
+                        className={cn('border rounded flex items-center justify-center text-xs', {
+                            'bg-green-200': relevantWeeks.includes(week),
+                            'border-2 border-dotted': week === currentWeek,
+                        })}
+                    >
+                        {week}
+                    </div>
+                ))}
+            </div>
+        </div>
     )
 }
 

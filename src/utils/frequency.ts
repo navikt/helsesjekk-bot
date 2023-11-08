@@ -48,10 +48,7 @@ export function nextOccurrence({ team, frequency, weekSkew }: NextOccurence): Ne
         }
     }
 
-    const relevantWeeks = R.range(0, getISOWeeksInYear(now))
-        .filter((week) => week % frequency === 0)
-        .map((week) => week + weekSkew)
-
+    const relevantWeeks = getRelevantWeeks(now, frequency, weekSkew)
     const relevantWeek = relevantWeeks.find((week) => week >= currentWeek)
     const relevantWeekDate = setWeekDayHour(relevantWeek, team.postDay + 1, team.postHour)(now)
 
@@ -85,4 +82,10 @@ export function nextOccurenceText(occurence: Date): string {
     }
 
     return hours < 24 ? `om ${hours} timer` : days === 0 ? 'i dag' : `om ${days + 1} dager`
+}
+
+export function getRelevantWeeks(now: Date, frequency: number, weekSkew: number): number[] {
+    return R.range(0, getISOWeeksInYear(now))
+        .filter((week) => week % frequency === 0)
+        .map((week) => week + weekSkew)
 }

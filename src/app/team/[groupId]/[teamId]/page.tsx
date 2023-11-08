@@ -61,7 +61,7 @@ async function Page({ params }: Props): Promise<ReactElement> {
     return (
         <div className="max-w-prose">
             <BackLink href="/" />
-            <Heading size="large">Ditt team</Heading>
+            <Heading size="large">{team.name}</Heading>
             <LinkPanel
                 as={Link}
                 href={`/team/${params.groupId}/${params.teamId}/graph`}
@@ -72,7 +72,7 @@ async function Page({ params }: Props): Promise<ReactElement> {
                 <LinkPanelTitle>Se helsegraf</LinkPanelTitle>
                 <LinkPanelDescription>Se utviklingen av teamhelse over tid</LinkPanelDescription>
             </LinkPanel>
-            <EditableStatus teamId={team.id} active={team.active} />
+            <EditableTeamName teamId={team.id} name={team.name} />
             {team.activeAskTs != null && (
                 <ActiveAsk
                     teamId={team.id}
@@ -81,7 +81,7 @@ async function Page({ params }: Props): Promise<ReactElement> {
                     revealHour={team.revealHour}
                 />
             )}
-            <EditableTeamName teamId={team.id} name={team.name} />
+            <EditableStatus teamId={team.id} active={team.active} />
             <EditableFrequency
                 teamId={team.id}
                 postDay={team.postDay}
