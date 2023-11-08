@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test'
 import { parseISO } from 'date-fns'
 
-import { Frequency, nextOccurrence } from '../src/utils/frequency'
+import { Frequency, getRelevantWeeks, nextOccurrence } from '../src/utils/frequency.ts'
 
 import { mockDate } from './utils'
 
@@ -170,7 +170,7 @@ describe('triweekly frequency', () => {
         expect(isThisWeekRelevant).toBeFalse()
     })
 
-    test('same day, but week is skewed+1, should provide next week as nextDate', () => {
+    test('same day, but week is skewed+1, should provide week in two weeks as nextDate', () => {
         mockDate(new Date('2023-05-05T11:37:00'))
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
@@ -182,11 +182,11 @@ describe('triweekly frequency', () => {
             weekSkew: 1,
         })
 
-        expect(postDate).toEqual(parseISO('2023-05-12T12:37:00.000Z'))
+        expect(postDate).toEqual(parseISO('2023-05-19T12:37:00.000Z'))
         expect(isThisWeekRelevant).toBeFalse()
     })
 
-    test('same day, but week is skewed+2, should provide week in two weeks as nextDate', () => {
+    test('same day, but week is skewed+2, should provide next week as nextDate', () => {
         mockDate(new Date('2023-05-05T11:37:00'))
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
@@ -198,7 +198,7 @@ describe('triweekly frequency', () => {
             weekSkew: 2,
         })
 
-        expect(postDate).toEqual(parseISO('2023-05-19T12:37:00.000Z'))
+        expect(postDate).toEqual(parseISO('2023-05-12T12:37:00.000Z'))
         expect(isThisWeekRelevant).toBeFalse()
     })
 })
@@ -264,7 +264,7 @@ describe('four-weekly frequency', () => {
             weekSkew: 1,
         })
 
-        expect(postDate).toEqual(parseISO('2023-05-26T12:37:00.000Z'))
+        expect(postDate).toEqual(parseISO('2023-06-09T12:37:00.000Z'))
         expect(isThisWeekRelevant).toBeFalse()
     })
 
@@ -296,7 +296,69 @@ describe('four-weekly frequency', () => {
             weekSkew: 3,
         })
 
-        expect(postDate).toEqual(parseISO('2023-06-09T12:37:00.000Z'))
+        expect(postDate).toEqual(parseISO('2023-05-26T12:37:00.000Z'))
         expect(isThisWeekRelevant).toBeFalse()
+    })
+})
+
+describe('getRelevantWeeks', () => {
+    test('Should provide correct weeks for frequency WEEKLY', () => {
+        expect(getRelevantWeeks(new Date(2023), Frequency.WEEKLY, 0)).toEqual([
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+            30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52,
+        ])
+    })
+
+    test('Should provide correct weeks for frequency BIWEEKLY', () => {
+        expect(getRelevantWeeks(new Date(2023), Frequency.BIWEEKLY, 0)).toEqual([
+            2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52,
+        ])
+    })
+
+    test('Should provide correct weeks for frequency BIWEEKLY with skew+1', () => {
+        expect(getRelevantWeeks(new Date(2023), Frequency.BIWEEKLY, 1)).toEqual([
+            1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51,
+        ])
+    })
+
+    test('Should provide correct weeks for frequency TRIWEEKLY', () => {
+        expect(getRelevantWeeks(new Date(2023), Frequency.TRIWEEKLY, 0)).toEqual([
+            3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39, 42, 45, 48, 51,
+        ])
+    })
+
+    test('Should provide correct weeks for frequency TRIWEEKLY with skew+1', () => {
+        expect(getRelevantWeeks(new Date(2023), Frequency.TRIWEEKLY, 1)).toEqual([
+            2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41, 44, 47, 50,
+        ])
+    })
+
+    test('Should provide correct weeks for frequency TRIWEEKLY with skew+2', () => {
+        expect(getRelevantWeeks(new Date(2023), Frequency.TRIWEEKLY, 2)).toEqual([
+            1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 37, 40, 43, 46, 49, 52,
+        ])
+    })
+
+    test('Should provide correct weeks for frequency FOURWEEKLY', () => {
+        expect(getRelevantWeeks(new Date(2023), Frequency.FOURWEEKLY, 0)).toEqual([
+            4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52,
+        ])
+    })
+
+    test('Should provide correct weeks for frequency FOURWEEKLY with skew+1', () => {
+        expect(getRelevantWeeks(new Date(2023), Frequency.FOURWEEKLY, 1)).toEqual([
+            3, 7, 11, 15, 19, 23, 27, 31, 35, 39, 43, 47, 51,
+        ])
+    })
+
+    test('Should provide correct weeks for frequency FOURWEEKLY with skew+2', () => {
+        expect(getRelevantWeeks(new Date(2023), Frequency.FOURWEEKLY, 2)).toEqual([
+            2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50,
+        ])
+    })
+    test('Should provide correct weeks for frequency FOURWEEKLY with skew+3', () => {
+        expect(getRelevantWeeks(new Date(2023), Frequency.FOURWEEKLY, 3)).toEqual([
+            1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49,
+        ])
     })
 })
