@@ -113,6 +113,28 @@ describe('askRelevantTeams', () => {
 
         expect(askedTeams).toBe(0)
     })
+
+    test('should not post to team whose next post overflows to next year', async () => {
+        mockDb(
+            [
+                {
+                    team: createTeam({
+                        postDay: 4,
+                        postHour: 12,
+                        frequency: 4,
+                        weekSkew: 0,
+                    }),
+                },
+            ],
+            [],
+        )
+
+        mockDate(new Date('2023-12-29T13:37:00'))
+
+        const askedTeams = await askRelevantTeams(fakeApp)
+
+        expect(askedTeams).toBe(0)
+    })
 })
 
 describe('revealRelevantTeams', () => {
