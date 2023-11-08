@@ -135,6 +135,7 @@ function EditableFrequencyForm({
                     label="Frekvens"
                     name="frequency"
                     className="grow"
+                    autoFocus
                     value={newFrequency}
                     onChange={(e) => {
                         setNewFrequency(+e.target.value)
@@ -185,7 +186,7 @@ function WeeksToPostGrid({ frequency, offset }: { frequency: number; offset: num
                 {allWeeks.map((week) => (
                     <div
                         key={week}
-                        className={cn('border rounded flex items-center justify-center text-xs', {
+                        className={cn('border rounded flex items-center justify-center text-xs transition-colors', {
                             'bg-green-200': relevantWeeks.includes(week),
                             'border-2 border-dotted': week === currentWeek,
                         })}
@@ -199,7 +200,7 @@ function WeeksToPostGrid({ frequency, offset }: { frequency: number; offset: num
                 {nextYear.map((week) => (
                     <div
                         key={week}
-                        className={cn('border rounded flex items-center justify-center text-xs', {
+                        className={cn('border rounded flex items-center justify-center text-xs transition-colors', {
                             'bg-green-200': relevantWeeks.includes(week),
                         })}
                     >
