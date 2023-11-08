@@ -54,7 +54,7 @@ function EditableTime({ teamId, type, hour, day }: Props): ReactElement {
                         }}
                         className="flex gap-2 items-end"
                     >
-                        <Select label="Dag" name="day" className="grow" defaultValue={day}>
+                        <Select label="Dag" name="day" className="grow" defaultValue={day} autoFocus>
                             {R.range(0, 7).map((it) => (
                                 <option key={it} value={it}>
                                     {dayIndexToDay(it)}
