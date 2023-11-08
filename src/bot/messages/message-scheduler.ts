@@ -6,7 +6,10 @@ import { isLeader } from '../../utils/leader'
 
 import { askRelevantTeams, inspectForBrokenAsks, revealRelevantTeams } from './message-jobs'
 
-export const cronLogger = logger.child({ x_context: 'cron-job' })
+export const cronLogger = logger.child(
+    { x_context: 'cron-job' },
+    { level: process.env.NODE_ENV === 'test' ? 'error' : undefined },
+)
 
 export function configureMessageScheduler(app: App): void {
     const EVERY_5TH_MINUTE = '*/5 * * * *'

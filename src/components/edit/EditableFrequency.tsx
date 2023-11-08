@@ -2,6 +2,7 @@
 
 import React, { ReactElement, useState } from 'react'
 import { useParams } from 'next/navigation'
+import { getYear } from 'date-fns'
 
 import { Heading, BodyShort, Detail } from 'aksel-server'
 import { Button, PencilIcon, PersonTallShortIcon, Select, XMarkIcon, Tooltip, PadlockLockedIcon } from 'aksel-client'
@@ -175,11 +176,11 @@ function WeeksToPostGrid({ frequency, offset }: { frequency: number; offset: num
 
     const now = getNowInNorway()
     const currentWeek = getWeekNumber(now)
-    const allWeeks = getWeekNumbersInYear(now)
+    const [allWeeks, nextYear] = getWeekNumbersInYear(now)
     const relevantWeeks = getRelevantWeeks(now, frequency, offset)
     return (
         <div className="mb-2">
-            <Detail>Uker som spørres på</Detail>
+            <Detail className="mb-1">Uker som spørres på i {getYear(now)}</Detail>
             <div className="grid grid-cols-26 gap-1">
                 {allWeeks.map((week) => (
                     <div
@@ -192,6 +193,20 @@ function WeeksToPostGrid({ frequency, offset }: { frequency: number; offset: num
                         {week}
                     </div>
                 ))}
+            </div>
+            <Detail className="mt-2">Uker som spørres på i {getYear(now) + 1}</Detail>
+            <div className="grid grid-cols-26 gap-1">
+                {nextYear.map((week) => (
+                    <div
+                        key={week}
+                        className={cn('border rounded flex items-center justify-center text-xs', {
+                            'bg-green-200': relevantWeeks.includes(week),
+                        })}
+                    >
+                        {week}
+                    </div>
+                ))}
+                <div className="border rounded flex items-center justify-center text-xs">...</div>
             </div>
         </div>
     )

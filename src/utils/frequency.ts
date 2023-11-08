@@ -7,6 +7,9 @@ import {
     getDay,
     getHours,
     isBefore,
+    setYear,
+    getYear,
+    isValid,
 } from 'date-fns/fp'
 import { nb } from 'date-fns/locale'
 
@@ -49,9 +52,27 @@ export function nextOccurrence({ team, frequency, weekSkew }: NextOccurence): Ne
     }
 
     const relevantWeeks = getRelevantWeeks(now, frequency, weekSkew)
-    const relevantWeek = relevantWeeks.find((week) => week >= currentWeek)
+    const relevantWeek: number | undefined = relevantWeeks.find((week) => week >= currentWeek)
     const relevantWeekDate = setWeekDayHour(relevantWeek, team.postDay + 1, team.postHour)(now)
 
+    if (
+        currentWeek + frequency > getISOWeeksInYear(now) &&
+        (relevantWeek == null || !isValid(relevantWeekDate) || isBefore(now, relevantWeekDate))
+    ) {
+        // Handle year overflow, find the first relevant week to post for next year
+        const nextYearInitialWeek = setYearWeekDayHour(getYear(now) + 1, 1, team.postDay + 1, team.postHour)(now)
+        const nextYearFirstRelevantWeek = getRelevantWeeks(nextYearInitialWeek, frequency, weekSkew)[0]
+        const relevantNextYearDate = setYearWeekDayHour(
+            getYear(now) + 1,
+            nextYearFirstRelevantWeek,
+            team.postDay + 1,
+            team.postHour,
+        )(now)
+
+        return { postDate: relevantNextYearDate, isThisWeekRelevant: false }
+    }
+
+    // Is this year
     if (isBefore(now, relevantWeekDate)) {
         const upcomingRelevantWeek = relevantWeeks.find((week) => week > currentWeek)
         return {
@@ -70,6 +91,9 @@ const setWeekDayHour = (week: number, day: number, hour: number): ((date: Date) 
         setHours(hour),
     )
 
+const setYearWeekDayHour = (year: number, week: number, day: number, hour: number): ((date: Date) => Date) =>
+    R.createPipe(setYear(year), setWeekDayHour(week, day, hour))
+
 const setDayHour = (day: number, hour: number): ((date: Date) => Date) =>
     R.createPipe(setHours(hour), setDayWithOptions({ weekStartsOn: 1 })(day))
 
@@ -84,10 +108,11 @@ export function nextOccurenceText(occurence: Date): string {
     return hours < 24 ? `om ${hours} timer` : days === 0 ? 'i dag' : `om ${days + 1} dager`
 }
 
-export function getWeekNumbersInYear(now: Date): number[] {
-    return R.range(1, getISOWeeksInYear(now))
+export function getWeekNumbersInYear(now: Date): [thisYear: number[], nextYear: number[]] {
+    return [R.range(1, getISOWeeksInYear(now) + 1), R.range(1, 5)]
 }
 
 export function getRelevantWeeks(now: Date, frequency: number, weekSkew: number): number[] {
-    return getWeekNumbersInYear(now).filter((week) => (week + weekSkew) % frequency === 0)
+    const [thisYear] = getWeekNumbersInYear(now)
+    return thisYear.filter((week) => (week + weekSkew) % frequency === 0)
 }
