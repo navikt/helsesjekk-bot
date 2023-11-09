@@ -1,0 +1,7 @@
+commonLabels:
+  app: helsesjekk-bot
+
+resources:
+  - service.yaml
+  - deployment.yaml
+  - ingress.yaml
