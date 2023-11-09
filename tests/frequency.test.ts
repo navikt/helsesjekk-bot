@@ -34,7 +34,7 @@ describe('weekly frequency', () => {
             weekSkew: 0,
         })
 
-        expect(postDate).toEqual(parseISO('2023-05-12T12:37:00.000Z'))
+        expect(postDate).toEqual(parseISO('2023-05-05T12:37:00.000Z'))
         expect(isThisWeekRelevant).toBeTrue()
     })
 
@@ -51,6 +51,22 @@ describe('weekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-12T12:37:00.000Z'))
+        expect(isThisWeekRelevant).toBeFalse()
+    })
+
+    test('repro case: hour has passed but day is tomorrow, should correctly build postDates', () => {
+        mockDate(new Date('2023-11-09T09:35:41.912Z'))
+
+        const { postDate, isThisWeekRelevant } = nextOccurrence({
+            team: {
+                postDay: 4,
+                postHour: 8,
+            },
+            frequency: Frequency.WEEKLY,
+            weekSkew: 0,
+        })
+
+        expect(postDate).toEqual(parseISO('2023-11-10T08:35:41.912Z'))
         expect(isThisWeekRelevant).toBeTrue()
     })
 })
