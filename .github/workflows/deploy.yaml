@@ -54,12 +54,17 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
   deploy-bot-to-bks:
     name: Deploy to prod
     needs: [build-and-publish, codeql-analysis]
     runs-on: self-hosted
     steps:
+      - name: Kubernetes Set Context
+        uses: Azure/k8s-set-context@v2
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.BKS_PROD_KUBECONFIG }}
+
       - uses: actions/checkout@v3
       - name: Diff kustomization
         id: diff
