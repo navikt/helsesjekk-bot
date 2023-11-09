@@ -18,25 +18,9 @@ jobs:
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        id: setup-node
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@node-20
         with:
-          node-version: 20.x
-          cache: yarn
-      - id: set-env
-        shell: bash
-        run: echo "NPM_AUTH_TOKEN=${{ secrets.NPM_AUTH_TOKEN }}" >> $GITHUB_ENV
-      - uses: actions/cache@v3
-        id: next-cache
-        with:
-          path: .next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
-      - id: yarn-install
-        shell: bash
-        run: yarn --immutable
+          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: yarn lint
       - run: yarn build
       
