@@ -12,6 +12,8 @@ import { dayIndexToDay } from '../../utils/date'
 import { InactiveDot, PingDot } from '../../components/core/Dots'
 import { questionsFromJsonb } from '../../questions/jsonb-utils'
 
+import AdminTeamToggler from './_admin-team-toggler'
+
 async function Page(): Promise<ReactElement> {
     await validateWonderwallToken('/admin')
 
@@ -28,11 +30,14 @@ async function Page(): Promise<ReactElement> {
             <Heading size="large">Alle team</Heading>
             <div className="flex gap-3 flex-wrap">
                 {sortedTeams.map((team) => (
-                    <div key={team.id} className="bg-bg-subtle p-4 rounded">
-                        <Heading level="2" size="medium" className="flex items-center gap-2 mb-2">
-                            {team.active ? <PingDot /> : <InactiveDot />}
-                            {team.name}
-                        </Heading>
+                    <div key={team.id} className="bg-bg-subtle p-4 pt-2 rounded">
+                        <div className="flex justify-between mb-2">
+                            <Heading level="2" size="medium" className="flex items-center gap-2">
+                                {team.active ? <PingDot /> : <InactiveDot />}
+                                {team.name}
+                            </Heading>
+                            <AdminTeamToggler id={team.id} active={team.active} />
+                        </div>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                             <TeamDetail
                                 text="Spør"
