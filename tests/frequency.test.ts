@@ -35,7 +35,7 @@ describe('weekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-12T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBeTrue()
     })
 
     test('day of week has passed, should provide next week as nextDate', () => {
@@ -51,7 +51,7 @@ describe('weekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-12T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBeTrue()
     })
 })
 

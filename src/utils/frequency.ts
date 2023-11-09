@@ -44,7 +44,7 @@ export function nextOccurrence({ team, frequency, weekSkew }: NextOccurence): Ne
         if (getDay(now) > team.postDay + 1 || getHours(now) > team.postHour) {
             return {
                 postDate: setWeekDayHour(currentWeek + 1, team.postDay + 1, team.postHour)(now),
-                isThisWeekRelevant: false,
+                isThisWeekRelevant: true,
             }
         } else {
             return { postDate: setDayHour(team.postDay + 1, team.postHour)(now), isThisWeekRelevant: true }
