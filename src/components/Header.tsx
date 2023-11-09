@@ -25,13 +25,23 @@ function Header(): ReactElement {
                     </Suspense>
                 </div>
             </header>
-            <div className="ml-20 mb-8 flex gap-6">
-                <Link href="/">Mine team</Link>
-                <Link href="/hva-er-helsesjekk">Hva er helsesjekk</Link>
-                <Link href="/kom-i-gang">Kom i gang</Link>
-                <Link href="/global-helse">Helse i NAV</Link>
-                <Link href="/kom-i-gang/grupper">Mine grupper</Link>
-            </div>
+            <ul className="list-disc sm:list-none list-inside ml-4 sm:ml-20 mb-6 sm:mb-8 flex gap-3 sm:gap-6 flex-col sm:flex-row">
+                <li>
+                    <Link href="/">Mine team</Link>
+                </li>
+                <li>
+                    <Link href="/hva-er-helsesjekk">Hva er helsesjekk</Link>
+                </li>
+                <li>
+                    <Link href="/kom-i-gang">Kom i gang</Link>
+                </li>
+                <li>
+                    <Link href="/global-helse">Helse i NAV</Link>
+                </li>
+                <li>
+                    <Link href="/kom-i-gang/grupper">Mine grupper</Link>
+                </li>
+            </ul>
         </div>
     )
 }

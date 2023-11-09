@@ -36,7 +36,7 @@ async function StatsView(): Promise<ReactElement> {
     const stats = await funStats()
 
     return (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="bg-bg-subtle rounded p-4">
                 <div className="flex gap-1 items-center">
                     <PersonTallShortIcon aria-hidden />
@@ -99,7 +99,7 @@ async function StatsView(): Promise<ReactElement> {
 
 function StatsSkeleton(): ReactElement {
     return (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Skeleton variant="rounded" height="84px" />
             <Skeleton variant="rounded" height="84px" />
             <Skeleton variant="rounded" height="84px" />

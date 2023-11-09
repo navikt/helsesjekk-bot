@@ -9,7 +9,7 @@ function Footer(): ReactElement {
     return (
         <footer className="border-t border-t-border-subtle mt-4 p-4 flex">
             <Image
-                className="object-contain grayscale hover:grayscale-0 transition-all"
+                className="object-contain grayscale hover:grayscale-0 transition-all hidden sm:block"
                 src={logo}
                 alt=""
                 aria-hidden
