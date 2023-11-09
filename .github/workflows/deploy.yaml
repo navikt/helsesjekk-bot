@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@node-20
         with:
-          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN_CLASSIC }}
       - run: yarn lint
       - run: yarn build
       
