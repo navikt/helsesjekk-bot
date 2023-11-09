@@ -46,31 +46,3 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
           labels: ${{ steps.meta.outputs.labels }}
-
-  deploy-bot-to-bks:
-    name: Deploy to prod
-    needs: [build-and-publish]
-    runs-on: self-hosted
-    steps:
-      - name: Kubernetes Set Context
-        uses: Azure/k8s-set-context@v2
-        with:
-          method: kubeconfig
-          kubeconfig: ${{ secrets.BKS_PROD_KUBECONFIG }}
-
-      - uses: actions/checkout@v3
-      - name: Diff kustomization
-        id: diff
-        continue-on-error: true
-        run: kubectl diff -k deploy
-  
-      - name: Restart Deployment
-        if: success()
-        run: kubectl rollout restart deployment helsesjekk-bot --namespace helsesjekk-bot
-  
-  
-      - name: Apply deployment
-        if: always() && steps.diff.outcome == 'failure'
-        run: | 
-          kubectl kustomize deploy
-          kubectl apply -k deploy
