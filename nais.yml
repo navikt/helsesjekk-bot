@@ -10,6 +10,7 @@ spec:
   port: 3000
   ingresses:
     - 'https://helsesjekk-bot.intern.nav.no'
+    - 'https://helsesjekk-bot.nav.no'
   replicas:
     min: 1
     max: 2

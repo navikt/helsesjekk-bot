@@ -5,7 +5,6 @@ import { Metadata } from 'next'
 import { Alert, Detail, Heading, Skeleton, BodyLong } from 'aksel-server'
 import { CopyButton } from 'aksel-client'
 
-import { verifyUserLoggedIn } from '../../../auth/authentication'
 import { getMembersOf, MsGraphGroup } from '../../../auth/ms-graph'
 import BackLink from '../../../components/core/BackLink'
 
@@ -15,8 +14,6 @@ export const metadata: Metadata = {
 }
 
 async function Page(): Promise<ReactElement> {
-    await verifyUserLoggedIn('/kom-i-gang/grupper')
-
     return (
         <div>
             <BackLink href="/kom-i-gang" />
