@@ -64,7 +64,7 @@ jobs:
       - name: Diff kustomization
         id: diff
         continue-on-error: true
-        run: kubectl diff -k deploy/overlays/prod
+        run: kubectl diff -k deploy
   
       - name: Restart Deployment
         if: success()
@@ -74,5 +74,5 @@ jobs:
       - name: Apply deployment
         if: always() && steps.diff.outcome == 'failure'
         run: | 
-          kubectl kustomize deploy/overlays/prod
-          kubectl apply -k deploy/overlays/prod
+          kubectl kustomize deploy
+          kubectl apply -k deploy
