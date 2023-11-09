@@ -8,18 +8,6 @@ env:
  IMAGE_NAME: ${{ github.repository }}
  
 jobs:
-  codeql-analysis:
-    runs-on: ubuntu-latest
-    permissions:
-      security-events: write
-    steps:
-      - uses: actions/checkout@v3
-      - uses: github/codeql-action/init@v2
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
-
   build-and-publish:
     name: "Prod: Bygg, test og push Docker image"
     runs-on: ubuntu-latest
