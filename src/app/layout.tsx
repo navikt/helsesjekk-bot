@@ -5,8 +5,11 @@ import { PropsWithChildren, ReactElement } from 'react'
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { validateWonderwallToken } from '../auth/authentication'
 
-export default function RootLayout({ children }: PropsWithChildren): ReactElement {
+export default async function RootLayout({ children }: PropsWithChildren): Promise<ReactElement> {
+    await validateWonderwallToken('/')
+
     return (
         <html lang="en">
             <body className="flex flex-col min-h-screen">

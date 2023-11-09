@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 
 import { Heading, Detail, BodyShort } from 'aksel-server'
 
-import { userHasAdGroup, verifyUserLoggedIn } from '../../auth/authentication'
+import { userHasAdGroup, validateWonderwallToken } from '../../auth/authentication'
 import { adminGetTeamsWithAsked } from '../../db/admin'
 import { isLocal } from '../../utils/env'
 import BackLink from '../../components/core/BackLink'
@@ -13,7 +13,7 @@ import { InactiveDot, PingDot } from '../../components/core/Dots'
 import { questionsFromJsonb } from '../../questions/jsonb-utils'
 
 async function Page(): Promise<ReactElement> {
-    await verifyUserLoggedIn('/admin')
+    await validateWonderwallToken('/admin')
 
     if (!(await userHasAdGroup(getAdminGroupId()))) {
         return notFound()

@@ -9,7 +9,10 @@ import { raise } from '../utils/ts-utils'
 import { fakeToken } from './fake-token'
 import { getMembersOf } from './ms-graph'
 
-export async function verifyUserLoggedIn(redirectPath: string): Promise<void> {
+/**
+ * Validates the wonderwall token according to nais.io. Should only actually redirect if the token has expired.
+ */
+export async function validateWonderwallToken(redirectPath: string): Promise<void> {
     const requestHeaders = headers()
 
     if (isLocal) {
@@ -19,7 +22,7 @@ export async function verifyUserLoggedIn(redirectPath: string): Promise<void> {
 
     const bearerToken: string | null | undefined = requestHeaders.get('authorization')
     if (!bearerToken) {
-        logger.info('Found no token, redirecting to login')
+        logger.warn('Found no token, redirecting to login, why was this not picked up by middleware.ts?')
         redirect(`/oauth2/login?redirect=${redirectPath}`)
     }
 
@@ -33,6 +36,7 @@ export async function verifyUserLoggedIn(redirectPath: string): Promise<void> {
                 ),
             )
         }
+
         redirect(`/oauth2/login?redirect=${redirectPath}`)
     }
 }

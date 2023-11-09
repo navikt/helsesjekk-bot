@@ -9,7 +9,7 @@ import { BodyShort } from 'aksel-server'
 
 import { Question, QuestionType } from '../../../../safe-types'
 import { getTeamByAdGroupAndTeamId } from '../../../../db'
-import { userHasAdGroup, verifyUserLoggedIn } from '../../../../auth/authentication'
+import { userHasAdGroup } from '../../../../auth/authentication'
 import { questionTypeToText } from '../../../../utils/asked'
 import { questionsFromJsonb } from '../../../../questions/jsonb-utils'
 import { TeamNotAccesible, TeamNotFound } from '../../../../components/errors/ErrorMessages'
@@ -37,8 +37,6 @@ type Props = {
 }
 
 async function Page({ params }: Props): Promise<ReactElement> {
-    await verifyUserLoggedIn(`/team/${params.groupId}/${params.teamId}`)
-
     const team = await getTeamByAdGroupAndTeamId(params.groupId, params.teamId)
     if (!team) {
         return (

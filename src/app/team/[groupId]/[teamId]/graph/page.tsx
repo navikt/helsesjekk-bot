@@ -4,7 +4,7 @@ import React, { ReactElement, Suspense } from 'react'
 import { Heading, Skeleton, BodyLong, Detail } from 'aksel-server'
 
 import { TeamNotAccesible, TeamNotFound } from '../../../../../components/errors/ErrorMessages'
-import { userHasAdGroup, verifyUserLoggedIn } from '../../../../../auth/authentication'
+import { userHasAdGroup } from '../../../../../auth/authentication'
 import BackLink from '../../../../../components/core/BackLink'
 import { getTeamByAdGroupAndTeamId } from '../../../../../db'
 import { getTeamScorePerQuestion, getTeamScoreTimeline } from '../../../../../db/score'
@@ -20,8 +20,6 @@ type Props = {
 }
 
 async function Page({ params }: Props): Promise<ReactElement> {
-    await verifyUserLoggedIn(`/team/${params.groupId}/${params.teamId}/graph`)
-
     const team = await getTeamByAdGroupAndTeamId(params.groupId, params.teamId)
     if (!team) {
         return (
