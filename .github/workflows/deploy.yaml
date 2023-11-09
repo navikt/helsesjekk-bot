@@ -44,7 +44,7 @@ jobs:
           cache-to: type=gha,mode=max
   deploy-bot-to-bks:
     name: Deploy to prod
-    needs: [build-and-publish, codeql-analysis]
+    needs: [build-and-publish]
     runs-on: self-hosted
     steps:
       - name: Kubernetes Set Context
