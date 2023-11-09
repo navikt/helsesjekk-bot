@@ -39,9 +39,9 @@ export async function askRelevantTeams(app: App): Promise<number> {
         } active teams:\n${activeTeams
             .map(
                 (team) =>
-                    `${team.name} want to post at ${team.postHour}:00 on ${dayIndexToDay(team.postDay)}, reveal at ${
-                        team.revealHour
-                    }:00 on ${dayIndexToDay(team.revealDay)}`,
+                    `Post: ${dayIndexToDay(team.postDay)} ${team.postHour}:00,\t reveal: ${dayIndexToDay(
+                        team.revealDay,
+                    )} ${team.revealHour}:00\t (${team.frequency}+${team.weekSkew})\t ${team.name}`,
             )
             .join('\n')}\n\n${thisWeekTeams.length} of them want to post this week`,
     )
