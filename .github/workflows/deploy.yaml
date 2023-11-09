@@ -1,8 +1,14 @@
 name: Build and deploy
-on: push
+on: 
+  push:
+  workflow_dispatch:
+
+env:
+ REGISTRY: ghcr.io
+ IMAGE_NAME: ${{ github.repository }}
+ 
 jobs:
   codeql-analysis:
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -15,7 +21,6 @@ jobs:
         uses: github/codeql-action/analyze@v2
 
   build-and-publish:
-    if: github.ref == 'refs/heads/main'
     name: "Prod: Bygg, test og push Docker image"
     runs-on: ubuntu-latest
     permissions:
@@ -29,66 +34,45 @@ jobs:
         with:
           NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - run: yarn lint
-#      - run: yarn test
       - run: yarn build
-      - name: Push docker image to GAR
-        uses: nais/docker-build-push@v0
+      
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v2
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          
+      - name: Push docker image to GHCR
+        uses: docker/build-push-action@v4
         id: docker-build-push
         with:
-          team: teamsykmelding
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          image_suffix: prod
+          context: .
+          file: Dockerfile
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-  build-and-publish-dev:
-    name: "Dev: Bygg, test og push Docker image"
-    runs-on: ubuntu-latest
-    permissions:
-      packages: 'write'
-      contents: 'read'
-      id-token: 'write'
-    outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
-    steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@node-20
-        with:
-          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-      - run: yarn lint
-      - run: yarn build
-      - name: Push docker image to GAR
-        uses: nais/docker-build-push@v0
-        id: docker-build-push
-        with:
-          team: teamsykmelding
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          image_suffix: dev
-
-  deploy-bot-to-gcp:
-    if: github.ref == 'refs/heads/main'
+  deploy-bot-to-bks:
     name: Deploy to prod
     needs: [build-and-publish, codeql-analysis]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
-      - uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-gcp
-          RESOURCE: nais.yml
-          VAR: image=${{ needs.build-and-publish.outputs.image }}
-
-
-  deploy-bot-to-gcp-dev:
-    if: github.ref != 'refs/heads/main'
-    name: Deploy to dev
-    needs: [build-and-publish-dev]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: nais-dev.yml
-          VAR: image=${{ needs.build-and-publish-dev.outputs.image }}
+      - name: Diff kustomization
+        id: diff
+        continue-on-error: true
+        run: kubectl diff -k deploy/overlays/prod
+  
+      - name: Restart Deployment
+        if: success()
+        run: kubectl rollout restart deployment helsesjekk-bot --namespace helsesjekk-bot
+  
+  
+      - name: Apply deployment
+        if: always() && steps.diff.outcome == 'failure'
+        run: | 
+          kubectl kustomize deploy/overlays/prod
+          kubectl apply -k deploy/overlays/prod
