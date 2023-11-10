@@ -68,7 +68,17 @@ async function Page({ params }: Props): Promise<ReactElement> {
                 prefetch={false}
             >
                 <LinkPanelTitle>Se helsegraf</LinkPanelTitle>
-                <LinkPanelDescription>Se utviklingen av teamhelse over tid</LinkPanelDescription>
+                <LinkPanelDescription>Graf over utviklingen av teamhelse over tid</LinkPanelDescription>
+            </LinkPanel>
+            <LinkPanel
+                as={Link}
+                href={`/team/${params.groupId}/${params.teamId}/results`}
+                border
+                className="my-2"
+                prefetch={false}
+            >
+                <LinkPanelTitle>Se tidligere resultater</LinkPanelTitle>
+                <LinkPanelDescription>Alle gyldige tidligere resultater</LinkPanelDescription>
             </LinkPanel>
             <EditableTeamName teamId={team.id} name={team.name} />
             {team.activeAskTs != null && (
