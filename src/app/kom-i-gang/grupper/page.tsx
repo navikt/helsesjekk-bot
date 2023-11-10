@@ -3,10 +3,10 @@ import * as R from 'remeda'
 import { Metadata } from 'next'
 
 import { Alert, Detail, Heading, Skeleton, BodyLong } from 'aksel-server'
-import { CopyButton } from 'aksel-client'
 
 import { getMembersOf, MsGraphGroup } from '../../../auth/ms-graph'
 import BackLink from '../../../components/core/BackLink'
+import SortableGroups from '../../../components/groups/SortableGroups'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Dine grupper',
@@ -49,30 +49,17 @@ async function UserAdGroups(): Promise<ReactElement> {
             <Heading size="large" spacing>
                 Dine grupper ({membersOf.value.length})
             </Heading>
-            <div className="flex flex-col gap-3">
-                {R.sortBy
-                    .strict(membersOf.value, [
-                        (it: MsGraphGroup) => it.displayName?.toLowerCase().includes('team'),
-                        'desc',
-                    ])
-                    .map((group) => (
-                        <GroupListItem key={group.id} group={group} />
-                    ))}
-            </div>
-        </div>
-    )
-}
-
-function GroupListItem({ group }: { group: MsGraphGroup }): ReactElement {
-    return (
-        <div className="bg-bg-subtle rounded p-4">
-            <Heading size="small">{group.displayName ?? 'Gruppe uten navn'}</Heading>
-            <BodyLong className="mb-2">{group.description}</BodyLong>
-            <Detail>Koble denne gruppen til teamet ditt</Detail>
-            <div className="bg-white flex justify-between items-center p-2">
-                <pre className="overflow-hidden">/helsesjekk assign {group.id}</pre>
-                <CopyButton size="small" copyText={`/helsesjekk assign ${group.id}`} />
-            </div>
+            <SortableGroups
+                groups={R.pipe(
+                    membersOf.value,
+                    R.sortBy.strict([(it: MsGraphGroup) => it.displayName?.toLowerCase().includes('team'), 'desc']),
+                    R.map((it) => ({
+                        id: it.id,
+                        displayName: it.displayName ?? 'Gruppe uten navn',
+                        description: it.description ?? 'Gruppe uten beskrivelse',
+                    })),
+                )}
+            />
         </div>
     )
 }
