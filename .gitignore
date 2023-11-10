@@ -19,3 +19,5 @@ tsconfig.tsbuildinfo
 
 # next
 .next
+
+bunfig.toml

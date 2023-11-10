@@ -25,6 +25,7 @@ const app = lazyNextleton(
             signingSecret: process.env.SLACK_SIGNING_SECRET,
             appToken: process.env.SLACK_APP_TOKEN,
             logger: loggerAdapter,
+            logLevel: LogLevel.DEBUG,
         }),
 )
 
