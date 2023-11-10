@@ -1,5 +1,6 @@
 import * as R from 'remeda'
 import React, { ReactElement, Suspense } from 'react'
+import { Metadata } from 'next'
 
 import { Heading, Skeleton, BodyLong, Detail } from 'aksel-server'
 
@@ -11,6 +12,11 @@ import { getTeamScorePerQuestion, getTeamScoreTimeline } from '../../../../../db
 import OverallScoreGraph from '../../../../../components/graphs/OverallScoreGraph'
 import { getWeekNumber } from '../../../../../utils/date'
 import ScorePerQuestion from '../../../../../components/graphs/ScorePerQuestion'
+
+export const metadata: Metadata = {
+    title: 'Helsesjekk | Team | Graf',
+    description: 'Graf over helsesjekkene i ditt team',
+}
 
 type Props = {
     params: {

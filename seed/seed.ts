@@ -56,7 +56,7 @@ async function createAskWithNAnswers(week: number, count: number): Promise<void>
         data: {
             teamId: activeTeam.id,
             messageTs: '1686224220.775259',
-            timestamp: setWeek(new Date(2023, 0, 1, 13, 37), week),
+            timestamp: setWeek(new Date(2023, 0, 1, 13, 37), week + 1),
             questions: questionsToJsonb(questionsFromJsonb(activeTeam.questions)),
             revealed: true,
             skipped: false,

@@ -1,7 +1,7 @@
 import * as R from 'remeda'
 import { getYear } from 'date-fns'
 
-import { scoreAsked } from '../metrics/metrics'
+import { scoreAsked, ScoredAsk } from '../metrics/metrics'
 import { getWeekNumber } from '../utils/date'
 import { QuestionType } from '../safe-types'
 
@@ -189,4 +189,20 @@ export async function getGlobalScoreTimeline(): Promise<
     )
 
     return scoresPerWeek
+}
+
+export async function getTeamsScoredAsks(teamId: string): Promise<ScoredAsk[]> {
+    const asks = await prisma.asked.findMany({
+        where: { teamId, revealed: true, skipped: false },
+        include: {
+            answers: true,
+        },
+    })
+
+    return R.pipe(
+        asks,
+        R.filter((asked) => asked.answers.length >= 3),
+        R.map(scoreAsked),
+        R.sortBy([R.prop('timestamp'), 'desc']),
+    )
 }
