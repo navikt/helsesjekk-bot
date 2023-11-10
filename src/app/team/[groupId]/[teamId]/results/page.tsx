@@ -53,7 +53,21 @@ async function Page({ params }: Props): Promise<ReactElement> {
         <div>
             <BackLink href={`/team/${params.groupId}/${params.teamId}`} />
             <Heading size="large">Alle resultater for {team.name}</Heading>
-            <Suspense fallback={<Skeleton height={300} variant="rounded" />}>
+            <Heading size="medium" level="3">
+                Tidligere spørringer
+            </Heading>
+            <Suspense
+                fallback={
+                    <div>
+                        <Skeleton width={210} height={20} />
+                        <div className="mt-4 flex flex-wrap gap-4">
+                            {R.range(0, 8).map((it) => (
+                                <Skeleton key={it} height={358} width={236} variant="rounded" />
+                            ))}
+                        </div>
+                    </div>
+                }
+            >
                 <PreviousAskedView teamId={team.id} />
             </Suspense>
         </div>
@@ -66,9 +80,6 @@ async function PreviousAskedView({ teamId }: { teamId: string }): Promise<ReactE
     if (scoredAsks.length === 0) {
         return (
             <div className="mb-4">
-                <Heading size="medium" level="3">
-                    Tidligere spørringer
-                </Heading>
                 <div className="">
                     <Heading size="medium" level="4" spacing>
                         Teamet ditt har ingen data
@@ -85,9 +96,6 @@ async function PreviousAskedView({ teamId }: { teamId: string }): Promise<ReactE
     const earliest = R.minBy(scoredAsks, (it) => it.timestamp.getTime())
     return (
         <div>
-            <Heading size="medium" level="3">
-                Tidligere spørringer
-            </Heading>
             <Detail>
                 {scoredAsks.length} målinger siden uke {getWeekNumber(earliest.timestamp)},{' '}
                 {earliest.timestamp.getFullYear()}
