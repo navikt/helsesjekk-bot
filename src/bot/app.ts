@@ -16,6 +16,8 @@ import { lazyNextleton } from 'nextleton'
 //     setName: (): void => void 0,
 // }
 
+fetch("https://slack.com/api/auth.test").then(res => res.json()).then(data => console.log(data));
+
 const app = lazyNextleton(
     'bolt',
     () =>

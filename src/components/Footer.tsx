@@ -22,14 +22,18 @@ function Footer(): ReactElement {
                 </Heading>
                 <BodyShort>
                     Feedback og bugs kan rapporteres på slack på{' '}
-                    <a href="https://nav-it.slack.com/archives/C04LCPR5E12" target="_blank" rel="noopener noreferrer">
+                    <a
+                        href="https://politietnoinn-5db1638.slack.com/archives/C04LV81HUBU"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         #helsesjekk-bot
                     </a>
                 </BodyShort>
                 <BodyShort>
                     Kildekoden er tilgjengelig på{' '}
-                    <a href="https://github.com/navikt/helsesjekk-bot" target="_blank" rel="noopener noreferrer">
-                        github.com/navikt/helsesjekk-bot
+                    <a href="https://github.com/politiet/helsesjekk-bot" target="_blank" rel="noopener noreferrer">
+                        github.com/politiet/helsesjekk-bot
                     </a>
                 </BodyShort>
             </div>
