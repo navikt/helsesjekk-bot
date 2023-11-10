@@ -76,8 +76,9 @@ async function Page({ params }: Props): Promise<ReactElement> {
 
 async function PreviousAskedView({ teamId }: { teamId: string }): Promise<ReactElement> {
     const scoredAsks = await getTeamsScoredAsks(teamId)
+    const earliest = R.minBy(scoredAsks, (it) => it.timestamp.getTime())
 
-    if (scoredAsks.length === 0) {
+    if (scoredAsks.length === 0 || earliest == null) {
         return (
             <div className="mb-4">
                 <div className="">
@@ -93,7 +94,8 @@ async function PreviousAskedView({ teamId }: { teamId: string }): Promise<ReactE
         )
     }
 
-    const earliest = R.minBy(scoredAsks, (it) => it.timestamp.getTime())
+    const withPrevious = R.pipe(scoredAsks, R.reverse(), (it) => R.zip.strict(it, [null, ...it]), R.reverse())
+
     return (
         <div>
             <Detail>
@@ -101,17 +103,30 @@ async function PreviousAskedView({ teamId }: { teamId: string }): Promise<ReactE
                 {earliest.timestamp.getFullYear()}
             </Detail>
             <div className="mt-4 flex flex-wrap gap-4">
-                {scoredAsks.map((it) => (
-                    <ScoredAskView key={it.timestamp.toISOString()} channelId={teamId} ask={it} />
+                {withPrevious.map(([currentAsk, previousAsk]: [ScoredAsk, ScoredAsk | null]) => (
+                    <ScoredAskView
+                        key={currentAsk.timestamp.toISOString()}
+                        channelId={teamId}
+                        ask={currentAsk}
+                        previousAsk={previousAsk}
+                    />
                 ))}
             </div>
         </div>
     )
 }
 
-function ScoredAskView({ channelId, ask }: { channelId: string; ask: ScoredAsk }): ReactElement {
+function ScoredAskView({
+    channelId,
+    ask,
+    previousAsk,
+}: {
+    channelId: string
+    ask: ScoredAsk
+    previousAsk: ScoredAsk | null
+}): ReactElement {
     const groups = R.groupBy.strict(ask.scoredQuestions, R.prop('type'))
-
+    const totalDiff = previousAsk ? ask.totalScore - previousAsk.totalScore : null
     return (
         <div className="bg-bg-subtle rounded p-4 grow max-w-sm">
             <Heading size="medium" level="4">
@@ -120,22 +135,38 @@ function ScoredAskView({ channelId, ask }: { channelId: string; ask: ScoredAsk }
             <Heading level="4" size="xsmall">
                 Ukesscore
             </Heading>
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
                 <span className="mt-0.5">{scoreToEmoji(ask.totalScore)}</span>
                 <span>{ask.totalScore.toFixed(2)}</span>
+                {totalDiff != null && (
+                    <span className="text-sm">
+                        ({totalDiff > 0 ? `+${totalDiff.toFixed(2)}` : totalDiff.toFixed(2)})
+                    </span>
+                )}
             </div>
             {R.toPairs.strict(groups).map(([type, questions]) => (
                 <div key={type}>
                     <Heading level="4" size="small">
                         {questionTypeToText(type as QuestionType)}
                     </Heading>
-                    {questions.map((question) => (
-                        <div key={question.id} className="flex gap-2">
-                            <span className="mt-0.5">{scoreToEmoji(question.score)}</span>
-                            <span>{question.question}</span>
-                            <span>{question.score.toFixed(2)}</span>
-                        </div>
-                    ))}
+                    {questions.map((question) => {
+                        const previousQuestion =
+                            previousAsk?.scoredQuestions.find((it) => it.id === question.id) ?? null
+                        const diff = previousQuestion ? question.score - previousQuestion.score : null
+
+                        return (
+                            <div key={question.id} className="flex gap-2 items-center">
+                                <span className="mt-0.5">{scoreToEmoji(question.score)}</span>
+                                <span>{question.question}</span>
+                                <span>{question.score.toFixed(2)}</span>
+                                {diff != null && (
+                                    <span className="text-sm">
+                                        ({diff > 0 ? `+${diff.toFixed(2)}` : diff.toFixed(2)})
+                                    </span>
+                                )}
+                            </div>
+                        )
+                    })}
                 </div>
             ))}
             <div className="mt-2">
