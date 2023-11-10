@@ -38,8 +38,6 @@ async function Page(): Promise<ReactElement> {
 }
 
 async function UserAdGroups(): Promise<ReactElement> {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
     const membersOf = await getMembersOf()
 
     if ('error' in membersOf) {
