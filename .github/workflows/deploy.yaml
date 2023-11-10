@@ -42,6 +42,8 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - run: yarn lint
       - run: yarn build
+        env:
+          NEXT_PUBLIC_ENVIRONMENT: production
       - name: Push docker image to GAR
         uses: nais/docker-build-push@v0
         id: docker-build-push
@@ -66,6 +68,8 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - run: yarn lint
       - run: yarn build
+        env:
+          NEXT_PUBLIC_ENVIRONMENT: dev
       - name: Push docker image to GAR
         uses: nais/docker-build-push@v0
         id: docker-build-push
