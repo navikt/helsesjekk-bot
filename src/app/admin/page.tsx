@@ -11,6 +11,7 @@ import BackLink from '../../components/core/BackLink'
 import { dayIndexToDay } from '../../utils/date'
 import { InactiveDot, PingDot } from '../../components/core/Dots'
 import { questionsFromJsonb } from '../../questions/jsonb-utils'
+import { createChannelPermalink } from '../../utils/slack'
 
 import AdminTeamToggler from './_admin-team-toggler'
 
@@ -34,7 +35,14 @@ async function Page(): Promise<ReactElement> {
                         <div className="flex justify-between mb-2">
                             <Heading level="2" size="medium" className="flex items-center gap-2">
                                 {team.active ? <PingDot /> : <InactiveDot />}
-                                {team.name}
+                                <a
+                                    href={createChannelPermalink(team.id)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-gray-900"
+                                >
+                                    {team.name}
+                                </a>
                             </Heading>
                             <AdminTeamToggler id={team.id} active={team.active} />
                         </div>
@@ -45,7 +53,7 @@ async function Page(): Promise<ReactElement> {
                             />
                             <TeamDetail
                                 text="Viser"
-                                detail={`${dayIndexToDay(team.revealDay)}, kl. ${team.revealDay}:00`}
+                                detail={`${dayIndexToDay(team.revealDay)}, kl. ${team.revealHour}:00`}
                             />
                             <TeamDetail text="Frekvens" detail={`${team.frequency}`} />
                             <TeamDetail text="Ukesjustering" detail={`+${team.weekSkew}`} />
