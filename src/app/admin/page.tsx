@@ -3,6 +3,7 @@ import React, { ReactElement } from 'react'
 import { notFound } from 'next/navigation'
 
 import { Heading, Detail, BodyShort } from 'aksel-server'
+import { HandShakeHeartIcon } from 'aksel-client'
 
 import { userHasAdGroup, validateWonderwallToken } from '../../auth/authentication'
 import { adminGetTeamsWithAsked } from '../../db/admin'
@@ -43,6 +44,7 @@ async function Page(): Promise<ReactElement> {
                                 >
                                     {team.name}
                                 </a>
+                                {team.assosiatedGroup != null && <HandShakeHeartIcon title="Har satt opp dashboard" />}
                             </Heading>
                             <AdminTeamToggler id={team.id} active={team.active} />
                         </div>
