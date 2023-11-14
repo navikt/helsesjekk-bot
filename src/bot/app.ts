@@ -32,9 +32,6 @@ const app = lazyNextleton(
     'bolt',
     () =>
         new BoltApp({
-            clientOptions: {
-                slackApiUrl: 'https://helsesjekk-bot.bks-prod.politiet.no/slack/',
-            },
             socketMode: true,
             token: process.env.SLACK_BOT_TOKEN,
             signingSecret: process.env.SLACK_SIGNING_SECRET,
