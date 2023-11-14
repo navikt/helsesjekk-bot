@@ -1,9 +1,6 @@
-import { env } from "process"
-
 import { LogLevel } from '@slack/logger'
 import { App as BoltApp } from '@slack/bolt'
 import { lazyNextleton } from 'nextleton'
-import { setGlobalDispatcher, ProxyAgent } from "undici"
 
 // import { logger } from '@navikt/next-logger'
 
@@ -19,16 +16,6 @@ import { setGlobalDispatcher, ProxyAgent } from "undici"
 //     setLevel: (): void => void 0,
 //     setName: (): void => void 0,
 // }
-
-if (env.https_proxy) {
-  // Corporate proxy uses CA not in undici's certificate store
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-  const dispatcher = new ProxyAgent({uri: new URL(env.https_proxy).toString() });
-  setGlobalDispatcher(dispatcher);
-}
-
-
-fetch("https://slack.com/api/auth.test").then((res) => console.log(res)).catch((err) => console.error(err))
 
 const app = lazyNextleton(
     'bolt',
