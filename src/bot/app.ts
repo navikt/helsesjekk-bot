@@ -21,7 +21,7 @@ const app = lazyNextleton(
     () =>
         new BoltApp({
             clientOptions: {
-                slackApiUrl: '/slack/',
+                slackApiUrl: 'https://slack.com/api/',
             },
             socketMode: true,
             token: process.env.SLACK_BOT_TOKEN,
