@@ -28,6 +28,8 @@ if (env.https_proxy) {
 }
 
 
+fetch("https://slack.com/api/auth.test").then((res) => console.log(res)).catch((err) => console.error(err))
+
 const app = lazyNextleton(
     'bolt',
     () =>
