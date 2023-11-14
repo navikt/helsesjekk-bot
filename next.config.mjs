@@ -2,6 +2,14 @@
  * @type {import('next').NextConfig}
  */
 const nextConfig = {
+    async rewrites() {
+        return [
+            {
+                source: '/slack/:path*',
+                destination: 'https://slack.com/api/:path*',
+            }
+        ]
+    },
     eslint: {
         ignoreDuringBuilds: true,
         dirs: ['src'],

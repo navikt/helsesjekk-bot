@@ -20,6 +20,9 @@ const app = lazyNextleton(
     'bolt',
     () =>
         new BoltApp({
+            clientOptions: {
+                slackApiUrl: '/slack/',
+            },
             socketMode: true,
             token: process.env.SLACK_BOT_TOKEN,
             signingSecret: process.env.SLACK_SIGNING_SECRET,
