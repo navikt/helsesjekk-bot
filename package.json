@@ -43,6 +43,7 @@
         "remeda": "^1.28.0",
         "sharp": "^0.32.6",
         "tailwindcss": "^3.3.5",
+        "undici": "^5.27.2",
         "uuid": "^9.0.1"
     },
     "devDependencies": {
