@@ -20,7 +20,7 @@ export async function verifyUserLoggedIn(redirectPath: string): Promise<void> {
     const bearerToken: string | null | undefined = requestHeaders.get('authorization')
     if (!bearerToken) {
         logger.info('Found no token, redirecting to login')
-        redirect(`/oauth2/login?redirect=${redirectPath}`)
+        redirect(`/api/auth/callback/azure-ad?redirect=${redirectPath}`)
     }
 
     const validationResult = await validateAzureToken(bearerToken)
@@ -33,7 +33,7 @@ export async function verifyUserLoggedIn(redirectPath: string): Promise<void> {
                 ),
             )
         }
-        redirect(`/oauth2/login?redirect=${redirectPath}`)
+        redirect(`/api/auth/callback/azure-ad?redirect=${redirectPath}`)
     }
 }
 

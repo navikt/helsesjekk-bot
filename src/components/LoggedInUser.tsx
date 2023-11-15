@@ -9,7 +9,7 @@ async function LoggedInUser(): Promise<ReactElement> {
         return (
             <div className="flex flex-col items-end p-4">
                 <BodyShort className="w-32 text-right">Ikke logget inn</BodyShort>
-                <AkselLink href="/oauth2/login?redirect=/kom-i-gang">Logg inn</AkselLink>
+                <AkselLink href="/api/auth/callback/azure-ad?redirect=/kom-i-gang">Logg inn</AkselLink>
             </div>
         )
     }
