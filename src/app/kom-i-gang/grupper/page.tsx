@@ -49,20 +49,20 @@ async function UserAdGroups(): Promise<ReactElement> {
         return <UserGroupsError error={membersOf} />
     }
 
+    const groups: MsGraphGroup[] = R.sortBy.strict(membersOf.value, [
+        (it: MsGraphGroup) => it.displayName?.toLowerCase().includes('team') || false,
+        'desc',
+    ])
+
     return (
         <div>
             <Heading size="large" spacing>
                 Dine grupper ({membersOf.value.length})
             </Heading>
             <div className="flex flex-col gap-3">
-                {R.sortBy
-                    .strict(membersOf.value, [
-                        (it: MsGraphGroup) => it.displayName?.toLowerCase().includes('team'),
-                        'desc',
-                    ])
-                    .map((group) => (
-                        <GroupListItem key={group.id} group={group} />
-                    ))}
+                {groups.map((group) => (
+                    <GroupListItem key={group.id} group={group} />
+                ))}
             </div>
         </div>
     )
