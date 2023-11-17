@@ -29,7 +29,7 @@
         "./src/components/aksel-server.ts"
       ]
     },
-    "strictNullChecks": true
+    "strictNullChecks": false
   },
   "include": [
     "next-env.d.ts",

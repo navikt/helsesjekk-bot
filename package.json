@@ -12,7 +12,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-        "test": "bun test tests",
+    "test": "bun test tests",
     "start:migrate": "yarn prisma:migrate && yarn start",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
