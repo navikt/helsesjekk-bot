@@ -8,12 +8,15 @@ import { Detail } from 'aksel-server'
 
 import { getWeekNumber } from '../../utils/date'
 import { scoreToEmoji } from '../../utils/score'
+import { WeekWithQuestionScores } from '../../db/score'
 
 type Props = {
     maxQuestions: number
-    data: ({
-        timestamp: Date
-    } & Record<number, { id: string; score: number }>)[]
+    data:
+        | ({
+              timestamp: Date
+          } & Record<number, { id: string; score: number }>)[]
+        | WeekWithQuestionScores[]
     questions: { id: string; question: string }[]
 }
 
@@ -97,8 +100,8 @@ type CustomTooltipProps = {
 
 function createCustomTooltip(
     questionsMap: Record<string, { id: string; question: string }>,
-): (props: CustomTooltipProps) => ReactElement {
-    return function CustomTooltip({ payload, active }: CustomTooltipProps): ReactElement {
+): (props: CustomTooltipProps) => ReactElement | null {
+    return function CustomTooltip({ payload, active }: CustomTooltipProps): ReactElement | null {
         if (!active && payload.length === 0) return null
 
         const [first] = payload
@@ -136,7 +139,7 @@ function createCustomTooltip(
     }
 }
 
-function CustomDot({ cx, cy, value }: { cx: number; cy: number; value: number }): ReactElement {
+function CustomDot({ cx, cy, value }: { cx: number; cy: number; value: number }): ReactElement | null {
     if (value == null) return null
 
     return (

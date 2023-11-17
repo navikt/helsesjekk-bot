@@ -52,7 +52,6 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@navikt/eslint-config-teamsykmelding": "^5.0.0",
     "@types/node": "^20.8.10",
     "@types/node-cron": "^3.0.10",
     "@types/react": "18.2.34",
@@ -76,10 +75,8 @@
   "resolutions": {
     "eslint-plugin-react-hooks": "5.0.0-canary-7118f5dd7-20230705"
   },
-  "prettier": "@navikt/eslint-config-teamsykmelding/prettier",
   "eslintConfig": {
     "extends": [
-      "@navikt/eslint-config-teamsykmelding",
       "next/core-web-vitals"
     ]
   }
