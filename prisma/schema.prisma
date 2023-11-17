@@ -20,6 +20,8 @@ model Team {
   // In the future the team can edit the questions
   questions       Json
   Asked           Asked[]
+  frequency       Int     @default(1)
+  weekSkew        Int     @default(0)
 }
 
 model Asked {

@@ -9,7 +9,10 @@ import { raise } from '../utils/ts-utils'
 import { fakeToken } from './fake-token'
 import { getMembersOf } from './ms-graph'
 
-export async function verifyUserLoggedIn(redirectPath: string): Promise<void> {
+/**
+ * Validates the wonderwall token according to nais.io. Should only actually redirect if the token has expired.
+ */
+export async function validateWonderwallToken(redirectPath: string): Promise<void> {
     const requestHeaders = headers()
 
     if (isLocal) {

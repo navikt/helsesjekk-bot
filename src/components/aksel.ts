@@ -29,4 +29,5 @@ export {
     HouseHeartIcon,
     HandShakeHeartIcon,
     TenancyIcon,
+    PadlockLockedIcon,
 } from '@navikt/aksel-icons'

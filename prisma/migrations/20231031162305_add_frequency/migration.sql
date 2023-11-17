@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Team" ADD COLUMN     "frequency" INTEGER NOT NULL DEFAULT 1,
+ADD COLUMN     "weekSkew" INTEGER NOT NULL DEFAULT 0;

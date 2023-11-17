@@ -8,6 +8,7 @@ import {
     setRevealTime,
     setAskTime,
     setTeamStatus,
+    setTeamFrequency,
     addQuestionToTeam,
     deleteQuestionFromTeam,
 } from '../../db'
@@ -94,6 +95,23 @@ export async function deleteQuestion(groupId: string, teamId: string, questionId
     logger.info(`User is deleting question for team ${teamId} ${questionId}`)
 
     await deleteQuestionFromTeam(teamId, questionId)
+
+    revalidatePath(`/team/${groupId}`)
+}
+
+export async function editFrequency(
+    groupId: string,
+    teamId: string,
+    frequency: number,
+    weekSkew: number,
+): Promise<void> {
+    if (!(await userHasAdGroup(groupId))) {
+        throw new Error('User does not have access to edit team name')
+    }
+
+    logger.info(`User is editing frequency for team ${teamId}, new frequency: ${frequency}, skew: ${weekSkew}`)
+
+    await setTeamFrequency(teamId, frequency, weekSkew)
 
     revalidatePath(`/team/${groupId}`)
 }

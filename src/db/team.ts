@@ -5,7 +5,7 @@ import { defaultQuestions } from '../questions/default'
 import { Question, QuestionType } from '../safe-types'
 
 import { Day } from './types'
-import { prisma, Team } from './prisma'
+import { prisma, Team, Asked } from './prisma'
 
 export async function teamStatus(channelId: string): Promise<'NEW' | 'DEACTIVATED' | 'ACTIVE'> {
     const team = await getTeam(channelId)
@@ -27,8 +27,18 @@ export async function getTeamsByAdGroups(groups: string[]): Promise<Team[] | nul
     return prisma.team.findMany({ where: { assosiatedGroup: { in: groups } } })
 }
 
-export async function getTeamByAdGroupAndTeamId(groupId: string, teamId: string): Promise<Team | null> {
-    return prisma.team.findFirst({ where: { id: teamId, assosiatedGroup: { contains: groupId } } })
+export async function getTeamByAdGroupAndTeamId(
+    groupId: string,
+    teamId: string,
+): Promise<(Team & { activeAskTs: string | null }) | null> {
+    const team = await prisma.team.findFirst({
+        where: { id: teamId, assosiatedGroup: { contains: groupId } },
+        include: { Asked: { where: { revealed: false, skipped: false } } },
+    })
+
+    if (team == null) return null
+
+    return { ...team, activeAskTs: team.Asked.length > 0 ? team.Asked[0].messageTs : null }
 }
 
 export async function getTeamById(teamId: string): Promise<Team | null> {
@@ -142,6 +152,10 @@ export async function setTeamStatus(teamId: string, active: boolean): Promise<Te
     return prisma.team.update({ data: { active }, where: { id: teamId } })
 }
 
+export async function setTeamFrequency(teamId: string, frequency: number, weekSkew: number): Promise<Team> {
+    return prisma.team.update({ data: { frequency, weekSkew }, where: { id: teamId } })
+}
+
 export async function addQuestionToTeam(
     teamId: string,
     question: {
@@ -191,4 +205,14 @@ export async function deactivateTeam(channelId: string): Promise<void> {
 
 export async function getActiveTeams(): Promise<Team[]> {
     return prisma.team.findMany({ where: { active: true } })
+}
+
+export async function getTeamsToReveal(): Promise<Team[]> {
+    return prisma.team.findMany({ where: { active: true, Asked: { some: { revealed: false, skipped: false } } } })
+}
+
+export async function getBrokenAsks(): Promise<Asked[]> {
+    return prisma.asked.findMany({
+        where: { revealed: false, skipped: true },
+    })
 }

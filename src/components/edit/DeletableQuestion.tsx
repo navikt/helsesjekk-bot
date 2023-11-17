@@ -57,6 +57,7 @@ function DeletableQuestion({ teamId, question }: Props): ReactElement {
                         checked={hasChecked}
                         label="Ja, jeg vil slette dette spørsmålet"
                         onChange={() => setHasChecked((x) => !x)}
+                        autoFocus
                     />
                     {hasChecked && (
                         <div>

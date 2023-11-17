@@ -1,16 +1,22 @@
 import * as R from 'remeda'
 import React, { ReactElement, Suspense } from 'react'
+import { Metadata } from 'next'
 
 import { Heading, Skeleton, BodyLong, Detail } from 'aksel-server'
 
 import { TeamNotAccesible, TeamNotFound } from '../../../../../components/errors/ErrorMessages'
-import { userHasAdGroup, verifyUserLoggedIn } from '../../../../../auth/authentication'
+import { userHasAdGroup } from '../../../../../auth/authentication'
 import BackLink from '../../../../../components/core/BackLink'
 import { getTeamByAdGroupAndTeamId } from '../../../../../db'
 import { getTeamScorePerQuestion, getTeamScoreTimeline } from '../../../../../db/score'
 import OverallScoreGraph from '../../../../../components/graphs/OverallScoreGraph'
 import { getWeekNumber } from '../../../../../utils/date'
 import ScorePerQuestion from '../../../../../components/graphs/ScorePerQuestion'
+
+export const metadata: Metadata = {
+    title: 'Helsesjekk | Team | Graf',
+    description: 'Graf over helsesjekkene i ditt team',
+}
 
 type Props = {
     params: {
@@ -20,8 +26,6 @@ type Props = {
 }
 
 async function Page({ params }: Props): Promise<ReactElement> {
-    await verifyUserLoggedIn(`/team/${params.groupId}/${params.teamId}/graph`)
-
     const team = await getTeamByAdGroupAndTeamId(params.groupId, params.teamId)
     if (!team) {
         return (

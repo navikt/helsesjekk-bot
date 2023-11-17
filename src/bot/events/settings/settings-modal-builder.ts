@@ -6,6 +6,8 @@ import { addIf, plainHeader, textSection } from '../modal-utils'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
 import { text } from '../../../utils/bolt-utils'
 import { QuestionType } from '../../../safe-types'
+import { dayIndexToDay } from '../../../utils/date'
+import { nextOccurenceText, nextOccurrence } from '../../../utils/frequency'
 
 export const SettingsKeys = {
     modalSubmit: 'helsesjekk_settings_modal-submit',
@@ -101,6 +103,11 @@ export interface ModalStateTree {
 
 export function createSettingsModal(team: Team, isAdding = false): ModalView {
     const dayOptions = createDayOptions()
+    const { postDate } = nextOccurrence({
+        team,
+        frequency: team.frequency,
+        weekSkew: team.weekSkew,
+    })
 
     return {
         type: 'modal',
@@ -117,6 +124,16 @@ export function createSettingsModal(team: Team, isAdding = false): ModalView {
             plainHeader('Tidspunkt'),
             textSection(
                 'Det er fint å sende helsesjekken på fredag, gjerne etter friday wins. Helsesjekken vil låses og vise statistikken, dette burde man ha klart før monday commits.',
+            ),
+            textSection(
+                'For å endre på frekvensen på helsesjekken og andre innstillinger, besøk https://helsesjekk-bot.intern.nav.no/',
+            ),
+            plainHeader('Frekvens'),
+            textSection(team.frequency === 1 ? 'Hver uke' : `Hver ${team.frequency}. uke`),
+            textSection(
+                `Dersom botten er aktiv, er neste helsesjekk ${dayIndexToDay(team.postDay)} kl. ${
+                    team.postHour
+                }:00 ${nextOccurenceText(postDate)}`,
             ),
             postDayInput(dayOptions, team),
             postHourInput(team),

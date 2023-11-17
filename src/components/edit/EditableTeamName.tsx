@@ -3,7 +3,7 @@
 import React, { ReactElement } from 'react'
 import { useParams } from 'next/navigation'
 
-import { Heading } from 'aksel-server'
+import { BodyShort, Heading } from 'aksel-server'
 import { Button, TextField, PencilIcon, PersonTallShortIcon, XMarkIcon } from 'aksel-client'
 
 import { editTeamName } from './actions'
@@ -26,9 +26,7 @@ function EditableTeamName({ teamId, name }: Props): ReactElement {
                         <Heading size="small">Navn</Heading>
                     </div>
                     <div className="flex gap-2">
-                        <Heading size="medium" level="2">
-                            {name}
-                        </Heading>
+                        <BodyShort>{name}</BodyShort>
                         <Button
                             className="absolute top-2 right-2"
                             icon={<PencilIcon />}
