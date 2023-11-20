@@ -8,5 +8,6 @@ export const authOptions = {
             tenantId: process.env.AZURE_APP_TENANT_ID,
         }),
     ],
+    secret: process.env.NEXTAUTH_SECRET
 }
 export default NextAuth(authOptions)

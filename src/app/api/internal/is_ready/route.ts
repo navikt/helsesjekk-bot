@@ -19,7 +19,6 @@ export function GET(): NextResponse {
     }
 
     if (!botReady) {
-        process.setMaxListeners(0);
         if (!botStarted) {
             botStarted = true
             startBot()
