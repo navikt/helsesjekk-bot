@@ -9,14 +9,6 @@ export const authOptions = {
       authorization: { params: { scope: "openid profile user.Read email" } },
     }),
   ],
-  callbacks: {
-    async jwt({ token, account }) {
-      // IMPORTANT: Persist the access_token to the token right after sign in
-      if (account) {
-        token.idToken = account.id_token;
-      }
-      return token;
-    },
-  }
+  debug: true
 };
 export default NextAuth(authOptions);
