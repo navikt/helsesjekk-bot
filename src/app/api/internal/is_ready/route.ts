@@ -19,12 +19,12 @@ export function GET(): NextResponse {
     }
 
     if (!botReady) {
+        process.setMaxListeners(0);
         if (!botStarted) {
             botStarted = true
             startBot()
                 .then(() => {
                     botReady = true
-                    process.setMaxListeners(0);
                 })
                 .catch((error) => {
                     logger.error(error)
