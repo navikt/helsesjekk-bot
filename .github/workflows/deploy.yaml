@@ -21,8 +21,8 @@ jobs:
       - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@node-20
         with:
           NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: bun run lint
-      - run: bun run build
+      - run: yarn lint
+      - run: yarn build
         env:
           NEXT_PUBLIC_ENVIRONMENT: production
       
