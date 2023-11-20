@@ -17,6 +17,7 @@ export const serverEnvSchema = z.object({
     AZURE_APP_WELL_KNOWN_URL: z.string(),
     AZURE_APP_PRE_AUTHORIZED_APPS: z.string(),
     NEXTAUTH_SECRET: z.string(),
+    NEXTAUTH_URL: z.string(),
 })
 
 export const browserEnv = publicEnvSchema.parse({
@@ -35,6 +36,7 @@ const getRawServerConfig = (): Partial<unknown> =>
         AZURE_APP_WELL_KNOWN_URL: process.env.AZURE_APP_WELL_KNOWN_URL,
         AZURE_APP_PRE_AUTHORIZED_APPS: process.env.AZURE_APP_PRE_AUTHORIZED_APPS,
         NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+        NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     }) satisfies Record<keyof ServerEnv, string | undefined>
 
 /**
