@@ -24,6 +24,7 @@ export function GET(): NextResponse {
             startBot()
                 .then(() => {
                     botReady = true
+                    process.setMaxListeners(0);
                 })
                 .catch((error) => {
                     logger.error(error)
