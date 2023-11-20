@@ -23,7 +23,7 @@ export async function validateWonderwallToken(redirectPath: string): Promise<voi
     const bearerToken: string | null | undefined = requestHeaders.get('authorization')
     if (!bearerToken) {
         logger.info('Found no token, redirecting to login')
-        redirect(`/api/auth/callback/azure-ad`)
+        redirect(`/api/auth/signin/azure-ad`)
     }
 
     const validationResult = await validateAzureToken(bearerToken)
@@ -36,7 +36,7 @@ export async function validateWonderwallToken(redirectPath: string): Promise<voi
                 ),
             )
         }
-        redirect(`/api/auth/callback/azure-ad`)
+        redirect(`/api/auth/signin/azure-ad`)
     }
 }
 
