@@ -16,7 +16,7 @@ export function middleware(request: NextRequest): NextResponse | void {
 
     // Make sure everyone is authed now that it's on a public ingress
     if (!isLocal && !request.headers.has('Authorization')) {
-        return NextResponse.redirect(new URL(`/api/auth/callback/azure-ad?redirect=${url.pathname}`, request.url))
+        return NextResponse.redirect(new URL(`/api/auth/callback/azure-ad`, request.url))
     }
 }
 
