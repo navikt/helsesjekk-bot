@@ -4013,11 +4013,11 @@ __metadata:
     eslint: "npm:^8.52.0"
     eslint-config-next: "npm:^14.0.1"
     eslint-plugin-import: "npm:^2.29.0"
-    http-proxy-agent: "npm:^7.0.0"
+    https-proxy-agent: "npm:^7.0.2"
     husky: "npm:^8.0.3"
     lint-staged: "npm:^15.0.2"
     next: "npm:^14.0.1"
-    next-auth: "npm:^4.24.5"
+    next-auth: "patch:next-auth@npm%3A4.24.5#~/.yarn/patches/next-auth-npm-4.24.5-8428e11927.patch"
     next-logger: "npm:^3.0.2"
     nextleton: "npm:^0.6.1"
     node-cron: "npm:^3.0.2"
@@ -5216,7 +5216,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-auth@npm:^4.24.5":
+"next-auth@npm:4.24.5":
   version: 4.24.5
   resolution: "next-auth@npm:4.24.5"
   dependencies:
@@ -5238,6 +5238,31 @@ __metadata:
     nodemailer:
       optional: true
   checksum: c9256deaa7a77741be2c8829c290c43c63fd8fa86ace3196910d3fa4389c101d6a610f3c5f4b55000e766a51dd89eafc9b5cd876e373884db3bf90122fdfa6a1
+  languageName: node
+  linkType: hard
+
+"next-auth@patch:next-auth@npm%3A4.24.5#~/.yarn/patches/next-auth-npm-4.24.5-8428e11927.patch":
+  version: 4.24.5
+  resolution: "next-auth@patch:next-auth@npm%3A4.24.5#~/.yarn/patches/next-auth-npm-4.24.5-8428e11927.patch::version=4.24.5&hash=1d42b5"
+  dependencies:
+    "@babel/runtime": "npm:^7.20.13"
+    "@panva/hkdf": "npm:^1.0.2"
+    cookie: "npm:^0.5.0"
+    jose: "npm:^4.11.4"
+    oauth: "npm:^0.9.15"
+    openid-client: "npm:^5.4.0"
+    preact: "npm:^10.6.3"
+    preact-render-to-string: "npm:^5.1.19"
+    uuid: "npm:^8.3.2"
+  peerDependencies:
+    next: ^12.2.5 || ^13 || ^14
+    nodemailer: ^6.6.5
+    react: ^17.0.2 || ^18
+    react-dom: ^17.0.2 || ^18
+  peerDependenciesMeta:
+    nodemailer:
+      optional: true
+  checksum: cbb5d5e64d93b0874571ea70bca312b675e43d8cd71f45d6f4c117a80547e6a499b485d8598ba0d7593adc059d804a7b6db7faff5f482398d7c2eace8bf731d0
   languageName: node
   linkType: hard
 
