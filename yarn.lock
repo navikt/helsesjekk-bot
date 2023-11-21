@@ -5119,7 +5119,7 @@ __metadata:
 
 "next-auth@patch:next-auth@npm%3A4.24.5#~/.yarn/patches/next-auth-npm-4.24.5-8428e11927.patch":
   version: 4.24.5
-  resolution: "next-auth@patch:next-auth@npm%3A4.24.5#~/.yarn/patches/next-auth-npm-4.24.5-8428e11927.patch::version=4.24.5&hash=1d42b5"
+  resolution: "next-auth@patch:next-auth@npm%3A4.24.5#~/.yarn/patches/next-auth-npm-4.24.5-8428e11927.patch::version=4.24.5&hash=a4b0ab"
   dependencies:
     "@babel/runtime": "npm:^7.20.13"
     "@panva/hkdf": "npm:^1.0.2"
@@ -5138,7 +5138,7 @@ __metadata:
   peerDependenciesMeta:
     nodemailer:
       optional: true
-  checksum: cbb5d5e64d93b0874571ea70bca312b675e43d8cd71f45d6f4c117a80547e6a499b485d8598ba0d7593adc059d804a7b6db7faff5f482398d7c2eace8bf731d0
+  checksum: b55bc9708dc1134786617488ca4028d11e4ca2e2b5bc27592ec8299ed8d89befacf951adab79f44889e41ba735fcd9d792de263135ef2c34550d0683889dab86
   languageName: node
   linkType: hard
 
