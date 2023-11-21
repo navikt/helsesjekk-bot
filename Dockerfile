@@ -35,6 +35,7 @@ COPY public /app/public/
 COPY .next /app/.next
 
 ENV NODE_ENV=production
+ENV NODE_OPTIONS 'no-network-family-autoselection'
 
 EXPOSE 3000
 

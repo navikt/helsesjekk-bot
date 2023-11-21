@@ -27,7 +27,7 @@
     "@navikt/ds-tailwind": "^5.9.2",
     "@navikt/next-auth-wonderwall": "^1.5.0",
     "@prisma/client": "5.5.2",
-    "@slack/bolt": "^3.14.0",
+    "@slack/bolt": "^3.15.0",
     "autoprefixer": "^10.4.16",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
