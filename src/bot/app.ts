@@ -1,10 +1,10 @@
 import { App as BoltApp } from '@slack/bolt'
-import { nextleton } from 'nextleton'
+import { lazyNextleton } from 'nextleton'
 import { ProxyAgent } from 'proxy-agent';
 
 const agent = new ProxyAgent();
 
-const app = nextleton(
+const app = lazyNextleton(
     'bolt',
     () =>
         new BoltApp({
@@ -13,9 +13,6 @@ const app = nextleton(
             signingSecret: process.env.SLACK_SIGNING_SECRET,
             appToken: process.env.SLACK_APP_TOKEN,
             agent: agent,
-            clientOptions: {
-                
-            }
         }),
 )
 
