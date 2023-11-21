@@ -31,7 +31,7 @@
     "autoprefixer": "^10.4.16",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
-    "next": "^14.0.1",
+    "next": "^14.0.3",
     "next-auth": "^4.24.5",
     "nextleton": "^0.6.1",
     "node-cron": "^3.0.2",
