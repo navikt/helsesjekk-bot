@@ -2,9 +2,9 @@
   "name": "helsesjekk",
   "version": "1.0.0",
   "license": "MIT",
-  "packageManager": "yarn@4.0.1",
+  "packageManager": "yarn@4.0.2",
   "engines": {
-    "node": "20"
+    "node": "21"
   },
   "scripts": {
     "dev": "next dev | pino-pretty",

@@ -1,4 +1,4 @@
-FROM node:18-alpine as build
+FROM node:21-alpine as build
 
 RUN apk add --no-cache bash
 
@@ -16,7 +16,7 @@ ENV NODE_ENV=production
 RUN yarn workspaces focus -A --production
 RUN yarn prisma:generate
 
-FROM node:18-alpine as runner
+FROM node:21-alpine as runner
 
 RUN apk add --no-cache bash
 
