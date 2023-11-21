@@ -1,8 +1,8 @@
 import { App as BoltApp } from '@slack/bolt'
 import { lazyNextleton } from 'nextleton'
-import { HttpsProxyAgent } from 'https-proxy-agent';
+import { ProxyAgent } from 'proxy-agent';
 
-const agent = new HttpsProxyAgent(process.env.http_proxy);
+const agent = new ProxyAgent();
 
 const app = lazyNextleton(
     'bolt',

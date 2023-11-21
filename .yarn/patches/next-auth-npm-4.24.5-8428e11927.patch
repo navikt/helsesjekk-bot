@@ -7,7 +7,7 @@ index c2f0d40e6bbbdc2eaebddb4c19b8358c22837ef7..0207c608864388e9a29e6e3bca570336
  var _openidClient = require("openid-client");
  
 +
-+var HttpsProxyAgent = require("https-proxy-agent");
++var ProxyAgent = require("proxy-agent");
 +
  async function openidClient(options) {
    const provider = options.provider;
@@ -16,7 +16,7 @@ index c2f0d40e6bbbdc2eaebddb4c19b8358c22837ef7..0207c608864388e9a29e6e3bca570336
 +  let httpOptions = {};
 +  if (provider.httpOptions) httpOptions = { ...provider.httpOptions };
 +  if (process.env.http_proxy) {
-+    let agent = new HttpsProxyAgent(process.env.http_proxy);
++    let agent = new ProxyAgent();
 +    httpOptions.agent = agent;
 +  }
 +  _openidClient.custom.setHttpOptionsDefaults(httpOptions);
