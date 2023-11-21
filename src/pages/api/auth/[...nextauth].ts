@@ -6,6 +6,9 @@ export const authOptions: AuthOptions = {
       clientId: process.env.AZURE_APP_CLIENT_ID,
       clientSecret: process.env.AZURE_APP_CLIENT_SECRET,
       tenantId: process.env.AZURE_APP_TENANT_ID,
+      client: {
+        redirect_uris: [process.env.CALLBACK_URL]
+      }
     }),
   ],
   callbacks: {

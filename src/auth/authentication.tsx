@@ -9,8 +9,6 @@ import { raise } from '../utils/ts-utils'
 import { fakeToken } from './fake-token'
 import { getMembersOf } from './ms-graph'
 
-import{ signIn } from "next-auth/react";
-
 /**
  * Validates the wonderwall token according to nais.io. Should only actually redirect if the token has expired.
  */
@@ -25,7 +23,6 @@ export async function validateWonderwallToken(redirectPath: string): Promise<voi
     const bearerToken: string | null | undefined = requestHeaders.get('authorization')
     if (!bearerToken) {
         logger.info('Found no token, redirecting to login')
-        signIn("azure-ad", {callbackUrl: `${process.env.CALLBACK_URL}`})
         redirect(`/api/auth/signin/azure-ad`)
     }
 

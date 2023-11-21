@@ -15,6 +15,7 @@ export const serverEnvSchema = z.object({
     AZURE_APP_TENANT_ID: z.string(),
     NEXTAUTH_SECRET: z.string(),
     NEXTAUTH_URL: z.string(),
+    CALLBACK_URL: z.string(),
 })
 
 export const browserEnv = publicEnvSchema.parse({
@@ -32,6 +33,7 @@ const getRawServerConfig = (): Partial<unknown> =>
         AZURE_APP_TENANT_ID: process.env.AZURE_APP_TENANT_ID,
         NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
         NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+        CALLBACK_URL: process.env.CALLBACK_URL,
     }) satisfies Record<keyof ServerEnv, string | undefined>
 
 /**
