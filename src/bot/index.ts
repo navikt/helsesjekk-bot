@@ -17,7 +17,7 @@ export async function startBot(): Promise<void> {
     console.info('Setting up bolt app...')
 
     const app = createApp()
-    handlers.forEach((handler) => handler(app))
+    // handlers.forEach((handler) => handler(app))
     await app.start()
 
     console.info(`Started bolt app in socket mode`)
