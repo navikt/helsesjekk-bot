@@ -1,18 +1,18 @@
 diff --git a/core/lib/oauth/client.js b/core/lib/oauth/client.js
-index c2f0d40e6bbbdc2eaebddb4c19b8358c22837ef7..0207c608864388e9a29e6e3bca5703364dae7538 100644
+index c2f0d40e6bbbdc2eaebddb4c19b8358c22837ef7..f53d1ae78fe9d5a0072ace87430a4395105e80c4 100644
 --- a/core/lib/oauth/client.js
 +++ b/core/lib/oauth/client.js
-@@ -7,11 +7,20 @@ exports.openidClient = openidClient;
+@@ -7,9 +7,18 @@ exports.openidClient = openidClient;
  
  var _openidClient = require("openid-client");
  
-+
+-async function openidClient(options) {
+-  const provider = options.provider;
+-  if (provider.httpOptions) _openidClient.custom.setHttpOptionsDefaults(provider.httpOptions);
 +var ProxyAgent = require("proxy-agent");
 +
- async function openidClient(options) {
-   const provider = options.provider;
--  if (provider.httpOptions) _openidClient.custom.setHttpOptionsDefaults(provider.httpOptions);
--  let issuer;
++ async function openidClient(options) {
++   const provider = options.provider;
 +  let httpOptions = {};
 +  if (provider.httpOptions) httpOptions = { ...provider.httpOptions };
 +  if (process.env.http_proxy) {
@@ -20,8 +20,7 @@ index c2f0d40e6bbbdc2eaebddb4c19b8358c22837ef7..0207c608864388e9a29e6e3bca570336
 +    httpOptions.agent = agent;
 +  }
 +  _openidClient.custom.setHttpOptionsDefaults(httpOptions);
++ 
+   let issuer;
  
-+  let issuer;
    if (provider.wellKnown) {
-     issuer = await _openidClient.Issuer.discover(provider.wellKnown);
-   } else {
