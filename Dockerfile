@@ -35,7 +35,6 @@ COPY public /app/public/
 COPY .next /app/.next
 
 ENV NODE_ENV=production
-ENV NODE_OPTIONS '-r next-logger'
 
 EXPOSE 3000
 

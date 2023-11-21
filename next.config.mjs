@@ -8,7 +8,7 @@ const nextConfig = {
         dirs: ['src'],
     },
     experimental: {
-        serverComponentsExternalPackages: ['@navikt/next-logger', 'next-logger', '@slack/bolt'],
+        serverComponentsExternalPackages: ['@slack/bolt'],
     },
 }
 
