@@ -1,6 +1,6 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import AzureADProvider from "next-auth/providers/azure-ad";
-import { ProxyAgent } from 'proxy-agent';
+import { HttpsProxyAgent } from "https-proxy-agent";
 
 export const authOptions: AuthOptions = {
 
@@ -10,8 +10,8 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.AZURE_APP_CLIENT_SECRET,
       tenantId: process.env.AZURE_APP_TENANT_ID,
       httpOptions: {
-        agent: new ProxyAgent(),
-      }
+        agent: new HttpsProxyAgent(process.env.HTTP_PROXY),
+      },
     }),
   ],
   debug: true,
