@@ -5,14 +5,13 @@ import { MessageActions } from '../../messages/message-builder'
 import { answerFromJsonb } from '../../../questions/jsonb-utils'
 import { getTeam, getActiveAsk, getAsked, answerQuestions, getAnswer } from '../../../db'
 import { updateResponseCount } from '../../messages/message-poster'
-import { botLogger } from '../../bot-logger'
 
 import { createHealthCheckModal, getIdValueFromAnswer, HealthcheckModalActions } from './healthcheck-modal-builder'
 
 export function configureHealthCheckEventsHandler(app: App): void {
     // User clicks fill out helsesjekk button, so we open the modal with the form
     app.action(MessageActions.FillButtonClicked, async ({ ack, action, body, client }) => {
-        botLogger.info(`User clicked fill out helsesjekk button, opening modal`)
+        console.info(`User clicked fill out helsesjekk button, opening modal`)
 
         if (action.type !== 'button' || body.type !== 'block_actions') {
             throw new Error(
@@ -28,7 +27,7 @@ export function configureHealthCheckEventsHandler(app: App): void {
         const asked = await getAsked(channelId, body.message?.ts ?? '')
 
         if (team == null || asked == null) {
-            botLogger.error(
+            console.error(
                 `Someone tried to fill out a healthcheck, but we couldn't find the team or asked, team: ${channelId}, asked-ts: ${
                     body.message?.ts ?? ''
                 }`,
@@ -53,7 +52,7 @@ export function configureHealthCheckEventsHandler(app: App): void {
 
     // Health check modal submit, put the answers in the database. Slack makes sure we have all answers.
     app.view(HealthcheckModalActions.modalSubmit, async ({ ack, view, body, client }) => {
-        botLogger.info(`User submitted healthcheck modal`)
+        console.info(`User submitted healthcheck modal`)
 
         const answers: [questionId: string, value: string][] = R.pipe(
             view.state.values,

@@ -14,7 +14,6 @@ import { dayIndexToDay, getDayCorrect, getNowInNorway } from '../../utils/date'
 import { nextOccurrence } from '../../utils/frequency'
 
 import { postToTeam, remindTeam, revealTeam } from './message-poster'
-import { cronLogger } from './message-scheduler'
 
 export async function askRelevantTeams(app: App): Promise<number> {
     const activeTeams = await getActiveTeams()
@@ -33,7 +32,7 @@ export async function askRelevantTeams(app: App): Promise<number> {
     const hoursNow = getHours(nowInNorway)
     const minutesNow = getMinutes(nowInNorway)
 
-    cronLogger.info(
+    console.info(
         `Ask: Current time is ${dayNow} ${hoursNow}:${minutesNow}\n\nThere are ${
             activeTeams.length
         } active teams:\n${activeTeams
@@ -54,14 +53,14 @@ export async function askRelevantTeams(app: App): Promise<number> {
             !(await hasActiveAsk(team.id)) &&
             !(await hasAskedToday(team.id))
         ) {
-            cronLogger.info(`It's time to post helsesjekk for team ${team.name}!`)
+            console.info(`It's time to post helsesjekk for team ${team.name}!`)
 
             try {
                 await postToTeam(team, app.client)
                 askedTeams++
             } catch (e) {
                 if (e instanceof Error && e.message.includes('An API error occurred: is_archived')) {
-                    cronLogger.info(`The team ${team.name} has been archived, marking team as inactive`)
+                    console.info(`The team ${team.name} has been archived, marking team as inactive`)
                     await deactivateTeam(team.id)
                     continue
                 }
@@ -83,11 +82,11 @@ export async function revealRelevantTeams(app: App): Promise<{ revealedTeams: nu
     const minutesNow = getMinutes(nowInNorway)
 
     if (revealTeams.length === 0) {
-        cronLogger.info(
+        console.info(
             `Reveal: Current time is ${dayNow} ${hoursNow}:${minutesNow}\n\nThere are no teams to reveal this week based on active asks.`,
         )
     } else {
-        cronLogger.info(
+        console.info(
             `Reveal: Current time is ${dayNow} ${hoursNow}:${minutesNow}\n\nThere are ${
                 revealTeams.length
             } teams that need reveal this week:\n${revealTeams
@@ -104,38 +103,38 @@ export async function revealRelevantTeams(app: App): Promise<{ revealedTeams: nu
     for (const team of revealTeams) {
         // Should nag about helsesjekk closing in an hour?
         if (isSameDayAndHour(team.revealDay, team.revealHour - 1) && (await hasActiveUnnaggedAsk(team.id))) {
-            cronLogger.info(`Nagging team ${team.name} about helsesjekk closing in an hour!!`)
+            console.info(`Nagging team ${team.name} about helsesjekk closing in an hour!!`)
 
             try {
                 await remindTeam(team, app.client)
                 naggedTeams++
             } catch (e) {
                 if (e instanceof Error && e.message.includes('An API error occurred: is_archived')) {
-                    cronLogger.info(`The team ${team.name} has been archived, marking team as inactive`)
+                    console.info(`The team ${team.name} has been archived, marking team as inactive`)
                     await deactivateTeam(team.id)
                     continue
                 }
 
-                cronLogger.error(new Error(`Failed to remind team ${team.name} to post helsesjekk.`, { cause: e }))
+                console.error(new Error(`Failed to remind team ${team.name} to post helsesjekk.`, { cause: e }))
                 continue
             }
         }
 
         // Should reveal helsesjekk?
         if (isSameDayAndHour(team.revealDay, team.revealHour) && (await hasActiveAsk(team.id))) {
-            cronLogger.info(`It's time to reveal helsesjekk for team ${team.name}!`)
+            console.info(`It's time to reveal helsesjekk for team ${team.name}!`)
 
             try {
                 await revealTeam(team, app.client)
                 revealedTeams++
             } catch (e) {
                 if (e instanceof Error && e.message.includes('An API error occurred: is_archived')) {
-                    cronLogger.info(`The team ${team.name} has been archived, marking team as inactive`)
+                    console.info(`The team ${team.name} has been archived, marking team as inactive`)
                     await deactivateTeam(team.id)
                     continue
                 }
 
-                cronLogger.error(new Error(`Failed to reveal helsesjekk for team ${team.name}.`, { cause: e }))
+                console.error(new Error(`Failed to reveal helsesjekk for team ${team.name}.`, { cause: e }))
             }
         }
     }
@@ -149,7 +148,7 @@ export async function revealRelevantTeams(app: App): Promise<{ revealedTeams: nu
 export async function inspectForBrokenAsks(): Promise<void> {
     const brokenAsks = await getBrokenAsks()
     if (brokenAsks.length > 0) {
-        cronLogger.error(`Found ${brokenAsks.length} asks: ${brokenAsks.map((it) => it.id).join(', ')}`)
+        console.error(`Found ${brokenAsks.length} asks: ${brokenAsks.map((it) => it.id).join(', ')}`)
     }
 }
 

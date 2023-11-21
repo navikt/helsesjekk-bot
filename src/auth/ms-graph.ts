@@ -1,6 +1,5 @@
 import { headers } from 'next/headers'
 import { grantAzureOboToken, isInvalidTokenSet } from '@navikt/next-auth-wonderwall'
-import { logger } from '@navikt/next-logger'
 
 import { isLocal } from '../utils/env'
 
@@ -17,7 +16,7 @@ export async function getMembersOf(): Promise<
     const token = getToken(headers())
     const tokenSet = await grantAzureOboToken(token, 'https://graph.microsoft.com/.default')
     if (isInvalidTokenSet(tokenSet)) {
-        logger.error(new Error(`${tokenSet.errorType}: ${tokenSet.message}`, { cause: tokenSet.error }))
+        console.error(new Error(`${tokenSet.errorType}: ${tokenSet.message}`, { cause: tokenSet.error }))
         return { error: 'Du har ikke tilgang til å se dine grupper.' }
     }
 

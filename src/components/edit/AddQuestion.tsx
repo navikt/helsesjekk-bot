@@ -4,7 +4,6 @@ import React, { ReactElement, useState } from 'react'
 import { Button } from '@navikt/ds-react'
 import { useParams } from 'next/navigation'
 import * as R from 'remeda'
-import { logger } from '@navikt/next-logger'
 
 import { Heading } from 'aksel-server'
 import { PlusIcon, Select, TextField, XMarkIcon } from 'aksel-client'
@@ -47,7 +46,7 @@ function AddQuestion({ teamId }: Props): ReactElement {
                                 setAdding(false)
                             } catch (e) {
                                 setSaving(false)
-                                logger.error(new Error('Unable to add question', { cause: e }))
+                                console.error(new Error('Unable to add question', { cause: e }))
                             }
                         }}
                         className="flex flex-col gap-3 bg-bg-subtle p-4 rounded relative"

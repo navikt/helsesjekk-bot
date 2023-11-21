@@ -1,5 +1,4 @@
 import * as R from 'remeda'
-import { logger } from '@navikt/next-logger'
 import { setWeek } from 'date-fns'
 
 import { AnswerLevel, Day, prisma, QuestionAnswer } from '../src/db'
@@ -18,7 +17,7 @@ function getRandomAnswerLevel(): AnswerLevel {
     }
 }
 
-logger.info('Seeding database...')
+console.info('Seeding database...')
 
 await prisma.answer.deleteMany({ where: {} })
 await prisma.asked.deleteMany({ where: {} })
@@ -87,4 +86,4 @@ await createAskWithNAnswers(2, 8)
 await createAskWithNAnswers(3, 5)
 await createAskWithNAnswers(4, 7)
 
-logger.info('Database seeded.')
+console.info('Database seeded.')

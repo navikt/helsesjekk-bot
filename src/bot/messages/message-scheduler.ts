@@ -1,15 +1,9 @@
 import { schedule } from 'node-cron'
-import { logger } from '@navikt/next-logger'
 
 import { App } from '../app'
 import { isLeader } from '../../utils/leader'
 
 import { askRelevantTeams, inspectForBrokenAsks, revealRelevantTeams } from './message-jobs'
-
-export const cronLogger = logger.child(
-    { x_context: 'cron-job' },
-    { level: process.env.NODE_ENV === 'test' ? 'error' : undefined },
-)
 
 export function configureMessageScheduler(app: App): void {
     const EVERY_5TH_MINUTE = '*/5 * * * *'
@@ -24,11 +18,11 @@ export async function cronJob(
 > {
     const isPodLeader = await isLeader()
     if (!isPodLeader) {
-        cronLogger.info('Not the pod leader, skipping scheduled job')
+        console.info('Not the pod leader, skipping scheduled job')
         return 'skipped'
     }
 
-    cronLogger.info('Running scheduled job, checking for messages to post')
+    console.info('Running scheduled job, checking for messages to post')
 
     const jobsResult = {
         ask: null,
@@ -41,7 +35,7 @@ export async function cronJob(
         jobsResult.ask = 'completed'
     } catch (e) {
         jobsResult.ask = e
-        cronLogger.error(new Error('Error occured during team ask', { cause: e }))
+        console.error(new Error('Error occured during team ask', { cause: e }))
     }
 
     try {
@@ -49,7 +43,7 @@ export async function cronJob(
         jobsResult.reveal = 'completed'
     } catch (e) {
         jobsResult.reveal = e
-        cronLogger.error(new Error('Error occured during team reveal', { cause: e }))
+        console.error(new Error('Error occured during team reveal', { cause: e }))
     }
 
     try {
@@ -57,14 +51,14 @@ export async function cronJob(
         jobsResult.inspect = 'completed'
     } catch (e) {
         jobsResult.inspect = e
-        cronLogger.error(new Error('Scheduled job failed at dirty check', { cause: e }))
+        console.error(new Error('Scheduled job failed at dirty check', { cause: e }))
     }
 
     if (jobsResult.ask === 'completed' && jobsResult.reveal === 'completed' && jobsResult.inspect === 'completed') {
-        cronLogger.info('Scheduled job completed successfully')
+        console.info('Scheduled job completed successfully')
         return 'completed'
     } else {
-        cronLogger.error(new Error('Scheduled job failed', { cause: jobsResult }))
+        console.error(new Error('Scheduled job failed', { cause: jobsResult }))
         return { partialError: jobsResult }
     }
 }

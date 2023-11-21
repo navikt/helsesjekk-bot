@@ -1,5 +1,4 @@
 import { headers } from 'next/headers'
-import { logger } from '@navikt/next-logger'
 import { validateAzureToken } from '@navikt/next-auth-wonderwall'
 import { redirect } from 'next/navigation'
 
@@ -16,20 +15,20 @@ export async function validateWonderwallToken(redirectPath: string): Promise<voi
     const requestHeaders = headers()
 
     if (isLocal) {
-        logger.warn('Is running locally, skipping RSC auth')
+        console.warn('Is running locally, skipping RSC auth')
         return
     }
 
     const bearerToken: string | null | undefined = requestHeaders.get('authorization')
     if (!bearerToken) {
-        logger.info('Found no token, redirecting to login')
+        console.info('Found no token, redirecting to login')
         redirect(`/api/auth/signin/azure-ad`)
     }
 
     const validationResult = await validateAzureToken(bearerToken)
     if (validationResult !== 'valid') {
         if (validationResult.errorType !== 'EXPIRED') {
-            logger.error(
+            console.error(
                 new Error(
                     `Invalid JWT token found (cause: ${validationResult.errorType} ${validationResult.message}, redirecting to login.`,
                     { cause: validationResult.error },

@@ -1,7 +1,6 @@
 'use client'
 
 import React, { ReactElement, useEffect } from 'react'
-import { logger } from '@navikt/next-logger'
 
 import { Heading, BodyLong } from 'aksel-server'
 import { Button } from 'aksel-client'
@@ -15,7 +14,7 @@ type Props = {
 
 export default function Error({ error, reset }: Props): ReactElement {
     useEffect(() => {
-        logger.error(error)
+        console.error(error)
     }, [error])
 
     return (

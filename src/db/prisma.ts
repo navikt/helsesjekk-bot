@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client'
-import { logger } from '@navikt/next-logger'
 import { nextleton } from 'nextleton'
 
 export const prisma = nextleton(
@@ -14,11 +13,11 @@ export const prisma = nextleton(
 )
 
 prisma.$on('error', (e) => {
-    logger.error(e)
+    console.error(e)
 })
 
 prisma.$on('warn', (e) => {
-    logger.error(e)
+    console.error(e)
 })
 
 export async function isReady(): Promise<boolean> {
@@ -26,7 +25,7 @@ export async function isReady(): Promise<boolean> {
         await prisma.$connect()
         return true
     } catch (e) {
-        logger.error(new Error('Unable to connect to database', { cause: e }))
+        console.error(new Error('Unable to connect to database', { cause: e }))
         return false
     }
 }

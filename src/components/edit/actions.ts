@@ -1,6 +1,5 @@
 'use server'
 
-import { logger as baseLogger } from '@navikt/next-logger'
 import { revalidatePath } from 'next/cache'
 
 import {
@@ -14,7 +13,6 @@ import {
 } from '../../db'
 import { userHasAdGroup } from '../../auth/authentication'
 
-const logger = baseLogger.child({ x_context: 'server-actions' })
 
 export async function editTeamName(groupId: string, teamId: string, formData: FormData): Promise<void> {
     if (!(await userHasAdGroup(groupId))) {
@@ -23,7 +21,7 @@ export async function editTeamName(groupId: string, teamId: string, formData: Fo
 
     const name = formData.get('new_name').toString()
 
-    logger.info(`User is editing team name, new name: ${name}`)
+    console.info(`User is editing team name, new name: ${name}`)
 
     await setTeamName(teamId, name)
 
@@ -43,7 +41,7 @@ export async function editTime(
     const hour = formData.get('hour').toString()
     const day = formData.get('day').toString()
 
-    logger.info(`User is editing ${type}, new time: ${day} ${hour}`)
+    console.info(`User is editing ${type}, new time: ${day} ${hour}`)
 
     if (type === 'ask') {
         await setAskTime(teamId, Number(hour), Number(day))
@@ -59,7 +57,7 @@ export async function toggleTeamStatus(groupId: string, teamId: string, active: 
         throw new Error('User does not have access to edit team name')
     }
 
-    logger.info(`User is toggling team status for team ${teamId}, new status: ${active}`)
+    console.info(`User is toggling team status for team ${teamId}, new status: ${active}`)
 
     await setTeamStatus(teamId, active)
 
@@ -80,7 +78,7 @@ export async function addQuestion(groupId: string, teamId: string, formData: For
         low: formData.get('low').toString(),
     }
 
-    logger.info(`User is adding question of type: ${question.type}`)
+    console.info(`User is adding question of type: ${question.type}`)
 
     await addQuestionToTeam(teamId, question)
 
@@ -92,7 +90,7 @@ export async function deleteQuestion(groupId: string, teamId: string, questionId
         throw new Error('User does not have access to edit team name')
     }
 
-    logger.info(`User is deleting question for team ${teamId} ${questionId}`)
+    console.info(`User is deleting question for team ${teamId} ${questionId}`)
 
     await deleteQuestionFromTeam(teamId, questionId)
 
@@ -109,7 +107,7 @@ export async function editFrequency(
         throw new Error('User does not have access to edit team name')
     }
 
-    logger.info(`User is editing frequency for team ${teamId}, new frequency: ${frequency}, skew: ${weekSkew}`)
+    console.info(`User is editing frequency for team ${teamId}, new frequency: ${frequency}, skew: ${weekSkew}`)
 
     await setTeamFrequency(teamId, frequency, weekSkew)
 
