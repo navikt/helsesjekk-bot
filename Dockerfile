@@ -35,7 +35,7 @@ COPY public /app/public/
 COPY .next /app/.next
 
 ENV NODE_ENV=production
-ENV NODE_OPTIONS '--trace-warnings'
+ENV NODE_OPTIONS '-r global-agent/bootstrap --trace-warnings'
 
 EXPOSE 3000
 
