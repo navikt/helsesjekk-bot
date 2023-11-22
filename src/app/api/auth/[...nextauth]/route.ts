@@ -15,7 +15,7 @@ const authOptions: AuthOptions = {
       return true;
     },
     async redirect({ url, baseUrl }) {
-      console.info(`REDIRECT - URL ${URL} - BASEURL ${baseUrl}`);
+      console.info(`REDIRECT - URL ${url} - BASEURL ${baseUrl}`);
       return baseUrl;
     },
     async session({ session, user, token }) {
