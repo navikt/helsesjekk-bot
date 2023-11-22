@@ -11,15 +11,19 @@ const authOptions: AuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
+      console.info("SIGN IN");
       return true;
     },
     async redirect({ url, baseUrl }) {
+      console.info("REDIRECT");
       return baseUrl;
     },
     async session({ session, user, token }) {
+      console.info("SESSION");
       return session;
     },
     async jwt({ token, user, account, profile, isNewUser }) {
+      console.info("JWT");
       return token;
     },
   },
