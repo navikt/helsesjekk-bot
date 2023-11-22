@@ -10,6 +10,7 @@ import { raise } from '../utils/ts-utils'
 import { fakeToken } from './fake-token'
 import { getMembersOf } from './ms-graph'
 import { getServerSession } from 'next-auth'
+import { authOptions } from '../app/api/auth/[...nextauth]/route'
 
 /**
  * Validates the wonderwall token according to nais.io. Should only actually redirect if the token has expired.
@@ -21,7 +22,7 @@ export async function validateToken(redirectPath: string): Promise<void> {
         console.warn('Is running locally, skipping RSC auth')
         return
     }
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     console.info(session);
 
     const bearerToken: string | null | undefined = session.accessToken;
