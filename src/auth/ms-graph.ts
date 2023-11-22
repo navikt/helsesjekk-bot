@@ -13,7 +13,7 @@ export async function getMembersOf(): Promise<
         return fakeMembersOfResponse
     }
 
-    const token = getToken(headers())
+    const token = await getToken(headers())
     const tokenSet = await grantAzureOboToken(token, 'https://graph.microsoft.com/.default')
     if (isInvalidTokenSet(tokenSet)) {
         console.error(new Error(`${tokenSet.errorType}: ${tokenSet.message}`, { cause: tokenSet.error }))

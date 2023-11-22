@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 import { Heading, Detail, BodyShort } from 'aksel-server'
 import { HandShakeHeartIcon } from 'aksel-client'
 
-import { userHasAdGroup, validateWonderwallToken } from '../../auth/authentication'
+import { userHasAdGroup, validateToken } from '../../auth/authentication'
 import { adminGetTeamsWithAsked } from '../../db/admin'
 import { isLocal } from '../../utils/env'
 import BackLink from '../../components/core/BackLink'
@@ -17,7 +17,7 @@ import { createChannelPermalink } from '../../utils/slack'
 import AdminTeamToggler from './_admin-team-toggler'
 
 async function Page(): Promise<ReactElement> {
-    await validateWonderwallToken('/admin')
+    await validateToken('/admin')
 
     if (!(await userHasAdGroup(getAdminGroupId()))) {
         return notFound()

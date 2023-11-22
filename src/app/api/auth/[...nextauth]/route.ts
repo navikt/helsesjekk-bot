@@ -29,10 +29,14 @@ const authOptions: AuthOptions = {
     },
     async session({ session, user, token }) {
       console.info("SESSION");
+      session.accessToken = token.accessToken;
       return session;
     },
     async jwt({ token, user, account, profile, isNewUser }) {
       console.info("JWT");
+      if (account) {
+        token.accessToken = account.access_token;
+      }
       return token;
     },
   },

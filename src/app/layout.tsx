@@ -4,10 +4,10 @@ import { PropsWithChildren, ReactElement } from 'react'
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { validateWonderwallToken } from '../auth/authentication'
+import { validateToken } from '../auth/authentication'
 
 export default async function RootLayout({ children }: PropsWithChildren): Promise<ReactElement> {
-    await validateWonderwallToken('/')
+    await validateToken('/')
 
     return (
         <html lang="en">

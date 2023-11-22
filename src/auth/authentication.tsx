@@ -2,24 +2,28 @@ import { headers } from 'next/headers'
 import { validateAzureToken } from '@navikt/next-auth-wonderwall'
 import { redirect } from 'next/navigation'
 
+import { getToken as getJwtToken } from "next-auth/jwt"
+
 import { isLocal } from '../utils/env'
 import { raise } from '../utils/ts-utils'
 
 import { fakeToken } from './fake-token'
 import { getMembersOf } from './ms-graph'
+import { getServerSession } from 'next-auth'
 
 /**
  * Validates the wonderwall token according to nais.io. Should only actually redirect if the token has expired.
  */
-export async function validateWonderwallToken(redirectPath: string): Promise<void> {
+export async function validateToken(redirectPath: string): Promise<void> {
     const requestHeaders = headers()
-
+    
     if (isLocal) {
         console.warn('Is running locally, skipping RSC auth')
         return
     }
+    const session = await getServerSession();
 
-    const bearerToken: string | null | undefined = requestHeaders.get('authorization')
+    const bearerToken: string | null | undefined = session.accessToken;
     if (!bearerToken) {
         console.info('Found no token, redirecting to login')
         redirect(`/api/auth/signin/azure-ad`)
@@ -39,20 +43,17 @@ export async function validateWonderwallToken(redirectPath: string): Promise<voi
     }
 }
 
-export function getToken(headers: Headers): string {
+export async function getToken(headers: Headers): Promise<string> {
     if (isLocal) return fakeToken
-
-    return (
-        headers.get('authorization')?.replace('Bearer ', '') ??
-        raise(new Error('Tried to get token, but header is missing'))
-    )
+    const session = await getServerSession();
+    return session.accessToken;
 }
 
-export function getUser(): {
+export async function getUser(): Promise<{
     name: string
     email: string
-} {
-    const token = getToken(headers())
+}> {
+    const token = await getToken(headers())
     const jwt = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString('utf8'))
 
     return {
