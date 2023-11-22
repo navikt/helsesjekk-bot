@@ -3,32 +3,20 @@ import AzureADProvider from "next-auth/providers/azure-ad";
 
 const authOptions: AuthOptions = {
   providers: [
-    {
-      id: 'azure-ad',
-      name: 'Azure Active Directory',
-      type: 'oauth',
-      authorization: {
-        url: `https://login.microsoftonline.com/${process.env.AZURE_APP_TENANT_ID}/oauth2/v2.0/authorize?response_mode=query`,
-        params: {
-          scope:
-            'openid email profile user.read offline_access',
-        },
-      },
-      token: `https://login.microsoftonline.com/${process.env.AZURE_APP_TENANT_ID}/oauth2/v2.0/token`,
-      userinfo: "https://graph.microsoft.com/oidc/userinfo", 
-      profile(profile) {
+    
+    AzureADProvider({
+      clientId: process.env.AZURE_APP_CLIENT_ID,
+      clientSecret: process.env.AZURE_APP_CLIENT_SECRET,
+      tenantId: process.env.AZURE_APP_TENANT_ID,
+      async profile(profile, tokens) {
         return {
           id: profile.sub,
           name: profile.name,
           email: profile.email,
-          image: profile.picture
+          image: null,
         }
-      },
-      options: {
-        clientId: process.env.AZURE_APP_CLIENT_ID,
-        clientSecret: process.env.AZURE_APP_CLIENT_SECRET,
-      },
-    },
+      }
+    }),
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
