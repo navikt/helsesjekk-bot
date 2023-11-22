@@ -23,17 +23,15 @@ const authOptions: AuthOptions = {
       console.info(`SIGN IN`);
       return true;
     },
-    async redirect({ url, baseUrl }) {
-      console.info(`REDIRECT`);
-      return baseUrl;
-    },
     async session({ session, user, token }) {
       console.info("SESSION");
+      console.info(token.accessToken);
       session.accessToken = token.accessToken;
       return session;
     },
     async jwt({ token, user, account, profile, isNewUser }) {
       console.info("JWT");
+      console.info(account);
       if (account) {
         token.accessToken = account.access_token;
       }
