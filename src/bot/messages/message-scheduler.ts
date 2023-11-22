@@ -16,12 +16,6 @@ export async function cronJob(
 ): Promise<
     'skipped' | 'completed' | { partialError: { ask: Error | null; reveal: Error | null; inspect: Error | null } }
 > {
-    const isPodLeader = await isLeader()
-    if (!isPodLeader) {
-        console.info('Not the pod leader, skipping scheduled job')
-        return 'skipped'
-    }
-
     console.info('Running scheduled job, checking for messages to post')
 
     const jobsResult = {
