@@ -11,11 +11,11 @@ const authOptions: AuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.info("SIGN IN");
+      console.info(`SIGN IN - PROFILE ${profile.name}`);
       return true;
     },
     async redirect({ url, baseUrl }) {
-      console.info("REDIRECT");
+      console.info(`REDIRECT - URL ${URL} - BASEURL ${baseUrl}`);
       return baseUrl;
     },
     async session({ session, user, token }) {
