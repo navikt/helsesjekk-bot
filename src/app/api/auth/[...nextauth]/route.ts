@@ -10,18 +10,19 @@ const authOptions: AuthOptions = {
       authorization: {
         url: `https://login.microsoftonline.com/${process.env.AZURE_APP_TENANT_ID}/oauth2/v2.0/authorize?response_mode=query`,
         params: {
-          audience: process.env.AZURE_APP_CLIENT_ID,
           scope:
-            'openid',
+            'openid email profile user.read offline_access',
         },
       },
       token: `https://login.microsoftonline.com/${process.env.AZURE_APP_TENANT_ID}/oauth2/v2.0/token`,
-      wellKnown: process.env.AZURE_APP_OPENID,
+      userinfo: "https://graph.microsoft.com/oidc/userinfo", 
       profile(profile) {
         return {
           id: profile.sub,
-          ...profile,
-        };
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture
+        }
       },
       options: {
         clientId: process.env.AZURE_APP_CLIENT_ID,
