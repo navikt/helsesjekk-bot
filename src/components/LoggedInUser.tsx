@@ -15,7 +15,7 @@ async function LoggedInUser(): Promise<ReactElement> {
         )
     }
 
-    const user = getUser()
+    const user = await getUser()
 
     return (
         <div className="flex gap-4 p-4">
