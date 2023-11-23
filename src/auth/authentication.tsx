@@ -23,7 +23,6 @@ export const authOptions: AuthOptions = {
       return true;
     },
     async session({ session, user, token }) {
-
       session.accessToken = token.accessToken;
       return session;
     },
@@ -47,7 +46,7 @@ export async function validateToken(redirectPath: string): Promise<void> {
   const session = await getServerSession(authOptions);
 
   const bearerToken: string | null | undefined = session?.accessToken;
-  console.log(bearerToken);
+  console.info(`bearer token: ${bearerToken}`);
   if (!bearerToken) {
     console.info("Found no token, redirecting to login");
     redirect(`/api/auth/signin/azure-ad`);
@@ -57,7 +56,8 @@ export async function validateToken(redirectPath: string): Promise<void> {
 export async function getToken(): Promise<string> {
   if (isLocal) return fakeToken;
   const session = await getServerSession();
-  console.log(session?.accessToken);
+  console.log(`session ${session}`);
+  console.log(`session access token ${session?.accessToken}`);
   return session.accessToken;
 }
 
