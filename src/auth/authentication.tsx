@@ -16,15 +16,15 @@ export const authOptions: AuthOptions = {
       clientId: process.env.AZURE_APP_CLIENT_ID,
       clientSecret: process.env.AZURE_APP_CLIENT_SECRET,
       tenantId: process.env.AZURE_APP_TENANT_ID,
-      async profile(profile, tokens) {
-        return {
-          id: profile.sub,
-          name: profile.name,
-          email: profile.email,
-          image: null,
-          token: tokens.access_token,
-        };
-      },
+      // async profile(profile, tokens) {
+      //   return {
+      //     id: profile.sub,
+      //     name: profile.name,
+      //     email: profile.email,
+      //     image: null,
+      //     token: tokens.access_token,
+      //   };
+      // },
     }),
   ],
   callbacks: {
