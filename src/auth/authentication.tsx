@@ -61,8 +61,9 @@ export async function validateToken(redirectPath: string): Promise<void> {
   }
   const session = await getServerSession(authOptions);
   console.info(`Session ${session}`);
+  console.info(`Session Token ${session?.access_token}`);
 
-  const bearerToken: string | null | undefined = session.accessToken;
+  const bearerToken: string | null | undefined = session?.accessToken;
   if (!bearerToken) {
     console.info("Found no token, redirecting to login");
     redirect(`/api/auth/signin/azure-ad`);
