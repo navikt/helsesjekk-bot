@@ -1,5 +1,4 @@
 import { headers } from "next/headers";
-import { validateAzureToken } from "@navikt/next-auth-wonderwall";
 import { redirect } from "next/navigation";
 
 import { AuthOptions, getServerSession } from "next-auth";
@@ -66,19 +65,6 @@ export async function validateToken(redirectPath: string): Promise<void> {
   const bearerToken: string | null | undefined = session?.accessToken;
   if (!bearerToken) {
     console.info("Found no token, redirecting to login");
-    redirect(`/api/auth/signin/azure-ad`);
-  }
-
-  const validationResult = await validateAzureToken(bearerToken);
-  if (validationResult !== "valid") {
-    if (validationResult.errorType !== "EXPIRED") {
-      console.error(
-        new Error(
-          `Invalid JWT token found (cause: ${validationResult.errorType} ${validationResult.message}, redirecting to login.`,
-          { cause: validationResult.error }
-        )
-      );
-    }
     redirect(`/api/auth/signin/azure-ad`);
   }
 }
