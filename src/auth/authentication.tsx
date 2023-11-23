@@ -30,16 +30,22 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       console.info(`SIGN IN`);
+      console.log(user);
+      console.log("")
       return true;
     },
     async session({ session, user, token }) {
       console.info("SESSION");
+      console.log(session);
+      console.log("")
       session.accessToken = token.accessToken;
       return session;
     },
     async jwt({ token, user, account, profile, isNewUser }) {
       console.info("JWT");
       if (account) {
+        console.log(account);
+        console.log("")
         token.accessToken = account.access_token;
       }
       return token;
@@ -59,8 +65,6 @@ export async function validateToken(redirectPath: string): Promise<void> {
     return;
   }
   const session = await getServerSession(authOptions);
-  console.info(`Session ${session}`);
-  console.info(`Session Token ${session?.accessToken}`);
 
   const bearerToken: string | null | undefined = session?.accessToken;
   if (!bearerToken) {
