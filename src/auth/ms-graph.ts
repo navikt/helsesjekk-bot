@@ -34,7 +34,7 @@ export async function getMembersOf(): Promise<
     }
 
     console.log("returning");
-    return response.json()
+    return response.json() as Promise<MsGraphGroupsResponse>;
 }
 
 export type MsGraphGroup = {
