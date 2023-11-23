@@ -30,13 +30,15 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       console.info(`SIGN IN`);
-      console.log(user);
-      console.log("")
       return true;
     },
     async session({ session, user, token }) {
       console.info("SESSION");
       console.log(session);
+      console.log("")
+      console.log(user);
+      console.log("")
+      console.log(token);
       console.log("")
       session.accessToken = token.accessToken;
       return session;
@@ -45,6 +47,10 @@ export const authOptions: AuthOptions = {
       console.info("JWT");
       if (account) {
         console.log(account);
+        console.log("")
+        console.log(user);
+        console.log("")
+        console.log(profile);
         console.log("")
         token.accessToken = account.access_token;
       }
