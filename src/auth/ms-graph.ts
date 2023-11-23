@@ -14,15 +14,10 @@ export async function getMembersOf(): Promise<
     }
 
     const token = await getToken(headers())
-    const tokenSet = await grantAzureOboToken(token, 'https://graph.microsoft.com/.default')
-    if (isInvalidTokenSet(tokenSet)) {
-        console.error(new Error(`${tokenSet.errorType}: ${tokenSet.message}`, { cause: tokenSet.error }))
-        return { error: 'Du har ikke tilgang til å se dine grupper.' }
-    }
 
     const response = await fetch('https://graph.microsoft.com/v1.0/me/memberOf', {
         headers: {
-            Authorization: `Bearer ${tokenSet}`,
+            Authorization: `Bearer ${token}`,
         },
     })
 
