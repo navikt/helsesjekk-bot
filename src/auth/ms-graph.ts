@@ -5,7 +5,7 @@ import { isLocal } from '../utils/env'
 
 import { fakeMembersOfResponse } from './fake-members-of-response'
 import { getToken } from './authentication'
-import { ProxyAgent } from 'proxy-agent'
+import { ProxyAgent, fetch } from 'undici'
 
 export async function getMembersOf(): Promise<
     MsGraphGroupsResponse | { error: string; status?: number; statusText?: string }
@@ -18,6 +18,7 @@ export async function getMembersOf(): Promise<
 
     console.log("Trying to reach https://graph.microsoft.com/v1.0/me/memberOf");
     const response = await fetch('https://graph.microsoft.com/v1.0/me/memberOf', {
+        dispatcher: new ProxyAgent(process.env.HTTP_PROXY),
         headers: {
             Authorization: `Bearer ${token}`,
         },
