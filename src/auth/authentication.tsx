@@ -61,7 +61,7 @@ export async function validateToken(redirectPath: string): Promise<void> {
   }
   const session = await getServerSession(authOptions);
   console.info(`Session ${session}`);
-  console.info(`Session Token ${session?.access_token}`);
+  console.info(`Session Token ${session?.accessToken}`);
 
   const bearerToken: string | null | undefined = session?.accessToken;
   if (!bearerToken) {
