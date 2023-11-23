@@ -5,6 +5,7 @@ import { isLocal } from '../utils/env'
 
 import { fakeMembersOfResponse } from './fake-members-of-response'
 import { getToken } from './authentication'
+import { ProxyAgent } from 'proxy-agent'
 
 export async function getMembersOf(): Promise<
     MsGraphGroupsResponse | { error: string; status?: number; statusText?: string }
@@ -20,7 +21,8 @@ export async function getMembersOf(): Promise<
         headers: {
             Authorization: `Bearer ${token}`,
         },
-    })
+    });
+    console.log(`response ${response}`);
 
     if (!response.ok) {
         return {
@@ -30,6 +32,7 @@ export async function getMembersOf(): Promise<
         }
     }
 
+    console.log("returning");
     return response.json()
 }
 
