@@ -16,42 +16,19 @@ export const authOptions: AuthOptions = {
       clientId: process.env.AZURE_APP_CLIENT_ID,
       clientSecret: process.env.AZURE_APP_CLIENT_SECRET,
       tenantId: process.env.AZURE_APP_TENANT_ID,
-      // async profile(profile, tokens) {
-      //   return {
-      //     id: profile.sub,
-      //     name: profile.name,
-      //     email: profile.email,
-      //     image: null,
-      //     token: tokens.access_token,
-      //   };
-      // },
     }),
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.info(`SIGN IN`);
       return true;
     },
     async session({ session, user, token }) {
-      console.info("SESSION");
-      console.log(session);
-      console.log("")
-      console.log(user);
-      console.log("")
-      console.log(token);
-      console.log("")
+
       session.accessToken = token.accessToken;
       return session;
     },
     async jwt({ token, user, account, profile, isNewUser }) {
-      console.info("JWT");
       if (account) {
-        console.log(account);
-        console.log("")
-        console.log(user);
-        console.log("")
-        console.log(profile);
-        console.log("")
         token.accessToken = account.access_token;
       }
       return token;
@@ -60,9 +37,6 @@ export const authOptions: AuthOptions = {
   debug: true,
 };
 
-/**
- * Validates the wonderwall token according to nais.io. Should only actually redirect if the token has expired.
- */
 export async function validateToken(redirectPath: string): Promise<void> {
   const requestHeaders = headers();
 
@@ -73,15 +47,17 @@ export async function validateToken(redirectPath: string): Promise<void> {
   const session = await getServerSession(authOptions);
 
   const bearerToken: string | null | undefined = session?.accessToken;
+  console.log(bearerToken);
   if (!bearerToken) {
     console.info("Found no token, redirecting to login");
     redirect(`/api/auth/signin/azure-ad`);
   }
 }
 
-export async function getToken(headers: Headers): Promise<string> {
+export async function getToken(): Promise<string> {
   if (isLocal) return fakeToken;
   const session = await getServerSession();
+  console.log(session?.accessToken);
   return session.accessToken;
 }
 
@@ -89,7 +65,7 @@ export async function getUser(): Promise<{
   name: string;
   email: string;
 }> {
-  const token = await getToken(headers());
+  const token = await getToken();
   const jwt = JSON.parse(
     Buffer.from(token.split(".")[1], "base64").toString("utf8")
   );

@@ -13,7 +13,7 @@ export async function getMembersOf(): Promise<
         return fakeMembersOfResponse
     }
 
-    const token = await getToken(headers())
+    const token = await getToken();
 
     const response = await fetch('https://graph.microsoft.com/v1.0/me/memberOf', {
         headers: {
