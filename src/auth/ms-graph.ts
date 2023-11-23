@@ -15,17 +15,6 @@ export async function getMembersOf(): Promise<
     }
 
     const token = await getToken();
-    console.log("Trying to reach https://graph.microsoft.com/v1.0/me");
-    const me = await fetch('https://graph.microsoft.com/v1.0/me', {
-        dispatcher: new ProxyAgent(process.env.HTTP_PROXY),
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    console.log(me.ok);
-    console.log(me.status);
-    console.log(me.statusText);
-
     console.log("Trying to reach https://graph.microsoft.com/v1.0/me/memberOf");
     const response = await fetch('https://graph.microsoft.com/v1.0/me/memberOf', {
         dispatcher: new ProxyAgent(process.env.HTTP_PROXY),
