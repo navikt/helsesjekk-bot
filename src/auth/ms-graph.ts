@@ -22,7 +22,8 @@ export async function getMembersOf(): Promise<
             Authorization: `Bearer ${token}`,
         },
     });
-    console.log(`response ${response.headers}`);
+    console.log(`response ${response.headers.keys()}`);
+    console.log(`response ${response.headers.values()}`);
 
     if (!response.ok) {
         return {
