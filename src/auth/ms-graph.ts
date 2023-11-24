@@ -25,6 +25,7 @@ export async function getMembersOf(): Promise<
     });
 
     if (!response.ok) {
+        console.error(response.text)
         return {
             error: 'Feil fra Microsoft, prøv igjen senere.',
             status: response.status,
