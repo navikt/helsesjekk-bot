@@ -49,8 +49,7 @@ export const authOptions: AuthOptions = {
       }
       return token;
     },
-  },
-  debug: true,
+  }
 };
 
 export async function validateToken(redirectPath: string): Promise<void> {
