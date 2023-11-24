@@ -16,6 +16,11 @@ export const authOptions: AuthOptions = {
       clientId: process.env.AZURE_APP_CLIENT_ID,
       clientSecret: process.env.AZURE_APP_CLIENT_SECRET,
       tenantId: process.env.AZURE_APP_TENANT_ID,
+      authorization: {
+        params: {
+          scope: "openid profile email offline_access .default",
+        },
+      },
     }),
   ],
   callbacks: {
@@ -27,7 +32,6 @@ export const authOptions: AuthOptions = {
       return session;
     },
     async jwt({ token, user, account, profile }) {
-      console.log(profile);
       if (account) {
         token.accessToken = account.access_token;
       }
