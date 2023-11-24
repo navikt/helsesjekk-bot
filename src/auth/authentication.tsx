@@ -45,7 +45,6 @@ export const authOptions: AuthOptions = {
         token.accessToken = account.access_token;
         token.expires_at = account.expires_at;
         token.refreshToken = account.refresh_token;
-        
       }
       return token;
     },
