@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { AuthOptions, getServerSession } from "next-auth";
+import { AuthOptions, getServerSession, TokenSet, User } from "next-auth";
 import AzureADProvider from "next-auth/providers/azure-ad";
 
 import { isLocal } from "../utils/env";
@@ -32,10 +32,49 @@ export const authOptions: AuthOptions = {
       return session;
     },
     async jwt({ token, user, account, profile }) {
-      if (account) {
+      console.log("JWT")
+      if (account && user) {
         token.accessToken = account.access_token;
+        token.expires_at = account.expires_at;
+        token.refreshToken = account.refresh_token;
       }
-      return token;
+      if (Date.now() < token.expires_at * 1000) {
+        return token;
+      } else {
+        try {
+          // https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration
+          // We need the `token_endpoint`.
+          const response = await fetch("https://login.microsoftonline.com/common/oauth2/v2.0/token", {
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+              client_id: process.env.AZURE_APP_CLIENT_ID,
+              client_secret: process.env.AZURE_APP_CLIENT_SECRET,
+              grant_type: "refresh_token",
+              refresh_token: token.refreshToken,
+            }),
+            method: "POST",
+          })
+
+          const tokens: TokenSet = await response.json()
+
+          if (!response.ok) throw tokens
+          
+
+          return {
+            ...token, // Keep the previous token properties
+            access_token: tokens.access_token,
+            expires_at: tokens.expires_at,
+            // Fall back to old refresh token, but note that
+            // many providers may only allow using a refresh token once.
+            refresh_token: tokens.refresh_token ?? token.refresh_token,
+          }
+        } catch (error) {
+          console.error("Error refreshing access token", error)
+          // The error property will be used client-side to handle the refresh token error
+          return { ...token, error: "RefreshAccessTokenError" as const }
+        }
+
+      }
     },
   },
   debug: true,
