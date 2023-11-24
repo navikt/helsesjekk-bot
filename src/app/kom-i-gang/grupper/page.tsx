@@ -39,6 +39,7 @@ async function Page(): Promise<ReactElement> {
 
 async function UserAdGroups(): Promise<ReactElement> {
     const membersOf = await getMembersOf()
+    console.log(membersOf);
 
     if ('error' in membersOf) {
         return <UserGroupsError error={membersOf} />

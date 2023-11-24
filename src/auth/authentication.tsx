@@ -46,6 +46,9 @@ export const authOptions: AuthOptions = {
         token.expires_at = account.expires_at;
         token.refreshToken = account.refresh_token;
       }
+      if (Date.now() < token.expires_at) {
+        token.accessToken = null;
+      }
       return token;
     },
   }
