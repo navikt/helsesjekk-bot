@@ -22,6 +22,14 @@ export const authOptions: AuthOptions = {
           scope: "openid profile email offline_access .default",
         },
       },
+      async profile(profile, tokens) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: null,
+        }
+      },
     }),
   ],
   callbacks: {
@@ -38,6 +46,7 @@ export const authOptions: AuthOptions = {
         token.accessToken = account.access_token;
         token.expires_at = account.expires_at;
         token.refreshToken = account.refresh_token;
+        
       }
       if (Date.now() < token.expires_at * 1000) {
         return token;
@@ -45,15 +54,18 @@ export const authOptions: AuthOptions = {
         try {
           // https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration
           // We need the `token_endpoint`.
+          const body = new URLSearchParams({
+            grant_type: "refresh_token",
+            client_id: process.env.AZURE_APP_CLIENT_ID,
+            client_secret: encodeURIComponent(process.env.AZURE_APP_CLIENT_SECRET),
+            refresh_token: token.refreshToken,
+            scope: "https://graph.microsoft.com/User.ReadWrite.All"
+          });
+          console.log(body.toString())
           const response = await fetch(`https://login.microsoftonline.com/${process.env.AZURE_APP_TENANT_ID}/oauth2/v2.0/token`, {
             dispatcher: new ProxyAgent(process.env.HTTP_PROXY),
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams({
-              grant_type: "refresh_token",
-              client_id: process.env.AZURE_APP_CLIENT_ID,
-              client_secret: encodeURIComponent(process.env.AZURE_APP_CLIENT_SECRET),
-              refresh_token: token.refreshToken,
-            }),
+            body: body,
             method: "POST",
           })
 
