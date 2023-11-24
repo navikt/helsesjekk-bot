@@ -49,9 +49,9 @@ export const authOptions: AuthOptions = {
             dispatcher: new ProxyAgent(process.env.HTTP_PROXY),
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams({
-              client_id: process.env.AZURE_APP_CLIENT_ID,
-              client_secret: process.env.AZURE_APP_CLIENT_SECRET,
               grant_type: "refresh_token",
+              client_id: process.env.AZURE_APP_CLIENT_ID,
+              client_secret: encodeURIComponent(process.env.AZURE_APP_CLIENT_SECRET),
               refresh_token: token.refreshToken,
             }),
             method: "POST",
