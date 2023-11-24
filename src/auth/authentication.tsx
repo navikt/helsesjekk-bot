@@ -9,6 +9,7 @@ import { raise } from "../utils/ts-utils";
 
 import { fakeToken } from "./fake-token";
 import { getMembersOf } from "./ms-graph";
+import { fetch, ProxyAgent } from "undici";
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -44,7 +45,8 @@ export const authOptions: AuthOptions = {
         try {
           // https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration
           // We need the `token_endpoint`.
-          const response = await fetch("https://login.microsoftonline.com/common/oauth2/v2.0/token", {
+          const response = await fetch(`https://login.microsoftonline.com/${process.env.AZURE_APP_TENANT_ID}/oauth2/v2.0/token`, {
+            dispatcher: new ProxyAgent(process.env.HTTP_PROXY),
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams({
               client_id: process.env.AZURE_APP_CLIENT_ID,
@@ -55,7 +57,7 @@ export const authOptions: AuthOptions = {
             method: "POST",
           })
 
-          const tokens: TokenSet = await response.json()
+          const tokens: TokenSet = (await response.json()) as TokenSet
 
           if (!response.ok) throw tokens
           
