@@ -15,8 +15,6 @@ export async function getMembersOf(): Promise<
     }
 
     const token = await getToken();
-    console.log(`token ${token}`)
-    console.log("Trying to reach https://graph.microsoft.com/v1.0/me/memberOf");
     const response = await fetch('https://graph.microsoft.com/v1.0/me/memberOf', {
         dispatcher: new ProxyAgent(process.env.HTTP_PROXY),
         headers: {
@@ -33,7 +31,6 @@ export async function getMembersOf(): Promise<
         }
     }
 
-    console.log("returning");
     return response.json() as Promise<MsGraphGroupsResponse>;
 }
 

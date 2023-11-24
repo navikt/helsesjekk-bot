@@ -34,61 +34,23 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      return true;
+      if (Date.now() < account.expires_at) {
+        return true;
+      }
+      return false;
     },
     async session({ session, user, token }) {
       session.accessToken = token.accessToken;
       return session;
     },
     async jwt({ token, user, account, profile }) {
-      console.log("JWT")
       if (account && user) {
         token.accessToken = account.access_token;
         token.expires_at = account.expires_at;
         token.refreshToken = account.refresh_token;
         
       }
-      if (Date.now() < token.expires_at * 1000) {
-        return token;
-      } else {
-        try {
-          // https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration
-          // We need the `token_endpoint`.
-          const body = new URLSearchParams({
-            grant_type: "refresh_token",
-            client_id: process.env.AZURE_APP_CLIENT_ID,
-            client_secret: encodeURIComponent(process.env.AZURE_APP_CLIENT_SECRET),
-            refresh_token: token.refreshToken,
-            scope: "https://graph.microsoft.com/User.ReadWrite.All"
-          });
-          console.log(body.toString())
-          const response = await fetch(`https://login.microsoftonline.com/${process.env.AZURE_APP_TENANT_ID}/oauth2/v2.0/token`, {
-            dispatcher: new ProxyAgent(process.env.HTTP_PROXY),
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: body,
-            method: "POST",
-          })
-
-          const tokens: TokenSet = (await response.json()) as TokenSet
-
-          if (!response.ok) throw tokens
-          
-
-          return {
-            ...token, // Keep the previous token properties
-            access_token: tokens.access_token,
-            expires_at: tokens.expires_at,
-            // Fall back to old refresh token, but note that
-            // many providers may only allow using a refresh token once.
-            refresh_token: tokens.refresh_token ?? token.refresh_token,
-          }
-        } catch (error) {
-          console.error("Error refreshing access token", error)
-          // The error property will be used client-side to handle the refresh token error
-          return { ...token, error: "RefreshAccessTokenError" as const }
-        }
-
-      }
+      return token;
     },
   },
   debug: true,
