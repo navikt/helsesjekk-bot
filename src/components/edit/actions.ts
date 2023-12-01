@@ -11,6 +11,7 @@ import {
     setTeamFrequency,
     addQuestionToTeam,
     deleteQuestionFromTeam,
+    toggleQuestionRequiredInTeam,
 } from '../../db'
 import { userHasAdGroup } from '../../auth/authentication'
 import { raise } from '../../utils/ts-utils'
@@ -79,11 +80,29 @@ export async function addQuestion(groupId: string, teamId: string, formData: For
         high: formData.get('high')?.toString() ?? raise(new Error('Missing high in form data')),
         mid: formData.get('mid')?.toString() ?? raise(new Error('Missing mid in form data')),
         low: formData.get('low')?.toString() ?? raise(new Error('Missing low in form data')),
+        required: formData.get('required') === 'required',
     }
 
     logger.info(`User is adding question of type: ${question.type}`)
 
     await addQuestionToTeam(teamId, question)
+
+    revalidatePath(`/team/${groupId}`)
+}
+
+export async function toggleQuestionRequired(
+    groupId: string,
+    teamId: string,
+    questionId: string,
+    required: boolean,
+): Promise<void> {
+    if (!(await userHasAdGroup(groupId))) {
+        throw new Error('User does not have access to edit team name')
+    }
+
+    logger.info(`User is toggling requiredness for question for team ${teamId} ${questionId}`)
+
+    await toggleQuestionRequiredInTeam(teamId, questionId, required)
 
     revalidatePath(`/team/${groupId}`)
 }

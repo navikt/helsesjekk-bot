@@ -111,6 +111,7 @@ function createSelectSectionBlock(question: Question, existingAnswers: QuestionA
 
     return {
         type: 'input',
+        optional: !(question.required ?? true),
         label: {
             type: 'plain_text',
             text: `${question.question}`,
