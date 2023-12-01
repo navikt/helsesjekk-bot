@@ -136,6 +136,29 @@ export function deleteQuestionFromTeam(teamId: string, questionId: string): Prom
     })
 }
 
+export function toggleQuestionRequiredInTeam(teamId: string, questionId: string, required: boolean): Promise<Team> {
+    return prisma.$transaction(async (prisma) => {
+        const team = await prisma.team.findFirstOrThrow({ where: { id: teamId } })
+
+        const updatedTeam = prisma.team.update({
+            data: {
+                questions: questionsToJsonb(
+                    questionsFromJsonb(team.questions).map((q) => {
+                        if (q.questionId === questionId) {
+                            return { ...q, required }
+                        } else {
+                            return q
+                        }
+                    }),
+                ),
+            },
+            where: { id: teamId },
+        })
+
+        return updatedTeam
+    })
+}
+
 export async function setTeamName(teamId: string, name: string): Promise<Team> {
     return prisma.team.update({ data: { name }, where: { id: teamId } })
 }
