@@ -1,7 +1,7 @@
 'use client'
 
 import React, { ReactElement, useState } from 'react'
-import { Button } from '@navikt/ds-react'
+import { Button, Checkbox } from '@navikt/ds-react'
 import { useParams } from 'next/navigation'
 import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
@@ -55,19 +55,24 @@ function AddQuestion({ teamId }: Props): ReactElement {
                             <PlusIcon aria-hidden />
                             Nytt spørsmål
                         </Heading>
-                        <Select
-                            label="Kategori"
-                            name="type"
-                            className="max-w-xs"
-                            disabled={saving}
-                            defaultValue={QuestionType.TEAM_HEALTH}
-                        >
-                            {R.map(R.keys(QuestionType), (it) => (
-                                <option key={it} value={it}>
-                                    {questionTypeToText(it as QuestionType)}
-                                </option>
-                            ))}
-                        </Select>
+                        <div className="flex justify-between items-end">
+                            <Select
+                                label="Kategori"
+                                name="type"
+                                className="max-w-xs grow"
+                                disabled={saving}
+                                defaultValue={QuestionType.TEAM_HEALTH}
+                            >
+                                {R.map(R.keys(QuestionType), (it) => (
+                                    <option key={it} value={it}>
+                                        {questionTypeToText(it as QuestionType)}
+                                    </option>
+                                ))}
+                            </Select>
+                            <Checkbox name="required" defaultChecked value="required" className="ml-4">
+                                Påkrevd
+                            </Checkbox>
+                        </div>
                         <TextField
                             name="question"
                             className="grow"

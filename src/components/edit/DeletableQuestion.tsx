@@ -1,14 +1,14 @@
 'use client'
 
-import React, { ReactElement, startTransition, useState } from 'react'
-import { BodyLong } from '@navikt/ds-react'
+import React, { ReactElement, useState, useTransition } from 'react'
+import { BodyLong, BodyShort, Switch } from '@navikt/ds-react'
 import { useParams } from 'next/navigation'
 import { Alert, Heading, Tooltip, Button, ConfirmationPanel } from '@navikt/ds-react'
 import { SparklesIcon, TrashIcon, XMarkIcon } from '@navikt/aksel-icons'
 
 import { Question } from '../../safe-types'
 
-import { deleteQuestion } from './actions'
+import { deleteQuestion, toggleQuestionRequired } from './actions'
 
 type Props = {
     teamId: string
@@ -19,6 +19,7 @@ function DeletableQuestion({ teamId, question }: Props): ReactElement {
     const params = useParams<{ groupId: string }>()
     const [isDeleting, setIsDeleting] = useState(false)
     const [hasChecked, setHasChecked] = useState(false)
+    const [isToggling, startTransition] = useTransition()
 
     return (
         <>
@@ -32,13 +33,39 @@ function DeletableQuestion({ teamId, question }: Props): ReactElement {
                     {question.question}
                 </Heading>
                 {!isDeleting && (
-                    <Button
-                        className="-mt-4 -mr-2"
-                        icon={<TrashIcon title="Slett spørsmål" />}
-                        size="small"
-                        variant="tertiary-neutral"
-                        onClick={() => setIsDeleting(true)}
-                    />
+                    <div className="flex gap-3 -mt-2">
+                        {question.custom ? (
+                            <Switch
+                                size="small"
+                                position="right"
+                                disabled={isToggling}
+                                onChange={(event) =>
+                                    startTransition(() =>
+                                        toggleQuestionRequired(
+                                            params.groupId,
+                                            teamId,
+                                            question.questionId,
+                                            event.target.checked,
+                                        ),
+                                    )
+                                }
+                                checked={question.required ?? true}
+                            >
+                                Påkrevd
+                            </Switch>
+                        ) : (
+                            <BodyShort size="small" className="flex items-center">
+                                Påkrevd
+                            </BodyShort>
+                        )}
+                        <Button
+                            className=""
+                            icon={<TrashIcon title="Slett spørsmål" />}
+                            size="small"
+                            variant="tertiary-neutral"
+                            onClick={() => setIsDeleting(true)}
+                        />
+                    </div>
                 )}
             </div>
             {isDeleting && (
