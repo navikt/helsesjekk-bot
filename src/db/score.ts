@@ -1,9 +1,9 @@
 import * as R from 'remeda'
 import { getYear } from 'date-fns'
 
-import { scoreAsked, ScoredAsk } from '../metrics/metrics'
+import { scoreAsked, ScoredAsk, ScoredQuestion } from '../metrics/metrics'
 import { getWeekNumber } from '../utils/date'
-import { QuestionType } from '../safe-types'
+import { QuestionScorePerWeek, QuestionScoring, QuestionType } from '../safe-types'
 
 import { prisma } from './prisma'
 
@@ -55,18 +55,7 @@ export async function getTeamScoreTimeline(teamId: string): Promise<
     return scores
 }
 
-type WeekWithQuestionScores = {
-    timestamp: Date
-} & Record<number, { id: string; score: number | null }>
-
-export async function getTeamScorePerQuestion(teamId: string): Promise<
-    | {
-          scoredQuestions: WeekWithQuestionScores[]
-          questions: { id: string; question: string }[]
-          maxQuestions: number
-      }
-    | { error: string }
-> {
+export async function getTeamScorePerQuestion(teamId: string): Promise<QuestionScorePerWeek[] | { error: string }> {
     const team = await prisma.team.findFirst({
         where: { active: true, id: teamId },
         include: {
@@ -96,54 +85,56 @@ export async function getTeamScorePerQuestion(teamId: string): Promise<
         R.map(scoreAsked),
     )
 
-    const questionIndexLookup = R.pipe(
+    const scoredQuestionToScorePerWeek = (
+        scoredQuestion: ScoredQuestion & { timestamp: Date },
+    ): QuestionScorePerWeek => ({
+        question: {
+            questionId: scoredQuestion.id,
+            question: scoredQuestion.question,
+            answers: scoredQuestion.answers,
+        },
+        scoring: [
+            {
+                timestamp: scoredQuestion.timestamp,
+                averageScore: scoredQuestion.score,
+                distribution: scoredQuestion.distribution,
+            },
+        ],
+    })
+
+    const questionScorePerWeek = R.pipe(
         scoredAsks,
-        R.flatMap((it) => it.scoredQuestions),
-        R.map((it) => it.id),
-        R.uniqBy(R.identity),
-        R.map.indexed((id, index): [string, number] => [id, index]),
-        R.fromPairs.strict,
+        R.flatMap(({ timestamp, scoredQuestions }) => scoredQuestions.map((question) => ({ ...question, timestamp }))),
+        R.map(scoredQuestionToScorePerWeek),
+        R.reduce(
+            (acc, it) => {
+                const existing = acc[it.question.questionId]
+                acc[it.question.questionId] = existing
+                    ? { ...existing, scoring: [...existing.scoring, ...it.scoring] }
+                    : it
+                return acc
+            },
+            {} as Record<string, QuestionScorePerWeek>,
+        ),
+        R.values,
     )
 
-    const maxIndex = R.pipe(
-        questionIndexLookup,
-        R.toPairs,
-        R.maxBy((it) => it[1]),
-        R.prop('1'),
-    )
+    // console.dir(reducedToBeSum, { depth: 10 })
 
-    const emptyQuestions = R.pipe(
-        R.range(0, maxIndex + 1),
-        R.map((index): [number, null] => [index, null]),
-        R.fromPairs.strict,
+    console.assert(questionScorePerWeek.length === 6, 'Expected 6 questions')
+    console.assert(
+        questionScorePerWeek.every((it) => it.scoring.length === 4),
+        'Expected 4 periods',
     )
-
-    const scores: WeekWithQuestionScores[] = R.sortBy(
-        scoredAsks.map((scoredAsk) => {
-            const scoredQuestionsByIndex = R.pipe(
-                scoredAsk.scoredQuestions,
-                R.map((it): [number, { id: string; score: number }] => [
-                    questionIndexLookup[it.id],
-                    { id: it.id, score: it.score },
-                ]),
-                R.fromPairs.strict,
-            )
-            return R.merge(emptyQuestions, {
-                timestamp: scoredAsk.timestamp,
-                ...scoredQuestionsByIndex,
-            }) satisfies WeekWithQuestionScores
-        }),
-        R.prop('timestamp'),
+    console.assert(
+        questionScorePerWeek[0].scoring.every((it) => it.timestamp instanceof Date),
+        'Expected all polls to have dates',
     )
-
-    const questions = R.pipe(
-        scoredAsks,
-        R.flatMap((it) => it.scoredQuestions),
-        R.uniqBy(R.prop('id')),
-        R.map((it) => ({ id: it.id, question: it.question })),
+    console.assert(
+        questionScorePerWeek[0].scoring.every((it) => Object.keys(it.distribution).length === 3),
+        'Expected all distributions',
     )
-
-    return { scoredQuestions: scores, maxQuestions: maxIndex, questions }
+    return questionScorePerWeek
 }
 
 export async function getGlobalScoreTimeline(): Promise<

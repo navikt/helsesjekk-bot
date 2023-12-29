@@ -2,37 +2,32 @@
 
 import * as R from 'remeda'
 import React, { ReactElement, useMemo } from 'react'
-import { Bar, LineChart, CartesianGrid, Line, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from 'recharts'
-
-import { Detail } from 'aksel-server'
+import { Area, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Detail, Heading } from 'aksel-server'
 
 import { getWeekNumber } from '../../utils/date'
 import { scoreToEmoji } from '../../utils/score'
+import { AnswerLevel, QuestionScorePerWeek } from '../../safe-types'
 
-type Props = {
-    maxQuestions: number
-    data: ({
-        timestamp: Date
-    } & Record<number, { id: string; score: number }>)[]
-    questions: { id: string; question: string }[]
-}
+type Props = QuestionScorePerWeek
 
-function OverallScoreGraph({ maxQuestions, questions, data }: Props): ReactElement {
-    const indexQuestionLookup: Record<number, string> = R.pipe(
-        questions,
-        R.map.indexed((it, index): [number, string] => [index, it.question]),
-        R.fromPairs.strict,
-    )
-    const questionsMap = useMemo(() => R.indexBy(questions, (it) => it.id), [questions])
-    const CustomTooltip = useMemo(() => createCustomTooltip(questionsMap), [questionsMap])
+const toPercent = (decimal: number, fixed = 0): string => `${(decimal * 100).toFixed(fixed)}%`
 
+function ScorePerQuestion(props: Props): ReactElement {
+    const { question, scoring } = props
+
+    const CustomTooltip = useMemo(() => createCustomTooltip(), [scoring])
     return (
         <div className="w-full aspect-video relative">
+            {question && (
+                <Heading size="small" level="4">
+                    {question.question}
+                </Heading>
+            )}
             <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={data}>
+                <ComposedChart data={scoring} stackOffset={'expand'}>
                     <XAxis
                         dataKey="timestamp"
-                        padding={{ left: 30, right: 30 }}
                         angle={10}
                         fontSize={12}
                         tickFormatter={(date: Date, index): string =>
@@ -40,50 +35,56 @@ function OverallScoreGraph({ maxQuestions, questions, data }: Props): ReactEleme
                         }
                     />
                     <YAxis domain={[0, 5]} tickCount={6} />
+                    <YAxis yAxisId={'antall'} orientation={'right'} hide={true} tickFormatter={toPercent} />
                     <CartesianGrid strokeDasharray="3 3" />
-                    <Bar
-                        yAxisId="right"
-                        fill="lightgray"
+                    <Line
                         type="monotone"
-                        dataKey="answers"
+                        dataKey={`averageScore`}
+                        strokeWidth={2}
                         isAnimationActive={false}
-                        label={{
-                            position: 'insideBottom',
-                            angle: 0,
-                            fill: 'white',
-                            offset: 25,
+                        dot={({ key, ...rest }) => <CustomDot key={key} {...rest} />}
+                    />
+
+                    {Object.keys(AnswerLevel).map((level) => (
+                        <Area
+                            key={level}
+                            type="monotone"
+                            yAxisId={'antall'}
+                            dataKey={`distribution.${level}`}
+                            stackId={1}
+                            stroke={colorMap[level]}
+                            fill={colorMap[level]}
+                            isAnimationActive={false}
+                        />
+                    ))}
+
+                    <Legend
+                        layout={'vertical'}
+                        iconType={'circle'}
+                        formatter={(value) => {
+                            switch (value) {
+                                case 'distribution.GOOD':
+                                    return question.answers[AnswerLevel.GOOD]
+                                case 'distribution.MEDIUM':
+                                    return question.answers[AnswerLevel.MEDIUM]
+                                case 'distribution.BAD':
+                                    return question.answers[AnswerLevel.BAD]
+                                case 'averageScore':
+                                    return 'Gjennomsnitt'
+                            }
                         }}
                     />
                     <Tooltip content={CustomTooltip} />
-                    {R.range(0, maxQuestions + 1).map((index) => (
-                        <Line
-                            key={index}
-                            type="monotone"
-                            dataKey={`${index}.score`}
-                            stroke={index < 10 ? colorsLineIndex[index] : 'rgba(205, 92, 92, 0.5)'}
-                            strokeWidth={2}
-                            isAnimationActive={false}
-                            dot={({ key, ...rest }) => <CustomDot key={key} {...rest} />}
-                        />
-                    ))}
-                    <Legend formatter={(_value, _entry, index) => indexQuestionLookup[index]} />
-                </LineChart>
+                </ComposedChart>
             </ResponsiveContainer>
         </div>
     )
 }
 
-const colorsLineIndex = {
-    0: 'rgba(0, 103, 197, 0.65)',
-    1: 'rgba(179, 0, 12, 0.65)',
-    2: 'rgba(102, 102, 51, 0.65)',
-    3: 'rgba(128, 0, 128, 0.65)',
-    4: 'rgba(255, 140, 0, 0.65)',
-    5: 'rgba(107, 142, 35, 0.65)',
-    6: 'rgba(139, 69, 19, 0.65)',
-    7: 'rgba(100, 149, 237, 0.65)',
-    8: 'rgba(0, 100, 0, 0.65)',
-    9: 'rgba(205, 92, 92, 0.65)',
+const colorMap: Record<AnswerLevel, string> = {
+    GOOD: 'rgba(107, 142, 35, 0.65)',
+    MEDIUM: 'rgba(255, 140, 0, 0.65)',
+    BAD: 'rgba(179, 0, 12, 0.65)',
 }
 
 type CustomTooltipProps = {
@@ -95,19 +96,16 @@ type CustomTooltipProps = {
     active: boolean
 }
 
-function createCustomTooltip(
-    questionsMap: Record<string, { id: string; question: string }>,
-): (props: CustomTooltipProps) => ReactElement {
+function createCustomTooltip(): (props: CustomTooltipProps) => ReactElement {
     return function CustomTooltip({ payload, active }: CustomTooltipProps): ReactElement {
         if (!active && payload.length === 0) return null
-
         const [first] = payload
-        const relevantValues = R.toPairs
-            .strict(first.payload)
-            .filter(([, value]) => value != null)
-            .filter((tuple) => tuple[0] !== 'timestamp') as [string, { id: string; score: number }][]
-
-        const colors = R.fromPairs.strict(payload.map((it): [string, string] => [it.dataKey.split('.')[0], it.stroke]))
+        const relevantValues = R.pipe(
+            payload,
+            R.map((item) => R.pick(item, ['value', 'name'])),
+            R.flatMap((item) => (R.isObject(item.value) ? Object.entries(item.value) : [{ [item.name]: item.value }])),
+            R.flatMap(R.toPairs),
+        )
 
         return (
             <div className="bg-white border border-border-default rounded p-2">
@@ -116,16 +114,16 @@ function createCustomTooltip(
                 </Detail>
                 {R.pipe(
                     relevantValues,
-                    R.sortBy([([, value]) => value.score, 'desc']),
                     R.map(([key, value]) => {
-                        if (value == null) return null
-
+                        const dist = key.split('.')
+                        const color = dist ? colorMap[dist[1] as AnswerLevel] : 'black'
                         return (
                             <div key={key}>
                                 <div className="flex gap-2">
-                                    <span>{scoreToEmoji(value.score)}</span>
-                                    <span style={{ color: colors[key] }}>{questionsMap[value.id]?.question}</span>
-                                    <span>{value.score.toFixed(2)}</span>
+                                    <span style={{ color }}>
+                                        <ScoreToDescription name={key} />
+                                    </span>
+                                    <span>{Number.isInteger(value) ? value : value.toFixed(2)}</span>
                                 </div>
                             </div>
                         )
@@ -133,6 +131,19 @@ function createCustomTooltip(
                 )}
             </div>
         )
+    }
+}
+
+function ScoreToDescription({ name }: { name: string }): string {
+    switch (name) {
+        case 'averageScore':
+            return 'Gjennomsnitt'
+        case 'distribution.GOOD':
+            return 'Good'
+        case 'distribution.MEDIUM':
+            return 'Medium'
+        case 'distribution.BAD':
+            return 'Bad'
     }
 }
 
@@ -148,4 +159,4 @@ function CustomDot({ cx, cy, value }: { cx: number; cy: number; value: number })
     )
 }
 
-export default OverallScoreGraph
+export default ScorePerQuestion

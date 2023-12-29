@@ -16,3 +16,26 @@ export interface Question {
     type: QuestionType
     custom?: boolean
 }
+
+export type QuestionScoring = {
+    timestamp: Date
+    averageScore: number
+    distribution: QuestionScoreDistributrion
+}
+
+export type QuestionScoreDistributrion = Record<AnswerLevel, number>
+
+export enum AnswerLevel {
+    GOOD = 'GOOD',
+    MEDIUM = 'MEDIUM',
+    BAD = 'BAD',
+}
+
+export type QuestionScorePerWeek = {
+    question: {
+        questionId: string
+        question: string
+        answers: Record<AnswerLevel, string>
+    }
+    scoring: QuestionScoring[]
+}
