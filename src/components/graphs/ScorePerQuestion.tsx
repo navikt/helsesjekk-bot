@@ -1,8 +1,9 @@
 'use client'
 
 import * as R from 'remeda'
-import React, { ReactElement, useMemo } from 'react'
+import React, { ReactElement } from 'react'
 import { Area, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+
 import { Detail, Heading } from 'aksel-server'
 
 import { getWeekNumber } from '../../utils/date'
@@ -16,7 +17,6 @@ const toPercent = (decimal: number, fixed = 0): string => `${(decimal * 100).toF
 function ScorePerQuestion(props: Props): ReactElement {
     const { question, scoring } = props
 
-    const CustomTooltip = useMemo(() => createCustomTooltip(), [scoring])
     return (
         <div className="w-full aspect-video relative">
             {question && (
@@ -25,7 +25,7 @@ function ScorePerQuestion(props: Props): ReactElement {
                 </Heading>
             )}
             <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={scoring} stackOffset={'expand'}>
+                <ComposedChart data={scoring} stackOffset="expand">
                     <XAxis
                         dataKey="timestamp"
                         angle={10}
@@ -35,11 +35,11 @@ function ScorePerQuestion(props: Props): ReactElement {
                         }
                     />
                     <YAxis domain={[0, 5]} tickCount={6} />
-                    <YAxis yAxisId={'antall'} orientation={'right'} hide={true} tickFormatter={toPercent} />
+                    <YAxis yAxisId="antall" orientation="right" hide={true} tickFormatter={toPercent} />
                     <CartesianGrid strokeDasharray="3 3" />
                     <Line
                         type="monotone"
-                        dataKey={`averageScore`}
+                        dataKey="averageScore"
                         strokeWidth={2}
                         isAnimationActive={false}
                         dot={({ key, ...rest }) => <CustomDot key={key} {...rest} />}
@@ -49,7 +49,7 @@ function ScorePerQuestion(props: Props): ReactElement {
                         <Area
                             key={level}
                             type="monotone"
-                            yAxisId={'antall'}
+                            yAxisId="antall"
                             dataKey={`distribution.${level}`}
                             stackId={1}
                             stroke={colorMap[level]}
@@ -59,8 +59,8 @@ function ScorePerQuestion(props: Props): ReactElement {
                     ))}
 
                     <Legend
-                        layout={'vertical'}
-                        iconType={'circle'}
+                        layout="vertical"
+                        iconType="circle"
                         formatter={(value) => {
                             switch (value) {
                                 case 'distribution.GOOD':
@@ -96,42 +96,44 @@ type CustomTooltipProps = {
     active: boolean
 }
 
-function createCustomTooltip(): (props: CustomTooltipProps) => ReactElement {
-    return function CustomTooltip({ payload, active }: CustomTooltipProps): ReactElement {
-        if (!active && payload.length === 0) return null
-        const [first] = payload
-        const relevantValues = R.pipe(
-            payload,
-            R.map((item) => R.pick(item, ['value', 'name'])),
-            R.flatMap((item) => (R.isObject(item.value) ? Object.entries(item.value) : [{ [item.name]: item.value }])),
-            R.flatMap(R.toPairs),
-        )
+function CustomTooltip({ payload, active }: CustomTooltipProps): ReactElement {
+    if (!active && payload.length === 0) return null
+    const [first] = payload
+    const relevantValues = R.pipe(
+        payload,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore :shrug:
+        R.map((item) => R.pick(item, ['value', 'name'])),
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore :shrug:
+        R.flatMap((item) => (R.isObject(item.value) ? Object.entries(item.value) : [{ [item.name]: item.value }])),
+        R.flatMap(R.toPairs),
+    )
 
-        return (
-            <div className="bg-white border border-border-default rounded p-2">
-                <Detail>
-                    Uke {getWeekNumber(first.payload.timestamp)}, {first.payload.timestamp.getFullYear()}
-                </Detail>
-                {R.pipe(
-                    relevantValues,
-                    R.map(([key, value]) => {
-                        const dist = key.split('.')
-                        const color = dist ? colorMap[dist[1] as AnswerLevel] : 'black'
-                        return (
-                            <div key={key}>
-                                <div className="flex gap-2">
-                                    <span style={{ color }}>
-                                        <ScoreToDescription name={key} />
-                                    </span>
-                                    <span>{Number.isInteger(value) ? value : value.toFixed(2)}</span>
-                                </div>
+    return (
+        <div className="bg-white border border-border-default rounded p-2">
+            <Detail>
+                Uke {getWeekNumber(first.payload.timestamp)}, {first.payload.timestamp.getFullYear()}
+            </Detail>
+            {R.pipe(
+                relevantValues,
+                R.map(([key, value]) => {
+                    const dist = key.split('.')
+                    const color = dist ? colorMap[dist[1] as AnswerLevel] : 'black'
+                    return (
+                        <div key={key}>
+                            <div className="flex gap-2">
+                                <span style={{ color }}>
+                                    <ScoreToDescription name={key} />
+                                </span>
+                                <span>{Number.isInteger(value) ? value : value.toFixed(2)}</span>
                             </div>
-                        )
-                    }),
-                )}
-            </div>
-        )
-    }
+                        </div>
+                    )
+                }),
+            )}
+        </div>
+    )
 }
 
 function ScoreToDescription({ name }: { name: string }): string {

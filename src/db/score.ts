@@ -3,7 +3,7 @@ import { getYear } from 'date-fns'
 
 import { scoreAsked, ScoredAsk, ScoredQuestion } from '../metrics/metrics'
 import { getWeekNumber } from '../utils/date'
-import { QuestionScorePerWeek, QuestionScoring, QuestionType } from '../safe-types'
+import { QuestionScorePerWeek, QuestionType } from '../safe-types'
 
 import { prisma } from './prisma'
 
@@ -119,21 +119,6 @@ export async function getTeamScorePerQuestion(teamId: string): Promise<QuestionS
         R.values,
     )
 
-    // console.dir(reducedToBeSum, { depth: 10 })
-
-    console.assert(questionScorePerWeek.length === 6, 'Expected 6 questions')
-    console.assert(
-        questionScorePerWeek.every((it) => it.scoring.length === 4),
-        'Expected 4 periods',
-    )
-    console.assert(
-        questionScorePerWeek[0].scoring.every((it) => it.timestamp instanceof Date),
-        'Expected all polls to have dates',
-    )
-    console.assert(
-        questionScorePerWeek[0].scoring.every((it) => Object.keys(it.distribution).length === 3),
-        'Expected all distributions',
-    )
     return questionScorePerWeek
 }
 
