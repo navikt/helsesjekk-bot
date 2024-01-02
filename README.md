@@ -53,11 +53,9 @@ Denne PAT-en skal _kun_ ha tilgangen `package:read`. Sett denne PAT-en som milj�
 
 `export NPM_AUTH_TOKEN=<tokenet du nettopp genererte>`
 
-i enten `.bashrc` eller `.zshrc` (avhengig av ditt shell.
+i enten `.bashrc` eller `.zshrc` (avhengig av ditt shell).
 
 Du skal nå kunne kjøre `yarn` for å installere avhengighetene uten 401-feil.
-
-Deretter setter du denne 
 
 ### Utvikle selve botten:
 
