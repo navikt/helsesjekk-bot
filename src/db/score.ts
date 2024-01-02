@@ -117,8 +117,14 @@ export async function getTeamScorePerQuestion(teamId: string): Promise<QuestionS
             {} as Record<string, QuestionScorePerWeek>,
         ),
         R.values,
+        R.map((it) => ({
+            ...it,
+            scoring: R.pipe(
+                it.scoring,
+                R.sortBy((it) => it.timestamp),
+            ),
+        })),
     )
-
     return questionScorePerWeek
 }
 
