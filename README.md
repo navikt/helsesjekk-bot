@@ -36,6 +36,7 @@ Når det kommer til selve botten, så kan du gjøre følgende:
 3. Konfigurer opp en egen CI/CD-løsning for å deploye botten i [deploy.yaml](./.github/workflows/deploy.yaml)
 4. Konfigurer opp [env.ts](./src/utils/env.ts) med miljøvariablene din platform trenger
 5. Tweak [authentication.ts](./src/auth/authentication.tsx) og [ms-graph.ts](./src/auth/ms-graph.ts) til å fungere med deres env løsning.
+   1. For eksempel libben som er brukt her, @navikt/next-auth-wonderwall har en sterk kobling til NAV sin applikasjonsplatform, og er ikke noe dere kan gjenbruke.
 
 Det er sikkert andre ting som må justeres på også.
 
