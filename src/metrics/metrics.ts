@@ -3,13 +3,15 @@ import { Answer } from '@prisma/client'
 
 import { answerFromJsonb, questionsFromJsonb } from '../questions/jsonb-utils'
 import { AnswerLevel, AskedWithAnswers, QuestionAnswer } from '../db'
-import { QuestionType } from '../safe-types'
+import { QuestionScoreDistributrion, QuestionType } from '../safe-types'
 
 export interface ScoredQuestion {
     id: string
     score: number
     question: string
+    answers: Record<AnswerLevel, string>
     type: QuestionType
+    distribution: QuestionScoreDistributrion
 }
 
 export type ScoredAsk = {
@@ -18,6 +20,10 @@ export type ScoredAsk = {
     answerCount: number
     timestamp: Date
     messageTs: string
+}
+
+function getAnswersByLevel(answers: QuestionAnswer[], answerLevel: AnswerLevel): number {
+    return answers.filter((it) => it.answer === answerLevel).length
 }
 
 export function scoreAsked(asked: AskedWithAnswers): ScoredAsk {
@@ -31,8 +37,19 @@ export function scoreAsked(asked: AskedWithAnswers): ScoredAsk {
         return {
             id: it.questionId,
             question: it.question,
+            it: it.answers,
+            answers: {
+                [AnswerLevel.GOOD]: it.answers['HIGH'],
+                [AnswerLevel.MEDIUM]: it.answers['MID'],
+                [AnswerLevel.BAD]: it.answers['LOW'],
+            },
             score,
             type: it.type,
+            distribution: {
+                [AnswerLevel.GOOD]: getAnswersByLevel(answers, AnswerLevel.GOOD),
+                [AnswerLevel.MEDIUM]: getAnswersByLevel(answers, AnswerLevel.MEDIUM),
+                [AnswerLevel.BAD]: getAnswersByLevel(answers, AnswerLevel.BAD),
+            },
         }
     })
 

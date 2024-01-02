@@ -2,7 +2,7 @@ import * as R from 'remeda'
 import React, { ReactElement, Suspense } from 'react'
 import { Metadata } from 'next'
 
-import { Heading, Skeleton, BodyLong, Detail } from 'aksel-server'
+import { BodyLong, Detail, Heading, Skeleton } from 'aksel-server'
 
 import { TeamNotAccesible, TeamNotFound } from '../../../../../components/errors/ErrorMessages'
 import { userHasAdGroup } from '../../../../../auth/authentication'
@@ -120,20 +120,21 @@ async function PerQuestionGraph({ teamId }: { teamId: string }): Promise<ReactEl
         )
     }
 
-    const { scoredQuestions, maxQuestions, questions } = teamMetrics
+    const earliest = { timestamp: new Date() }
 
-    const earliest = R.minBy(scoredQuestions, (it) => it.timestamp.getTime())
     return (
         <div>
             <Heading size="medium" level="3">
                 Score per spørsmål per uke
             </Heading>
             <Detail>
-                {scoredQuestions.length} målinger siden Uke {getWeekNumber(earliest.timestamp)},{' '}
+                {teamMetrics.length} målinger siden Uke {getWeekNumber(earliest.timestamp)},{' '}
                 {earliest.timestamp.getFullYear()}
             </Detail>
             <div className="mt-4">
-                <ScorePerQuestion maxQuestions={maxQuestions} questions={questions} data={scoredQuestions} />
+                {teamMetrics.map((it) => (
+                    <ScorePerQuestion key={it.question.questionId} question={it.question} scoring={it.scoring} />
+                ))}
             </div>
         </div>
     )
