@@ -141,11 +141,11 @@ function ScoreToDescription({ name }: { name: string }): string {
         case 'averageScore':
             return 'Gjennomsnitt'
         case 'distribution.GOOD':
-            return 'Good'
+            return 'Bra'
         case 'distribution.MEDIUM':
-            return 'Medium'
+            return 'Middels'
         case 'distribution.BAD':
-            return 'Bad'
+            return 'Dårlig'
     }
 }
 
