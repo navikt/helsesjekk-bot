@@ -41,6 +41,24 @@ Det er sikkert andre ting som må justeres på også.
 
 # Jeg vil utvikle på den!
 
+### Avhengigheter
+
+Noen av bottens avhengigheter er hostet her på Github. Github tillatter ikke anonyme pulls av pakker fra Github Package Registry.
+
+For å kunne installere avhengighetene må du opprette en Personal Access Token (PAT), som beskrevet her:
+
+* https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic
+
+Denne PAT-en skal _kun_ ha tilgangen `package:read`. Sett denne PAT-en som miljøvariabel på maskinen din.
+
+`export NPM_AUTH_TOKEN=<tokenet du nettopp genererte>`
+
+i enten `.bashrc` eller `.zshrc` (avhengig av ditt shell.
+
+Du skal nå kunne kjøre `yarn` for å installere avhengighetene uten 401-feil.
+
+Deretter setter du denne 
+
 ### Utvikle selve botten:
 
 1. Først så trenger du ditt helt eget slack workspace du har admin tilgang til.
