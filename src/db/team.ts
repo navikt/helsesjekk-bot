@@ -6,6 +6,7 @@ import { Question, QuestionType } from '../safe-types'
 
 import { Day } from './types'
 import { prisma, Team, Asked } from './prisma'
+import { getActiveAsk } from './asked'
 
 export async function teamStatus(channelId: string): Promise<'NEW' | 'DEACTIVATED' | 'ACTIVE'> {
     const team = await getTeam(channelId)
@@ -149,7 +150,11 @@ export async function setAskTime(teamId: string, hour: number, day: number): Pro
 }
 
 export async function setTeamStatus(teamId: string, active: boolean): Promise<Team> {
-    return prisma.team.update({ data: { active }, where: { id: teamId } })
+    if (active) {
+        return prisma.team.update({ data: { active }, where: { id: teamId } })
+    } else {
+        await deactivateTeam(teamId)
+    }
 }
 
 export async function setTeamFrequency(teamId: string, frequency: number, weekSkew: number): Promise<Team> {
@@ -197,9 +202,20 @@ export async function reactivateTeam(channelId: string): Promise<void> {
 }
 
 export async function deactivateTeam(channelId: string): Promise<void> {
-    await prisma.team.update({
-        data: { active: false },
-        where: { id: channelId },
+    const activeAsk = await getActiveAsk(channelId)
+
+    await prisma.$transaction(async (p) => {
+        await p.team.update({
+            data: { active: false },
+            where: { id: channelId },
+        })
+
+        if (activeAsk != null) {
+            await p.asked.update({
+                where: { id: activeAsk.id },
+                data: { revealed: true, nagged: true, skipped: true },
+            })
+        }
     })
 }
 
