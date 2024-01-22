@@ -36,11 +36,6 @@ export function createRootPostBlocks(teamName: string, dateForWeek: Date, invali
                 type: 'mrkdwn',
                 text: 'Alle på dette teamet inviteres til å svare på noen raske spørsmål for å dele hvordan de føler tilstanden på teaamet er. Svarene gis på trafikklys-format.\n\n🟢 Bra! \n🟡 Middels \n🔴 Dårlig ',
             },
-            accessory: {
-                type: 'image',
-                image_url: 'https://files.slack.com/files-pri/T5LNAMWNA-F050TMMSN1W/image.png',
-                alt_text: 'logo for helsesjekken',
-            },
         },
         !invalid
             ? {
