@@ -23,7 +23,7 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - uses: oven-sh/setup-bun@v1
         with:
-          bun-version: 1.0.8
+          bun-version: 1.0.25
       - run: yarn test
 
   build-and-publish:

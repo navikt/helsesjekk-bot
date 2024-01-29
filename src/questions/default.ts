@@ -26,7 +26,7 @@ export function defaultQuestions(): Question[] {
         },
         {
             questionId: uuidV4(),
-            question: 'Teamet',
+            question: 'Samarbeid',
             answers: {
                 HIGH: 'Vi er et godt fungerende team der samarbeidet fungerer strålende',
                 MID: 'Litt sånn midt i mellom',
