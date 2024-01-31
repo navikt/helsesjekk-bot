@@ -11,6 +11,7 @@ import {
     setTeamFrequency,
     addQuestionToTeam,
     deleteQuestionFromTeam,
+    toggleQuestionRequiredInTeam,
 } from '../../db'
 import { userHasAdGroup } from '../../auth/authentication'
 
@@ -83,6 +84,23 @@ export async function addQuestion(groupId: string, teamId: string, formData: For
     logger.info(`User is adding question of type: ${question.type}`)
 
     await addQuestionToTeam(teamId, question)
+
+    revalidatePath(`/team/${groupId}`)
+}
+
+export async function toggleQuestionRequired(
+    groupId: string,
+    teamId: string,
+    questionId: string,
+    required: boolean,
+): Promise<void> {
+    if (!(await userHasAdGroup(groupId))) {
+        throw new Error('User does not have access to edit team name')
+    }
+
+    logger.info(`User is deleting question for team ${teamId} ${questionId}`)
+
+    await toggleQuestionRequiredInTeam(teamId, questionId, required)
 
     revalidatePath(`/team/${groupId}`)
 }

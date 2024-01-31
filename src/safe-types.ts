@@ -15,6 +15,12 @@ export interface Question {
     }
     type: QuestionType
     custom?: boolean
+    /**
+     * Whether this question is required to be answered by the user.
+     *
+     * @default true
+     */
+    required?: boolean
 }
 
 export type QuestionScoring = {
