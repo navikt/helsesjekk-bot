@@ -1,5 +1,17 @@
 # Helsesjekk Bot 🤖
 
+# Hva er det?
+
+Dette er en Slack-bot som spør et par enkle spørsmål til medlemmene i kanalen en gang uken.
+
+![image](https://github.com/navikt/helsesjekk-bot/assets/1507032/a8e5c17e-2edb-450e-87a9-80967a16eec6)
+
+Når helsesjekken stenges, så vil man få sammensatte tall på hvordan teamet har det. Selve svarene er anonyme.
+
+![image](https://github.com/navikt/helsesjekk-bot/assets/1507032/2d18fb32-f682-4dd0-89c0-06d961aa6e86)
+
+![image](https://github.com/navikt/helsesjekk-bot/assets/1507032/e28d81a6-56ed-45fa-93f7-43599754bfa9)
+
 # Er du NAV ansatt?
 
 ## Jeg vil bruke den!
