@@ -153,7 +153,7 @@ export async function setTeamStatus(teamId: string, active: boolean): Promise<Te
     if (active) {
         return prisma().team.update({ data: { active }, where: { id: teamId } })
     } else {
-        await deactivateTeam(teamId)
+        return await deactivateTeam(teamId)
     }
 }
 
@@ -172,6 +172,8 @@ export async function addQuestionToTeam(
     },
 ): Promise<Team> {
     const team = await getTeamById(teamId)
+    if (team == null) throw new Error(`Team with id ${teamId} not found`)
+
     const existingQuestions = questionsFromJsonb(team.questions)
     const updatedQuestions = [
         ...existingQuestions,
@@ -201,11 +203,11 @@ export async function reactivateTeam(channelId: string): Promise<void> {
     })
 }
 
-export async function deactivateTeam(channelId: string): Promise<void> {
+export async function deactivateTeam(channelId: string): Promise<Team> {
     const activeAsk = await getActiveAsk(channelId)
 
-    await prisma().$transaction(async (p) => {
-        await p.team.update({
+    return prisma().$transaction(async (p) => {
+        const updatedTeam = await p.team.update({
             data: { active: false },
             where: { id: channelId },
         })
@@ -216,6 +218,8 @@ export async function deactivateTeam(channelId: string): Promise<void> {
                 data: { revealed: true, nagged: true, skipped: true },
             })
         }
+
+        return updatedTeam
     })
 }
 

@@ -14,6 +14,7 @@ import {
 import { nb } from 'date-fns/locale'
 
 import { daysUntil, getNowInNorway, getWeekNumber, hoursUntil } from './date'
+import { raise } from './ts-utils'
 
 export enum Frequency {
     WEEKLY = 1,
@@ -58,11 +59,13 @@ export function nextOccurrence({ team, frequency, weekSkew }: NextOccurence): Ne
 
     const relevantWeeks = getRelevantWeeks(now, frequency, weekSkew)
     const relevantWeek: number | undefined = relevantWeeks.find((week) => week >= currentWeek)
-    const relevantWeekDate = setWeekDayHour(relevantWeek, team.postDay + 1, team.postHour)(now)
+    const relevantWeekDate: Date | null = relevantWeek
+        ? setWeekDayHour(relevantWeek, team.postDay + 1, team.postHour)(now)
+        : null
 
     if (
         currentWeek + frequency > getISOWeeksInYear(now) &&
-        (relevantWeek == null || !isValid(relevantWeekDate) || isBefore(now, relevantWeekDate))
+        (relevantWeek == null || !isValid(relevantWeekDate) || (relevantWeekDate && isBefore(now, relevantWeekDate)))
     ) {
         // Handle year overflow, find the first relevant week to post for next year
         const nextYearInitialWeek = setYearWeekDayHour(getYear(now) + 1, 1, team.postDay + 1, team.postHour)(now)
@@ -78,14 +81,18 @@ export function nextOccurrence({ team, frequency, weekSkew }: NextOccurence): Ne
     }
 
     // Is this year
-    if (isBefore(now, relevantWeekDate)) {
-        const upcomingRelevantWeek = relevantWeeks.find((week) => week > currentWeek)
+    if (relevantWeekDate && isBefore(now, relevantWeekDate)) {
+        const upcomingRelevantWeek =
+            relevantWeeks.find((week) => week > currentWeek) ?? raise(new Error('Unable to find upcoming week'))
         return {
             postDate: setWeekDayHour(upcomingRelevantWeek, team.postDay + 1, team.postHour)(now),
             isThisWeekRelevant: false,
         }
     } else {
-        return { postDate: relevantWeekDate, isThisWeekRelevant: relevantWeek === currentWeek }
+        return {
+            postDate: relevantWeekDate ?? raise(new Error("Illegal state: Date can't be null at this point")),
+            isThisWeekRelevant: relevantWeek === currentWeek,
+        }
     }
 }
 

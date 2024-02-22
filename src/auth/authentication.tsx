@@ -1,6 +1,6 @@
 import { headers } from 'next/headers'
 import { logger } from '@navikt/next-logger'
-import { validateAzureToken } from '@navikt/next-auth-wonderwall'
+import { validateToken, getToken } from '@navikt/oasis'
 import { redirect } from 'next/navigation'
 
 import { isLocal } from '../utils/env'
@@ -20,18 +20,18 @@ export async function validateWonderwallToken(redirectPath: string): Promise<voi
         return
     }
 
-    const bearerToken: string | null | undefined = requestHeaders.get('authorization')
-    if (!bearerToken) {
+    const token = getToken(requestHeaders)
+    if (!token) {
         logger.warn('Found no token, redirecting to login, why was this not picked up by middleware.ts?')
         redirect(`/oauth2/login?redirect=${redirectPath}`)
     }
 
-    const validationResult = await validateAzureToken(bearerToken)
-    if (validationResult !== 'valid') {
-        if (validationResult.errorType !== 'EXPIRED') {
+    const validationResult = await validateToken(token)
+    if (!validationResult.ok) {
+        if (validationResult.errorType !== 'token expired') {
             logger.error(
                 new Error(
-                    `Invalid JWT token found (cause: ${validationResult.errorType} ${validationResult.message}, redirecting to login.`,
+                    `Invalid JWT token found (cause: ${validationResult.errorType} ${validationResult.error.message}, redirecting to login.`,
                     { cause: validationResult.error },
                 ),
             )
@@ -41,7 +41,7 @@ export async function validateWonderwallToken(redirectPath: string): Promise<voi
     }
 }
 
-export function getToken(headers: Headers): string {
+export function getUserToken(headers: Headers): string {
     if (isLocal) return fakeToken
 
     return (
@@ -54,7 +54,7 @@ export function getUser(): {
     name: string
     email: string
 } {
-    const token = getToken(headers())
+    const token = getUserToken(headers())
     const jwt = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString('utf8'))
 
     return {
@@ -87,7 +87,9 @@ export function isUserLoggedIn(): boolean {
     }
 }
 
-export async function userHasAdGroup(groupId: string): Promise<boolean> {
+export async function userHasAdGroup(groupId: string | null): Promise<boolean> {
+    if (!groupId) return false
+
     const membersOf = await getMembersOf()
 
     if ('error' in membersOf) {

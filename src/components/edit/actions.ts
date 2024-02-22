@@ -13,6 +13,7 @@ import {
     deleteQuestionFromTeam,
 } from '../../db'
 import { userHasAdGroup } from '../../auth/authentication'
+import { raise } from '../../utils/ts-utils'
 
 const logger = baseLogger.child({ x_context: 'server-actions' })
 
@@ -21,7 +22,7 @@ export async function editTeamName(groupId: string, teamId: string, formData: Fo
         throw new Error('User does not have access to edit team name')
     }
 
-    const name = formData.get('new_name').toString()
+    const name = formData.get('new_name')?.toString() ?? raise(new Error('Missing new_name in form data'))
 
     logger.info(`User is editing team name, new name: ${name}`)
 
@@ -40,8 +41,8 @@ export async function editTime(
         throw new Error('User does not have access to edit team name')
     }
 
-    const hour = formData.get('hour').toString()
-    const day = formData.get('day').toString()
+    const hour = formData.get('hour')?.toString() ?? raise(new Error('Missing hour in form data'))
+    const day = formData.get('day')?.toString() ?? raise(new Error('Missing day in form data'))
 
     logger.info(`User is editing ${type}, new time: ${day} ${hour}`)
 
@@ -73,11 +74,11 @@ export async function addQuestion(groupId: string, teamId: string, formData: For
 
     // TODO ZOD this
     const question = {
-        question: formData.get('question').toString(),
-        type: formData.get('type').toString(),
-        high: formData.get('high').toString(),
-        mid: formData.get('mid').toString(),
-        low: formData.get('low').toString(),
+        question: formData.get('question')?.toString() ?? raise(new Error('Missing question in form data')),
+        type: formData.get('type')?.toString() ?? raise(new Error('Missing type in form data')),
+        high: formData.get('high')?.toString() ?? raise(new Error('Missing high in form data')),
+        mid: formData.get('mid')?.toString() ?? raise(new Error('Missing mid in form data')),
+        low: formData.get('low')?.toString() ?? raise(new Error('Missing low in form data')),
     }
 
     logger.info(`User is adding question of type: ${question.type}`)

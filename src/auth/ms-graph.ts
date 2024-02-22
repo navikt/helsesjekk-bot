@@ -1,11 +1,11 @@
 import { headers } from 'next/headers'
-import { grantAzureOboToken, isInvalidTokenSet } from '@navikt/next-auth-wonderwall'
+import { requestOboToken } from '@navikt/oasis'
 import { logger } from '@navikt/next-logger'
 
 import { isLocal } from '../utils/env'
 
 import { fakeMembersOfResponse } from './fake-members-of-response'
-import { getToken } from './authentication'
+import { getUserToken } from './authentication'
 
 export async function getMembersOf(): Promise<
     MsGraphGroupsResponse | { error: string; status?: number; statusText?: string }
@@ -14,16 +14,16 @@ export async function getMembersOf(): Promise<
         return fakeMembersOfResponse
     }
 
-    const token = getToken(headers())
-    const tokenSet = await grantAzureOboToken(token, 'https://graph.microsoft.com/.default')
-    if (isInvalidTokenSet(tokenSet)) {
-        logger.error(new Error(`${tokenSet.errorType}: ${tokenSet.message}`, { cause: tokenSet.error }))
+    const token = getUserToken(headers())
+    const tokenSet = await requestOboToken(token, 'https://graph.microsoft.com/.default')
+    if (!tokenSet.ok) {
+        logger.error(new Error(`Unable to exchange OBO token: ${tokenSet.error.message}`, { cause: tokenSet.error }))
         return { error: 'Du har ikke tilgang til å se dine grupper.' }
     }
 
     const response = await fetch('https://graph.microsoft.com/v1.0/me/memberOf', {
         headers: {
-            Authorization: `Bearer ${tokenSet}`,
+            Authorization: `Bearer ${tokenSet.token}`,
         },
     })
 

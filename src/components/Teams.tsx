@@ -47,7 +47,7 @@ async function Teams(): Promise<ReactElement> {
 
 async function TeamsView(): Promise<ReactElement> {
     const userGroups = await getUsersGroups()
-    const assosiatedTeam = await getTeamsByAdGroups(userGroups)
+    const assosiatedTeam = (await getTeamsByAdGroups(userGroups)) ?? []
 
     if (assosiatedTeam.length === 0)
         return (

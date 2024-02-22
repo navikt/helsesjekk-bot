@@ -51,7 +51,10 @@ async function UserAdGroups(): Promise<ReactElement> {
             <SortableGroups
                 groups={R.pipe(
                     membersOf.value,
-                    R.sortBy.strict([(it: MsGraphGroup) => it.displayName?.toLowerCase().includes('team'), 'desc']),
+                    R.sortBy.strict([
+                        (it: MsGraphGroup) => (it.displayName ?? '').toLowerCase().includes('team'),
+                        'desc',
+                    ]),
                     R.map((it) => ({
                         id: it.id,
                         displayName: it.displayName ?? 'Gruppe uten navn',

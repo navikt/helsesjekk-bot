@@ -11,6 +11,7 @@ import { getTeamScorePerQuestion, getTeamScoreTimeline } from '../../../../../db
 import OverallScoreGraph from '../../../../../components/graphs/OverallScoreGraph'
 import { getWeekNumber } from '../../../../../utils/date'
 import ScorePerQuestion from '../../../../../components/graphs/ScorePerQuestion'
+import { raise } from '../../../../../utils/ts-utils'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team | Graf',
@@ -80,7 +81,10 @@ async function OverallGraph({ teamId }: { teamId: string }): Promise<ReactElemen
         )
     }
 
-    const earliest = R.minBy(scoreTimeline, (it) => it.timestamp.getTime())
+    const earliest =
+        R.minBy(scoreTimeline, (it) => it.timestamp.getTime()) ??
+        raise(new Error('Illegal state: Always min 1 element in this list'))
+
     return (
         <div>
             <Heading size="medium" level="3">

@@ -20,7 +20,7 @@ export function configureMessageScheduler(app: App): void {
 export async function cronJob(
     app: App,
 ): Promise<
-    'skipped' | 'completed' | { partialError: { ask: Error | null; reveal: Error | null; inspect: Error | null } }
+    'skipped' | 'completed' | { partialError: { ask: unknown | null; reveal: unknown | null; inspect: unknown | null } }
 > {
     const isPodLeader = await isLeader()
     if (!isPodLeader) {
@@ -30,7 +30,11 @@ export async function cronJob(
 
     cronLogger.info('Running scheduled job, checking for messages to post')
 
-    const jobsResult = {
+    const jobsResult: {
+        ask: string | unknown | null
+        reveal: string | unknown | null
+        inspect: string | unknown | null
+    } = {
         ask: null,
         reveal: null,
         inspect: null,
