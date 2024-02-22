@@ -64,6 +64,7 @@ function GlobalScoreGraph({ data }: Props): ReactElement {
                             fontSize: 12,
                         }}
                     />
+                    {/* @ts-expect-error This typing is wack */}
                     <Tooltip content={CustomTooltip} />
                     {samletScore ? (
                         <Line
@@ -109,8 +110,8 @@ type CustomTooltipProps = {
     active: boolean
 }
 
-function createCustomTooltip(samletScore: boolean): (props: CustomTooltipProps) => ReactElement {
-    return function CustomTooltip({ payload, active }: CustomTooltipProps): ReactElement {
+function createCustomTooltip(samletScore: boolean): (props: CustomTooltipProps) => ReactElement | null {
+    return function CustomTooltip({ payload, active }: CustomTooltipProps): ReactElement | null {
         if (!active && payload.length === 0) return null
 
         const [first] = payload
@@ -146,7 +147,7 @@ function createCustomTooltip(samletScore: boolean): (props: CustomTooltipProps) 
     }
 }
 
-function CustomDot({ cx, cy, value }: { cx: number; cy: number; value: number }): ReactElement {
+function CustomDot({ cx, cy, value }: { cx: number; cy: number; value: number }): ReactElement | null {
     if (value == null) return null
 
     return (

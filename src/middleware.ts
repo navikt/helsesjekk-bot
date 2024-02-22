@@ -9,7 +9,7 @@ export function middleware(request: NextRequest): NextResponse | void {
     const forwardedHostHeader = request.headers.get('x-forwarded-host')
 
     // Redirect to new ingress in production env
-    if (browserEnv.NEXT_PUBLIC_ENVIRONMENT === 'production' && forwardedHostHeader.includes('intern')) {
+    if (browserEnv.NEXT_PUBLIC_ENVIRONMENT === 'production' && forwardedHostHeader?.includes('intern')) {
         logger.info('Hit old ingress, redirecting to new ingress')
         return NextResponse.redirect(new URL(url.pathname, 'https://helsesjekk-bot.nav.no/'))
     }
