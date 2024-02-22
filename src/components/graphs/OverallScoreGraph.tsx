@@ -52,6 +52,7 @@ function OverallScoreGraph({ data }: Props): ReactElement {
                             offset: 25,
                         }}
                     />
+                    {/* @ts-expect-error This typing is wack */}
                     <Tooltip content={CustomTooltip} />
                     <Line
                         yAxisId="left"
@@ -75,7 +76,7 @@ function CustomTooltip({
 }: {
     payload: { payload: { score: number; timestamp: Date } }[]
     active: boolean
-}): ReactElement {
+}): ReactElement | null {
     if (!active && payload.length === 0) return null
 
     const [first] = payload

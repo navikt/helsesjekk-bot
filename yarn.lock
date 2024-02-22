@@ -340,18 +340,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-auth-wonderwall@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "@navikt/next-auth-wonderwall@npm:1.5.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-auth-wonderwall%2F1.5.0%2F643addd5bb139ccf885908e0e27c5cb7b4a6a44d"
-  dependencies:
-    jose: "npm:^4.14.4"
-    node-cache: "npm:^5.1.2"
-    openid-client: "npm:^5.4.3"
-    zod: "npm:^3.22.2"
-  checksum: 43afaca044ffbd9824144ec50bdbe41ee2e7ba47839e695e5c9458f3c1c8341e08fbac00f27166489bd25633a5c1f5882b74cbcde182b9493e404e3d5a27d766
-  languageName: node
-  linkType: hard
-
 "@navikt/next-logger@npm:^1.21.0":
   version: 1.21.0
   resolution: "@navikt/next-logger@npm:1.21.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F1.21.0%2F1779d3111b64412a0b48932b686d7ac269260736"
@@ -359,6 +347,20 @@ __metadata:
     next: 12 || 13 || 14
     pino: 8
   checksum: daf712c2379709b4237e991b57d23a2440b19928bd99d77051b302e07bf09419d7005d3d2ad4e8f67772d34ea118a8558f2f4300fc3ca26974794409b236656e
+  languageName: node
+  linkType: hard
+
+"@navikt/oasis@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@navikt/oasis@npm:3.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Foasis%2F3.0.0%2F6b196946309f365e305e5501572ab7b1b568b7ea"
+  dependencies:
+    jose: "npm:^5.2.2"
+    openid-client: "npm:^5.6.4"
+    prom-client: "npm:>=15"
+  dependenciesMeta:
+    prom-client:
+      optional: true
+  checksum: 1ae404064de2be4073de95968f8ae9c249b85529db8a0c9704f5109436d21c86cc85cceb65c1444760d8cb84d84c7d3df3317da6d3667170b0b1495b65fe4328
   languageName: node
   linkType: hard
 
@@ -474,6 +476,13 @@ __metadata:
   dependencies:
     semver: "npm:^7.3.5"
   checksum: f3a7ab3a31de65e42aeb6ed03ed035ef123d2de7af4deb9d4a003d27acc8618b57d9fb9d259fe6c28ca538032a028f37337264388ba27d26d37fff7dde22476e
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/api@npm:^1.4.0":
+  version: 1.7.0
+  resolution: "@opentelemetry/api@npm:1.7.0"
+  checksum: bcf7afa7051dcd4583898a68f8a57fb4c85b5cedddf7b6eb3616595c0b3bcd7f5448143b8355b00935a755de004d6285489f8e132f34127efe7b1be404622a3e
   languageName: node
   linkType: hard
 
@@ -1921,6 +1930,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bintrees@npm:1.0.2":
+  version: 1.0.2
+  resolution: "bintrees@npm:1.0.2"
+  checksum: 071896cea5ea5413316c8436e95799444c208630d5c539edd8a7089fc272fc5d3634aa4a2e4847b28350dda1796162e14a34a0eda53108cc5b3c2ff6a036c1fa
+  languageName: node
+  linkType: hard
+
 "bl@npm:^4.0.3":
   version: 4.1.0
   resolution: "bl@npm:4.1.0"
@@ -2218,13 +2234,6 @@ __metadata:
   version: 0.0.1
   resolution: "client-only@npm:0.0.1"
   checksum: 0c16bf660dadb90610553c1d8946a7fdfb81d624adea073b8440b7d795d5b5b08beb3c950c6a2cf16279365a3265158a236876d92bce16423c485c322d7dfaf8
-  languageName: node
-  linkType: hard
-
-"clone@npm:2.x":
-  version: 2.1.2
-  resolution: "clone@npm:2.1.2"
-  checksum: d9c79efba655f0bf601ab299c57eb54cbaa9860fb011aee9d89ed5ac0d12df1660ab7642fddaabb9a26b7eff0e117d4520512cb70798319ff5d30a111b5310c2
   languageName: node
   linkType: hard
 
@@ -4139,8 +4148,8 @@ __metadata:
     "@navikt/ds-react": "npm:^5.9.2"
     "@navikt/ds-tailwind": "npm:^5.9.2"
     "@navikt/eslint-config-teamsykmelding": "npm:^5.0.0"
-    "@navikt/next-auth-wonderwall": "npm:^1.5.0"
     "@navikt/next-logger": "npm:^1.21.0"
+    "@navikt/oasis": "npm:^3.0.0"
     "@prisma/client": "npm:5.5.2"
     "@slack/bolt": "npm:^3.14.0"
     "@types/node": "npm:^20.8.10"
@@ -4180,6 +4189,7 @@ __metadata:
     ts-node: "npm:^10.9.1"
     typescript: "npm:^5.2.2"
     uuid: "npm:^9.0.1"
+    zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft
 
@@ -4791,10 +4801,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^4.14.4, jose@npm:^4.15.1":
+"jose@npm:^4.15.4":
   version: 4.15.4
   resolution: "jose@npm:4.15.4"
   checksum: 20fa941597150dffc7af3f41d994500cc3e71cd650b755243dbd80d91cf26c1053f95b78af588f05cfc4371e492a67c5c7a48f689b8605145a8fe28b484d725b
+  languageName: node
+  linkType: hard
+
+"jose@npm:^5.2.2":
+  version: 5.2.2
+  resolution: "jose@npm:5.2.2"
+  checksum: 174b2e955fe829f42d74feae0779028deb44323ff4febf84d22c7d3169cf302a3e9b085bdc13504d04f1073790e9bcaa845a6012a2cb1cd422f1617fdbaf1bff
   languageName: node
   linkType: hard
 
@@ -5460,15 +5477,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-cache@npm:^5.1.2":
-  version: 5.1.2
-  resolution: "node-cache@npm:5.1.2"
-  dependencies:
-    clone: "npm:2.x"
-  checksum: 6ac71a9e65fdd8940883c3c188de4888ff592f5bf52e4d42436c49e2a575d635e7327acea490c49fa7c01d5fa81f7b6e060fd35cf6f6ec401fbd5f77a3ebeecf
-  languageName: node
-  linkType: hard
-
 "node-cron@npm:^3.0.2":
   version: 3.0.2
   resolution: "node-cron@npm:3.0.2"
@@ -5790,15 +5798,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openid-client@npm:^5.4.3":
-  version: 5.6.1
-  resolution: "openid-client@npm:5.6.1"
+"openid-client@npm:^5.6.4":
+  version: 5.6.4
+  resolution: "openid-client@npm:5.6.4"
   dependencies:
-    jose: "npm:^4.15.1"
+    jose: "npm:^4.15.4"
     lru-cache: "npm:^6.0.0"
     object-hash: "npm:^2.2.0"
     oidc-token-hash: "npm:^5.0.3"
-  checksum: 8f2485438048def1bab680a634fd4ebb85bfb0d6a12d6490ef7a0f8189688db1920fff831ed23e70f59bc15d51ba6a33fca1313f0fba28b162c61e81c7e0649c
+  checksum: ab9b1ec59be68f13b10c4e4eb1979e204d211701b139c2363e58faeb4bb0b67e26782fd2080d7488bb3e7e2ebc3c2aac43cff7284c3da3723cfe4f9b29852c24
   languageName: node
   linkType: hard
 
@@ -6340,6 +6348,16 @@ __metadata:
   version: 0.11.10
   resolution: "process@npm:0.11.10"
   checksum: dbaa7e8d1d5cf375c36963ff43116772a989ef2bb47c9bdee20f38fd8fc061119cf38140631cf90c781aca4d3f0f0d2c834711952b728953f04fd7d238f59f5b
+  languageName: node
+  linkType: hard
+
+"prom-client@npm:>=15":
+  version: 15.1.0
+  resolution: "prom-client@npm:15.1.0"
+  dependencies:
+    "@opentelemetry/api": "npm:^1.4.0"
+    tdigest: "npm:^0.1.1"
+  checksum: ecb6f40de755ca9cc6dde758d195ed3e1d3b47a341d2092af8c18dbf7e6ef1079c8b8bb02496f2f430cf8bd9d391c1ea5bebbb85cdda95f67dad2dbfb90509aa
   languageName: node
   linkType: hard
 
@@ -7554,6 +7572,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tdigest@npm:^0.1.1":
+  version: 0.1.2
+  resolution: "tdigest@npm:0.1.2"
+  dependencies:
+    bintrees: "npm:1.0.2"
+  checksum: 45be99fa52dab74b8edafe150e473cdc45aa1352c75ed516a39905f350a08c3175f6555598111042c3677ba042d7e3cae6b5ce4c663fe609bc634f326aabc9d6
+  languageName: node
+  linkType: hard
+
 "text-table@npm:^0.2.0":
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
@@ -8152,7 +8179,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.22.2":
+"zod@npm:^3.22.4":
   version: 3.22.4
   resolution: "zod@npm:3.22.4"
   checksum: 73622ca36a916f785cf528fe612a884b3e0f183dbe6b33365a7d0fc92abdbedf7804c5e2bd8df0a278e1472106d46674281397a3dd800fa9031dc3429758c6ac
