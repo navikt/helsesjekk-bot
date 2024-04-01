@@ -56,15 +56,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.21.0":
-  version: 7.22.3
-  resolution: "@babel/runtime@npm:7.22.3"
-  dependencies:
-    regenerator-runtime: "npm:^0.13.11"
-  checksum: dd9095565837f25f3ac4f28441412e10e91e4f851f8df6dd8a6637fb22e458c8a51284947106dd5467ab483214fde3df971abbd5586d438ed7a4387f95082a5f
-  languageName: node
-  linkType: hard
-
 "@cspotcode/source-map-support@npm:^0.8.0":
   version: 0.8.1
   resolution: "@cspotcode/source-map-support@npm:0.8.1"
@@ -2535,12 +2526,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.30.0":
-  version: 2.30.0
-  resolution: "date-fns@npm:2.30.0"
-  dependencies:
-    "@babel/runtime": "npm:^7.21.0"
-  checksum: 70b3e8ea7aaaaeaa2cd80bd889622a4bcb5d8028b4de9162cbcda359db06e16ff6e9309e54eead5341e71031818497f19aaf9839c87d1aba1e27bb4796e758a9
+"date-fns@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: cac35c58926a3b5d577082ff2b253612ec1c79eb6754fddef46b6a8e826501ea2cb346ecbd211205f1ba382ddd1f9d8c3f00bf433ad63cc3063454d294e3a6b8
   languageName: node
   linkType: hard
 
@@ -4152,7 +4141,7 @@ __metadata:
     autoprefixer: "npm:^10.4.16"
     bun-types: "npm:^1.0.8"
     clsx: "npm:^2.0.0"
-    date-fns: "npm:^2.30.0"
+    date-fns: "npm:^3.6.0"
     eslint: "npm:^8.52.0"
     eslint-config-next: "npm:^14.0.1"
     eslint-plugin-import: "npm:^2.29.0"
@@ -4173,7 +4162,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     recharts: "npm:^2.9.2"
-    remeda: "npm:^1.29.0"
+    remeda: "npm:^1.57.0"
     sharp: "npm:^0.32.6"
     tailwind-merge: "npm:^2.0.0"
     tailwindcss: "npm:^3.3.5"
@@ -6666,13 +6655,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regenerator-runtime@npm:^0.13.11":
-  version: 0.13.11
-  resolution: "regenerator-runtime@npm:0.13.11"
-  checksum: d493e9e118abef5b099c78170834f18540c4933cedf9bfabc32d3af94abfb59a7907bd7950259cbab0a929ebca7db77301e8024e5121e6482a82f78283dfd20c
-  languageName: node
-  linkType: hard
-
 "regenerator-runtime@npm:^0.14.0":
   version: 0.14.0
   resolution: "regenerator-runtime@npm:0.14.0"
@@ -6691,10 +6673,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remeda@npm:^1.29.0":
-  version: 1.29.0
-  resolution: "remeda@npm:1.29.0"
-  checksum: a6e110a39021f7823d9d0bb88448bab6bf68b0c4ef6d5c9f3e14c5b53870ccb8a7029e93abe1f1ad81cd18a89b2ce06f79c8613c3d03731af63c9ef1ba3bee3e
+"remeda@npm:^1.57.0":
+  version: 1.57.0
+  resolution: "remeda@npm:1.57.0"
+  checksum: cb770a28f19cfcd25a615dfb1a6363530033d6d3078ca7afb92e0260db03c5a55dc188e47d479f36ba794c04da18e615f14a9dabc7eda80c69801a7654c62fa3
   languageName: node
   linkType: hard
 
