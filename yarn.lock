@@ -4161,7 +4161,7 @@ __metadata:
     next: "npm:^14.0.1"
     next-logger: "npm:^3.0.2"
     nextleton: "npm:^0.6.1"
-    node-cron: "npm:^3.0.2"
+    node-cron: "npm:^3.0.3"
     nodemon: "npm:^3.0.1"
     pino: "npm:^8.16.1"
     pino-pretty: "npm:^10.2.3"
@@ -5469,12 +5469,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-cron@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "node-cron@npm:3.0.2"
+"node-cron@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "node-cron@npm:3.0.3"
   dependencies:
     uuid: "npm:8.3.2"
-  checksum: 71d4ce22425d0f2a7bd9753149da475317725f6890d5a55e5e43a97062456faeda984d55c17aee9699552460525cee948662fb75124065810e4038b2f56a9d32
+  checksum: f088043da4f61c3640155f7b11e909e6cfb23d9970111a8dcd7b39a1f3d47c897e207bb9657b15441207df21676885b083c777630efa87801de961b15a3d0ad1
   languageName: node
   linkType: hard
 
