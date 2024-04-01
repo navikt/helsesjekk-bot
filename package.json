@@ -29,7 +29,7 @@
         "@navikt/next-logger": "^1.21.0",
         "@prisma/client": "5.5.2",
         "@slack/bolt": "^3.14.0",
-        "autoprefixer": "^10.4.16",
+        "autoprefixer": "^10.4.19",
         "clsx": "^2.0.0",
         "date-fns": "^2.30.0",
         "next": "^14.0.1",
@@ -37,7 +37,7 @@
         "nextleton": "^0.6.1",
         "node-cron": "^3.0.2",
         "pino": "^8.16.1",
-        "postcss": "^8.4.31",
+        "postcss": "^8.4.38",
         "prisma": "5.5.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
@@ -45,7 +45,7 @@
         "remeda": "^1.29.0",
         "sharp": "^0.32.6",
         "tailwind-merge": "^2.0.0",
-        "tailwindcss": "^3.3.5",
+        "tailwindcss": "^3.4.3",
         "uuid": "^9.0.1"
     },
     "devDependencies": {
