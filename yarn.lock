@@ -47,7 +47,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.23.1":
+"@babel/runtime@npm:^7.1.2, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.20.7":
   version: 7.23.2
   resolution: "@babel/runtime@npm:7.23.2"
   dependencies:
@@ -62,6 +62,15 @@ __metadata:
   dependencies:
     regenerator-runtime: "npm:^0.13.11"
   checksum: dd9095565837f25f3ac4f28441412e10e91e4f851f8df6dd8a6637fb22e458c8a51284947106dd5467ab483214fde3df971abbd5586d438ed7a4387f95082a5f
+  languageName: node
+  linkType: hard
+
+"@babel/runtime@npm:^7.24.0":
+  version: 7.24.1
+  resolution: "@babel/runtime@npm:7.24.1"
+  dependencies:
+    regenerator-runtime: "npm:^0.14.0"
+  checksum: 3a8d61400c636d1ce3a42895a106cd4dfb4e9b88832a8a754a724c68652f821d7a46dce394305d7623f9f0d3597bf0a98aeb5f9c150ef60e14bbbf66caab4654
   languageName: node
   linkType: hard
 
@@ -4175,7 +4184,7 @@ __metadata:
     recharts: "npm:^2.9.2"
     remeda: "npm:^1.29.0"
     sharp: "npm:^0.32.6"
-    tailwind-merge: "npm:^2.0.0"
+    tailwind-merge: "npm:^2.2.2"
     tailwindcss: "npm:^3.3.5"
     ts-node: "npm:^10.9.1"
     typescript: "npm:^5.2.2"
@@ -7444,12 +7453,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "tailwind-merge@npm:2.0.0"
+"tailwind-merge@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "tailwind-merge@npm:2.2.2"
   dependencies:
-    "@babel/runtime": "npm:^7.23.1"
-  checksum: d20d2551f4b2fd9eb68466accccf9b81baef0d8cfb9ecf89738a9abe72e023ec9fe9aad5b3b9da0a0b0ec340432069568b83dea9463ae670a20a9937fbb59bb0
+    "@babel/runtime": "npm:^7.24.0"
+  checksum: f7ec370e58d1d8f12ed6509d93333f2dacfcb43110334c5424db50ae456d14939ad32cff1ef7e31d1d10a6fff9d2e80be11560ef1ebb3fe5c83de6d465a7f7b8
   languageName: node
   linkType: hard
 
