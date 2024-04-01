@@ -320,9 +320,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/eslint-config-teamsykmelding@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "@navikt/eslint-config-teamsykmelding@npm:5.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Feslint-config-teamsykmelding%2F5.0.0%2Fb3752bb5dd90111eb0971b7836d5a2eb4c62dd87"
+"@navikt/eslint-config-teamsykmelding@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "@navikt/eslint-config-teamsykmelding@npm:5.2.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Feslint-config-teamsykmelding%2F5.2.0%2F254cab0b1bb8d91be304be48f03f65ea8ef136b9"
   dependencies:
     "@typescript-eslint/eslint-plugin": "npm:^6.9.1"
     "@typescript-eslint/parser": "npm:^6.9.1"
@@ -336,7 +336,7 @@ __metadata:
     eslint: ">=8"
     prettier: ">=2"
     typescript: ">=4"
-  checksum: b72a9ee0b4f20e9e3d5de97c266a52c0f1a55fa789eaff954423d50010fcfe08600f7fa86aabcd789f9468265a5d47564dc693ff1b01c2ea1f712f808c0edeee
+  checksum: 54b33b9a349e946051755ebc347a41222972ebb04dd56caa9d9095e74da3e3d029d4b4037340e0db55df09f8c19b5cf448064698ec5d809d93adf52637e3ca21
   languageName: node
   linkType: hard
 
@@ -4138,7 +4138,7 @@ __metadata:
     "@navikt/ds-css": "npm:^5.9.2"
     "@navikt/ds-react": "npm:^5.9.2"
     "@navikt/ds-tailwind": "npm:^5.9.2"
-    "@navikt/eslint-config-teamsykmelding": "npm:^5.0.0"
+    "@navikt/eslint-config-teamsykmelding": "npm:^5.2.0"
     "@navikt/next-auth-wonderwall": "npm:^1.5.0"
     "@navikt/next-logger": "npm:^1.21.0"
     "@prisma/client": "npm:5.5.2"
