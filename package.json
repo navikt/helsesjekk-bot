@@ -21,10 +21,10 @@
         "postinstall": "node ./scripts/postinstall.js"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^5.9.2",
-        "@navikt/ds-css": "^5.9.2",
-        "@navikt/ds-react": "^5.9.2",
-        "@navikt/ds-tailwind": "^5.9.2",
+        "@navikt/aksel-icons": "^6.3.3",
+        "@navikt/ds-css": "^6.3.3",
+        "@navikt/ds-react": "^6.3.3",
+        "@navikt/ds-tailwind": "^6.3.3",
         "@navikt/next-auth-wonderwall": "^1.5.0",
         "@navikt/next-logger": "^1.21.0",
         "@prisma/client": "5.5.2",
