@@ -340,25 +340,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-auth-wonderwall@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "@navikt/next-auth-wonderwall@npm:1.5.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-auth-wonderwall%2F1.5.0%2F643addd5bb139ccf885908e0e27c5cb7b4a6a44d"
+"@navikt/next-auth-wonderwall@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "@navikt/next-auth-wonderwall@npm:1.6.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-auth-wonderwall%2F1.6.0%2Ff6179e7df66ac9664519e3fff8f0e4a00252aaf6"
   dependencies:
-    jose: "npm:^4.14.4"
+    jose: "npm:^4.15.4"
     node-cache: "npm:^5.1.2"
-    openid-client: "npm:^5.4.3"
-    zod: "npm:^3.22.2"
-  checksum: 43afaca044ffbd9824144ec50bdbe41ee2e7ba47839e695e5c9458f3c1c8341e08fbac00f27166489bd25633a5c1f5882b74cbcde182b9493e404e3d5a27d766
+    openid-client: "npm:^5.6.1"
+    zod: "npm:^3.22.4"
+  checksum: cebd434a3ef737df78c52e9107ae2ec46fb2b1f3c264d2bc03d138c7d7414fb38a531f6fbd4ddfd2efd3677757b2347bf1003e2cdd8c3610237bd813b6a2e92d
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^1.21.0":
-  version: 1.21.0
-  resolution: "@navikt/next-logger@npm:1.21.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F1.21.0%2F1779d3111b64412a0b48932b686d7ac269260736"
+"@navikt/next-logger@npm:^1.23.0":
+  version: 1.23.0
+  resolution: "@navikt/next-logger@npm:1.23.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F1.23.0%2F322dcf9bb53a1415b5a8b6dce561c7a0ed53ee42"
   peerDependencies:
     next: 12 || 13 || 14
     pino: 8
-  checksum: daf712c2379709b4237e991b57d23a2440b19928bd99d77051b302e07bf09419d7005d3d2ad4e8f67772d34ea118a8558f2f4300fc3ca26974794409b236656e
+  checksum: d1bfc3550d4095014aa62cde90d1bdfdf689ba5c8b9808c094d1321712531da1a2cda1007f671c71d0b8295fda39e4cb9b470dbdf31184e1b2c7e999eb0548b7
   languageName: node
   linkType: hard
 
@@ -4139,8 +4139,8 @@ __metadata:
     "@navikt/ds-react": "npm:^5.9.2"
     "@navikt/ds-tailwind": "npm:^5.9.2"
     "@navikt/eslint-config-teamsykmelding": "npm:^5.0.0"
-    "@navikt/next-auth-wonderwall": "npm:^1.5.0"
-    "@navikt/next-logger": "npm:^1.21.0"
+    "@navikt/next-auth-wonderwall": "npm:^1.6.0"
+    "@navikt/next-logger": "npm:^1.23.0"
     "@prisma/client": "npm:5.5.2"
     "@slack/bolt": "npm:^3.14.0"
     "@types/node": "npm:^20.8.10"
@@ -4791,10 +4791,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^4.14.4, jose@npm:^4.15.1":
-  version: 4.15.4
-  resolution: "jose@npm:4.15.4"
-  checksum: 20fa941597150dffc7af3f41d994500cc3e71cd650b755243dbd80d91cf26c1053f95b78af588f05cfc4371e492a67c5c7a48f689b8605145a8fe28b484d725b
+"jose@npm:^4.15.4, jose@npm:^4.15.5":
+  version: 4.15.5
+  resolution: "jose@npm:4.15.5"
+  checksum: 17944fcc0d9afa07387eef23127c30ecfcc77eafddc4b4f1a349a8eee0536bee9b08ecd745406eaa0af65d531f738b94d2467976479cbfe8b3b60f8fc8082b8d
   languageName: node
   linkType: hard
 
@@ -5790,15 +5790,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openid-client@npm:^5.4.3":
-  version: 5.6.1
-  resolution: "openid-client@npm:5.6.1"
+"openid-client@npm:^5.6.1":
+  version: 5.6.5
+  resolution: "openid-client@npm:5.6.5"
   dependencies:
-    jose: "npm:^4.15.1"
+    jose: "npm:^4.15.5"
     lru-cache: "npm:^6.0.0"
     object-hash: "npm:^2.2.0"
     oidc-token-hash: "npm:^5.0.3"
-  checksum: 8f2485438048def1bab680a634fd4ebb85bfb0d6a12d6490ef7a0f8189688db1920fff831ed23e70f59bc15d51ba6a33fca1313f0fba28b162c61e81c7e0649c
+  checksum: e843f39b3eac07d9a415d8524745d722df0298708e58ac4e13b2642a34b2211591d2c9a58d6f4e29826b678856965454bcfa5148a030c7eef53178ceff48d8ee
   languageName: node
   linkType: hard
 
@@ -8152,7 +8152,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.22.2":
+"zod@npm:^3.22.4":
   version: 3.22.4
   resolution: "zod@npm:3.22.4"
   checksum: 73622ca36a916f785cf528fe612a884b3e0f183dbe6b33365a7d0fc92abdbedf7804c5e2bd8df0a278e1472106d46674281397a3dd800fa9031dc3429758c6ac
