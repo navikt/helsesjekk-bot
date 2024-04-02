@@ -76,13 +76,13 @@ export function configureCommandsHandler(app: App): void {
                 if (event.text.endsWith('unlock')) {
                     const team = await getTeam(event.channel)
                     if (team != null) {
-                        const toUpdate = await prisma.asked.findFirst({
+                        const toUpdate = await prisma().asked.findFirst({
                             where: { teamId: team.id },
                             orderBy: { timestamp: 'desc' },
                         })
                         if (!toUpdate) return
 
-                        await prisma.asked.update({
+                        await prisma().asked.update({
                             data: { revealed: false },
                             where: { id: toUpdate.id },
                         })
@@ -105,7 +105,7 @@ export function configureCommandsHandler(app: App): void {
                         return
                     }
 
-                    const ask = await prisma.asked.findFirst({
+                    const ask = await prisma().asked.findFirst({
                         where: { teamId: team.id },
                         orderBy: { timestamp: 'desc' },
                         include: { answers: true },

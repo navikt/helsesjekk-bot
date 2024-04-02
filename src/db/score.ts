@@ -15,7 +15,7 @@ export async function getTeamScoreTimeline(teamId: string): Promise<
       }[]
     | { error: string }
 > {
-    const team = await prisma.team.findFirst({
+    const team = await prisma().team.findFirst({
         where: { active: true, id: teamId },
         include: {
             Asked: {
@@ -56,7 +56,7 @@ export async function getTeamScoreTimeline(teamId: string): Promise<
 }
 
 export async function getTeamScorePerQuestion(teamId: string): Promise<QuestionScorePerWeek[] | { error: string }> {
-    const team = await prisma.team.findFirst({
+    const team = await prisma().team.findFirst({
         where: { active: true, id: teamId },
         include: {
             Asked: {
@@ -135,7 +135,7 @@ export async function getGlobalScoreTimeline(): Promise<
         answers: number
     } & Record<QuestionType, number>)[]
 > {
-    const completedAsks = await prisma.asked.findMany({
+    const completedAsks = await prisma().asked.findMany({
         where: { revealed: true, skipped: false, team: { active: true } },
         include: { answers: true },
     })
@@ -174,7 +174,7 @@ export async function getGlobalScoreTimeline(): Promise<
 }
 
 export async function getTeamsScoredAsks(teamId: string): Promise<ScoredAsk[]> {
-    const asks = await prisma.asked.findMany({
+    const asks = await prisma().asked.findMany({
         where: { teamId, revealed: true, skipped: false },
         include: {
             answers: true,

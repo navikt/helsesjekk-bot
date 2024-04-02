@@ -26,7 +26,7 @@ export async function answerQuestions(
     userId: string,
 ): Promise<void> {
     const mappedAnswers = answerToJsonb(mapToAnswers(answers, questionsFromJsonb(asked.questions)))
-    await prisma.answer.upsert({
+    await prisma().answer.upsert({
         create: {
             userId,
             askedId: asked.id,
@@ -46,7 +46,7 @@ export async function answerQuestions(
 }
 
 export async function getAnswer(userId: string, askedId: number): Promise<Answer | null> {
-    return prisma.answer.findFirst({
+    return prisma().answer.findFirst({
         where: { userId: userId, askedId: askedId },
     })
 }

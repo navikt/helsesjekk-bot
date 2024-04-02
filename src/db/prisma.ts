@@ -1,34 +1,24 @@
 import { PrismaClient } from '@prisma/client'
 import { logger } from '@navikt/next-logger'
-import { nextleton } from 'nextleton'
+import { lazyNextleton } from 'nextleton'
 
-export const prisma = nextleton(
-    'prisma',
-    () =>
-        new PrismaClient({
-            log: [
-                { emit: 'event', level: 'warn' },
-                { emit: 'event', level: 'error' },
-            ],
-        }),
-)
+export const prisma = lazyNextleton('prisma', () => {
+    const client = new PrismaClient({
+        log: [
+            { emit: 'event', level: 'warn' },
+            { emit: 'event', level: 'error' },
+        ],
+    })
 
-prisma.$on('error', (e) => {
-    logger.error(e)
+    client.$on('error', (e) => {
+        logger.error(e)
+    })
+
+    client.$on('warn', (e) => {
+        logger.error(e)
+    })
+
+    return client
 })
-
-prisma.$on('warn', (e) => {
-    logger.error(e)
-})
-
-export async function isReady(): Promise<boolean> {
-    try {
-        await prisma.$connect()
-        return true
-    } catch (e) {
-        logger.error(new Error('Unable to connect to database', { cause: e }))
-        return false
-    }
-}
 
 export * from '@prisma/client'
