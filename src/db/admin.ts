@@ -7,7 +7,7 @@ export async function adminGetTeamsWithAsked(): Promise<
         })[]
     })[]
 > {
-    const allTeams = await prisma.team.findMany({
+    const allTeams = await prisma().team.findMany({
         include: {
             Asked: {
                 select: {

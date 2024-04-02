@@ -9,7 +9,6 @@ COPY .yarn /app/.yarn
 COPY .yarnrc.yml /app/
 COPY yarn.lock /app/
 COPY prisma /app/prisma
-COPY scripts /app/scripts
 
 ENV NODE_ENV=production
 

@@ -21,18 +21,18 @@ export async function teamStatus(channelId: string): Promise<'NEW' | 'DEACTIVATE
 }
 
 export async function getTeam(channelId: string): Promise<Team | null> {
-    return prisma.team.findFirst({ where: { id: channelId } })
+    return prisma().team.findFirst({ where: { id: channelId } })
 }
 
 export async function getTeamsByAdGroups(groups: string[]): Promise<Team[] | null> {
-    return prisma.team.findMany({ where: { assosiatedGroup: { in: groups } } })
+    return prisma().team.findMany({ where: { assosiatedGroup: { in: groups } } })
 }
 
 export async function getTeamByAdGroupAndTeamId(
     groupId: string,
     teamId: string,
 ): Promise<(Team & { activeAskTs: string | null }) | null> {
-    const team = await prisma.team.findFirst({
+    const team = await prisma().team.findFirst({
         where: { id: teamId, assosiatedGroup: { contains: groupId } },
         include: { Asked: { where: { revealed: false, skipped: false } } },
     })
@@ -43,11 +43,11 @@ export async function getTeamByAdGroupAndTeamId(
 }
 
 export async function getTeamById(teamId: string): Promise<Team | null> {
-    return prisma.team.findFirst({ where: { id: teamId } })
+    return prisma().team.findFirst({ where: { id: teamId } })
 }
 
 export async function createTeam(channelId: string, name: string): Promise<Team> {
-    return prisma.team.create({
+    return prisma().team.create({
         data: {
             id: channelId,
             name,
@@ -62,7 +62,7 @@ export async function createTeam(channelId: string, name: string): Promise<Team>
 }
 
 export async function updateTeamGroupAssociation(channelId: string, group: string): Promise<Team> {
-    return prisma.team.update({
+    return prisma().team.update({
         data: { assosiatedGroup: group },
         where: { id: channelId },
     })
@@ -86,7 +86,7 @@ export async function updateTeam(
         category: QuestionType
     },
 ): Promise<Team> {
-    return prisma.$transaction(async (prisma) => {
+    return prisma().$transaction(async (prisma) => {
         const team = await prisma.team.findFirstOrThrow({ where: { id: channelId } })
 
         return prisma.team.update({
@@ -121,7 +121,7 @@ export async function updateTeam(
 }
 
 export function deleteQuestionFromTeam(teamId: string, questionId: string): Promise<Team> {
-    return prisma.$transaction(async (prisma) => {
+    return prisma().$transaction(async (prisma) => {
         const team = await prisma.team.findFirstOrThrow({ where: { id: teamId } })
 
         const updatedTeam = prisma.team.update({
@@ -138,27 +138,27 @@ export function deleteQuestionFromTeam(teamId: string, questionId: string): Prom
 }
 
 export async function setTeamName(teamId: string, name: string): Promise<Team> {
-    return prisma.team.update({ data: { name }, where: { id: teamId } })
+    return prisma().team.update({ data: { name }, where: { id: teamId } })
 }
 
 export async function setRevealTime(teamId: string, hour: number, day: number): Promise<Team> {
-    return prisma.team.update({ data: { revealHour: hour, revealDay: day }, where: { id: teamId } })
+    return prisma().team.update({ data: { revealHour: hour, revealDay: day }, where: { id: teamId } })
 }
 
 export async function setAskTime(teamId: string, hour: number, day: number): Promise<Team> {
-    return prisma.team.update({ data: { postHour: hour, postDay: day }, where: { id: teamId } })
+    return prisma().team.update({ data: { postHour: hour, postDay: day }, where: { id: teamId } })
 }
 
 export async function setTeamStatus(teamId: string, active: boolean): Promise<Team> {
     if (active) {
-        return prisma.team.update({ data: { active }, where: { id: teamId } })
+        return prisma().team.update({ data: { active }, where: { id: teamId } })
     } else {
         await deactivateTeam(teamId)
     }
 }
 
 export async function setTeamFrequency(teamId: string, frequency: number, weekSkew: number): Promise<Team> {
-    return prisma.team.update({ data: { frequency, weekSkew }, where: { id: teamId } })
+    return prisma().team.update({ data: { frequency, weekSkew }, where: { id: teamId } })
 }
 
 export async function addQuestionToTeam(
@@ -188,14 +188,14 @@ export async function addQuestionToTeam(
         } satisfies Question,
     ]
 
-    return prisma.team.update({
+    return prisma().team.update({
         data: { questions: questionsToJsonb(updatedQuestions) },
         where: { id: teamId },
     })
 }
 
 export async function reactivateTeam(channelId: string): Promise<void> {
-    await prisma.team.update({
+    await prisma().team.update({
         data: { active: true },
         where: { id: channelId },
     })
@@ -204,7 +204,7 @@ export async function reactivateTeam(channelId: string): Promise<void> {
 export async function deactivateTeam(channelId: string): Promise<void> {
     const activeAsk = await getActiveAsk(channelId)
 
-    await prisma.$transaction(async (p) => {
+    await prisma().$transaction(async (p) => {
         await p.team.update({
             data: { active: false },
             where: { id: channelId },
@@ -220,15 +220,15 @@ export async function deactivateTeam(channelId: string): Promise<void> {
 }
 
 export async function getActiveTeams(): Promise<Team[]> {
-    return prisma.team.findMany({ where: { active: true } })
+    return prisma().team.findMany({ where: { active: true } })
 }
 
 export async function getTeamsToReveal(): Promise<Team[]> {
-    return prisma.team.findMany({ where: { active: true, Asked: { some: { revealed: false, skipped: false } } } })
+    return prisma().team.findMany({ where: { active: true, Asked: { some: { revealed: false, skipped: false } } } })
 }
 
 export async function getBrokenAsks(): Promise<Asked[]> {
-    return prisma.asked.findMany({
+    return prisma().asked.findMany({
         where: { revealed: false, skipped: true },
     })
 }

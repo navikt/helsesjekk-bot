@@ -20,10 +20,10 @@ function getRandomAnswerLevel(): AnswerLevel {
 
 logger.info('Seeding database...')
 
-await prisma.answer.deleteMany({ where: {} })
-await prisma.asked.deleteMany({ where: {} })
-await prisma.team.deleteMany({ where: {} })
-const activeTeam = await prisma.team.create({
+await prisma().answer.deleteMany({ where: {} })
+await prisma().asked.deleteMany({ where: {} })
+await prisma().team.deleteMany({ where: {} })
+const activeTeam = await prisma().team.create({
     data: {
         id: 'test-id-1',
         name: 'Seeded Active Team',
@@ -37,7 +37,7 @@ const activeTeam = await prisma.team.create({
     },
 })
 
-await prisma.team.create({
+await prisma().team.create({
     data: {
         id: 'test-id-2',
         name: 'Seeded Inactive Team',
@@ -52,7 +52,7 @@ await prisma.team.create({
 })
 
 async function createAskWithNAnswers(week: number, count: number): Promise<void> {
-    const ask = await prisma.asked.create({
+    const ask = await prisma().asked.create({
         data: {
             teamId: activeTeam.id,
             messageTs: '1686224220.775259',
@@ -64,7 +64,7 @@ async function createAskWithNAnswers(week: number, count: number): Promise<void>
         },
     })
 
-    await prisma.answer.createMany({
+    await prisma().answer.createMany({
         data: R.range(0, count + 1).map((index) => ({
             userId: `fake-user-${index}`,
             askedId: ask.id,
