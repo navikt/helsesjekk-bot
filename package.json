@@ -41,7 +41,7 @@
         "prisma": "5.12.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "recharts": "^2.12.3",
+        "recharts": "^2.12.6",
         "remeda": "^1.57.0",
         "sharp": "^0.33.3",
         "tailwind-merge": "^2.2.2",
