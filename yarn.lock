@@ -955,9 +955,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@slack/bolt@npm:^3.17.1":
-  version: 3.17.1
-  resolution: "@slack/bolt@npm:3.17.1"
+"@slack/bolt@npm:^3.18.0":
+  version: 3.18.0
+  resolution: "@slack/bolt@npm:3.18.0"
   dependencies:
     "@slack/logger": "npm:^4.0.0"
     "@slack/oauth": "npm:^2.6.2"
@@ -974,7 +974,7 @@ __metadata:
     promise.allsettled: "npm:^1.0.2"
     raw-body: "npm:^2.3.3"
     tsscmp: "npm:^1.0.6"
-  checksum: 295f12baad99e56645d3f5dfec48511d901af87d4dabf27aae697b2c1c350da42e5c1653053a0b2c9991e6e5c46eb3b4db0aae1979da96b4a599436eb040ada5
+  checksum: dc8d24d2ff73ede9471c4700c1d7f078a2061dc7a1c3954b3e32ea3643a6c850c91809cbf9629c8846ff5010c571e79502941cb388eedb0bb6da16dff1b96e03
   languageName: node
   linkType: hard
 
@@ -3980,7 +3980,7 @@ __metadata:
     "@navikt/next-auth-wonderwall": "npm:^1.6.0"
     "@navikt/next-logger": "npm:^1.23.0"
     "@prisma/client": "npm:5.12.0"
-    "@slack/bolt": "npm:^3.17.1"
+    "@slack/bolt": "npm:^3.18.0"
     "@types/node": "npm:^20.12.2"
     "@types/node-cron": "npm:^3.0.11"
     "@types/react": "npm:18.2.74"

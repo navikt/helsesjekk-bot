@@ -28,7 +28,7 @@
         "@navikt/next-auth-wonderwall": "^1.6.0",
         "@navikt/next-logger": "^1.23.0",
         "@prisma/client": "5.12.0",
-        "@slack/bolt": "^3.17.1",
+        "@slack/bolt": "^3.18.0",
         "autoprefixer": "^10.4.19",
         "clsx": "^2.1.0",
         "date-fns": "^2.30.0",
