@@ -30,7 +30,7 @@
         "@prisma/client": "5.12.0",
         "@slack/bolt": "^3.17.1",
         "autoprefixer": "^10.4.19",
-        "clsx": "^2.1.0",
+        "clsx": "^2.1.1",
         "date-fns": "^2.30.0",
         "next": "^14.1.4",
         "next-logger": "^3.0.2",
