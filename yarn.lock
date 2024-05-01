@@ -2562,6 +2562,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: cac35c58926a3b5d577082ff2b253612ec1c79eb6754fddef46b6a8e826501ea2cb346ecbd211205f1ba382ddd1f9d8c3f00bf433ad63cc3063454d294e3a6b8
+  languageName: node
+  linkType: hard
+
 "dateformat@npm:^4.6.3":
   version: 4.6.3
   resolution: "dateformat@npm:4.6.3"
@@ -3990,7 +3997,7 @@ __metadata:
     autoprefixer: "npm:^10.4.19"
     bun-types: "npm:^1.1.0"
     clsx: "npm:^2.1.0"
-    date-fns: "npm:^2.30.0"
+    date-fns: "npm:^3.6.0"
     eslint: "npm:^8.57.0"
     eslint-config-next: "npm:^14.1.4"
     eslint-plugin-import: "npm:^2.29.1"
@@ -4011,7 +4018,7 @@ __metadata:
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     recharts: "npm:^2.12.3"
-    remeda: "npm:^1.57.0"
+    remeda: "npm:^1.61.0"
     sharp: "npm:^0.33.3"
     tailwind-merge: "npm:^2.2.2"
     tailwindcss: "npm:^3.4.3"
@@ -6350,10 +6357,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remeda@npm:^1.57.0":
-  version: 1.57.0
-  resolution: "remeda@npm:1.57.0"
-  checksum: cb770a28f19cfcd25a615dfb1a6363530033d6d3078ca7afb92e0260db03c5a55dc188e47d479f36ba794c04da18e615f14a9dabc7eda80c69801a7654c62fa3
+"remeda@npm:^1.61.0":
+  version: 1.61.0
+  resolution: "remeda@npm:1.61.0"
+  checksum: 0b0ec8688e340c7525a8788e99701b174ddca2eaf230d47f9e087d9aaccd54c7181a1f58bf4f95cb9c12bc1d26f03b17e3d3d9046a59225074a7ac3fa1356da3
   languageName: node
   linkType: hard
 
