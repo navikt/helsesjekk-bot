@@ -49,7 +49,7 @@
         "uuid": "^9.0.1"
     },
     "devDependencies": {
-        "@navikt/eslint-config-teamsykmelding": "^5.2.0",
+        "@navikt/eslint-config-teamsykmelding": "^6.2.0",
         "@types/node": "^20.12.2",
         "@types/node-cron": "^3.0.11",
         "@types/react": "18.2.74",
