@@ -2,9 +2,8 @@
 
 import React, { ReactElement, useEffect } from 'react'
 import { logger } from '@navikt/next-logger'
-
-import { Heading, BodyLong } from 'aksel-server'
-import { Button } from 'aksel-client'
+import { Heading, BodyLong } from '@navikt/ds-react'
+import { Button } from '@navikt/ds-react'
 
 type Props = {
     error: Error & {

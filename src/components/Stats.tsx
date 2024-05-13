@@ -1,7 +1,6 @@
 import React, { ReactElement, Suspense } from 'react'
 import { Skeleton } from '@navikt/ds-react'
-
-import { Detail, Heading, BodyShort } from 'aksel-server'
+import { Detail, Heading, BodyShort } from '@navikt/ds-react'
 import {
     PersonTallShortIcon,
     QuestionmarkIcon,
@@ -9,7 +8,7 @@ import {
     HouseHeartIcon,
     HandShakeHeartIcon,
     TenancyIcon,
-} from 'aksel-client'
+} from '@navikt/aksel-icons'
 
 import { funStats } from '../db/stats'
 

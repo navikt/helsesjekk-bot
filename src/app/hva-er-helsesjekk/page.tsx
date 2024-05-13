@@ -2,8 +2,7 @@ import React, { ReactElement } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Metadata } from 'next'
-
-import { Heading, BodyLong } from 'aksel-server'
+import { Heading, BodyLong } from '@navikt/ds-react'
 
 import ask from './ask.png'
 import reveal from './reveal.png'

@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
-
-import { BodyLong, BodyShort, Heading } from 'aksel-server'
+import { BodyLong, BodyShort, Heading } from '@navikt/ds-react'
 
 import Code from '../core/Code'
 

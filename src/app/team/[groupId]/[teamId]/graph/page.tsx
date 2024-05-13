@@ -1,8 +1,7 @@
 import * as R from 'remeda'
 import React, { ReactElement, Suspense } from 'react'
 import { Metadata } from 'next'
-
-import { BodyLong, Detail, Heading, Skeleton } from 'aksel-server'
+import { BodyLong, Detail, Heading, Skeleton } from '@navikt/ds-react'
 
 import { TeamNotAccesible, TeamNotFound } from '../../../../../components/errors/ErrorMessages'
 import { userHasAdGroup } from '../../../../../auth/authentication'

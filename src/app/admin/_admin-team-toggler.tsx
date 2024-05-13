@@ -2,8 +2,7 @@
 
 import React, { ReactElement, useState } from 'react'
 import { Checkbox } from '@navikt/ds-react'
-
-import { Switch } from 'aksel-client'
+import { Switch } from '@navikt/ds-react'
 
 import { adminToggleTeamStatus } from './_admin-actions'
 

@@ -1,9 +1,8 @@
 'use client'
 
 import React, { ReactElement, useState } from 'react'
-
-import { BodyLong, Detail, Heading } from 'aksel-server'
-import { CopyButton, Button, TextField, XMarkIcon } from 'aksel-client'
+import { CopyButton, Button, TextField, BodyLong, Detail, Heading } from '@navikt/ds-react'
+import { XMarkIcon } from '@navikt/aksel-icons'
 
 type Props = {
     groups: {

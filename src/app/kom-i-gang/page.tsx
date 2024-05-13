@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react'
 import { Metadata } from 'next'
-
-import { Heading, BodyLong } from 'aksel-server'
-import { CopyButton, LinkIcon } from 'aksel-client'
+import { CopyButton, Heading, BodyLong } from '@navikt/ds-react'
+import { LinkIcon } from '@navikt/aksel-icons'
 
 import LinkButton from '../../components/core/LinkButton'
 import HowToGuide from '../../components/guide/HowToGuide'

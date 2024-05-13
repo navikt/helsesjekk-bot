@@ -48,7 +48,7 @@ Når det kommer til selve botten, så kan du gjøre følgende:
 3. Konfigurer opp en egen CI/CD-løsning for å deploye botten i [deploy.yaml](./.github/workflows/deploy.yaml)
 4. Konfigurer opp [env.ts](./src/utils/env.ts) med miljøvariablene din platform trenger
 5. Tweak [authentication.ts](./src/auth/authentication.tsx) og [ms-graph.ts](./src/auth/ms-graph.ts) til å fungere med deres env løsning.
-   1. For eksempel libben som er brukt her, @navikt/next-auth-wonderwall har en sterk kobling til NAV sin applikasjonsplatform, og er ikke noe dere kan gjenbruke.
+    1. For eksempel libben som er brukt her, @navikt/next-auth-wonderwall har en sterk kobling til NAV sin applikasjonsplatform, og er ikke noe dere kan gjenbruke.
 
 Det er sikkert andre ting som må justeres på også.
 
@@ -60,7 +60,7 @@ Noen av bottens avhengigheter er hostet her på Github. Github tillatter ikke an
 
 For å kunne installere avhengighetene må du opprette en Personal Access Token (PAT), som beskrevet her:
 
-* https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic
+-   https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic
 
 Denne PAT-en skal _kun_ ha tilgangen `package:read`. Sett denne PAT-en som miljøvariabel på maskinen din.
 
@@ -87,7 +87,7 @@ Du skal nå kunne kjøre `yarn` for å installere avhengighetene uten 401-feil.
     ```
 5. Kjør prisma-migreringene mot databasen:
     ```bash
-    npx prisma migrate dev
+    yarn prisma:migrate-dev
     ```
 6. Endelig kan vi starte development-serveren:
     ```bash

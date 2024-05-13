@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
-
-import { Skeleton, BodyShort, Detail, Link as AkselLink } from 'aksel-server'
-import { Tooltip } from 'aksel-client'
+import { Skeleton, BodyShort, Detail, Link as AkselLink } from '@navikt/ds-react'
+import { Tooltip } from '@navikt/ds-react'
 
 import { getUser, isUserLoggedIn } from '../auth/authentication'
 

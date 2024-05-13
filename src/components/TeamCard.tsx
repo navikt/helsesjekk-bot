@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react'
 import Link from 'next/link'
-
-import { BodyShort, Detail, Heading, LinkPanel } from 'aksel-server'
-import { GavelIcon, QuestionmarkIcon, Tooltip } from 'aksel-client'
+import { BodyShort, Detail, Heading, LinkPanel, Tooltip } from '@navikt/ds-react'
+import { GavelIcon, QuestionmarkIcon } from '@navikt/aksel-icons'
 
 import { Team } from '../db'
 import { dayIndexToDay } from '../utils/date'
