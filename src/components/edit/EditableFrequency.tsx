@@ -171,7 +171,7 @@ function EditableFrequencyForm({
     )
 }
 
-function WeeksToPostGrid({ frequency, offset }: { frequency: number; offset: number }): ReactElement {
+function WeeksToPostGrid({ frequency, offset }: { frequency: number; offset: number }): ReactElement | null {
     if (frequency === Frequency.WEEKLY) return null
 
     const now = getNowInNorway()

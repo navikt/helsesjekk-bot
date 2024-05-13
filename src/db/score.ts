@@ -155,7 +155,9 @@ export async function getGlobalScoreTimeline(): Promise<
                 R.flatMap((it) => it.scoredQuestions),
                 R.groupBy.strict(R.prop('type')),
                 R.mapValues((it) => {
+                    // @ts-expect-error TODO: improve typing
                     const sum = R.sumBy(it, R.prop('score'))
+                    // @ts-expect-error TODO: improve typing
                     return sum / it.length
                 }),
             )

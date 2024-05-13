@@ -3,6 +3,8 @@
 import * as R from 'remeda'
 import React, { ReactElement } from 'react'
 import { Area, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { logger } from '@navikt/next-logger'
+
 import { Detail, Heading } from '@navikt/ds-react'
 
 import { getWeekNumber } from '../../utils/date'
@@ -51,7 +53,9 @@ function ScorePerQuestion(props: Props): ReactElement {
                             yAxisId="antall"
                             dataKey={`distribution.${level}`}
                             stackId={1}
+                            // @ts-expect-error TODO: improve typing
                             stroke={colorMap[level]}
+                            // @ts-expect-error TODO: improve typing
                             fill={colorMap[level]}
                             isAnimationActive={false}
                         />
@@ -73,6 +77,7 @@ function ScorePerQuestion(props: Props): ReactElement {
                             }
                         }}
                     />
+                    {/* @ts-expect-error This typing is wack */}
                     <Tooltip content={CustomTooltip} />
                 </ComposedChart>
             </ResponsiveContainer>
@@ -95,7 +100,7 @@ type CustomTooltipProps = {
     active: boolean
 }
 
-function CustomTooltip({ payload, active }: CustomTooltipProps): ReactElement {
+function CustomTooltip({ payload, active }: CustomTooltipProps): ReactElement | null {
     if (!active && payload.length === 0) return null
     const [first] = payload
     const relevantValues = R.pipe(
@@ -145,10 +150,13 @@ function ScoreToDescription({ name }: { name: string }): string {
             return 'Middels'
         case 'distribution.BAD':
             return 'Dårlig'
+        default:
+            logger.error(`Unknown score type: ${name}`)
+            return 'Ukjent'
     }
 }
 
-function CustomDot({ cx, cy, value }: { cx: number; cy: number; value: number }): ReactElement {
+function CustomDot({ cx, cy, value }: { cx: number; cy: number; value: number }): ReactElement | null {
     if (value == null) return null
 
     return (

@@ -27,11 +27,12 @@ export async function funStats(): Promise<{
                     _count: { select: { answers: true } },
                 },
             })
-        )._count.answers,
+        )?._count.answers ?? -1,
         await prisma().team.count({
             where: { active: true, assosiatedGroup: { not: null } },
         }),
-        (await prisma().$queryRaw`SELECT MAX(jsonb_array_length(questions)) FROM "Team";`)[0]?.max,
+        ((await prisma().$queryRaw`SELECT MAX(jsonb_array_length(questions)) FROM "Team";`) as { max: number }[])[0]
+            ?.max ?? -1,
     ])
 
     return {
