@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react'
 import Image from 'next/image'
-
-import { Heading, BodyLong, BodyShort } from 'aksel-server'
-import { CopyButton, LinkIcon } from 'aksel-client'
+import { CopyButton, Heading, BodyLong, BodyShort } from '@navikt/ds-react'
+import { LinkIcon } from '@navikt/aksel-icons'
 
 import Code from '../core/Code'
 

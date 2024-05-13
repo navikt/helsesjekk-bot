@@ -3,9 +3,8 @@
 import * as R from 'remeda'
 import React, { ReactElement } from 'react'
 import { useParams } from 'next/navigation'
-
-import { Heading, BodyShort } from 'aksel-server'
-import { Button, PencilIcon, QuestionmarkIcon, GavelIcon, Select, XMarkIcon } from 'aksel-client'
+import { Button, Select, Heading, BodyShort } from '@navikt/ds-react'
+import { PencilIcon, QuestionmarkIcon, GavelIcon, XMarkIcon } from '@navikt/aksel-icons'
 
 import { dayIndexToDay } from '../../utils/date'
 

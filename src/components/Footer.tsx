@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import Image from 'next/image'
-
-import { Heading, BodyShort } from 'aksel-server'
+import { Heading, BodyShort } from '@navikt/ds-react'
 
 import logo from '../images/logo.png'
 

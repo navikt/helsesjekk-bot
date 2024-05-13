@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import Link from 'next/link'
-
-import { CaretLeftIcon } from 'aksel-client'
+import { CaretLeftIcon } from '@navikt/aksel-icons'
 
 type Props = {
     href: string

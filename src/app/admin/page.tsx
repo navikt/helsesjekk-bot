@@ -1,9 +1,8 @@
 import * as R from 'remeda'
 import React, { ReactElement } from 'react'
 import { notFound } from 'next/navigation'
-
-import { Heading, Detail, BodyShort } from 'aksel-server'
-import { HandShakeHeartIcon } from 'aksel-client'
+import { Heading, Detail, BodyShort } from '@navikt/ds-react'
+import { HandShakeHeartIcon } from '@navikt/aksel-icons'
 
 import { userHasAdGroup, validateWonderwallToken } from '../../auth/authentication'
 import { adminGetTeamsWithAsked } from '../../db/admin'

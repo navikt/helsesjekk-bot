@@ -3,8 +3,7 @@
 import * as R from 'remeda'
 import React, { ReactElement } from 'react'
 import { Area, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-
-import { Detail, Heading } from 'aksel-server'
+import { Detail, Heading } from '@navikt/ds-react'
 
 import { getWeekNumber } from '../../utils/date'
 import { scoreToEmoji } from '../../utils/score'

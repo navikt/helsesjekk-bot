@@ -3,9 +3,8 @@
 import React, { ReactElement, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { getYear } from 'date-fns'
-
-import { Heading, BodyShort, Detail } from 'aksel-server'
-import { Button, PencilIcon, PersonTallShortIcon, Select, XMarkIcon, Tooltip, PadlockLockedIcon } from 'aksel-client'
+import { Button, Select, Tooltip, Heading, BodyShort, Detail } from '@navikt/ds-react'
+import { PencilIcon, PersonTallShortIcon, XMarkIcon, PadlockLockedIcon } from '@navikt/aksel-icons'
 
 import {
     Frequency,

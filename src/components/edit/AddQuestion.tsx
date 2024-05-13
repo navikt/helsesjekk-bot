@@ -5,9 +5,8 @@ import { Button } from '@navikt/ds-react'
 import { useParams } from 'next/navigation'
 import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
-
-import { Heading } from 'aksel-server'
-import { PlusIcon, Select, TextField, XMarkIcon } from 'aksel-client'
+import { Heading, Select, TextField } from '@navikt/ds-react'
+import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons'
 
 import { questionTypeToText } from '../../utils/asked'
 import { QuestionType } from '../../safe-types'

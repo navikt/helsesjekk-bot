@@ -2,9 +2,8 @@
 
 import React, { ReactElement, startTransition } from 'react'
 import { useParams } from 'next/navigation'
-
-import { Heading, BodyShort } from 'aksel-server'
-import { Switch } from 'aksel-client'
+import { Heading, BodyShort } from '@navikt/ds-react'
+import { Switch } from '@navikt/ds-react'
 
 import { InactiveDot, PingDot } from '../core/Dots'
 

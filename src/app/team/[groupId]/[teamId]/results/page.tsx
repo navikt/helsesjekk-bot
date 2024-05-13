@@ -2,8 +2,7 @@ import * as R from 'remeda'
 import React, { ReactElement, Suspense } from 'react'
 import { getYear } from 'date-fns'
 import { Metadata } from 'next'
-
-import { Heading, Skeleton, BodyLong, Detail } from 'aksel-server'
+import { Heading, Skeleton, BodyLong, Detail } from '@navikt/ds-react'
 
 import { TeamNotAccesible, TeamNotFound } from '../../../../../components/errors/ErrorMessages'
 import { userHasAdGroup } from '../../../../../auth/authentication'

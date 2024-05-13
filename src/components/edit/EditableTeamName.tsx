@@ -2,9 +2,8 @@
 
 import React, { ReactElement } from 'react'
 import { useParams } from 'next/navigation'
-
-import { BodyShort, Heading } from 'aksel-server'
-import { Button, TextField, PencilIcon, PersonTallShortIcon, XMarkIcon } from 'aksel-client'
+import { Button, TextField, BodyShort, Heading } from '@navikt/ds-react'
+import { PencilIcon, PersonTallShortIcon, XMarkIcon } from '@navikt/aksel-icons'
 
 import { editTeamName } from './actions'
 

@@ -14,7 +14,7 @@ export default async function RootLayout({ children }: PropsWithChildren): Promi
         <html lang="en">
             <body className="flex flex-col min-h-screen">
                 <Header />
-                <main className="container mx-auto p-4 min-h-fit grow">{children}</main>
+                <main className="container p-4 sm:p-16 sm:pt-4 min-h-fit grow">{children}</main>
                 <Footer />
             </body>
         </html>

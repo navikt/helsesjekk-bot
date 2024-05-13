@@ -1,8 +1,7 @@
 import React, { ReactElement, Suspense } from 'react'
 import { unstable_noStore as noStore } from 'next/cache'
 import { Metadata } from 'next'
-
-import { Heading, Skeleton } from 'aksel-server'
+import { Heading, Skeleton } from '@navikt/ds-react'
 
 import BackLink from '../../components/core/BackLink'
 import { getGlobalScoreTimeline } from '../../db/score'

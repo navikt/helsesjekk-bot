@@ -1,11 +1,10 @@
 import * as R from 'remeda'
 import React, { ReactElement } from 'react'
-import { Heading } from '@navikt/ds-react'
+import { BodyShort, Heading } from '@navikt/ds-react'
+// @ts-expect-error TODO, link panel is deprecated
+import { LinkPanel, LinkPanelDescription, LinkPanelTitle } from '@navikt/ds-react/LinkPanel'
 import { Metadata } from 'next'
 import Link from 'next/link'
-
-import { LinkPanelDescription, LinkPanelTitle, LinkPanel } from 'aksel-client'
-import { BodyShort } from 'aksel-server'
 
 import { Question, QuestionType } from '../../../../safe-types'
 import { getTeamByAdGroupAndTeamId } from '../../../../db'

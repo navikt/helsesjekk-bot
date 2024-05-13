@@ -2,8 +2,7 @@
 
 import React, { PropsWithChildren, ReactElement } from 'react'
 import Link from 'next/link'
-
-import { Button } from 'aksel-client'
+import { Button } from '@navikt/ds-react'
 
 type Props = {
     className?: string

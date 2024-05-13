@@ -12,15 +12,7 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "jsx": "preserve",
-        "plugins": [
-            {
-                "name": "next"
-            }
-        ],
-        "paths": {
-            "aksel-client": ["./src/components/aksel.ts"],
-            "aksel-server": ["./src/components/aksel-server.ts"]
-        }
+        "plugins": [{ "name": "next" }]
     },
     "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
     "exclude": ["node_modules", "tests", "seed", "../src/**/*.test.ts"]

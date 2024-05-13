@@ -1,8 +1,7 @@
 import React, { ReactElement, Suspense } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-
-import { Heading, Detail } from 'aksel-server'
+import { Heading, Detail } from '@navikt/ds-react'
 
 import logo from '../images/logo.png'
 
