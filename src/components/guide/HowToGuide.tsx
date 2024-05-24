@@ -78,7 +78,7 @@ function HowToGuide(): ReactElement {
                 Koble botten til denne nettsiden, så du kan se grafene dine og endre på innstillingene.
                 <div>
                     <CopyButton
-                        copyText="https://helsesjekk-bot.intern.nav.no/kom-i-gang#koble-til"
+                        copyText="https://helsesjekk-bot.nav.no/kom-i-gang#koble-til"
                         activeText="Lenken er kopiert"
                         size="small"
                         icon={<LinkIcon aria-hidden />}

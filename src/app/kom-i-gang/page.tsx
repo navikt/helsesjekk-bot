@@ -28,7 +28,7 @@ function GroupFinder(): ReactElement {
                 Finn din gruppe
                 <div>
                     <CopyButton
-                        copyText="https://helsesjekk-bot.intern.nav.no/kom-i-gang#finn-gruppe"
+                        copyText="https://helsesjekk-bot.nav.no/kom-i-gang#finn-gruppe"
                         activeText="Lenken er kopiert"
                         size="small"
                         icon={<LinkIcon aria-hidden />}
