@@ -36,7 +36,7 @@ function EditableTime({ teamId, type, hour, day }: Props): ReactElement {
                         <Button
                             className="absolute top-2 right-2"
                             icon={<PencilIcon />}
-                            title="Rediger team navn"
+                            title="Rediger tidspunkt"
                             onClick={() => setEdit(true)}
                             size="small"
                             variant="tertiary-neutral"
