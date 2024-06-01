@@ -3885,7 +3885,7 @@ __metadata:
     next-logger: "npm:^4.0.0"
     nextleton: "npm:^0.6.1"
     node-cron: "npm:^3.0.3"
-    pino: "npm:^9.0.0"
+    pino: "npm:^9.1.0"
     pino-pretty: "npm:^11.0.0"
     postcss: "npm:^8.4.38"
     prettier: "npm:^3.2.5"
@@ -5647,6 +5647,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pino-std-serializers@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "pino-std-serializers@npm:7.0.0"
+  checksum: 10/884e08f65aa5463d820521ead3779d4472c78fc434d8582afb66f9dcb8d8c7119c69524b68106cb8caf92c0487be7794cf50e5b9c0383ae65b24bf2a03480951
+  languageName: node
+  linkType: hard
+
 "pino@npm:^8.11.0":
   version: 8.21.0
   resolution: "pino@npm:8.21.0"
@@ -5668,24 +5675,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino@npm:^9.0.0":
-  version: 9.0.0
-  resolution: "pino@npm:9.0.0"
+"pino@npm:^9.1.0":
+  version: 9.1.0
+  resolution: "pino@npm:9.1.0"
   dependencies:
     atomic-sleep: "npm:^1.0.0"
     fast-redact: "npm:^3.1.1"
     on-exit-leak-free: "npm:^2.1.0"
     pino-abstract-transport: "npm:^1.2.0"
-    pino-std-serializers: "npm:^6.0.0"
+    pino-std-serializers: "npm:^7.0.0"
     process-warning: "npm:^3.0.0"
     quick-format-unescaped: "npm:^4.0.3"
     real-require: "npm:^0.2.0"
     safe-stable-stringify: "npm:^2.3.1"
-    sonic-boom: "npm:^3.7.0"
-    thread-stream: "npm:^2.6.0"
+    sonic-boom: "npm:^4.0.1"
+    thread-stream: "npm:^3.0.0"
   bin:
     pino: bin.js
-  checksum: 10/04875e64e1ee32c5a759d2e9d4276c5f9745414850303fae6c04d2c126f167381c06fc52360ca1f04b51001baefe33e2feace5787935c7df2d93fb641431f4b0
+  checksum: 10/b7b0bdfdc2d9db017fa690e85f2e8ad2ddda09b1cbccb9868bc55d9a218ab3e9e4d75e6beb9d44fef10c4982d8719db4cf2325ea1f866d2fb37b7dff7f7297b1
   languageName: node
   linkType: hard
 
@@ -6688,6 +6695,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sonic-boom@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "sonic-boom@npm:4.0.1"
+  dependencies:
+    atomic-sleep: "npm:^1.0.0"
+  checksum: 10/449bdc39f4333a321bb754319e9452c3e94409654b2ddf8e40307a1a413b953bed3b3b092a4992ab3fb7cd1a7c95bdde5a046ac4e0405d7c92c60802452c060c
+  languageName: node
+  linkType: hard
+
 "source-map-js@npm:^1.0.2, source-map-js@npm:^1.2.0":
   version: 1.2.0
   resolution: "source-map-js@npm:1.2.0"
@@ -7062,6 +7078,15 @@ __metadata:
   dependencies:
     real-require: "npm:^0.2.0"
   checksum: 10/03e743a2ccb2af5fa695d2e4369113336ee9b9f09c4453d50a222cbb4ae3af321bff658e0e5bf8bfbce9d7f5a7bf6262d12a2a365e160f4e76380ec624d32e7b
+  languageName: node
+  linkType: hard
+
+"thread-stream@npm:^3.0.0":
+  version: 3.0.2
+  resolution: "thread-stream@npm:3.0.2"
+  dependencies:
+    real-require: "npm:^0.2.0"
+  checksum: 10/988aa87a2f4102d0160ccc76b764d219c6bb44b3f723ffda608d44016323f9066c563e663ff2e80be417fe81d15203f5c340b2284adf8bfb7e56554349fe2dab
   languageName: node
   linkType: hard
 
