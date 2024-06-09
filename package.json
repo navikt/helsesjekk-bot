@@ -27,7 +27,7 @@
         "@navikt/ds-tailwind": "^6.7.1",
         "@navikt/next-logger": "^1.24.0",
         "@navikt/oasis": "^3.3.0",
-        "@prisma/client": "5.13.0",
+        "@prisma/client": "5.15.0",
         "@slack/bolt": "^3.18.0",
         "@slack/logger": "^4.0.0",
         "@slack/types": "^2.11.0",
