@@ -491,14 +491,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/oasis@npm:^3.2.4":
-  version: 3.2.4
-  resolution: "@navikt/oasis@npm:3.2.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Foasis%2F3.2.4%2Fd2f3829d5b2ca14b442bf3024a8e2585611a7509"
+"@navikt/oasis@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "@navikt/oasis@npm:3.3.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Foasis%2F3.3.0%2F0d6116b68e84598184f94a86087eee68d8f929a1"
   dependencies:
     jose: "npm:^5.2.3"
     openid-client: "npm:^5.6.5"
     prom-client: "npm:^15.1.0"
-  checksum: 10/7ec89518b7b8d400f2602478677ccb36f214004d6ffaa5bc546b9c2974a07762905183425297362a9f415825e75ffc63a3c01eb23259d1d5f61aef5fbd0caf64
+  checksum: 10/59203d8bfe0918c724feff5f13fc0bc64f8f39c4acbf6c4b41141500514446a477cad728865bd1a047bf240cfb6697a137c4c2b05cdbb83ac04740fd0f5b3598
   languageName: node
   linkType: hard
 
@@ -3861,7 +3861,7 @@ __metadata:
     "@navikt/ds-tailwind": "npm:^6.7.1"
     "@navikt/eslint-config-teamsykmelding": "npm:^6.2.0"
     "@navikt/next-logger": "npm:^1.24.0"
-    "@navikt/oasis": "npm:^3.2.4"
+    "@navikt/oasis": "npm:^3.3.0"
     "@prisma/client": "npm:5.13.0"
     "@slack/bolt": "npm:^3.18.0"
     "@slack/logger": "npm:^4.0.0"
