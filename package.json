@@ -38,7 +38,7 @@
         "next-logger": "^4.0.0",
         "nextleton": "^0.6.1",
         "node-cron": "^3.0.3",
-        "pino": "^9.0.0",
+        "pino": "^9.1.0",
         "postcss": "^8.4.38",
         "prisma": "5.13.0",
         "react": "^18.3.1",
