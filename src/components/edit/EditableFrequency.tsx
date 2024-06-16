@@ -45,7 +45,7 @@ function EditableStatus({ teamId, frequency, weekSkew, postDay, postHour, hasAct
                 />
             )}
             {hasActiveAsk ? (
-                <Tooltip content="Frekvens kan ikke redigeres når det er en aktiv spRring">
+                <Tooltip content="Frekvens kan ikke redigeres når det er en aktiv spørring">
                     <PadlockLockedIcon className="absolute top-3 right-3 text-2xl" />
                 </Tooltip>
             ) : edit ? (
@@ -61,7 +61,7 @@ function EditableStatus({ teamId, frequency, weekSkew, postDay, postHour, hasAct
                 <Button
                     className="absolute top-2 right-2"
                     icon={<PencilIcon />}
-                    title="Rediger team navn"
+                    title="Rediger frekvens"
                     onClick={() => setEdit(true)}
                     size="small"
                     variant="tertiary-neutral"
