@@ -1983,13 +1983,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bun-types@npm:^1.1.8":
-  version: 1.1.8
-  resolution: "bun-types@npm:1.1.8"
+"bun-types@npm:^1.1.12":
+  version: 1.1.12
+  resolution: "bun-types@npm:1.1.12"
   dependencies:
     "@types/node": "npm:~20.12.8"
     "@types/ws": "npm:~8.5.10"
-  checksum: 10/6580b6ec39ce6bfe83fbb1aac5103688427673ac6424e162cf4f54feb94decfdb74bc123c66c51a33f4e0897e9af937c62f020be27934e45974c19c601490726
+  checksum: 10/4b345ed9a90c2b958d305b97cb7131e3f63f304800163e080f2aa9f031a84d85fd74427c79328910aafbf81fd93d12ac0d21d6f11937c684fa67e084b2fed591
   languageName: node
   linkType: hard
 
@@ -3903,7 +3903,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.8.0"
     "@typescript-eslint/parser": "npm:^7.8.0"
     autoprefixer: "npm:^10.4.19"
-    bun-types: "npm:^1.1.8"
+    bun-types: "npm:^1.1.12"
     clsx: "npm:^2.1.1"
     date-fns: "npm:^3.6.0"
     eslint: "npm:^8.57.0"
