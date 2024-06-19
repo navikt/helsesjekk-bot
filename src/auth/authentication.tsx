@@ -75,6 +75,13 @@ export async function getUsersGroups(): Promise<string[]> {
         )
     }
 
+    if (membersOf['@odata.nextLink'] != null) {
+        const user = getUser()
+        logger.error(
+            `Whops! A user (${user.email}) has more than max page groups (${membersOf.value.length}), time to implement pagination?`,
+        )
+    }
+
     return membersOf.value.map((group) => group.id)
 }
 

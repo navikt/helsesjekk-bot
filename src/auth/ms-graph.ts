@@ -21,7 +21,7 @@ export async function getMembersOf(): Promise<
         return { error: 'Du har ikke tilgang til å se dine grupper.' }
     }
 
-    const response = await fetch('https://graph.microsoft.com/v1.0/me/memberOf', {
+    const response = await fetch('https://graph.microsoft.com/v1.0/me/memberOf?$top=999', {
         headers: {
             Authorization: `Bearer ${tokenSet.token}`,
         },
