@@ -1,4 +1,5 @@
 import React, { ReactElement, Suspense } from 'react'
+import { unstable_noStore as noStore } from 'next/cache'
 import { Skeleton } from '@navikt/ds-react'
 import { Detail, Heading, BodyShort } from '@navikt/ds-react'
 import {
@@ -27,10 +28,7 @@ function Stats(): ReactElement {
 }
 
 async function StatsView(): Promise<ReactElement> {
-    //  Hack to not prerender stats on build
-    if (process.env.NAIS_DATABASE_HELSESJEKK_BOT_HELSESJEKK_BOT_URL === undefined) {
-        return <StatsSkeleton />
-    }
+    noStore()
 
     const stats = await funStats()
 
