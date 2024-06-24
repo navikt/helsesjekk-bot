@@ -97,17 +97,17 @@ export function nextOccurrence({ team, frequency, weekSkew }: NextOccurence): Ne
 }
 
 const setWeekDayHour = (week: number, day: number, hour: number): ((date: Date) => Date) =>
-    R.createPipe(
+    R.piped(
         setWeekWithOptions({ weekStartsOn: 1, locale: nb })(week),
         setDayWithOptions({ weekStartsOn: 1, locale: nb })(day),
         setHours(hour),
     )
 
 const setYearWeekDayHour = (year: number, week: number, day: number, hour: number): ((date: Date) => Date) =>
-    R.createPipe(setYear(year), setWeekDayHour(week, day, hour))
+    R.piped(setYear(year), setWeekDayHour(week, day, hour))
 
 const setDayHour = (day: number, hour: number): ((date: Date) => Date) =>
-    R.createPipe(setHours(hour), setDayWithOptions({ weekStartsOn: 1 })(day))
+    R.piped(setHours(hour), setDayWithOptions({ weekStartsOn: 1 })(day))
 
 export function nextOccurenceText(occurence: Date): string {
     const days = daysUntil(occurence)

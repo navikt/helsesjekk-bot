@@ -7,7 +7,7 @@ const nextConfig = {
         dirs: ['src'],
     },
     experimental: {
-        optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
+        optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons', 'remeda', 'recharts'],
         serverComponentsExternalPackages: ['@navikt/next-logger', 'next-logger', '@slack/bolt'],
     },
 }

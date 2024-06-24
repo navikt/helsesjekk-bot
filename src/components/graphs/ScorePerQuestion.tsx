@@ -4,12 +4,13 @@ import * as R from 'remeda'
 import React, { ReactElement } from 'react'
 import { Area, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { logger } from '@navikt/next-logger'
-
 import { Detail, Heading } from '@navikt/ds-react'
+import { TooltipProps } from 'recharts/types/component/Tooltip'
 
 import { getWeekNumber } from '../../utils/date'
 import { scoreToEmoji } from '../../utils/score'
 import { AnswerLevel, QuestionScorePerWeek } from '../../safe-types'
+import { raise } from '../../utils/ts-utils'
 
 type Props = QuestionScorePerWeek
 
@@ -77,7 +78,6 @@ function ScorePerQuestion(props: Props): ReactElement {
                             }
                         }}
                     />
-                    {/* @ts-expect-error This typing is wack */}
                     <Tooltip content={CustomTooltip} />
                 </ComposedChart>
             </ResponsiveContainer>
@@ -91,33 +91,24 @@ const colorMap: Record<AnswerLevel, string> = {
     BAD: 'rgba(179, 0, 12, 0.65)',
 }
 
-type CustomTooltipProps = {
-    payload: {
-        stroke: string
-        dataKey: string
-        payload: { timestamp: Date } & Record<number, { id: string; score: number }>
-    }[]
-    active: boolean
-}
+type CustomTooltipPayload = QuestionScorePerWeek['scoring'][number]
 
-function CustomTooltip({ payload, active }: CustomTooltipProps): ReactElement | null {
-    if (!active && payload.length === 0) return null
-    const [first] = payload
+function CustomTooltip({ payload, active }: TooltipProps<number, string>): ReactElement | null {
+    if (!active || !payload || payload.length === 0) return null
+
     const relevantValues = R.pipe(
         payload,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore :shrug:
         R.map((item) => R.pick(item, ['value', 'name'])),
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore :shrug:
-        R.flatMap((item) => (R.isObject(item.value) ? Object.entries(item.value) : [{ [item.name]: item.value }])),
-        R.flatMap(R.toPairs),
+        R.flatMap((item) => [{ [item.name ?? 'unknown']: item.value ?? 0 }]),
+        R.flatMap(R.entries()),
     )
+    const firstPayload: CustomTooltipPayload =
+        R.first(payload)?.payload ?? raise('Should always have at least 1 payload here')
 
     return (
         <div className="bg-white border border-border-default rounded p-2">
             <Detail>
-                Uke {getWeekNumber(first.payload.timestamp)}, {first.payload.timestamp.getFullYear()}
+                Uke {getWeekNumber(firstPayload.timestamp)}, {firstPayload.timestamp.getFullYear()}
             </Detail>
             {R.pipe(
                 relevantValues,

@@ -82,7 +82,7 @@ async function OverallGraph({ teamId }: { teamId: string }): Promise<ReactElemen
     }
 
     const earliest =
-        R.minBy(scoreTimeline, (it) => it.timestamp.getTime()) ??
+        R.firstBy(scoreTimeline, (it) => it.timestamp.getTime()) ??
         raise(new Error('Illegal state: Always min 1 element in this list'))
 
     return (

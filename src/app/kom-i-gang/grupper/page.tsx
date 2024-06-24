@@ -3,7 +3,7 @@ import * as R from 'remeda'
 import { Metadata } from 'next'
 import { Alert, Detail, Heading, Skeleton, BodyLong } from '@navikt/ds-react'
 
-import { getMembersOf, MsGraphGroup } from '../../../auth/ms-graph'
+import { getMembersOf } from '../../../auth/ms-graph'
 import BackLink from '../../../components/core/BackLink'
 import SortableGroups from '../../../components/groups/SortableGroups'
 
@@ -51,10 +51,7 @@ async function UserAdGroups(): Promise<ReactElement> {
             <SortableGroups
                 groups={R.pipe(
                     membersOf.value,
-                    R.sortBy.strict([
-                        (it: MsGraphGroup) => (it.displayName ?? '').toLowerCase().includes('team'),
-                        'desc',
-                    ]),
+                    R.sortBy([(it) => (it.displayName ?? '').toLowerCase().includes('team'), 'desc']),
                     R.map((it) => ({
                         id: it.id,
                         displayName: it.displayName ?? 'Gruppe uten navn',

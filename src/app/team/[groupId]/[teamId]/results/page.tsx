@@ -75,7 +75,7 @@ async function Page({ params }: Props): Promise<ReactElement> {
 
 async function PreviousAskedView({ teamId }: { teamId: string }): Promise<ReactElement> {
     const scoredAsks = await getTeamsScoredAsks(teamId)
-    const earliest = R.minBy(scoredAsks, (it) => it.timestamp.getTime())
+    const earliest = R.firstBy(scoredAsks, (it) => it.timestamp.getTime())
 
     if (scoredAsks.length === 0 || earliest == null) {
         return (
@@ -93,7 +93,7 @@ async function PreviousAskedView({ teamId }: { teamId: string }): Promise<ReactE
         )
     }
 
-    const withPrevious = R.pipe(scoredAsks, R.reverse(), (it) => R.zip.strict(it, [null, ...it]), R.reverse())
+    const withPrevious = R.pipe(scoredAsks, R.reverse(), (it) => R.zip(it, [null, ...it]), R.reverse())
 
     return (
         <div>
@@ -124,7 +124,7 @@ function ScoredAskView({
     ask: ScoredAsk
     previousAsk: ScoredAsk | null
 }): ReactElement {
-    const groups = R.groupBy.strict(ask.scoredQuestions, R.prop('type'))
+    const groups = R.groupBy(ask.scoredQuestions, R.prop('type'))
     const totalDiff = previousAsk ? ask.totalScore - previousAsk.totalScore : null
     return (
         <div className="bg-bg-subtle rounded p-4 grow max-w-sm">
@@ -143,7 +143,7 @@ function ScoredAskView({
                     </span>
                 )}
             </div>
-            {R.toPairs.strict(groups).map(([type, questions]) => (
+            {R.entries(groups).map(([type, questions]) => (
                 <div key={type}>
                     <Heading level="4" size="small">
                         {questionTypeToText(type as QuestionType)}

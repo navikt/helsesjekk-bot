@@ -15,7 +15,7 @@ type Props = {
     data: ({
         score: number
         timestamp: Date
-    } & Record<QuestionType, number>)[]
+    } & Partial<Record<QuestionType, number>>)[]
 }
 
 const colors = {
@@ -76,20 +76,18 @@ function GlobalScoreGraph({ data }: Props): ReactElement {
                             dot={({ key, ...rest }) => <CustomDot key={key} {...rest} />}
                         />
                     ) : (
-                        R.keys
-                            .strict(QuestionType)
-                            .map((questionType) => (
-                                <Line
-                                    key={questionType}
-                                    yAxisId="left"
-                                    type="monotone"
-                                    dataKey={questionType}
-                                    stroke={colors[questionType]}
-                                    strokeWidth={2}
-                                    isAnimationActive={false}
-                                    dot={({ key, ...rest }) => <CustomDot key={key} {...rest} />}
-                                />
-                            ))
+                        R.keys(QuestionType).map((questionType) => (
+                            <Line
+                                key={questionType}
+                                yAxisId="left"
+                                type="monotone"
+                                dataKey={questionType}
+                                stroke={colors[questionType]}
+                                strokeWidth={2}
+                                isAnimationActive={false}
+                                dot={({ key, ...rest }) => <CustomDot key={key} {...rest} />}
+                            />
+                        ))
                     )}
                     <Legend
                         formatter={(value) => {
@@ -127,8 +125,8 @@ function createCustomTooltip(samletScore: boolean): (props: CustomTooltipProps) 
                         <span>{first.payload.score.toFixed(2)}</span>
                     </div>
                 ) : (
-                    R.compact(
-                        R.keys.strict(QuestionType).map((questionType) =>
+                    R.filter(
+                        R.keys(QuestionType).map((questionType) =>
                             first.payload[questionType] != null ? (
                                 <div key={questionType} className="flex gap-2">
                                     <span>{scoreToEmoji(first.payload[questionType])}</span>
@@ -139,6 +137,7 @@ function createCustomTooltip(samletScore: boolean): (props: CustomTooltipProps) 
                                 </div>
                             ) : null,
                         ),
+                        R.isTruthy,
                     )
                 )}
             </div>

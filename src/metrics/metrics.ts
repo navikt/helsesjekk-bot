@@ -62,17 +62,17 @@ export function scoreAsked(asked: AskedWithAnswers): ScoredAsk {
     }
 }
 
-const groupAnswersByQuestionId: (answers: Answer[]) => Record<string, QuestionAnswer[]> = R.createPipe(
+const groupAnswersByQuestionId: (answers: Answer[]) => Record<string, QuestionAnswer[]> = R.piped(
     R.map(R.prop('answers')),
     R.flatMap(answerFromJsonb),
     R.groupBy(R.prop('questionId')),
 )
 
 const scoreAnswers = (answers: QuestionAnswer[]): number =>
-    R.pipe(answers, R.map(answerToValue), R.sumBy(R.identity), (it) => it / answers.length)
+    R.pipe(answers, R.map(answerToValue), R.sumBy(R.identity()), (it) => it / answers.length)
 
 function overallScore(scoredQuestions: ScoredQuestion[]): number {
-    return R.pipe(scoredQuestions, R.map(R.prop('score')), R.sumBy(R.identity), (it) => it / scoredQuestions.length)
+    return R.pipe(scoredQuestions, R.map(R.prop('score')), R.sumBy(R.identity()), (it) => it / scoredQuestions.length)
 }
 
 function answerToValue(answer: QuestionAnswer): number {
