@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'bun:test'
 import { parseISO } from 'date-fns'
 
-import { Frequency, getRelevantWeeks, nextOccurrence } from '../src/utils/frequency.ts'
+import { mockDate } from '../../tests/utils'
 
-import { mockDate } from './utils'
+import { Frequency, getRelevantWeeks, nextOccurrence } from './frequency'
 
 describe('weekly frequency', () => {
     test('same day, should provide today as nextDate', () => {

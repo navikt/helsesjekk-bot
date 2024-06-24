@@ -2,12 +2,12 @@ import { test, expect, mock, describe, Mock } from 'bun:test'
 import type { App } from '@slack/bolt'
 import type { Team } from '@prisma/client'
 
-import { askRelevantTeams, revealRelevantTeams } from '../src/bot/messages/message-jobs.ts'
-import { defaultQuestions } from '../src/questions/default.ts'
-import { questionsToJsonb } from '../src/questions/jsonb-utils.ts'
-import { raise } from '../src/utils/ts-utils.ts'
+import { defaultQuestions } from '../../questions/default'
+import { questionsToJsonb } from '../../questions/jsonb-utils'
+import { raise } from '../../utils/ts-utils'
+import { mockDate } from '../../../tests/utils'
 
-import { mockDate } from './utils.ts'
+import { askRelevantTeams, revealRelevantTeams } from './message-jobs'
 
 const fakeApp: App = {} as App
 
@@ -257,7 +257,7 @@ function mockDb(teams: TeamWithQueries[], revealTeams: TeamWithQueries[]): void 
         revealTeams.find((it) => it.team.id === id) ??
         raise(new Error(`No team with id ${id} found`))
 
-    mock.module('../src/db/index.ts', () => ({
+    mock.module('../../db/index.ts', () => ({
         getActiveTeams: () => teams.map((it) => it.team),
         getTeamsToReveal: () => revealTeams.map((it) => it.team),
         getBrokenAsks: () => [],
@@ -279,7 +279,7 @@ function mockSlack(): {
         revealTeam: mock(() => void 0),
     }
 
-    mock.module('../src/bot/messages/message-poster.ts', () => mockedSlack)
+    mock.module('../../bot/messages/message-poster.ts', () => mockedSlack)
 
     return mockedSlack
 }

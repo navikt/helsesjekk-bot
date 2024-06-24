@@ -849,6 +849,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/bun@npm:^1.1.5":
+  version: 1.1.5
+  resolution: "@types/bun@npm:1.1.5"
+  dependencies:
+    bun-types: "npm:1.1.14"
+  checksum: 10/c2a02adecf40cd52bffef694575c294db68d030590156a38365e8efaeabb6d5d6d21c76e8efc87551072936c3d29e913c2de27e8b646f4aeacfb0a9c8f09fc2d
+  languageName: node
+  linkType: hard
+
 "@types/connect@npm:*":
   version: 3.4.35
   resolution: "@types/connect@npm:3.4.35"
@@ -1978,13 +1987,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bun-types@npm:^1.1.16":
-  version: 1.1.16
-  resolution: "bun-types@npm:1.1.16"
+"bun-types@npm:1.1.14":
+  version: 1.1.14
+  resolution: "bun-types@npm:1.1.14"
   dependencies:
     "@types/node": "npm:~20.12.8"
     "@types/ws": "npm:~8.5.10"
-  checksum: 10/4b01447391bee300bb24b04d39b812c1ad4332e9f0638d60005f9a49038db5c4bcbc78b9e936e91efef3817c94751104619ede5f9ad8f3485f814a319cd34126
+  checksum: 10/a820e413828f03ab471b088e89176531156f99868ef73bdf39dd337ca914ebf3b8bfda303d868af614ed4258a5f1f7d21a3b95381f9189bb21f1b91080958f45
   languageName: node
   linkType: hard
 
@@ -3890,6 +3899,7 @@ __metadata:
     "@slack/bolt": "npm:^3.19.0"
     "@slack/logger": "npm:^4.0.0"
     "@slack/types": "npm:^2.12.0"
+    "@types/bun": "npm:^1.1.5"
     "@types/node": "npm:^20.14.8"
     "@types/node-cron": "npm:^3.0.11"
     "@types/react": "npm:18.3.3"
@@ -3897,7 +3907,6 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^7.13.1"
     "@typescript-eslint/parser": "npm:^7.13.1"
     autoprefixer: "npm:^10.4.19"
-    bun-types: "npm:^1.1.16"
     clsx: "npm:^2.1.1"
     date-fns: "npm:^3.6.0"
     eslint: "npm:^8.57.0"

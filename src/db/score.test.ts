@@ -2,11 +2,14 @@ import { describe, expect, mock, test } from 'bun:test'
 import type { Answer, Asked, Team } from '@prisma/client'
 import { addWeeks } from 'date-fns'
 
-import { getTeamScorePerQuestion, getTeamScoreTimeline } from '../src/db/score.ts'
-import { questionsToJsonb } from '../src/questions/jsonb-utils.ts'
-import { Question, QuestionType } from '../src/safe-types.ts'
-import { AnswerLevel, QuestionAnswer } from '../src/db'
-import { getWeekNumber } from '../src/utils/date.ts'
+import { questionsToJsonb } from '../questions/jsonb-utils'
+import { Question, QuestionType } from '../safe-types'
+import { getWeekNumber } from '../utils/date'
+import { expectNoError } from '../../tests/utils'
+
+import { getTeamScorePerQuestion, getTeamScoreTimeline } from './score'
+
+import { AnswerLevel, QuestionAnswer } from './'
 
 const TEAM = 'ex-team'
 const HIGH = AnswerLevel.GOOD
@@ -25,8 +28,10 @@ describe('getTeamScoreTimeline', () => {
             ]),
         ])
 
-        const [firstWeek] = await getTeamScoreTimeline(TEAM)
+        const result = await getTeamScoreTimeline(TEAM)
+        expectNoError(result)
 
+        const firstWeek = result[0]
         expect(getWeekNumber(firstWeek.timestamp)).toEqual(18)
         expect(firstWeek.score).toEqual(5)
     })
@@ -40,7 +45,10 @@ describe('getTeamScoreTimeline', () => {
             ]),
         ])
 
-        const [firstWeek] = await getTeamScoreTimeline(TEAM)
+        const result = await getTeamScoreTimeline(TEAM)
+        expectNoError(result)
+
+        const firstWeek = result[0]
 
         expect(getWeekNumber(firstWeek.timestamp)).toEqual(18)
         expect(firstWeek.score.toFixed(2)).toEqual('2.83')
@@ -64,7 +72,10 @@ describe('getTeamScorePerQuestion', () => {
             ]),
         ])
 
-        const [q1, q2, q3] = await getTeamScorePerQuestion(TEAM)
+        const result = await getTeamScorePerQuestion(TEAM)
+        expectNoError(result)
+
+        const [q1, q2, q3] = result
 
         expect(q1.scoring[0].averageScore).toEqual(5)
         expect(q1.scoring[0].distribution).toEqual({ GOOD: 3, MEDIUM: 0, BAD: 0 })
@@ -84,7 +95,7 @@ describe('getTeamScorePerQuestion', () => {
 })
 
 function mockDb(asked: Asked[]): void {
-    mock.module('../src/db/prisma.ts', () => ({
+    mock.module('./prisma.ts', () => ({
         prisma: () => ({
             team: {
                 findFirst: () => createTeam(asked),
@@ -99,7 +110,7 @@ const testQuestions: Question[] = [
         question: 'How are you?',
         answers: {
             LOW: 'Not good',
-            MEDIUM: 'Okay',
+            MID: 'Okay',
             HIGH: 'Great',
         },
         type: QuestionType.TEAM_HEALTH,
@@ -110,7 +121,7 @@ const testQuestions: Question[] = [
         question: 'How was your day?',
         answers: {
             LOW: 'Bad',
-            MEDIUM: 'Okay',
+            MID: 'Okay',
             HIGH: 'Good',
         },
         type: QuestionType.SPEED,
@@ -121,7 +132,7 @@ const testQuestions: Question[] = [
         question: 'How are you feeling?',
         answers: {
             LOW: 'Sad',
-            MEDIUM: 'Okay',
+            MID: 'Okay',
             HIGH: 'Happy',
         },
         type: QuestionType.TECH,
@@ -129,7 +140,7 @@ const testQuestions: Question[] = [
     },
 ]
 
-function createTeam(asks: Asked[]): Team & { Asked: Asked } {
+function createTeam(asks: Asked[]): Team & { Asked: Asked[] } {
     return {
         id: TEAM,
         revealDay: 4,
@@ -148,12 +159,14 @@ function createTeam(asks: Asked[]): Team & { Asked: Asked } {
 
 function createAsk(answered: Date = new Date(), answers?: Answer[]): Asked & { answers: Answer[] } {
     return {
-        id: 'ask-1',
+        id: 1,
         teamId: TEAM,
         timestamp: answered,
         revealed: true,
         skipped: false,
-        questions: testQuestions,
+        messageTs: '',
+        nagged: false,
+        questions: questionsToJsonb(testQuestions),
         answers: answers ?? [],
     }
 }
