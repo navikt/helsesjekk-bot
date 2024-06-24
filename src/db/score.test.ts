@@ -3,13 +3,13 @@ import type { Answer, Asked, Team } from '@prisma/client'
 import { addWeeks } from 'date-fns'
 
 import { questionsToJsonb } from '../questions/jsonb-utils'
-import { Question, QuestionType } from '../safe-types'
 import { getWeekNumber } from '../utils/date'
 import { expectNoError } from '../../tests/utils'
+import { testQuestions } from '../../tests/data'
 
 import { getTeamScorePerQuestion, getTeamScoreTimeline } from './score'
 
-import { AnswerLevel, QuestionAnswer } from './'
+import { AnswerLevel, AskedWithAnswers, QuestionAnswer } from './'
 
 const TEAM = 'ex-team'
 const HIGH = AnswerLevel.GOOD
@@ -104,42 +104,6 @@ function mockDb(asked: Asked[]): void {
     }))
 }
 
-const testQuestions: Question[] = [
-    {
-        questionId: 'question-1',
-        question: 'How are you?',
-        answers: {
-            LOW: 'Not good',
-            MID: 'Okay',
-            HIGH: 'Great',
-        },
-        type: QuestionType.TEAM_HEALTH,
-        custom: true,
-    },
-    {
-        questionId: 'question-2',
-        question: 'How was your day?',
-        answers: {
-            LOW: 'Bad',
-            MID: 'Okay',
-            HIGH: 'Good',
-        },
-        type: QuestionType.SPEED,
-        custom: true,
-    },
-    {
-        questionId: 'question-3',
-        question: 'How are you feeling?',
-        answers: {
-            LOW: 'Sad',
-            MID: 'Okay',
-            HIGH: 'Happy',
-        },
-        type: QuestionType.TECH,
-        custom: true,
-    },
-]
-
 function createTeam(asks: Asked[]): Team & { Asked: Asked[] } {
     return {
         id: TEAM,
@@ -157,7 +121,7 @@ function createTeam(asks: Asked[]): Team & { Asked: Asked[] } {
     }
 }
 
-function createAsk(answered: Date = new Date(), answers?: Answer[]): Asked & { answers: Answer[] } {
+function createAsk(answered: Date = new Date(), answers?: Answer[]): AskedWithAnswers {
     return {
         id: 1,
         teamId: TEAM,
