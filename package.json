@@ -2,7 +2,7 @@
     "name": "helsesjekk",
     "version": "1.0.0",
     "license": "MIT",
-    "packageManager": "yarn@4.2.2",
+    "packageManager": "yarn@4.3.1",
     "engines": {
         "node": "20"
     },
