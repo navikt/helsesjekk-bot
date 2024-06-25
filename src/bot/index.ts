@@ -3,7 +3,7 @@ import { configureHealthCheckEventsHandler } from './events/healthcheck/healthch
 import { configureSettingsEventsHandler } from './events/settings/settings-event-handler'
 import { configureCommandsHandler } from './commands/commands-handler'
 import { configureEventsHandler } from './events/events-handler'
-import createApp from './app'
+import createApp, { App } from './app'
 import { botLogger } from './bot-logger'
 
 const handlers = [
@@ -14,7 +14,7 @@ const handlers = [
     configureHealthCheckEventsHandler,
 ]
 
-export async function startBot(): Promise<void> {
+export async function startBot(): Promise<App> {
     botLogger.info('Setting up bolt app...')
 
     const app = createApp()
@@ -22,4 +22,6 @@ export async function startBot(): Promise<void> {
     await app.start()
 
     botLogger.info(`Started bolt app in socket mode`)
+
+    return app
 }
