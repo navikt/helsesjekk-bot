@@ -47,9 +47,9 @@ export function scoreAsked(asked: AskedWithAnswers): ScoredAsk {
                         [AnswerLevel.BAD]: it.answers['LOW'],
                     },
                     distribution: {
-                        [AnswerLevel.GOOD]: 0,
-                        [AnswerLevel.MEDIUM]: 0,
-                        [AnswerLevel.BAD]: 0,
+                        [AnswerLevel.GOOD]: null,
+                        [AnswerLevel.MEDIUM]: null,
+                        [AnswerLevel.BAD]: null,
                     },
                     type: it.type,
                     score: 0,
