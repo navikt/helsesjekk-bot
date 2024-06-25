@@ -34,4 +34,16 @@ export const testQuestions: Question[] = [
         type: QuestionType.TECH,
         custom: true,
     },
+    {
+        questionId: 'question-4',
+        question: 'Is this an optional question?',
+        answers: {
+            LOW: 'No',
+            MID: 'Maybe',
+            HIGH: 'Yes',
+        },
+        type: QuestionType.TEAM_HEALTH,
+        custom: true,
+        required: false,
+    },
 ]

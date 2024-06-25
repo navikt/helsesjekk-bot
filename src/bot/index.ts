@@ -14,7 +14,7 @@ const handlers = [
     configureHealthCheckEventsHandler,
 ]
 
-export async function startBot(): Promise<App> {
+export async function createBot(): Promise<App> {
     botLogger.info('Setting up bolt app...')
 
     const app = createApp()
