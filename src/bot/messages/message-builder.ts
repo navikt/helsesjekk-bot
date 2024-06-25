@@ -175,7 +175,7 @@ function addQuestionDiff(question: ScoredQuestion, previousScoredAsk: ScoredAsk 
 
     const previousQuestion = previousScoredAsk.scoredQuestions.find((it) => it.id === question.id)
 
-    if (previousQuestion == null) return ''
+    if (previousQuestion == null || previousQuestion.score === 0) return ''
 
     return addDiff(question.score, previousQuestion.score)
 }

@@ -102,9 +102,10 @@ export async function getTeamScorePerQuestion(teamId: string): Promise<QuestionS
         ],
     })
 
-    const questionScorePerWeek = R.pipe(
+    return R.pipe(
         scoredAsks,
         R.flatMap(({ timestamp, scoredQuestions }) => scoredQuestions.map((question) => ({ ...question, timestamp }))),
+        R.filter((it) => it.score !== 0),
         R.map(scoredQuestionToScorePerWeek),
         R.reduce(
             (acc, it) => {
@@ -125,7 +126,6 @@ export async function getTeamScorePerQuestion(teamId: string): Promise<QuestionS
             ),
         })),
     )
-    return questionScorePerWeek
 }
 
 type ScoredWeek = {

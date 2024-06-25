@@ -149,8 +149,20 @@ function ScoredAskView({
                         {questionTypeToText(type as QuestionType)}
                     </Heading>
                     {questions.map((question) => {
+                        if (question.score === 0) {
+                            // Optional question with not enough answers
+                            return (
+                                <div key={question.id} className="flex gap-2 items-center">
+                                    <span className="mt-0.5">⚠️</span>
+                                    <span>{question.question}</span>
+                                    <span>({question.answerCount} svar):</span>
+                                    <span className="italic">Ikke nok svar</span>
+                                </div>
+                            )
+                        }
+
                         const previousQuestion =
-                            previousAsk?.scoredQuestions.find((it) => it.id === question.id) ?? null
+                            previousAsk?.scoredQuestions.find((it) => it.id === question.id && it.score !== 0) ?? null
                         const diff = previousQuestion ? question.score - previousQuestion.score : null
 
                         return (
