@@ -62,7 +62,7 @@ function AddQuestion({ teamId }: Props): ReactElement {
                             disabled={saving}
                             defaultValue={QuestionType.TEAM_HEALTH}
                         >
-                            {R.map(R.keys.strict(QuestionType), (it) => (
+                            {R.map(R.keys(QuestionType), (it) => (
                                 <option key={it} value={it}>
                                     {questionTypeToText(it as QuestionType)}
                                 </option>

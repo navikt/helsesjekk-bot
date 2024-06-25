@@ -4,7 +4,7 @@ import { groupBy } from 'remeda'
 
 import { AnswerLevel, Team, Asked, QuestionAnswer } from '../../../db'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
-import { addIf, plainHeader, textSection } from '../modal-utils'
+import { addIfArray, plainHeader, textSection } from '../modal-utils'
 import { questionTypeToText } from '../../../utils/asked'
 import { Question, QuestionType } from '../../../safe-types'
 
@@ -45,23 +45,23 @@ export function createHealthCheckModalBlocks(
     questions: Question[],
     existingAnswers: QuestionAnswer[] | null,
 ): (KnownBlock | Block)[] {
-    const grouped: Record<QuestionType, Question[]> = groupBy(questions, (q) => q.type)
+    const grouped = groupBy(questions, (q) => q.type)
     const allQuestionBlocks = [
-        ...addIf(grouped.TEAM_HEALTH && grouped.TEAM_HEALTH.length > 0, () => [
+        ...addIfArray(grouped.TEAM_HEALTH, (teamHealth) => [
             plainHeader(questionTypeToText(QuestionType.TEAM_HEALTH)),
-            ...grouped.TEAM_HEALTH.map((question) => createSelectSectionBlock(question, existingAnswers)),
+            ...teamHealth.map((question) => createSelectSectionBlock(question, existingAnswers)),
         ]),
-        ...addIf(grouped.SPEED && grouped.SPEED.length > 0, () => [
+        ...addIfArray(grouped.SPEED, (speed) => [
             plainHeader(questionTypeToText(QuestionType.SPEED)),
-            ...grouped.SPEED.map((question) => createSelectSectionBlock(question, existingAnswers)),
+            ...speed.map((question) => createSelectSectionBlock(question, existingAnswers)),
         ]),
-        ...addIf(grouped.TECH && grouped.TECH.length > 0, () => [
+        ...addIfArray(grouped.TECH, (tech) => [
             plainHeader(questionTypeToText(QuestionType.TECH)),
-            ...grouped.TECH.map((question) => createSelectSectionBlock(question, existingAnswers)),
+            ...tech.map((question) => createSelectSectionBlock(question, existingAnswers)),
         ]),
-        ...addIf(grouped.OTHER && grouped.OTHER.length > 0, () => [
+        ...addIfArray(grouped.OTHER, (other) => [
             plainHeader(questionTypeToText(QuestionType.OTHER)),
-            ...grouped.OTHER.map((question) => createSelectSectionBlock(question, existingAnswers)),
+            ...other.map((question) => createSelectSectionBlock(question, existingAnswers)),
         ]),
     ]
 

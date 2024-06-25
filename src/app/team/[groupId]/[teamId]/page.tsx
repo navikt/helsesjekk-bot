@@ -138,7 +138,7 @@ function ActiveAsk({
 }
 
 function Questions({ teamId, questions }: { teamId: string; questions: Question[] }): ReactElement {
-    const groups = R.groupBy.strict(questions, R.prop('type'))
+    const groups = R.groupBy(questions, R.prop('type'))
 
     return (
         <div>
@@ -146,7 +146,7 @@ function Questions({ teamId, questions }: { teamId: string; questions: Question[
                 Spørsmål ({questions.length})
             </Heading>
             <div className="flex flex-col gap-4">
-                {R.toPairs.strict(groups).map(([type, questions]) => (
+                {R.entries(groups).map(([type, questions]) => (
                     <div key={type}>
                         <Heading size="small" level="3" spacing>
                             {questionTypeToText(type as QuestionType)}

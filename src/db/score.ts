@@ -116,7 +116,7 @@ export async function getTeamScorePerQuestion(teamId: string): Promise<QuestionS
             },
             {} as Record<string, QuestionScorePerWeek>,
         ),
-        R.values,
+        R.values(),
         R.map((it) => ({
             ...it,
             scoring: R.pipe(
@@ -128,36 +128,32 @@ export async function getTeamScorePerQuestion(teamId: string): Promise<QuestionS
     return questionScorePerWeek
 }
 
-export async function getGlobalScoreTimeline(): Promise<
-    ({
-        timestamp: Date
-        score: number
-        answers: number
-    } & Record<QuestionType, number>)[]
-> {
+type ScoredWeek = {
+    timestamp: Date
+    score: number
+    answers: number
+} & Partial<Record<QuestionType, number>>
+
+export async function getGlobalScoreTimeline(): Promise<ScoredWeek[]> {
     const completedAsks = await prisma().asked.findMany({
         where: { revealed: true, skipped: false, team: { active: true } },
         include: { answers: true },
     })
 
-    const scoresPerWeek = R.pipe(
+    return R.pipe(
         completedAsks,
         R.filter((asked) => asked.answers.length > 0),
         R.sortBy(R.prop('timestamp')),
         R.groupBy((it) => `${getYear(it.timestamp)}-${getWeekNumber(it.timestamp)}`),
-        R.toPairs,
-        R.fromPairs.strict,
         R.mapValues(R.map(scoreAsked)),
-        R.mapValues((scoredAsks) => {
+        R.mapValues((scoredAsks): ScoredWeek => {
             const sum = R.sumBy(scoredAsks, R.prop('totalScore'))
             const scorePerCategory = R.pipe(
                 scoredAsks,
                 R.flatMap((it) => it.scoredQuestions),
-                R.groupBy.strict(R.prop('type')),
+                R.groupBy((it) => it.type),
                 R.mapValues((it) => {
-                    // @ts-expect-error TODO: improve typing
                     const sum = R.sumBy(it, R.prop('score'))
-                    // @ts-expect-error TODO: improve typing
                     return sum / it.length
                 }),
             )
@@ -167,12 +163,10 @@ export async function getGlobalScoreTimeline(): Promise<
                 score: sum / scoredAsks.length,
                 answers: R.sumBy(scoredAsks, (it) => it.answerCount),
                 ...scorePerCategory,
-            }
+            } satisfies ScoredWeek
         }),
-        R.values,
+        R.values(),
     )
-
-    return scoresPerWeek
 }
 
 export async function getTeamsScoredAsks(teamId: string): Promise<ScoredAsk[]> {

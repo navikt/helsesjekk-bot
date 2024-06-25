@@ -57,7 +57,7 @@ export function configureHealthCheckEventsHandler(app: App): void {
 
         const answers: [questionId: string, value: string][] = R.pipe(
             view.state.values,
-            R.values,
+            R.values(),
             R.map(R.prop('radio-button-group-answer')),
             R.map((it) => it.selected_option?.value ?? ''),
             R.map(getIdValueFromAnswer),

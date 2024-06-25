@@ -24,3 +24,14 @@ export function addIf<T>(condition: boolean, block: () => T | T[]): T[] {
     }
     return []
 }
+
+export function addIfArray<Value, ReturnValue>(
+    array: Value[] | undefined | null,
+    block: (array: Value[]) => ReturnValue | ReturnValue[],
+): ReturnValue[] {
+    if (array != null && array.length > 0) {
+        const result = block(array)
+        return Array.isArray(result) ? result : [result]
+    }
+    return []
+}

@@ -6,7 +6,6 @@ import { dayIndexToDay, getWeekNumber } from '../../utils/date'
 import { ScoredAsk, ScoredQuestion } from '../../metrics/metrics'
 import { plainHeader, textSection } from '../events/modal-utils'
 import { questionTypeToText } from '../../utils/asked'
-import { toPairsTyped } from '../../utils/remeda'
 import { scoreToEmoji } from '../../utils/score'
 import { QuestionType } from '../../safe-types'
 
@@ -145,11 +144,7 @@ export function createCountMetricsContext(responses: number, revealHour: number,
 }
 
 function createScoreMrkdwn(scoredAsk: ScoredAsk, previousScoredAsk: ScoredAsk | null): string {
-    const grouped = R.pipe(
-        scoredAsk.scoredQuestions,
-        R.groupBy(R.prop('type')),
-        toPairsTyped<QuestionType, ScoredQuestion[]>,
-    )
+    const grouped = R.pipe(scoredAsk.scoredQuestions, R.groupBy(R.prop('type')), R.entries())
 
     const createScoreLine = (question: ScoredQuestion): string =>
         `${scoreToEmoji(question.score)} *${question.question}*: ${question.score.toFixed(1)} ${addQuestionDiff(
@@ -158,7 +153,10 @@ function createScoreMrkdwn(scoredAsk: ScoredAsk, previousScoredAsk: ScoredAsk | 
         )}`
 
     return `${grouped
-        .map(([type, questions]) => `*${questionTypeToText(type)}*:\n${questions.map(createScoreLine).join('\n')}`)
+        .map(
+            ([type, questions]) =>
+                `*${questionTypeToText(type as QuestionType)}*:\n${questions.map(createScoreLine).join('\n')}`,
+        )
         .join('\n')}`
 }
 
