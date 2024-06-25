@@ -93,6 +93,10 @@ export function createScoreBlocks(
     scoredAsk: ScoredAsk,
     previousScoredAsk: ScoredAsk | null,
 ): (KnownBlock | Block)[] {
+    const hasOptionalLegend = scoredAsk.scoredQuestions.some((it) => it.optional)
+        ? '\n _* = antall svar på valgfritt spørsmål_'
+        : ''
+
     return [
         plainHeader(`Helsesjekkresultat for team ${team.name} i uke ${getWeekNumber(asked.timestamp)}`),
         {
@@ -111,7 +115,7 @@ export function createScoreBlocks(
                 )} ${scoredAsk.totalScore.toFixed(1)} ${addDiff(
                     scoredAsk.totalScore,
                     previousScoredAsk?.totalScore ?? null,
-                )}`,
+                )}${hasOptionalLegend}`,
             },
         },
         {
@@ -146,11 +150,17 @@ export function createCountMetricsContext(responses: number, revealHour: number,
 function createScoreMrkdwn(scoredAsk: ScoredAsk, previousScoredAsk: ScoredAsk | null): string {
     const grouped = R.pipe(scoredAsk.scoredQuestions, R.groupBy(R.prop('type')), R.entries())
 
-    const createScoreLine = (question: ScoredQuestion): string =>
-        `${scoreToEmoji(question.score)} *${question.question}*: ${question.score.toFixed(1)} ${addQuestionDiff(
+    const createScoreLine = (question: ScoredQuestion): string => {
+        const optionalQuestionMarker = question.optional ? ` _(${question.answerCount}\*)_` : ''
+        if (question.score === 0) {
+            return `:warning: *${question.question}*${optionalQuestionMarker}: _Ikke nok svar_`
+        }
+
+        return `${scoreToEmoji(question.score)} *${question.question}*${optionalQuestionMarker}: ${question.score.toFixed(1)} ${addQuestionDiff(
             question,
             previousScoredAsk,
         )}`
+    }
 
     return `${grouped
         .map(

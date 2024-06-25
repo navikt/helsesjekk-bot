@@ -12,6 +12,8 @@ export interface ScoredQuestion {
     answers: Record<AnswerLevel, string>
     type: QuestionType
     distribution: QuestionScoreDistributrion
+    answerCount: number
+    optional: boolean
 }
 
 export type ScoredAsk = {
@@ -28,30 +30,56 @@ function getAnswersByLevel(answers: QuestionAnswer[], answerLevel: AnswerLevel):
 
 export function scoreAsked(asked: AskedWithAnswers): ScoredAsk {
     const questions = questionsFromJsonb(asked.questions)
-
     const answersByQuestionId = groupAnswersByQuestionId(asked.answers)
-    const scoredQuestions = questions.map((it) => {
-        const answers = answersByQuestionId[it.questionId]
-        const score = scoreAnswers(answers)
+    const scoredQuestions = R.pipe(
+        questions,
+        R.map((it) => {
+            const answers: QuestionAnswer[] | null = answersByQuestionId[it.questionId]
+            const required = it.required ?? true
+            if (!required && (answers == null || answers.length < 3)) {
+                // Optional question with 0-3 answers
+                return {
+                    id: it.questionId,
+                    question: it.question,
+                    answers: {
+                        [AnswerLevel.GOOD]: it.answers['HIGH'],
+                        [AnswerLevel.MEDIUM]: it.answers['MID'],
+                        [AnswerLevel.BAD]: it.answers['LOW'],
+                    },
+                    distribution: {
+                        [AnswerLevel.GOOD]: 0,
+                        [AnswerLevel.MEDIUM]: 0,
+                        [AnswerLevel.BAD]: 0,
+                    },
+                    type: it.type,
+                    score: 0,
+                    answerCount: answers?.length ?? 0,
+                    optional: true,
+                } satisfies ScoredQuestion
+            }
 
-        return {
-            id: it.questionId,
-            question: it.question,
-            it: it.answers,
-            answers: {
-                [AnswerLevel.GOOD]: it.answers['HIGH'],
-                [AnswerLevel.MEDIUM]: it.answers['MID'],
-                [AnswerLevel.BAD]: it.answers['LOW'],
-            },
-            score,
-            type: it.type,
-            distribution: {
-                [AnswerLevel.GOOD]: getAnswersByLevel(answers, AnswerLevel.GOOD),
-                [AnswerLevel.MEDIUM]: getAnswersByLevel(answers, AnswerLevel.MEDIUM),
-                [AnswerLevel.BAD]: getAnswersByLevel(answers, AnswerLevel.BAD),
-            },
-        }
-    })
+            const score = scoreAnswers(answers)
+
+            return {
+                id: it.questionId,
+                question: it.question,
+                answers: {
+                    [AnswerLevel.GOOD]: it.answers['HIGH'],
+                    [AnswerLevel.MEDIUM]: it.answers['MID'],
+                    [AnswerLevel.BAD]: it.answers['LOW'],
+                },
+                score,
+                type: it.type,
+                distribution: {
+                    [AnswerLevel.GOOD]: getAnswersByLevel(answers, AnswerLevel.GOOD),
+                    [AnswerLevel.MEDIUM]: getAnswersByLevel(answers, AnswerLevel.MEDIUM),
+                    [AnswerLevel.BAD]: getAnswersByLevel(answers, AnswerLevel.BAD),
+                },
+                answerCount: answers.length,
+                optional: !required,
+            } satisfies ScoredQuestion
+        }),
+    )
 
     return {
         totalScore: overallScore(scoredQuestions),
@@ -68,11 +96,14 @@ const groupAnswersByQuestionId: (answers: Answer[]) => Record<string, QuestionAn
     R.groupBy(R.prop('questionId')),
 )
 
-const scoreAnswers = (answers: QuestionAnswer[]): number =>
-    R.pipe(answers, R.map(answerToValue), R.sumBy(R.identity()), (it) => it / answers.length)
+const scoreAnswers = (answers: QuestionAnswer[]): number => {
+    return R.pipe(answers, R.map(answerToValue), R.sumBy(R.identity()), (it) => it / answers.length)
+}
 
 function overallScore(scoredQuestions: ScoredQuestion[]): number {
-    return R.pipe(scoredQuestions, R.map(R.prop('score')), R.sumBy(R.identity()), (it) => it / scoredQuestions.length)
+    const actualQuestions = scoredQuestions.filter((it) => it.answerCount >= 3)
+
+    return R.pipe(actualQuestions, R.map(R.prop('score')), R.sumBy(R.identity()), (it) => it / actualQuestions.length)
 }
 
 function answerToValue(answer: QuestionAnswer): number {
