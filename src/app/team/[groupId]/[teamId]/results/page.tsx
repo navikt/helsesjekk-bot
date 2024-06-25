@@ -2,7 +2,7 @@ import * as R from 'remeda'
 import React, { ReactElement, Suspense } from 'react'
 import { getYear } from 'date-fns'
 import { Metadata } from 'next'
-import { Heading, Skeleton, BodyLong, Detail } from '@navikt/ds-react'
+import { Heading, Skeleton, BodyLong, Detail, BodyShort } from '@navikt/ds-react'
 
 import { TeamNotAccesible, TeamNotFound } from '../../../../../components/errors/ErrorMessages'
 import { userHasAdGroup } from '../../../../../auth/authentication'
@@ -126,6 +126,8 @@ function ScoredAskView({
 }): ReactElement {
     const groups = R.groupBy(ask.scoredQuestions, R.prop('type'))
     const totalDiff = previousAsk ? ask.totalScore - previousAsk.totalScore : null
+    const hasOptionalQuestion = ask.scoredQuestions.some((it) => it.optional)
+
     return (
         <div className="bg-bg-subtle rounded p-4 grow max-w-sm">
             <Heading size="medium" level="4">
@@ -155,7 +157,7 @@ function ScoredAskView({
                                 <div key={question.id} className="flex gap-2 items-center">
                                     <span className="mt-0.5">⚠️</span>
                                     <span>{question.question}</span>
-                                    <span>({question.answerCount} svar):</span>
+                                    <span className="italic">({question.answerCount}*)</span>
                                     <span className="italic">Ikke nok svar</span>
                                 </div>
                             )
@@ -169,6 +171,7 @@ function ScoredAskView({
                             <div key={question.id} className="flex gap-2 items-center">
                                 <span className="mt-0.5">{scoreToEmoji(question.score)}</span>
                                 <span>{question.question}</span>
+                                {question.optional && <span className="italic">({question.answerCount}*)</span>}
                                 <span>{question.score.toFixed(2)}</span>
                                 {diff != null && (
                                     <span className="text-sm">
@@ -180,6 +183,11 @@ function ScoredAskView({
                     })}
                 </div>
             ))}
+            {hasOptionalQuestion && (
+                <BodyShort size="small" className="mt-2 italic">
+                    * Antall svar for valgfritt spørsmål
+                </BodyShort>
+            )}
             <div className="mt-2">
                 <a
                     href={createPermalink(channelId, ask.messageTs)}
