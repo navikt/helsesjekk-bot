@@ -59,8 +59,10 @@ export function configureHealthCheckEventsHandler(app: App): void {
             view.state.values,
             R.values(),
             R.map(R.prop('radio-button-group-answer')),
+            R.filter((it) => it.selected_option != null),
             R.map((it) => it.selected_option?.value ?? ''),
             R.map(getIdValueFromAnswer),
+            R.filter(([, value]) => value !== 'not-applicable'),
         )
 
         const userId = body.user.id

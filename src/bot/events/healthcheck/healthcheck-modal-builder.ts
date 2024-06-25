@@ -4,7 +4,7 @@ import { groupBy } from 'remeda'
 
 import { AnswerLevel, Team, Asked, QuestionAnswer } from '../../../db'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
-import { addIfArray, plainHeader, textSection } from '../modal-utils'
+import { addIf, addIfArray, plainHeader, textSection } from '../modal-utils'
 import { questionTypeToText } from '../../../utils/asked'
 import { Question, QuestionType } from '../../../safe-types'
 
@@ -102,6 +102,7 @@ export function createHealthCheckModalBlocks(
 }
 
 function createSelectSectionBlock(question: Question, existingAnswers: QuestionAnswer[] | null): InputBlock {
+    const requiredQuestion = question.required ?? true
     const existingAnswer = existingAnswers?.find((a) => a.questionId === question.questionId)
     const options = {
         [AnswerLevel.GOOD]: createRadioOption(question.questionId, `🟢 ${question.answers.HIGH}`, AnswerLevel.GOOD),
@@ -111,7 +112,7 @@ function createSelectSectionBlock(question: Question, existingAnswers: QuestionA
 
     return {
         type: 'input',
-        optional: !(question.required ?? true),
+        optional: !requiredQuestion,
         label: {
             type: 'plain_text',
             text: `${question.question}`,
@@ -120,12 +121,17 @@ function createSelectSectionBlock(question: Question, existingAnswers: QuestionA
             action_id: 'radio-button-group-answer',
             type: 'radio_buttons',
             initial_option: existingAnswer != null ? options[existingAnswer.answer] : undefined,
-            options: [options[AnswerLevel.GOOD], options[AnswerLevel.MEDIUM], options[AnswerLevel.BAD]],
+            options: [
+                options[AnswerLevel.GOOD],
+                options[AnswerLevel.MEDIUM],
+                options[AnswerLevel.BAD],
+                ...addIf(!requiredQuestion, () => createRadioOption(question.questionId, 'Ikke relevant', null)),
+            ],
         },
     }
 }
 
-function createRadioOption(id: string, text: string, value: AnswerLevel): Option {
+function createRadioOption(id: string, text: string, value: AnswerLevel | null): Option {
     return {
         text: {
             type: 'plain_text',
@@ -136,8 +142,8 @@ function createRadioOption(id: string, text: string, value: AnswerLevel): Option
     }
 }
 
-function createIdValue(questionId: string, answerLevel: AnswerLevel): string {
-    return `${questionId}:${answerLevel}`
+function createIdValue(questionId: string, answerLevel: AnswerLevel | null): string {
+    return `${questionId}:${answerLevel ?? 'not-applicable'}`
 }
 
 export function getIdValueFromAnswer(idValueString: string): [id: string, value: string] {
