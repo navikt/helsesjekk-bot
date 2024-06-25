@@ -105,6 +105,17 @@ function CustomTooltip({ payload, active }: TooltipProps<number, string>): React
     const firstPayload: CustomTooltipPayload =
         R.first(payload)?.payload ?? raise('Should always have at least 1 payload here')
 
+    if (!relevantValues.find(([key]) => key === 'averageScore')) {
+        return (
+            <div className="bg-white border border-border-default rounded p-2">
+                <Detail>
+                    Uke {getWeekNumber(firstPayload.timestamp)}, {firstPayload.timestamp.getFullYear()}
+                </Detail>
+                <div>Ikke nok svar denne uken</div>
+            </div>
+        )
+    }
+
     return (
         <div className="bg-white border border-border-default rounded p-2">
             <Detail>
@@ -148,7 +159,17 @@ function ScoreToDescription({ name }: { name: string }): string {
 }
 
 function CustomDot({ cx, cy, value }: { cx: number; cy: number; value: number }): ReactElement | null {
-    if (value == null) return null
+    if (value == null)
+        return (
+            <svg x={cx - 96 / 2} y="30%" width={96} height={48} fill="red">
+                <text textAnchor="middle" x="50%" y="50%" fontSize="28">
+                    ⚠️
+                </text>
+                <text textAnchor="middle" x="50%" y="78%" fontSize="12">
+                    Mindre enn 3 svar
+                </text>
+            </svg>
+        )
 
     return (
         <svg x={cx - 10} y={cy - 10} width={20} height={20} fill="red">

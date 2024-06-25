@@ -96,7 +96,7 @@ export async function getTeamScorePerQuestion(teamId: string): Promise<QuestionS
         scoring: [
             {
                 timestamp: scoredQuestion.timestamp,
-                averageScore: scoredQuestion.score,
+                averageScore: scoredQuestion.score === 0 ? null : scoredQuestion.score,
                 distribution: scoredQuestion.distribution,
             },
         ],
@@ -105,7 +105,6 @@ export async function getTeamScorePerQuestion(teamId: string): Promise<QuestionS
     return R.pipe(
         scoredAsks,
         R.flatMap(({ timestamp, scoredQuestions }) => scoredQuestions.map((question) => ({ ...question, timestamp }))),
-        R.filter((it) => it.score !== 0),
         R.map(scoredQuestionToScorePerWeek),
         R.reduce(
             (acc, it) => {

@@ -25,11 +25,11 @@ export interface Question {
 
 export type QuestionScoring = {
     timestamp: Date
-    averageScore: number
+    averageScore: number | null
     distribution: QuestionScoreDistributrion
 }
 
-export type QuestionScoreDistributrion = Record<AnswerLevel, number>
+export type QuestionScoreDistributrion = Record<AnswerLevel, number | null>
 
 export enum AnswerLevel {
     GOOD = 'GOOD',
