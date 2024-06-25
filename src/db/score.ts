@@ -16,7 +16,7 @@ export async function getTeamScoreTimeline(teamId: string): Promise<
     | { error: string }
 > {
     const team = await prisma().team.findFirst({
-        where: { active: true, id: teamId },
+        where: { id: teamId },
         include: {
             Asked: {
                 where: { revealed: true, skipped: false },
@@ -57,7 +57,7 @@ export async function getTeamScoreTimeline(teamId: string): Promise<
 
 export async function getTeamScorePerQuestion(teamId: string): Promise<QuestionScorePerWeek[] | { error: string }> {
     const team = await prisma().team.findFirst({
-        where: { active: true, id: teamId },
+        where: { id: teamId },
         include: {
             Asked: {
                 where: { revealed: true, skipped: false },
