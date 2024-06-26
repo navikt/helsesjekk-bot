@@ -8,7 +8,8 @@ const nextConfig = {
     },
     experimental: {
         optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons', 'remeda', 'recharts'],
-        serverComponentsExternalPackages: ['@navikt/next-logger', 'next-logger', '@slack/bolt'],
+        serverComponentsExternalPackages: ['prisma', '@navikt/next-logger', '@slack/bolt'],
+        instrumentationHook: true,
     },
 }
 
