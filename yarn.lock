@@ -3928,7 +3928,7 @@ __metadata:
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     recharts: "npm:^2.12.7"
-    remeda: "npm:^2.2.0"
+    remeda: "npm:^2.2.2"
     sharp: "npm:^0.33.4"
     tailwind-merge: "npm:^2.3.0"
     tailwindcss: "npm:^3.4.4"
@@ -6285,12 +6285,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remeda@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "remeda@npm:2.2.0"
+"remeda@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "remeda@npm:2.2.2"
   dependencies:
-    type-fest: "npm:^4.20.0"
-  checksum: 10/648c01475dece39eafdd95603ea8057f6f37bc060c8273c180fe64f805458b2fed93039c63b8b88d7cbb60c68f7eabe3e8df9ef5fecfd3d4de390c830f3d8c06
+    type-fest: "npm:^4.20.1"
+  checksum: 10/07fa46c06ca8c31c51864ef4929b5d1be4b72b65688ccc3c42501308a72ae00a0057b19a5b35bf4b2351bd0c1eee969ea8239fcb8ad1f3d526c3b23f0628fe2a
   languageName: node
   linkType: hard
 
@@ -7257,7 +7257,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^4.20.0":
+"type-fest@npm:^4.20.1":
   version: 4.20.1
   resolution: "type-fest@npm:4.20.1"
   checksum: 10/52dc64fae094949008afb79f21b02eca0289c8dc41ed1cfff88f343230edb476fca4815e1b5d58acf5e07fdc7a1b098504473b5931ef418e6f38a3edb70fc1df
