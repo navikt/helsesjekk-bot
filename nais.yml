@@ -12,8 +12,8 @@ spec:
     - 'https://helsesjekk-bot.intern.nav.no'
     - 'https://helsesjekk-bot.nav.no'
   replicas:
-    min: 1
-    max: 2
+    min: 2
+    max: 3
   observability:
     autoInstrumentation:
       enabled: true
@@ -43,9 +43,6 @@ spec:
       allowAllUsers: true
       enabled: true
       tenant: nav.no
-      claims:
-        extra:
-          - 'NAVident'
     sidecar:
       enabled: true
   accessPolicy:
