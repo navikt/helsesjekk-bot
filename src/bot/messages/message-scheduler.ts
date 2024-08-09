@@ -22,10 +22,15 @@ export async function cronJob(
 ): Promise<
     'skipped' | 'completed' | { partialError: { ask: unknown | null; reveal: unknown | null; inspect: unknown | null } }
 > {
-    const isPodLeader = await isLeader()
-    if (!isPodLeader) {
-        cronLogger.info('Not the pod leader, skipping scheduled job')
-        return 'skipped'
+    try {
+        const isPodLeader = await isLeader()
+        if (!isPodLeader) {
+            cronLogger.info('Not the pod leader, skipping scheduled job')
+            return 'skipped'
+        }
+    } catch (e) {
+        logger.error(new Error('Failed to check if pod is leader', { cause: e }))
+        throw e
     }
 
     cronLogger.info('Running scheduled job, checking for messages to post')
