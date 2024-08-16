@@ -453,13 +453,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^1.25.0":
-  version: 1.25.0
-  resolution: "@navikt/next-logger@npm:1.25.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F1.25.0%2F889c2bb99e1efb587552ffcf3869980ab23033db"
+"@navikt/next-logger@npm:^1.30.0":
+  version: 1.30.0
+  resolution: "@navikt/next-logger@npm:1.30.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F1.30.0%2Fa6b08ece409dc0a126e150edb46e067c57316ac4"
   peerDependencies:
     next: 12 || 13 || 14
     pino: 8 || 9
-  checksum: 10/88dea22380d57c57560eec2970d63172834bd84eeea0aa71da62eef62d5b141894a0c511f0b154ea63f02f0c6534112478422e0d8d489d1118a4db362afdd4d9
+  checksum: 10/fed363f85d8e19536f0f56f47618467ec9ae818da4e49e3fea3ecca5070ded53459eb5791804dbee619d1bd8a33ac72778415906a5db2c4e2133d19809104790
   languageName: node
   linkType: hard
 
@@ -695,26 +695,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@slack/bolt@npm:^3.20.0":
-  version: 3.20.0
-  resolution: "@slack/bolt@npm:3.20.0"
+"@slack/bolt@npm:^3.21.1":
+  version: 3.21.1
+  resolution: "@slack/bolt@npm:3.21.1"
   dependencies:
     "@slack/logger": "npm:^4.0.0"
-    "@slack/oauth": "npm:^2.6.2"
-    "@slack/socket-mode": "npm:^1.3.3"
+    "@slack/oauth": "npm:^2.6.3"
+    "@slack/socket-mode": "npm:^1.3.6"
     "@slack/types": "npm:^2.11.0"
-    "@slack/web-api": "npm:^6.11.2"
+    "@slack/web-api": "npm:^6.12.1"
     "@types/express": "npm:^4.16.1"
     "@types/promise.allsettled": "npm:^1.0.3"
     "@types/tsscmp": "npm:^1.0.0"
-    axios: "npm:^1.7.3"
+    axios: "npm:^1.7.4"
     express: "npm:^4.16.4"
     path-to-regexp: "npm:^6.2.1"
     please-upgrade-node: "npm:^3.2.0"
     promise.allsettled: "npm:^1.0.2"
     raw-body: "npm:^2.3.3"
     tsscmp: "npm:^1.0.6"
-  checksum: 10/552e188bc4667fd90603c4960db2d7a65c85f0b7de7cf7f78b91dc932069d4a0172107fac77e91273987c50b789d435c764f08f77f242a2884336bd27296eba0
+  checksum: 10/da28966328ecbb708ee821f2603fb8959c3b7814fcc240a0fe0882e6c63117750d105fd0ea97412949daa8c22cf84b26ead55419594c021e64ec1519120d573e
   languageName: node
   linkType: hard
 
@@ -736,35 +736,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@slack/oauth@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "@slack/oauth@npm:2.6.2"
+"@slack/oauth@npm:^2.6.3":
+  version: 2.6.3
+  resolution: "@slack/oauth@npm:2.6.3"
   dependencies:
     "@slack/logger": "npm:^3.0.0"
-    "@slack/web-api": "npm:^6.11.2"
+    "@slack/web-api": "npm:^6.12.1"
     "@types/jsonwebtoken": "npm:^8.3.7"
     "@types/node": "npm:>=12"
     jsonwebtoken: "npm:^9.0.0"
     lodash.isstring: "npm:^4.0.1"
-  checksum: 10/e3ffe515493332bd2b735cc5b418f49ce8192a2b72afdbe45bc71d88611cd44da860c8714c3ecdb5f32447f21970b8e0b4fa6c1132378a09d0432fa0a985be38
+  checksum: 10/162668312f63ef146db100bd7e21df38160f2a25878d9b447713316e8d128ab83ff1f1cd6b5130d123460cae85faa9d6de2b07caa4d2a3facaee02ee3f53570e
   languageName: node
   linkType: hard
 
-"@slack/socket-mode@npm:^1.3.3":
-  version: 1.3.4
-  resolution: "@slack/socket-mode@npm:1.3.4"
+"@slack/socket-mode@npm:^1.3.6":
+  version: 1.3.6
+  resolution: "@slack/socket-mode@npm:1.3.6"
   dependencies:
     "@slack/logger": "npm:^3.0.0"
-    "@slack/web-api": "npm:^6.11.2"
+    "@slack/web-api": "npm:^6.12.1"
     "@types/node": "npm:>=12.0.0"
-    "@types/p-queue": "npm:^2.3.2"
     "@types/ws": "npm:^7.4.7"
-    eventemitter3: "npm:^3.1.0"
+    eventemitter3: "npm:^5"
     finity: "npm:^0.5.4"
-    p-cancelable: "npm:^1.1.0"
-    p-queue: "npm:^2.4.2"
     ws: "npm:^7.5.3"
-  checksum: 10/12a38687be2005f755244b6a6ec33335b4416ee44d2f44f3a71d5a1f5cfba7a7cfbdf1578884491c36c5e8196ad7e33862d2614e969b9e5f139abc34fe2cbce4
+  checksum: 10/3f3178a3f0f70926d819046db97d3a2eac039a9770a8d3c349306070702e669c3df5e63818561e3df28f48d5d51a3224bf6139c46517d8028108ea6158405437
   languageName: node
   linkType: hard
 
@@ -775,22 +772,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@slack/web-api@npm:^6.11.2":
-  version: 6.12.0
-  resolution: "@slack/web-api@npm:6.12.0"
+"@slack/web-api@npm:^6.12.1":
+  version: 6.12.1
+  resolution: "@slack/web-api@npm:6.12.1"
   dependencies:
     "@slack/logger": "npm:^3.0.0"
     "@slack/types": "npm:^2.11.0"
     "@types/is-stream": "npm:^1.1.0"
     "@types/node": "npm:>=12.0.0"
-    axios: "npm:^1.6.5"
+    axios: "npm:^1.7.4"
     eventemitter3: "npm:^3.1.0"
     form-data: "npm:^2.5.0"
     is-electron: "npm:2.2.2"
     is-stream: "npm:^1.1.0"
     p-queue: "npm:^6.6.1"
     p-retry: "npm:^4.0.0"
-  checksum: 10/9975577f5bb87a36d1129a3d43a08aa90a859959791440aab285ef9ce406fcf780f78e4edd667cba2dca4e0c8b310d0c5b633cb95d429c7266efbf0d5f73654d
+  checksum: 10/16e943a3681bdf8b9e97f7a7661781291183876e39abccdb37281dc451088fdb16b8cd5b23ce446d76f5ce963cbe44dd0a543223db79b2c23375a354ab95b473
   languageName: node
   linkType: hard
 
@@ -992,13 +989,6 @@ __metadata:
   dependencies:
     undici-types: "npm:~5.26.4"
   checksum: 10/c6afe7c2c4504a4f488814d7b306ebad16bf42cbb43bf9db9fe1aed8c5fb99235593c3be5088979a64526b106cf022256688e2f002811be8273d87dc2e0d484f
-  languageName: node
-  linkType: hard
-
-"@types/p-queue@npm:^2.3.2":
-  version: 2.3.2
-  resolution: "@types/p-queue@npm:2.3.2"
-  checksum: 10/5eb36eafdf2e0522565ec8de704a02a12cdb948cace2556a59e2e394858d121952aa6ef1e8036e883509797f28cd90112cd3691d8bacbec9015ee2e9c28052bb
   languageName: node
   linkType: hard
 
@@ -1690,7 +1680,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.5, axios@npm:^1.7.3":
+"axios@npm:^1.7.4":
   version: 1.7.4
   resolution: "axios@npm:1.7.4"
   dependencies:
@@ -2452,9 +2442,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.4":
-  version: 1.5.7
-  resolution: "electron-to-chromium@npm:1.5.7"
-  checksum: 10/987d3e56c3edcfa0b85e0b38590c777cce4f69436845f4eec88c6d58640143b43a0a0a27dd3923122c56ab9e527b9c3a0a9337312c6365522106353c3ac98fa7
+  version: 1.5.9
+  resolution: "electron-to-chromium@npm:1.5.9"
+  checksum: 10/0e51ffc430ff4462102137ec8353d4b4dd3e928b40dec7126896520b3efa32323b0e5c9bf99be076f038cf6e3138951946d892fec9c95179ad4479a5893fe245
   languageName: node
   linkType: hard
 
@@ -3061,7 +3051,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eventemitter3@npm:^5.0.1":
+"eventemitter3@npm:^5, eventemitter3@npm:^5.0.1":
   version: 5.0.1
   resolution: "eventemitter3@npm:5.0.1"
   checksum: 10/ac6423ec31124629c84c7077eed1e6987f6d66c31cf43c6fcbf6c87791d56317ce808d9ead483652436df171b526fc7220eccdc9f3225df334e81582c3cf7dd5
@@ -3663,10 +3653,10 @@ __metadata:
     "@navikt/ds-react": "npm:^6.16.0"
     "@navikt/ds-tailwind": "npm:^6.16.0"
     "@navikt/eslint-config-teamsykmelding": "npm:^6.5.0"
-    "@navikt/next-logger": "npm:^1.25.0"
+    "@navikt/next-logger": "npm:^1.30.0"
     "@navikt/oasis": "npm:^3.4.0"
     "@prisma/client": "npm:5.18.0"
-    "@slack/bolt": "npm:^3.20.0"
+    "@slack/bolt": "npm:^3.21.1"
     "@slack/logger": "npm:^4.0.0"
     "@slack/types": "npm:^2.12.0"
     "@types/bun": "npm:^1.1.6"
@@ -5205,13 +5195,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"p-cancelable@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "p-cancelable@npm:1.1.0"
-  checksum: 10/2db3814fef6d9025787f30afaee4496a8857a28be3c5706432cbad76c688a6db1874308f48e364a42f5317f5e41e8e7b4f2ff5c8ff2256dbb6264bc361704ece
-  languageName: node
-  linkType: hard
-
 "p-finally@npm:^1.0.0":
   version: 1.0.0
   resolution: "p-finally@npm:1.0.0"
@@ -5243,13 +5226,6 @@ __metadata:
   dependencies:
     aggregate-error: "npm:^3.0.0"
   checksum: 10/7ba4a2b1e24c05e1fc14bbaea0fc6d85cf005ae7e9c9425d4575550f37e2e584b1af97bcde78eacd7559208f20995988d52881334db16cf77bc1bcf68e48ed7c
-  languageName: node
-  linkType: hard
-
-"p-queue@npm:^2.4.2":
-  version: 2.4.2
-  resolution: "p-queue@npm:2.4.2"
-  checksum: 10/0da957f9abd8d0c5b2479376a0da60441413df99d8094c65a97c6dbef9cf6ebc0b97599522df04f34c46db071b780072c9826691c1ebd196329e32ade6e4ddc0
   languageName: node
   linkType: hard
 
