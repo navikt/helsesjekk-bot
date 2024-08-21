@@ -20,7 +20,7 @@ export async function isLeader(): Promise<boolean> {
     }
     const result: { name: string; last_update: string } = await electorResponse.json()
 
-    logger.info(`Is this pod (${hostname}) leader? Leader election says ${result.name} is leader.`)
+    logger.info(`Is this pod (${hostname}) leader? Leader election says: ${JSON.stringify(result)}`)
 
     return result.name === hostname
 }
