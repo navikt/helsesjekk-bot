@@ -95,7 +95,7 @@ Du skal nå kunne kjøre `yarn` for å installere avhengighetene uten 401-feil.
     ```
 7. Gjør en curl request mot `/api/internal/is_ready` for å starte slack-integrasjonen.
     ```bash
-    curl -X POST http://localhost:3000/api/internal/is_ready
+    curl -X GET http://localhost:3000/api/internal/is_ready
     ```
 
 Utviklingsflyten vil være å interaktere med slack botten gjennom ditt private slack workspace. F.eks. ved å legge botten til som en integrasjon på en testkanal, kjøre /helsesjekk i den kanalen, og fylle ut helsesjekken.
