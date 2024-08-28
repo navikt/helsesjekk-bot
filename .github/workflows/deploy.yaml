@@ -55,7 +55,7 @@ jobs:
           image_suffix: prod
 
   build-and-publish-dev:
-    if: github.event.pull_request.user.login != 'dependabot[bot]'
+    if: github.actor != 'dependabot[bot]'
     name: 'Dev: Bygg, test og push Docker image'
     runs-on: ubuntu-latest
     permissions:
@@ -82,7 +82,7 @@ jobs:
           image_suffix: dev
 
   build-for-dependabot:
-    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    if: github.actor == 'dependabot[bot]'
     name: 'Build for dependabot'
     runs-on: ubuntu-latest
     permissions:
@@ -99,14 +99,6 @@ jobs:
       - run: yarn build
         env:
           NEXT_PUBLIC_ENVIRONMENT: dev
-      - name: Push docker image to GAR
-        uses: nais/docker-build-push@v0
-        id: docker-build-push
-        with:
-          team: teamsykmelding
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          image_suffix: dev
 
   deploy-bot-to-gcp:
     if: github.ref == 'refs/heads/main'
@@ -143,7 +135,6 @@ jobs:
           VAR: image=${{ needs.build-and-publish-dev.outputs.image }}
 
   trivy-docker:
-    if: github.event.pull_request.user.login != 'dependabot[bot]'
     permissions:
       contents: 'write'
       id-token: 'write'
