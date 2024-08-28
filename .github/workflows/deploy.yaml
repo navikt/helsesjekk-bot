@@ -28,7 +28,7 @@ jobs:
       - run: echo "Tests are skipped!"
 
   build-and-publish:
-    if: github.ref == 'refs/heads/main' && github.event.pull_request.user.login != 'dependabot[bot]'
+    if: github.ref == 'refs/heads/main'
     name: 'Prod: Bygg, test og push Docker image'
     runs-on: ubuntu-latest
     permissions:
@@ -54,43 +54,36 @@ jobs:
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           image_suffix: prod
 
-  trivy-docker:
-    if: github.event.pull_request.user.login != 'dependabot[bot]'
-    permissions:
-      contents: "write"
-      id-token: "write"
-      security-events: "write"
-    name: Trivy docker
-    runs-on: ubuntu-latest
-    needs: [ build-and-publish ]
-    steps:
-      - run: touch me
-      - uses: nais/login@v0
-        with:
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          team: teamsykmelding
-
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@d710430a6722f083d3b36b8339ff66b32f22ee55
-        with:
-          image-ref: ${{ needs.build-and-publish.outputs.image }}
-          ignore-unfixed: true
-          vuln-type: 'os'
-          severity: 'CRITICAL,HIGH'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          scanners: 'vuln'
-
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: 'trivy-results.sarif'
-
   build-and-publish-dev:
     if: github.event.pull_request.user.login != 'dependabot[bot]'
     name: 'Dev: Bygg, test og push Docker image'
+    runs-on: ubuntu-latest
+    permissions:
+      packages: 'write'
+      contents: 'read'
+      id-token: 'write'
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
+    steps:
+      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - run: yarn lint
+      - run: yarn build
+        env:
+          NEXT_PUBLIC_ENVIRONMENT: dev
+      - name: Push docker image to GAR
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: teamsykmelding
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          image_suffix: dev
+
+  build-for-dependabot:
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    name: 'Build for dependabot'
     runs-on: ubuntu-latest
     permissions:
       packages: 'write'
@@ -148,3 +141,37 @@ jobs:
           CLUSTER: dev-gcp
           RESOURCE: nais-dev.yml
           VAR: image=${{ needs.build-and-publish-dev.outputs.image }}
+
+  trivy-docker:
+    if: github.event.pull_request.user.login != 'dependabot[bot]'
+    permissions:
+      contents: 'write'
+      id-token: 'write'
+      security-events: 'write'
+    name: Trivy docker
+    runs-on: ubuntu-latest
+    needs: [build-and-publish]
+    steps:
+      - run: touch me
+      - uses: nais/login@v0
+        with:
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          team: teamsykmelding
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@d710430a6722f083d3b36b8339ff66b32f22ee55
+        with:
+          image-ref: ${{ needs.build-and-publish.outputs.image }}
+          ignore-unfixed: true
+          vuln-type: 'os'
+          severity: 'CRITICAL,HIGH'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          scanners: 'vuln'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
