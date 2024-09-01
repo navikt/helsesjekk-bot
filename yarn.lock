@@ -818,12 +818,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/bun@npm:^1.1.6":
-  version: 1.1.6
-  resolution: "@types/bun@npm:1.1.6"
+"@types/bun@npm:^1.1.8":
+  version: 1.1.8
+  resolution: "@types/bun@npm:1.1.8"
   dependencies:
-    bun-types: "npm:1.1.17"
-  checksum: 10/f98d20d2e99461eff825705f16d6e59c9014ac4bffd3596165373acbd65b36434a9563030c3767df7edb5a3955155b3c08e3926d6cd36036adfbaa81892a5da4
+    bun-types: "npm:1.1.26"
+  checksum: 10/41b47f049046b5f2375590f5765d10c767e37eca87284115894b177462993ea4bf6ec71b125b481de2a26bd944de144aa01a91c1fbc5f4f0b7e054756a8d3a39
   languageName: node
   linkType: hard
 
@@ -1807,13 +1807,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bun-types@npm:1.1.17":
-  version: 1.1.17
-  resolution: "bun-types@npm:1.1.17"
+"bun-types@npm:1.1.26":
+  version: 1.1.26
+  resolution: "bun-types@npm:1.1.26"
   dependencies:
     "@types/node": "npm:~20.12.8"
     "@types/ws": "npm:~8.5.10"
-  checksum: 10/2f9ab339fe2a5c9eec03cb29a8008926c867a62946f18f4778377050369f776b3be8b3c8aaf7152f35b4945e3436ca8ae43aaac6d12384830df7cbdfc2690435
+  checksum: 10/1a5551164260432763aef88df357fdca3ba2c4b0b36586926e424c1d8072ce3bfcd0eaeb7cc240aeadbe91a84e7cfca013ee57db671f411875bd0ddb85cb48e1
   languageName: node
   linkType: hard
 
@@ -3659,7 +3659,7 @@ __metadata:
     "@slack/bolt": "npm:^3.21.1"
     "@slack/logger": "npm:^4.0.0"
     "@slack/types": "npm:^2.12.0"
-    "@types/bun": "npm:^1.1.6"
+    "@types/bun": "npm:^1.1.8"
     "@types/node": "npm:^20.16.1"
     "@types/node-cron": "npm:^3.0.11"
     "@types/react": "npm:18.3.4"
