@@ -39,7 +39,7 @@
         "node-cron": "^3.0.3",
         "pino": "^9.3.2",
         "postcss": "^8.4.41",
-        "prisma": "5.17.0",
+        "prisma": "5.19.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "recharts": "^2.12.7",
