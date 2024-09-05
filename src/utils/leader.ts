@@ -12,7 +12,7 @@ export async function isLeader(): Promise<boolean> {
     }
 
     logger.info(`Checking if pod (${hostname}) is leader on ${electorPath}`)
-    const electorResponse = await fetch(`http://${electorPath}`)
+    const electorResponse = await fetch(`http://${electorPath}`, { cache: 'no-store' })
     if (!electorResponse.ok) {
         throw new Error(
             `Failed to fetch leader from ${electorPath}, response: ${electorResponse.status} ${electorResponse.statusText}`,
