@@ -33,7 +33,7 @@ export function createRootPostBlocks(teamName: string, dateForWeek: Date, invali
             type: 'section',
             text: {
                 type: 'mrkdwn',
-                text: 'Alle på dette teamet inviteres til å svare på noen raske spørsmål for å dele hvordan de føler tilstanden på teaamet er. Svarene gis på trafikklys-format.\n\n🟢 Bra! \n🟡 Middels \n🔴 Dårlig ',
+                text: 'Alle på dette teamet inviteres til å svare på noen raske spørsmål for å dele hvordan de føler tilstanden på teamet er. Svarene gis på trafikklys-format.\n\n🟢 Bra! \n🟡 Middels \n🔴 Dårlig ',
             },
         },
         !invalid
