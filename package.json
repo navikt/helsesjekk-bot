@@ -21,10 +21,10 @@
         "prepare": "husky"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^6.17.0",
-        "@navikt/ds-css": "^6.17.0",
-        "@navikt/ds-react": "^6.17.0",
-        "@navikt/ds-tailwind": "^6.17.0",
+        "@navikt/aksel-icons": "^7.1.0",
+        "@navikt/ds-css": "^7.1.0",
+        "@navikt/ds-react": "^7.1.0",
+        "@navikt/ds-tailwind": "^7.1.0",
         "@navikt/next-logger": "^1.31.0",
         "@navikt/oasis": "^3.4.0",
         "@prisma/client": "5.19.1",
