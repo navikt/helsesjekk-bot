@@ -778,10 +778,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@slack/types@npm:^2.11.0, @slack/types@npm:^2.13.0, @slack/types@npm:^2.13.1":
+"@slack/types@npm:^2.11.0, @slack/types@npm:^2.13.0":
   version: 2.13.1
   resolution: "@slack/types@npm:2.13.1"
   checksum: 10/90155bae3fa1a5036960229e2f23a5b4375676272fee765700ac8d727ca9500de1af0004597246c19c24fc362ac1c4372eb2797e0cef05b9bb8ca7d7891a1542
+  languageName: node
+  linkType: hard
+
+"@slack/types@npm:^2.14.0":
+  version: 2.14.0
+  resolution: "@slack/types@npm:2.14.0"
+  checksum: 10/fa24a113b88e087f899078504c2ba50ab9795f7c2dd1a2d95b28217a3af20e554494f9cc3b8c8ce173120990d98e19400c95369f9067cecfcc46c08b59d2a46f
   languageName: node
   linkType: hard
 
@@ -3744,7 +3751,7 @@ __metadata:
     "@prisma/client": "npm:5.19.1"
     "@slack/bolt": "npm:^3.21.4"
     "@slack/logger": "npm:^4.0.0"
-    "@slack/types": "npm:^2.13.1"
+    "@slack/types": "npm:^2.14.0"
     "@types/bun": "npm:^1.1.9"
     "@types/node": "npm:^20.16.5"
     "@types/node-cron": "npm:^3.0.11"
