@@ -2303,10 +2303,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^3.0.0, date-fns@npm:^3.6.0":
+"date-fns@npm:^3.0.0":
   version: 3.6.0
   resolution: "date-fns@npm:3.6.0"
   checksum: 10/cac35c58926a3b5d577082ff2b253612ec1c79eb6754fddef46b6a8e826501ea2cb346ecbd211205f1ba382ddd1f9d8c3f00bf433ad63cc3063454d294e3a6b8
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "date-fns@npm:4.1.0"
+  checksum: 10/d5f6e9de5bbc52310f786099e18609289ed5e30af60a71e0646784c8185ddd1d0eebcf7c96b7faaaefc4a8366f3a3a4244d099b6d0866ee2bec80d1361e64342
   languageName: node
   linkType: hard
 
@@ -3754,7 +3761,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^7.18.0"
     autoprefixer: "npm:^10.4.20"
     clsx: "npm:^2.1.1"
-    date-fns: "npm:^3.6.0"
+    date-fns: "npm:^4.1.0"
     eslint: "npm:^8.57.0"
     eslint-config-next: "npm:^14.2.11"
     eslint-plugin-import: "npm:^2.30.0"
@@ -3774,7 +3781,7 @@ __metadata:
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     recharts: "npm:^2.12.7"
-    remeda: "npm:^2.12.0"
+    remeda: "npm:^2.14.0"
     sharp: "npm:^0.33.5"
     tailwind-merge: "npm:^2.5.2"
     tailwindcss: "npm:^3.4.11"
@@ -6051,12 +6058,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remeda@npm:^2.12.0":
-  version: 2.12.0
-  resolution: "remeda@npm:2.12.0"
+"remeda@npm:^2.14.0":
+  version: 2.14.0
+  resolution: "remeda@npm:2.14.0"
   dependencies:
-    type-fest: "npm:^4.23.0"
-  checksum: 10/96cb2b76873b913400429d6a9d02e002dc03b276237c2cf3e7ab32db58dfa9e75267a9eca9dc2a36a7283b2e6e6963f020f80568a1cca71967d68a8dad3b131d
+    type-fest: "npm:^4.26.1"
+  checksum: 10/75a322c4f21a651b37d81cebda8a92a72c4c2d87148aa79e489d8662e48dfbc263cca0fc65ef74aec8217ff119711dde361a9313412d6eb2b3ee4f953fd2fb96
   languageName: node
   linkType: hard
 
@@ -6990,7 +6997,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^4.23.0":
+"type-fest@npm:^4.26.1":
   version: 4.26.1
   resolution: "type-fest@npm:4.26.1"
   checksum: 10/b82676194f80af228cb852e320d2ea8381c89d667d2e4d9f2bdfc8f254bccc039c7741a90c53617a4de0c9fdca8265ed18eb0888cd628f391c5c381c33a9f94b
