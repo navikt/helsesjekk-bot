@@ -1,6 +1,5 @@
 import { headers } from 'next/headers'
 import { requestOboToken } from '@navikt/oasis'
-import { logger } from '@navikt/next-logger'
 
 import { isLocal } from '../utils/env'
 
@@ -17,7 +16,7 @@ export async function getMembersOf(): Promise<
     const token = getUserToken(headers())
     const tokenSet = await requestOboToken(token, 'https://graph.microsoft.com/.default')
     if (!tokenSet.ok) {
-        logger.error(new Error(`Unable to exchange OBO token: ${tokenSet.error.message}`, { cause: tokenSet.error }))
+        console.error(new Error(`Unable to exchange OBO token: ${tokenSet.error.message}`, { cause: tokenSet.error }))
         return { error: 'Du har ikke tilgang til å se dine grupper.' }
     }
 

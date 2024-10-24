@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { logger } from '@navikt/next-logger'
 
 import { getServerEnv } from '../../../../utils/env'
 
@@ -12,7 +11,7 @@ export function GET(): NextResponse {
         // Validate that all required envs are set
         getServerEnv()
     } catch (e) {
-        logger.error(e)
+        console.error(e)
         return NextResponse.json({ message: 'Some envs are not set correctly' }, { status: 500 })
     }
 
@@ -21,12 +20,12 @@ export function GET(): NextResponse {
             botStatus.started = true
             bot()
                 .then(() => {
-                    logger.info('Bot started')
+                    console.info('Bot started')
                     botStatus.ready = true
                 })
                 .catch((error) => {
-                    logger.error('Bot failed to start')
-                    logger.error(error)
+                    console.error('Bot failed to start')
+                    console.error(error)
                     botStatus.ready = false
                 })
         }

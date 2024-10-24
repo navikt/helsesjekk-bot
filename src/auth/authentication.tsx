@@ -1,5 +1,4 @@
 import { headers } from 'next/headers'
-import { logger } from '@navikt/next-logger'
 import { validateToken, getToken } from '@navikt/oasis'
 import { redirect } from 'next/navigation'
 
@@ -16,20 +15,20 @@ export async function validateWonderwallToken(redirectPath: string): Promise<voi
     const requestHeaders = headers()
 
     if (isLocal) {
-        logger.warn('Is running locally, skipping RSC auth')
+        console.warn('Is running locally, skipping RSC auth')
         return
     }
 
     const token = getToken(requestHeaders)
     if (!token) {
-        logger.warn('Found no token, redirecting to login, why was this not picked up by middleware.ts?')
+        console.warn('Found no token, redirecting to login, why was this not picked up by middleware.ts?')
         redirect(`/oauth2/login?redirect=${redirectPath}`)
     }
 
     const validationResult = await validateToken(token)
     if (!validationResult.ok) {
         if (validationResult.errorType !== 'token expired') {
-            logger.error(
+            console.error(
                 new Error(
                     `Invalid JWT token found (cause: ${validationResult.errorType} ${validationResult.error.message}, redirecting to login.`,
                     { cause: validationResult.error },
@@ -77,7 +76,7 @@ export async function getUsersGroups(): Promise<string[]> {
 
     if (membersOf['@odata.nextLink'] != null) {
         const user = getUser()
-        logger.error(
+        console.error(
             `Whops! A user (${user.email}) has more than max page groups (${membersOf.value.length}), time to implement pagination?`,
         )
     }

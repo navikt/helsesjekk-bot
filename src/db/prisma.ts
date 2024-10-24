@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client'
-import { logger } from '@navikt/next-logger'
 import { lazyNextleton } from 'nextleton'
 
 export const prisma = lazyNextleton('prisma', () => {
@@ -11,11 +10,11 @@ export const prisma = lazyNextleton('prisma', () => {
     })
 
     client.$on('error', (e) => {
-        logger.error(e)
+        console.error(e)
     })
 
     client.$on('warn', (e) => {
-        logger.error(e)
+        console.error(e)
     })
 
     return client

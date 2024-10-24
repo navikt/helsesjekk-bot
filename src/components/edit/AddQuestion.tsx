@@ -4,7 +4,6 @@ import React, { ReactElement, useState } from 'react'
 import { Button, Checkbox } from '@navikt/ds-react'
 import { useParams } from 'next/navigation'
 import * as R from 'remeda'
-import { logger } from '@navikt/next-logger'
 import { Heading, Select, TextField } from '@navikt/ds-react'
 import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons'
 
@@ -46,7 +45,7 @@ function AddQuestion({ teamId }: Props): ReactElement {
                                 setAdding(false)
                             } catch (e) {
                                 setSaving(false)
-                                logger.error(new Error('Unable to add question', { cause: e }))
+                                console.error(new Error('Unable to add question', { cause: e }))
                             }
                         }}
                         className="flex flex-col gap-3 bg-bg-subtle p-4 rounded relative"

@@ -25,8 +25,6 @@
         "@navikt/ds-css": "^6.17.0",
         "@navikt/ds-react": "^6.17.0",
         "@navikt/ds-tailwind": "^6.17.0",
-        "@navikt/next-logger": "^1.31.0",
-        "@navikt/oasis": "^3.4.0",
         "@prisma/client": "5.19.1",
         "@slack/bolt": "^3.21.4",
         "@slack/logger": "^4.0.0",
@@ -40,6 +38,7 @@
         "pino": "^9.4.0",
         "postcss": "^8.4.45",
         "prisma": "5.19.1",
+        "proxy-agent": "^6.3.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "recharts": "^2.12.7",
@@ -50,7 +49,6 @@
         "zod": "^3.23.8"
     },
     "devDependencies": {
-        "@navikt/eslint-config-teamsykmelding": "^6.6.0",
         "@types/bun": "^1.1.9",
         "@types/node": "^20.16.5",
         "@types/node-cron": "^3.0.11",
@@ -74,10 +72,8 @@
     "resolutions": {
         "eslint-plugin-react-hooks": "5.0.0-canary-7118f5dd7-20230705"
     },
-    "prettier": "@navikt/eslint-config-teamsykmelding/prettier",
     "eslintConfig": {
         "extends": [
-            "@navikt/eslint-config-teamsykmelding",
             "next/core-web-vitals"
         ]
     }

@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { notFound } from 'next/navigation'
-import { logger } from '@navikt/next-logger'
 
 import { bot } from '../bot'
 
@@ -9,7 +8,7 @@ export async function POST(): Promise<NextResponse> {
         notFound()
     }
 
-    logger.warn('Local dev mode: Restarting bot')
+    console.warn('Local dev mode: Restarting bot')
 
     // Shut down existing bot
     await (await bot()).stop()

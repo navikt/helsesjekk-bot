@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { logger } from '@navikt/next-logger'
 
 import { browserEnv, isLocal } from './utils/env'
 
@@ -10,7 +9,7 @@ export function middleware(request: NextRequest): NextResponse | void {
 
     // Redirect to new ingress in production env
     if (browserEnv.NEXT_PUBLIC_ENVIRONMENT === 'production' && forwardedHostHeader?.includes('intern')) {
-        logger.info('Hit old ingress, redirecting to new ingress')
+        console.info('Hit old ingress, redirecting to new ingress')
         return NextResponse.redirect(new URL(url.pathname, 'https://helsesjekk-bot.nav.no/'))
     }
 

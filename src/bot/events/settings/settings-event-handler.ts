@@ -3,7 +3,6 @@ import { deleteQuestionFromTeam, getTeam, updateTeam } from '../../../db'
 import { dayIndexToDay } from '../../../utils/date'
 import { updateResponseCount } from '../../messages/message-poster'
 import { QuestionType } from '../../../safe-types'
-import { botLogger } from '../../bot-logger'
 import { nextOccurenceText, nextOccurrence } from '../../../utils/frequency'
 
 import { createSettingsModal, ModalStateTree, SettingsKeys, SettingsKeys as Keys } from './settings-modal-builder'
@@ -11,7 +10,7 @@ import { createSettingsModal, ModalStateTree, SettingsKeys, SettingsKeys as Keys
 export function configureSettingsEventsHandler(app: App): void {
     // Handles users submitting the helsesjekk settings modal
     app.view(Keys.modalSubmit, async ({ ack, view, client, body }) => {
-        botLogger.info(`User submitted settings modal`)
+        console.info(`User submitted settings modal`)
 
         const values: ModalStateTree = view.state.values as unknown as ModalStateTree
         const teamId = view.private_metadata

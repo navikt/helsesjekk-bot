@@ -3,7 +3,6 @@
 import * as R from 'remeda'
 import React, { ReactElement } from 'react'
 import { Area, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import { logger } from '@navikt/next-logger'
 import { Detail, Heading } from '@navikt/ds-react'
 import { TooltipProps } from 'recharts/types/component/Tooltip'
 
@@ -153,7 +152,7 @@ function ScoreToDescription({ name }: { name: string }): string {
         case 'distribution.BAD':
             return 'Dårlig'
         default:
-            logger.error(`Unknown score type: ${name}`)
+            console.error(`Unknown score type: ${name}`)
             return 'Ukjent'
     }
 }
