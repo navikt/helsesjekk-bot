@@ -1,168 +1,82 @@
-name: Build and deploy
-on: push
+name: Deploy Pipeline
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'main'
+        type: choice
+        options:
+          - test
+          - main
+
+env:
+  LOCATION: europe-west1
+  PROJECT_ID: chubben
+  CLUSTER_NAME: chubben
+  NAMESPACE: aksjer
+
 jobs:
-  codeql-analysis:
-    if: github.ref == 'refs/heads/main'
+  Build-And-Deploy:
     runs-on: ubuntu-latest
+
     permissions:
-      security-events: write
+      contents: read
+      id-token: write
+      actions: read
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: github/codeql-action/init@v3
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  test:
-    name: 'Run bun tests'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-      - uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: 1.1.22
-      #- run: yarn test
-      - run: echo "Tests are skipped!"
+          project_id: '${{ env.PROJECT_ID }}'
+          workload_identity_provider: 'projects/714619712093/locations/global/workloadIdentityPools/github/providers/chubben-provider'
 
-  build-and-publish:
-    if: github.ref == 'refs/heads/main'
-    name: 'Prod: Bygg, test og push Docker image'
-    runs-on: ubuntu-latest
-    permissions:
-      packages: 'write'
-      contents: 'read'
-      id-token: 'write'
-    outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
-    steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
-        with:
-          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-      - run: yarn lint
-      - run: yarn build
-        env:
-          NEXT_PUBLIC_ENVIRONMENT: production
-      - name: Push docker image to GAR
-        uses: nais/docker-build-push@v0
-        id: docker-build-push
-        with:
-          team: teamsykmelding
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          image_suffix: prod
+      - name: Configure Docker to use Google Cloud credentials
+        run: gcloud auth configure-docker ${{ env.LOCATION }}-docker.pkg.dev
 
-  build-and-publish-dev:
-    if: github.actor != 'dependabot[bot]'
-    name: 'Dev: Bygg, test og push Docker image'
-    runs-on: ubuntu-latest
-    permissions:
-      packages: 'write'
-      contents: 'read'
-      id-token: 'write'
-    outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
-    steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
-        with:
-          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-      - run: yarn lint
-      - run: yarn build
-        env:
-          NEXT_PUBLIC_ENVIRONMENT: dev
-      - name: Push docker image to GAR
-        uses: nais/docker-build-push@v0
-        id: docker-build-push
-        with:
-          team: teamsykmelding
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          image_suffix: dev
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-  build-for-dependabot:
-    if: github.actor == 'dependabot[bot]'
-    name: 'Build for dependabot'
-    runs-on: ubuntu-latest
-    permissions:
-      packages: 'write'
-      contents: 'read'
-      id-token: 'write'
-    outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
-    steps:
-      - uses: navikt/teamsykmelding-github-actions-workflows/actions/yarn-cached@main
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
         with:
-          NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-      - run: yarn lint
-      - run: yarn build
-        env:
-          NEXT_PUBLIC_ENVIRONMENT: dev
+          context: .
+          push: true
+          tags: |
+            "${{ env.LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/aksjer/chubben-aksjer:${{ github.sha }}"
+            "${{ env.LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/aksjer/chubben-aksjer:latest"
+          build-args: |
+            GITHUB_PACKAGES_TOKEN=${{ secrets.GITHUB_PACKAGES_TOKEN }}
+            NEXT_PUBLIC_ENVIRONMENT=${{ github.event.inputs.environment }}
+          provenance: false
 
-  deploy-bot-to-gcp:
-    if: github.ref == 'refs/heads/main'
-    name: Deploy to prod
-    needs: [build-and-publish, codeql-analysis, test]
-    runs-on: ubuntu-latest
-    environment:
-      name: production
-      url: https://helsesjekk-bot.nav.no
-    steps:
-      - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-gcp
-          RESOURCE: nais.yml
-          VAR: image=${{ needs.build-and-publish.outputs.image }}
-
-  deploy-bot-to-gcp-dev:
-    if: github.ref != 'refs/heads/main'
-    name: Deploy to dev
-    needs: [build-and-publish-dev, test]
-    runs-on: ubuntu-latest
-    environment:
-      name: development
-      url: https://helsesjekk-bot.intern.dev.nav.no
-    steps:
-      - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: nais-dev.yml
-          VAR: image=${{ needs.build-and-publish-dev.outputs.image }}
-
-  trivy-docker:
-    permissions:
-      contents: 'write'
-      id-token: 'write'
-      security-events: 'write'
-    name: Trivy docker
-    runs-on: ubuntu-latest
-    needs: [build-and-publish]
-    steps:
-      - run: touch me
-      - uses: nais/login@v0
+      - name: Connect To GKE Cluster
+        uses: google-github-actions/get-gke-credentials@v1
         with:
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          team: teamsykmelding
+          cluster_name: ${{ env.CLUSTER_NAME }}
+          location: ${{ env.LOCATION }}
+          project_id: ${{ env.PROJECT_ID }}
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@d710430a6722f083d3b36b8339ff66b32f22ee55
-        with:
-          image-ref: ${{ needs.build-and-publish.outputs.image }}
-          ignore-unfixed: true
-          vuln-type: 'os'
-          severity: 'CRITICAL,HIGH'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          scanners: 'vuln'
+      - name: Update Kubernetes Deployment and Apply Resources
+        run: |
+          kubectl config set-context --current --namespace=${{ env.NAMESPACE }} 
+          sed -i "s,FULL_IMAGE_NAME,${{ env.LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/aksjer/chubben-aksjer:${{ github.sha }},g" k8s/deployment.yaml
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: 'trivy-results.sarif'
+          # Inject environment variables from GitHub secrets
+          kubectl create secret generic helsesjekk-secrets \
+            --from-literal=NAIS_DATABASE_HELSESJEKK_BOT_HELSESJEKK_BOT_URL=${{ secrets.NAIS_DATABASE_HELSESJEKK_BOT_HELSESJEKK_BOT_URL }} \
+            --from-literal=SLACK_SIGNING_SECRET=${{ secrets.SLACK_SIGNING_SECRET }} \
+            --from-literal=SLACK_BOT_TOKEN=${{ secrets.SLACK_BOT_TOKEN }} \
+            --from-literal=SLACK_APP_TOKEN=${{ secrets.SLACK_APP_TOKEN }} \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+          kubectl apply -f k8s/ --namespace=${{ env.NAMESPACE }}

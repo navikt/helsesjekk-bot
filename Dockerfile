@@ -11,6 +11,8 @@ COPY yarn.lock /app/
 COPY prisma /app/prisma
 
 ENV NODE_ENV=production
+ARG GITHUB_PACKAGES_TOKEN=""
+ENV GITHUB_PACKAGES_TOKEN=$GITHUB_PACKAGES_TOKEN
 
 RUN yarn workspaces focus -A --production
 RUN yarn prisma:generate
@@ -24,6 +26,9 @@ ENV YARN_CACHE_FOLDER=/tmp/yarn-cache
 
 WORKDIR /app
 
+# Ensure the .next image cache directory exists (have seen ENOENT errors for images)
+RUN mkdir -p /app/.next/cache/images
+
 COPY --from=build /app/yarn.lock /app/
 COPY --from=build /app/.yarnrc.yml /app/
 COPY --from=build /app/.yarn /app/.yarn
@@ -36,6 +41,13 @@ COPY public /app/public/
 COPY .next /app/.next
 
 ENV NODE_ENV=production
+ARG GITHUB_PACKAGES_TOKEN=""
+ENV GITHUB_PACKAGES_TOKEN=$GITHUB_PACKAGES_TOKEN
+ENV AZURE_APP_CLIENT_ID='dummy-value'
+ENV AZURE_APP_CLIENT_SECRET='dummy-value'
+ENV AZURE_OPENID_CONFIG_TOKEN_ENDPOINT='dummy-value'
+ENV AZURE_APP_WELL_KNOWN_URL='dummy-value'
+ENV AZURE_APP_PRE_AUTHORIZED_APPS='dummy-value'
 
 EXPOSE 3000
 
