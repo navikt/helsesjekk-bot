@@ -1,5 +1,4 @@
-import { Block, KnownBlock } from '@slack/types'
-import { InputBlock, ModalView, Option } from '@slack/bolt'
+import { InputBlock, ModalView, Option, Block, KnownBlock } from '@slack/types'
 import { groupBy } from 'remeda'
 
 import { AnswerLevel, Team, Asked, QuestionAnswer } from '../../../db'
