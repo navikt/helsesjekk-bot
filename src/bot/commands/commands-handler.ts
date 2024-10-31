@@ -121,7 +121,6 @@ export function configureCommandsHandler(app: App): void {
 
                     await app.client.chat.postMessage({
                         channel: team.id,
-                        thread_ts: ask.messageTs,
                         text: `Svar på ukentlig helsesjekk for ${team.name}`,
                         blocks: createScoreBlocks(team, ask, scoredAsk, previousScoredAsk),
                         reply_broadcast: true,

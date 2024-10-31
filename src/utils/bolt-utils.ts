@@ -1,4 +1,4 @@
-import { PlainTextElement } from '@slack/types'
+import { PlainTextElement } from '@slack/bolt'
 
 export function text(text: string): PlainTextElement {
     return {

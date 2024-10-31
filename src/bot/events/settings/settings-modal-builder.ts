@@ -1,4 +1,4 @@
-import { InputBlock, ModalView, Option, PlainTextOption, SectionBlock } from '@slack/types'
+import { InputBlock, ModalView, Option, PlainTextOption, SectionBlock } from '@slack/bolt'
 import { Block, KnownBlock } from '@slack/types'
 
 import { Team } from '../../../db'
