@@ -1,3 +1,5 @@
+import { logger } from '@navikt/next-logger'
+
 import { App } from '../app'
 import { questionsFromJsonb } from '../../questions/jsonb-utils'
 import { markAskedRevealed, createAsked, getActiveAsk, Team, getPreviousAsk, markAskedAsNagged } from '../../db'
@@ -117,13 +119,25 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
     const scoredAsk = scoreAsked(asked)
     const previousScoredAsk = previousAsked ? scoreAsked(previousAsked) : null
 
-    await client.chat.postMessage({
+    const postMessageBase = {
         channel: team.id,
-        thread_ts: message.ts,
         text: `Svar på ukentlig helsesjekk for ${team.name}`,
         blocks: createScoreBlocks(team, asked, scoredAsk, previousScoredAsk),
-        reply_broadcast: true,
-    })
+    } as const
+
+    if (message.ts == null) {
+        logger.error(
+            `Found no ts for message when trying to reveal team ${team.name}, posting as root message to channel`,
+        )
+        await client.chat.postMessage(postMessageBase)
+    } else {
+        await client.chat.postMessage({
+            ...postMessageBase,
+            thread_ts: message.ts,
+            reply_broadcast: true,
+        })
+    }
+
     await markAskedRevealed(asked.id)
 
     return true

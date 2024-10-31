@@ -1,4 +1,4 @@
-import { HeaderBlock, SectionBlock } from '@slack/bolt'
+import { HeaderBlock, SectionBlock } from '@slack/types'
 
 export function plainHeader(text: string): HeaderBlock {
     return {

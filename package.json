@@ -28,7 +28,7 @@
         "@navikt/next-logger": "^1.34.0",
         "@navikt/oasis": "^3.4.0",
         "@prisma/client": "5.21.1",
-        "@slack/bolt": "^3.22.0",
+        "@slack/bolt": "^4.0.1",
         "@slack/logger": "^4.0.0",
         "@slack/types": "^2.14.0",
         "clsx": "^2.1.1",
