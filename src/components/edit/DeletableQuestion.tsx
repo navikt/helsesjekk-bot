@@ -27,7 +27,7 @@ function DeletableQuestion({ teamId, question }: Props): ReactElement {
                 <Heading size="small" level="4" spacing className="mt-0 flex gap-2 items-center">
                     {question.custom && (
                         <Tooltip content="Dette er et spørsmål dere har lagt til selv">
-                            <SparklesIcon className="mt-1" title="Dette er et egetlagd spørsmål" />
+                            <SparklesIcon className="mt-1" />
                         </Tooltip>
                     )}
                     {question.question}
