@@ -14,7 +14,7 @@ export async function getMembersOf(): Promise<
         return fakeMembersOfResponse
     }
 
-    const token = getUserToken(headers())
+    const token = getUserToken(await headers())
     const tokenSet = await requestOboToken(token, 'https://graph.microsoft.com/.default')
     if (!tokenSet.ok) {
         logger.error(new Error(`Unable to exchange OBO token: ${tokenSet.error.message}`, { cause: tokenSet.error }))

@@ -19,14 +19,15 @@ export const metadata: Metadata = {
 }
 
 type Props = {
-    params: {
+    params: Promise<{
         groupId: string
         teamId: string
-    }
+    }>
 }
 
 async function Page({ params }: Props): Promise<ReactElement> {
-    const team = await getTeamByAdGroupAndTeamId(params.groupId, params.teamId)
+    const pageParams = await params
+    const team = await getTeamByAdGroupAndTeamId(pageParams.groupId, pageParams.teamId)
     if (!team) {
         return (
             <div>
@@ -47,7 +48,7 @@ async function Page({ params }: Props): Promise<ReactElement> {
 
     return (
         <div>
-            <BackLink href={`/team/${params.groupId}/${params.teamId}`} />
+            <BackLink href={`/team/${pageParams.groupId}/${pageParams.teamId}`} />
             <Heading size="large">Helsegraf for {team.name}</Heading>
             <Suspense fallback={<Skeleton height={300} variant="rounded" />}>
                 <OverallGraph teamId={team.id} />

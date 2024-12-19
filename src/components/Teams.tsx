@@ -10,7 +10,7 @@ import Code from './core/Code'
 import TeamCard from './TeamCard'
 
 async function Teams(): Promise<ReactElement> {
-    if (!isUserLoggedIn()) {
+    if (!(await isUserLoggedIn())) {
         return (
             <div className="max-w-prose">
                 <Heading size="large" spacing>

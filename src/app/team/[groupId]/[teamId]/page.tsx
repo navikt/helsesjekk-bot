@@ -29,14 +29,15 @@ export const metadata: Metadata = {
 }
 
 type Props = {
-    params: {
+    params: Promise<{
         groupId: string
         teamId: string
-    }
+    }>
 }
 
 async function Page({ params }: Props): Promise<ReactElement> {
-    const team = await getTeamByAdGroupAndTeamId(params.groupId, params.teamId)
+    const pageParams = await params
+    const team = await getTeamByAdGroupAndTeamId(pageParams.groupId, pageParams.teamId)
     if (!team) {
         return (
             <div>
@@ -61,7 +62,7 @@ async function Page({ params }: Props): Promise<ReactElement> {
             <Heading size="large">{team.name}</Heading>
             <LinkPanel
                 as={Link}
-                href={`/team/${params.groupId}/${params.teamId}/graph`}
+                href={`/team/${pageParams.groupId}/${pageParams.teamId}/graph`}
                 border
                 className="my-2"
                 prefetch={false}
@@ -71,7 +72,7 @@ async function Page({ params }: Props): Promise<ReactElement> {
             </LinkPanel>
             <LinkPanel
                 as={Link}
-                href={`/team/${params.groupId}/${params.teamId}/results`}
+                href={`/team/${pageParams.groupId}/${pageParams.teamId}/results`}
                 border
                 className="my-2"
                 prefetch={false}

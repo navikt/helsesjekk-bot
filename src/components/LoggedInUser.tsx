@@ -5,7 +5,7 @@ import { Tooltip } from '@navikt/ds-react'
 import { getUser, isUserLoggedIn } from '../auth/authentication'
 
 async function LoggedInUser(): Promise<ReactElement> {
-    if (!isUserLoggedIn()) {
+    if (!(await isUserLoggedIn())) {
         return (
             <div className="flex flex-col items-end p-4">
                 <BodyShort className="w-32 text-right">Ikke logget inn</BodyShort>
@@ -14,7 +14,7 @@ async function LoggedInUser(): Promise<ReactElement> {
         )
     }
 
-    const user = getUser()
+    const user = await getUser()
 
     return (
         <div className="flex gap-4 p-4">
