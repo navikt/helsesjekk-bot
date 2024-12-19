@@ -13,7 +13,7 @@ import { getMembersOf } from './ms-graph'
  * Validates the wonderwall token according to nais.io. Should only actually redirect if the token has expired.
  */
 export async function validateWonderwallToken(redirectPath: string): Promise<void> {
-    const requestHeaders = headers()
+    const requestHeaders = await headers()
 
     if (isLocal) {
         logger.warn('Is running locally, skipping RSC auth')
@@ -50,11 +50,11 @@ export function getUserToken(headers: Headers): string {
     )
 }
 
-export function getUser(): {
+export async function getUser(): Promise<{
     name: string
     email: string
-} {
-    const token = getUserToken(headers())
+}> {
+    const token = getUserToken(await headers())
     const jwt = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString('utf8'))
 
     return {
@@ -76,7 +76,7 @@ export async function getUsersGroups(): Promise<string[]> {
     }
 
     if (membersOf['@odata.nextLink'] != null) {
-        const user = getUser()
+        const user = await getUser()
         logger.error(
             `Whops! A user (${user.email}) has more than max page groups (${membersOf.value.length}), time to implement pagination?`,
         )
@@ -85,11 +85,11 @@ export async function getUsersGroups(): Promise<string[]> {
     return membersOf.value.map((group) => group.id)
 }
 
-export function isUserLoggedIn(): boolean {
+export async function isUserLoggedIn(): Promise<boolean> {
     try {
-        getUser()
+        await getUser()
         return true
-    } catch (e) {
+    } catch {
         return false
     }
 }
