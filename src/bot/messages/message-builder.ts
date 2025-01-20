@@ -4,7 +4,7 @@ import * as R from 'remeda'
 
 import { dayIndexToDay, getWeekNumber } from '../../utils/date'
 import { ScoredAsk, ScoredQuestion } from '../../metrics/metrics'
-import { plainHeader, textSection } from '../events/modal-utils'
+import { addIf, plainHeader, textSection } from '../events/modal-utils'
 import { questionTypeToText } from '../../utils/asked'
 import { scoreToEmoji } from '../../utils/score'
 import { QuestionType } from '../../safe-types'
@@ -99,6 +99,24 @@ export function createScoreBlocks(
 
     return [
         plainHeader(`Helsesjekkresultat for team ${team.name} i uke ${getWeekNumber(asked.timestamp)}`),
+        ...addIf(team.assosiatedGroup != null, () => ({
+            type: 'section',
+            text: {
+                type: 'mrkdwn',
+                text: 'Du kan se utviklingen over tid i Helsesjekk Dashboard',
+            },
+            accessory: {
+                type: 'button',
+                text: {
+                    type: 'plain_text',
+                    text: 'Helsegraf',
+                    emoji: true,
+                },
+                value: 'helsesjekk-link-button',
+                url: `https://helsesjekk-bot.nav.no/team/${team.assosiatedGroup}/${team.id}/graph`,
+                action_id: 'button-action',
+            },
+        })),
         {
             type: 'section',
             text: {
