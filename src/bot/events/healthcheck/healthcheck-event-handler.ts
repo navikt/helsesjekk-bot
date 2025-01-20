@@ -10,6 +10,11 @@ import { botLogger } from '../../bot-logger'
 import { createHealthCheckModal, getIdValueFromAnswer, HealthcheckModalActions } from './healthcheck-modal-builder'
 
 export function configureHealthCheckEventsHandler(app: App): void {
+    // User clicks the link to the graph, only needs to ack
+    app.action(MessageActions.LinkButtonClicked, async ({ ack }) => {
+        await ack()
+    })
+
     // User clicks fill out helsesjekk button, so we open the modal with the form
     app.action(MessageActions.FillButtonClicked, async ({ ack, action, body, client }) => {
         botLogger.info(`User clicked fill out helsesjekk button, opening modal`)

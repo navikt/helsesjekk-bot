@@ -11,6 +11,7 @@ import { QuestionType } from '../../safe-types'
 
 export const MessageActions = {
     FillButtonClicked: 'open_health_check_modal-action',
+    LinkButtonClicked: 'open_graph_link_message-action',
 }
 
 /**
@@ -114,7 +115,7 @@ export function createScoreBlocks(
                 },
                 value: 'helsesjekk-link-button',
                 url: `https://helsesjekk-bot.nav.no/team/${team.assosiatedGroup}/${team.id}/graph`,
-                action_id: 'button-action',
+                action_id: MessageActions.LinkButtonClicked,
             },
         })),
         {
