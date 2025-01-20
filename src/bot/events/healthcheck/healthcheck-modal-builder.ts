@@ -51,6 +51,14 @@ export function createHealthCheckModalBlocks(
             plainHeader(questionTypeToText(QuestionType.TEAM_HEALTH)),
             ...teamHealth.map((question) => createSelectSectionBlock(question, existingAnswers)),
         ]),
+        ...addIfArray(grouped.ME, (me) => [
+            plainHeader(questionTypeToText(QuestionType.ME)),
+            ...me.map((question) => createSelectSectionBlock(question, existingAnswers)),
+        ]),
+        ...addIfArray(grouped.SURROUNDINGS, (surroundings) => [
+            plainHeader(questionTypeToText(QuestionType.SURROUNDINGS)),
+            ...surroundings.map((question) => createSelectSectionBlock(question, existingAnswers)),
+        ]),
         ...addIfArray(grouped.SPEED, (speed) => [
             plainHeader(questionTypeToText(QuestionType.SPEED)),
             ...speed.map((question) => createSelectSectionBlock(question, existingAnswers)),

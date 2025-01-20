@@ -1,5 +1,7 @@
 export enum QuestionType {
     TEAM_HEALTH = 'TEAM_HEALTH',
+    ME = 'ME',
+    SURROUNDINGS = 'SURROUNDINGS',
     SPEED = 'SPEED',
     TECH = 'TECH',
     OTHER = 'OTHER',

@@ -21,6 +21,8 @@ type Props = {
 const colors = {
     score: 'rgba(0, 103, 197, 0.65)',
     [QuestionType.TEAM_HEALTH]: 'rgba(139, 69, 19, 0.65)',
+    [QuestionType.ME]: 'rgba(255,116,12,0.65)',
+    [QuestionType.SURROUNDINGS]: 'rgba(136,0,4,0.65)',
     [QuestionType.SPEED]: 'rgba(102, 102, 51, 0.65)',
     [QuestionType.TECH]: 'rgba(128, 0, 128, 0.65)',
     [QuestionType.OTHER]: 'rgba(255, 140, 0, 0.65)',
