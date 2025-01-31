@@ -23,9 +23,8 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - uses: oven-sh/setup-bun@v1
         with:
-          bun-version: 1.1.22
-      #- run: yarn test
-      - run: echo "Tests are skipped!"
+          bun-version: 1.2.1
+      - run: yarn test
 
   build-and-publish:
     if: github.ref == 'refs/heads/main'
