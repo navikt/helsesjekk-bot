@@ -4,6 +4,7 @@ import { getYear } from 'date-fns'
 import { scoreAsked, ScoredAsk, ScoredQuestion } from '../metrics/metrics'
 import { getWeekNumber } from '../utils/date'
 import { QuestionScorePerWeek, QuestionType } from '../safe-types'
+import { questionsFromJsonb } from '../questions/jsonb-utils'
 
 import { prisma } from './prisma'
 
@@ -85,6 +86,8 @@ export async function getTeamScorePerQuestion(teamId: string): Promise<QuestionS
         R.map(scoreAsked),
     )
 
+    const currentQuestionIds = questionsFromJsonb(team.questions).map((it) => it.questionId)
+
     const scoredQuestionToScorePerWeek = (
         scoredQuestion: ScoredQuestion & { timestamp: Date },
     ): QuestionScorePerWeek => ({
@@ -92,6 +95,7 @@ export async function getTeamScorePerQuestion(teamId: string): Promise<QuestionS
             questionId: scoredQuestion.id,
             question: scoredQuestion.question,
             answers: scoredQuestion.answers,
+            isCurrent: currentQuestionIds.includes(scoredQuestion.id),
         },
         scoring: [
             {

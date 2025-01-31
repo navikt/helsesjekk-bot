@@ -2,6 +2,7 @@ import * as R from 'remeda'
 import React, { ReactElement, Suspense } from 'react'
 import { Metadata } from 'next'
 import { BodyLong, Detail, Heading, Skeleton } from '@navikt/ds-react'
+import { SearchParams } from 'nuqs'
 
 import { TeamNotAccesible, TeamNotFound } from '../../../../../components/errors/ErrorMessages'
 import { userHasAdGroup } from '../../../../../auth/authentication'
@@ -12,6 +13,8 @@ import OverallScoreGraph from '../../../../../components/graphs/OverallScoreGrap
 import { getWeekNumber } from '../../../../../utils/date'
 import ScorePerQuestion from '../../../../../components/graphs/ScorePerQuestion'
 import { raise } from '../../../../../utils/ts-utils'
+import OnlyCurrentQuestionsToggle from '../../../../../components/graphs/OnlyCurrentQuestionsToggle'
+import { loadSearchParams } from '../../../../../components/graphs/only-current-search-params'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team | Graf',
@@ -23,10 +26,13 @@ type Props = {
         groupId: string
         teamId: string
     }>
+    searchParams: Promise<SearchParams>
 }
 
-async function Page({ params }: Props): Promise<ReactElement> {
+async function Page({ params, searchParams }: Props): Promise<ReactElement> {
     const pageParams = await params
+    const queryParams = await loadSearchParams(searchParams)
+
     const team = await getTeamByAdGroupAndTeamId(pageParams.groupId, pageParams.teamId)
     if (!team) {
         return (
@@ -54,7 +60,7 @@ async function Page({ params }: Props): Promise<ReactElement> {
                 <OverallGraph teamId={team.id} />
             </Suspense>
             <Suspense fallback={<Skeleton height={300} variant="rounded" />}>
-                <PerQuestionGraph teamId={team.id} />
+                <PerQuestionGraph teamId={team.id} showOld={queryParams['show-old'] ?? false} />
             </Suspense>
         </div>
     )
@@ -102,7 +108,7 @@ async function OverallGraph({ teamId }: { teamId: string }): Promise<ReactElemen
     )
 }
 
-async function PerQuestionGraph({ teamId }: { teamId: string }): Promise<ReactElement> {
+async function PerQuestionGraph({ teamId, showOld }: { teamId: string; showOld: boolean }): Promise<ReactElement> {
     const teamMetrics = await getTeamScorePerQuestion(teamId)
 
     if ('error' in teamMetrics) {
@@ -128,17 +134,24 @@ async function PerQuestionGraph({ teamId }: { teamId: string }): Promise<ReactEl
 
     return (
         <div>
-            <Heading size="medium" level="3">
-                Score per spørsmål per uke
-            </Heading>
-            <Detail>
-                {teamMetrics.length} målinger siden Uke {getWeekNumber(earliest.timestamp)},{' '}
-                {earliest.timestamp.getFullYear()}
-            </Detail>
+            <div className="flex justify-between">
+                <div>
+                    <Heading size="medium" level="3">
+                        Score per spørsmål per uke
+                    </Heading>
+                    <Detail>
+                        {teamMetrics.length} målinger siden Uke {getWeekNumber(earliest.timestamp)},{' '}
+                        {earliest.timestamp.getFullYear()}
+                    </Detail>
+                </div>
+                <OnlyCurrentQuestionsToggle />
+            </div>
             <div className="mt-4">
-                {teamMetrics.map((it) => (
-                    <ScorePerQuestion key={it.question.questionId} question={it.question} scoring={it.scoring} />
-                ))}
+                {teamMetrics
+                    .filter((it) => (showOld ? true : it.question.isCurrent))
+                    .map((it) => (
+                        <ScorePerQuestion key={it.question.questionId} question={it.question} scoring={it.scoring} />
+                    ))}
             </div>
         </div>
     )
