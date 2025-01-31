@@ -44,6 +44,7 @@ export type QuestionScorePerWeek = {
         questionId: string
         question: string
         answers: Record<AnswerLevel, string>
+        isCurrent: boolean
     }
     scoring: QuestionScoring[]
 }
