@@ -38,6 +38,37 @@ export async function getMembersOf(): Promise<
     return response.json()
 }
 
+export async function getGroup(
+    groupId: string,
+): Promise<MsGraphGroup | { error: string; status?: number; statusText?: string }> {
+    if (isLocal) {
+        return fakeMembersOfResponse.value[1]
+    }
+
+    const token = getUserToken(await headers())
+    const tokenSet = await requestOboToken(token, 'https://graph.microsoft.com/.default')
+    if (!tokenSet.ok) {
+        logger.error(new Error(`Unable to exchange OBO token: ${tokenSet.error.message}`, { cause: tokenSet.error }))
+        return { error: 'Du har ikke tilgang til å se denne gruppen' }
+    }
+
+    const response = await fetch(`https://graph.microsoft.com/v1.0/groups/${groupId}`, {
+        headers: {
+            Authorization: `Bearer ${tokenSet.token}`,
+        },
+    })
+
+    if (!response.ok) {
+        return {
+            error: 'Feil fra Microsoft, prøv igjen senere.',
+            status: response.status,
+            statusText: response.statusText,
+        }
+    }
+
+    return response.json()
+}
+
 export type MsGraphGroup = {
     id: string
     createdDateTime: string

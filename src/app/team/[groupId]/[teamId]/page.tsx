@@ -1,6 +1,6 @@
 import * as R from 'remeda'
-import React, { ReactElement } from 'react'
-import { BodyShort, Heading } from '@navikt/ds-react'
+import React, { ReactElement, Suspense } from 'react'
+import { BodyShort, Detail, Heading, Skeleton } from '@navikt/ds-react'
 // @ts-expect-error TODO, link panel is deprecated
 import { LinkPanel, LinkPanelDescription, LinkPanelTitle } from '@navikt/ds-react/LinkPanel'
 import { Metadata } from 'next'
@@ -22,6 +22,7 @@ import EditableFrequency from '../../../../components/edit/EditableFrequency'
 import { PingDot } from '../../../../components/core/Dots'
 import { createPermalink } from '../../../../utils/slack'
 import { dayIndexToDay } from '../../../../utils/date'
+import { getGroup } from '../../../../auth/ms-graph'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team',
@@ -100,6 +101,7 @@ async function Page({ params }: Props): Promise<ReactElement> {
             />
             <EditableTime teamId={team.id} hour={team.postHour} day={team.postDay} type="ask" />
             <EditableTime teamId={team.id} hour={team.revealHour} day={team.revealDay} type="reveal" />
+            <AssociatedGroup groupId={team.assosiatedGroup} />
             <Questions teamId={team.id} questions={questionsFromJsonb(team.questions)} />
         </div>
     )
@@ -164,6 +166,55 @@ function Questions({ teamId, questions }: { teamId: string; questions: Question[
                 <AddQuestion teamId={teamId} />
             </div>
         </div>
+    )
+}
+
+function AssociatedGroup({ groupId }: { groupId: string | null }): ReactElement {
+    return (
+        <div className="p-3 bg-bg-subtle rounded my-4">
+            <div className="flex gap-2 items-center justify-between">
+                <Heading size="small">Assosiert gruppe</Heading>
+                <Detail>ID: {groupId}</Detail>
+            </div>
+            {groupId == null ? (
+                <BodyShort>Ingen assosiert gruppe</BodyShort>
+            ) : (
+                <>
+                    <Suspense
+                        fallback={
+                            <>
+                                <Skeleton />
+                                <Skeleton />
+                            </>
+                        }
+                    >
+                        <AssociatedGroupName groupId={groupId} />
+                    </Suspense>
+                </>
+            )}
+            <div className="mt-4">
+                <BodyShort size="small">
+                    For å endre gruppen så er det beskrevet på <Link href="/kom-i-gang#koble-til">Kom i gang</Link>{' '}
+                    siden
+                </BodyShort>
+            </div>
+        </div>
+    )
+}
+
+async function AssociatedGroupName({ groupId }: { groupId: string }): Promise<ReactElement> {
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    const group = await getGroup(groupId)
+
+    if ('error' in group) {
+        return <BodyShort>{group.error}</BodyShort>
+    }
+
+    return (
+        <>
+            <BodyShort>{group.displayName ?? 'Gruppe uten navn'}</BodyShort>
+            {group.description && <BodyShort size="small">{group.description}</BodyShort>}
+        </>
     )
 }
 
