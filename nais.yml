@@ -26,8 +26,8 @@ spec:
     limits:
       memory: 1024Mi
     requests:
-      cpu: 100m
-      memory: 512Mi
+      cpu: 80m
+      memory: 320Mi
   filesFrom:
     - emptyDir:
         medium: Memory
