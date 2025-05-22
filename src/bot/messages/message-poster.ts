@@ -3,6 +3,7 @@ import { questionsFromJsonb } from '../../questions/jsonb-utils'
 import { markAskedRevealed, createAsked, getActiveAsk, Team, getPreviousAsk, markAskedAsNagged } from '../../db'
 import { scoreAsked } from '../../metrics/metrics'
 import { botLogger } from '../bot-logger'
+import { raise } from '../../utils/ts-utils'
 
 import {
     createCompletedBlocks,
@@ -119,7 +120,7 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
 
     await client.chat.postMessage({
         channel: team.id,
-        thread_ts: message.ts,
+        thread_ts: message.ts ?? raise(`Tried to post update in thread, but had no parent ts (for team: ${team.id})`),
         text: `Svar på ukentlig helsesjekk for ${team.name}`,
         blocks: createScoreBlocks(team, asked, scoredAsk, previousScoredAsk),
         reply_broadcast: true,

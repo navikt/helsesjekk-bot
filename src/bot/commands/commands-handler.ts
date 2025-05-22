@@ -123,7 +123,6 @@ export function configureCommandsHandler(app: App): void {
                         channel: team.id,
                         text: `Svar på ukentlig helsesjekk for ${team.name}`,
                         blocks: createScoreBlocks(team, ask, scoredAsk, previousScoredAsk),
-                        reply_broadcast: true,
                     })
                 }
             }
