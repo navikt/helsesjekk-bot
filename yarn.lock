@@ -532,13 +532,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^1.35.0":
-  version: 1.35.0
-  resolution: "@navikt/next-logger@npm:1.35.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F1.35.0%2Fd8db3f9b5719486d8b7a61e29f4c18dd1f2a5033"
+"@navikt/next-logger@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "@navikt/next-logger@npm:3.0.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F3.0.3%2F207790c463fcfe8b50bfc5639a090b8c4f9565e7"
+  dependencies:
+    "@navikt/pino-logger": "npm:^3.0.3"
+    pino-roll: "npm:3"
   peerDependencies:
     next: 14 || 15
     pino: 8 || 9
-  checksum: 10/c376f9af08c06eb60984e203eb60a57ecfd0308a81b56a3bafe513fb6943a121e0442907b4a10a2186fc3427818db0d050979d58f3dfdc7c18e8069144c14c74
+  dependenciesMeta:
+    pino-roll:
+      optional: true
+  checksum: 10/86337a5592a029493925db5ec27c856b277c913667288d72781e45f38327f5f0dac5f2bf0b5e75142f14865730ba0125a6cea0467f9ee311339fb84ff2919f73
   languageName: node
   linkType: hard
 
@@ -550,6 +556,20 @@ __metadata:
     openid-client: "npm:^5.6.5"
     prom-client: "npm:^15.1.0"
   checksum: 10/5d7c84101fb174fe26bed49f842a02d9d58c191fc2be9ffaa7619e3b87d63c0686fb769ed5da57aca1b4c26e0db2d7563d98628d74d749bc5083576797c63088
+  languageName: node
+  linkType: hard
+
+"@navikt/pino-logger@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "@navikt/pino-logger@npm:3.0.3::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F3.0.3%2Fbfce21f7e5fc83e8dfb56877a1c6fe06c629d7fa"
+  dependencies:
+    pino-roll: "npm:3"
+  peerDependencies:
+    pino: 8 || 9
+  dependenciesMeta:
+    pino-roll:
+      optional: true
+  checksum: 10/d94caeb488b963b55eb17564f4142f5710418e6fd5b91c7375beb4e6ea580bf11b4c6f9a404a00900cb21e3cf5831f272ce91a43615f810ff294498edede4fb9
   languageName: node
   linkType: hard
 
@@ -3749,7 +3769,7 @@ __metadata:
     "@navikt/ds-react": "npm:^7.22.0"
     "@navikt/ds-tailwind": "npm:^7.22.0"
     "@navikt/eslint-config-teamsykmelding": "npm:^7.1.0"
-    "@navikt/next-logger": "npm:^1.35.0"
+    "@navikt/next-logger": "npm:^3.0.3"
     "@navikt/oasis": "npm:^3.8.0"
     "@prisma/client": "npm:6.8.2"
     "@slack/bolt": "npm:^3.22.0"
@@ -5341,6 +5361,16 @@ __metadata:
   bin:
     pino-pretty: bin.js
   checksum: 10/9861fdbe88db000e3b0fe959f0fb7b5913e8d16af70373155d48854c5d509629e7e1ba09ed3fac24a9bd2729451567a698938b9741d84de63eb549843450e71c
+  languageName: node
+  linkType: hard
+
+"pino-roll@npm:3":
+  version: 3.1.0
+  resolution: "pino-roll@npm:3.1.0"
+  dependencies:
+    date-fns: "npm:^4.1.0"
+    sonic-boom: "npm:^4.0.1"
+  checksum: 10/e194cd896f6e0d53c44e0a669afd516d9a0fc082eab4be005bf611a8265e5da75c2fa6373f89844f7ca6521b8b8d0533326147c88d380df92604b153991915df
   languageName: node
   linkType: hard
 

@@ -1,1 +1,1 @@
-export { POSTLoggingRouteHandler as POST } from '@navikt/next-logger'
+export { POST } from '@navikt/next-logger/app-dir'

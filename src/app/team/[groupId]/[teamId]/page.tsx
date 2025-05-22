@@ -1,7 +1,6 @@
 import * as R from 'remeda'
 import React, { ReactElement, Suspense } from 'react'
 import { BodyShort, Detail, Heading, Skeleton } from '@navikt/ds-react'
-// @ts-expect-error TODO, link panel is deprecated
 import { LinkPanel, LinkPanelDescription, LinkPanelTitle } from '@navikt/ds-react/LinkPanel'
 import { Metadata } from 'next'
 import Link from 'next/link'

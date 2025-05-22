@@ -25,7 +25,7 @@
         "@navikt/ds-css": "^7.22.0",
         "@navikt/ds-react": "^7.22.0",
         "@navikt/ds-tailwind": "^7.22.0",
-        "@navikt/next-logger": "^1.35.0",
+        "@navikt/next-logger": "^3.0.3",
         "@navikt/oasis": "^3.8.0",
         "@prisma/client": "6.8.2",
         "@slack/bolt": "^3.22.0",
