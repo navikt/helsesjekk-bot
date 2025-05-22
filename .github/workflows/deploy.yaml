@@ -51,8 +51,6 @@ jobs:
         id: docker-build-push
         with:
           team: teamsykmelding
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           image_suffix: prod
 
   build-and-publish-dev:
@@ -78,8 +76,6 @@ jobs:
         id: docker-build-push
         with:
           team: teamsykmelding
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           image_suffix: dev
 
   build-for-dependabot:
@@ -106,16 +102,19 @@ jobs:
     name: Deploy to prod
     needs: [build-and-publish, codeql-analysis]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
     environment:
       name: production
       url: https://helsesjekk-bot.nav.no
     steps:
       - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v1
+      - uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
-          RESOURCE: nais.yml
+          RESOURCE: .nais/nais-prod.yaml
           VAR: image=${{ needs.build-and-publish.outputs.image }}
 
   deploy-bot-to-gcp-dev:
@@ -123,16 +122,19 @@ jobs:
     name: Deploy to dev
     needs: [build-and-publish-dev]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
     environment:
       name: development
       url: https://helsesjekk-bot.intern.dev.nav.no
     steps:
       - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v1
+      - uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: nais-dev.yml
+          RESOURCE: .nais/nais-dev.yaml
           VAR: image=${{ needs.build-and-publish-dev.outputs.image }}
 
   trivy-docker:
