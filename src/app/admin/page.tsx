@@ -31,7 +31,7 @@ async function Page(): Promise<ReactElement> {
             <Heading size="large">Alle team</Heading>
             <div className="flex gap-3 flex-wrap">
                 {sortedTeams.map((team) => (
-                    <div key={team.id} className="bg-bg-subtle p-4 pt-2 rounded">
+                    <div key={team.id} className="bg-bg-subtle p-4 pt-2 rounded-sm">
                         <div className="flex justify-between mb-2">
                             <Heading level="2" size="medium" className="flex items-center gap-2">
                                 {team.active ? <PingDot /> : <InactiveDot />}
@@ -78,7 +78,7 @@ async function Page(): Promise<ReactElement> {
 
 function TeamDetail({ text, detail }: { text: string; detail: string }): ReactElement {
     return (
-        <div className="bg-white p-2 rounded">
+        <div className="bg-white p-2 rounded-sm">
             <BodyShort>{text}</BodyShort>
             <Detail>{detail}</Detail>
         </div>

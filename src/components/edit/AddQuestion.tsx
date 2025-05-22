@@ -49,7 +49,7 @@ function AddQuestion({ teamId }: Props): ReactElement {
                                 logger.error(new Error('Unable to add question', { cause: e }))
                             }
                         }}
-                        className="flex flex-col gap-3 bg-bg-subtle p-4 rounded relative"
+                        className="flex flex-col gap-3 bg-bg-subtle p-4 rounded-sm relative"
                     >
                         <Heading size="small" level="3" spacing className="flex items-center gap-2">
                             <PlusIcon aria-hidden />

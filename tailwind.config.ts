@@ -1,6 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
-    presets: [require('@navikt/ds-tailwind')],
+import type { Config } from 'tailwindcss'
+import navikt from '@navikt/ds-tailwind'
+
+const config: Config = {
+    presets: [navikt],
     content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
     theme: {
         extend: {
@@ -11,3 +13,4 @@ module.exports = {
     },
     plugins: [],
 }
+export default config

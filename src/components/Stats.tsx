@@ -34,7 +34,7 @@ async function StatsView(): Promise<ReactElement> {
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="bg-bg-subtle rounded p-4">
+            <div className="bg-bg-subtle rounded-sm p-4">
                 <div className="flex gap-1 items-center">
                     <PersonTallShortIcon aria-hidden />
                     <Heading size="small">Aktive team</Heading>
@@ -43,7 +43,7 @@ async function StatsView(): Promise<ReactElement> {
                     <BodyShort>{stats.activeTeams}</BodyShort>
                 </div>
             </div>
-            <div className="bg-bg-subtle rounded p-4">
+            <div className="bg-bg-subtle rounded-sm p-4">
                 <div className="flex gap-1 items-center">
                     <QuestionmarkIcon aria-hidden />
                     <Heading size="small">Antall helsesjekker</Heading>
@@ -52,7 +52,7 @@ async function StatsView(): Promise<ReactElement> {
                     <BodyShort>{stats.totalAsks}</BodyShort>
                 </div>
             </div>
-            <div className="bg-bg-subtle rounded p-4">
+            <div className="bg-bg-subtle rounded-sm p-4">
                 <div className="flex gap-1 items-center">
                     <GavelIcon aria-hidden />
                     <Heading size="small">Antall svar</Heading>
@@ -63,7 +63,7 @@ async function StatsView(): Promise<ReactElement> {
                     </BodyShort>
                 </div>
             </div>
-            <div className="bg-bg-subtle rounded p-4">
+            <div className="bg-bg-subtle rounded-sm p-4">
                 <div className="flex gap-1 items-center">
                     <HouseHeartIcon aria-hidden />
                     <Heading size="small">Størst team</Heading>
@@ -72,7 +72,7 @@ async function StatsView(): Promise<ReactElement> {
                     <BodyShort>{stats.biggestTeam} medlemmer</BodyShort>
                 </div>
             </div>
-            <div className="bg-bg-subtle rounded p-4">
+            <div className="bg-bg-subtle rounded-sm p-4">
                 <div className="flex gap-1 items-center">
                     <TenancyIcon aria-hidden />
                     <Heading size="small">Flest spørsmål i team</Heading>
@@ -81,7 +81,7 @@ async function StatsView(): Promise<ReactElement> {
                     <BodyShort>{stats.mostQuestions} spørsmål</BodyShort>
                 </div>
             </div>
-            <div className="bg-bg-subtle rounded p-4">
+            <div className="bg-bg-subtle rounded-sm p-4">
                 <div className="flex gap-1 items-center">
                     <HandShakeHeartIcon aria-hidden />
                     <Heading size="small">Helsesjekk Dashboard</Heading>

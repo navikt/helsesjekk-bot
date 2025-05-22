@@ -116,7 +116,7 @@ function createCustomTooltip(samletScore: boolean): (props: CustomTooltipProps) 
         const [first] = payload
 
         return (
-            <div className="bg-white border border-border-default rounded p-2">
+            <div className="bg-white border border-border-default rounded-sm p-2">
                 <Detail>
                     Uke {getWeekNumber(first.payload.timestamp)}, {first.payload.timestamp.getFullYear()}
                 </Detail>

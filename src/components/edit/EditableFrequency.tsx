@@ -31,7 +31,7 @@ function EditableStatus({ teamId, frequency, weekSkew, postDay, postHour, hasAct
     const [edit, setEdit] = useState(false)
 
     return (
-        <div className="p-3 bg-bg-subtle rounded my-4 relative">
+        <div className="p-3 bg-bg-subtle rounded-sm my-4 relative">
             {!edit ? (
                 <FrequencyStatus frequency={frequency} weekSkew={weekSkew} postDay={postDay} postHour={postHour} />
             ) : (
@@ -185,7 +185,7 @@ function WeeksToPostGrid({ frequency, offset }: { frequency: number; offset: num
                 {allWeeks.map((week) => (
                     <div
                         key={week}
-                        className={cn('border rounded flex items-center justify-center text-xs transition-colors', {
+                        className={cn('border rounded-sm flex items-center justify-center text-xs transition-colors', {
                             'bg-green-200': relevantWeeks.includes(week),
                             'border-2 border-dotted': week === currentWeek,
                         })}
@@ -199,14 +199,14 @@ function WeeksToPostGrid({ frequency, offset }: { frequency: number; offset: num
                 {nextYear.map((week) => (
                     <div
                         key={week}
-                        className={cn('border rounded flex items-center justify-center text-xs transition-colors', {
+                        className={cn('border rounded-sm flex items-center justify-center text-xs transition-colors', {
                             'bg-green-200': relevantWeeks.includes(week),
                         })}
                     >
                         {week}
                     </div>
                 ))}
-                <div className="border rounded flex items-center justify-center text-xs">...</div>
+                <div className="border rounded-sm flex items-center justify-center text-xs">...</div>
             </div>
         </div>
     )

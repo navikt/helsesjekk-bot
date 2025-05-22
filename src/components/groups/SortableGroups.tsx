@@ -47,7 +47,7 @@ function SortableGroups({ groups }: Props): ReactElement {
 
 function GroupListItem({ group }: { group: Props['groups'][number] }): ReactElement {
     return (
-        <div className="bg-bg-subtle rounded p-4">
+        <div className="bg-bg-subtle rounded-sm p-4">
             <Heading size="small">{group.displayName ?? 'Gruppe uten navn'}</Heading>
             <BodyLong className="mb-2">{group.description}</BodyLong>
             <Detail>Koble denne gruppen til teamet ditt</Detail>

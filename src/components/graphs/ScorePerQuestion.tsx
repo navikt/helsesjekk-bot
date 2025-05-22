@@ -107,7 +107,7 @@ function CustomTooltip({ payload, active }: TooltipProps<number, string>): React
 
     if (!relevantValues.find(([key]) => key === 'averageScore')) {
         return (
-            <div className="bg-white border border-border-default rounded p-2">
+            <div className="bg-white border border-border-default rounded-sm p-2">
                 <Detail>
                     Uke {getWeekNumber(firstPayload.timestamp)}, {firstPayload.timestamp.getFullYear()}
                 </Detail>
@@ -117,7 +117,7 @@ function CustomTooltip({ payload, active }: TooltipProps<number, string>): React
     }
 
     return (
-        <div className="bg-white border border-border-default rounded p-2">
+        <div className="bg-white border border-border-default rounded-sm p-2">
             <Detail>
                 Uke {getWeekNumber(firstPayload.timestamp)}, {firstPayload.timestamp.getFullYear()}
             </Detail>

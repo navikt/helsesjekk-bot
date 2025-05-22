@@ -130,7 +130,7 @@ function ScoredAskView({
     const hasOptionalQuestion = ask.scoredQuestions.some((it) => it.optional)
 
     return (
-        <div className="bg-bg-subtle rounded p-4 grow max-w-sm">
+        <div className="bg-bg-subtle rounded-sm p-4 grow max-w-sm">
             <Heading size="medium" level="4">
                 Uke {getWeekNumber(ask.timestamp)} {getYear(ask.timestamp)}
             </Heading>

@@ -75,7 +75,7 @@ async function OverallGraph({ teamId }: { teamId: string }): Promise<ReactElemen
                 <Heading size="medium" level="3">
                     Total score per uke
                 </Heading>
-                <div className="w-full aspect-video relative flex items-center justify-center flex-col border rounded border-border-subtle">
+                <div className="w-full aspect-video relative flex items-center justify-center flex-col border rounded-sm border-border-subtle">
                     <Heading size="medium" level="4" spacing>
                         Teamet ditt har ingen data
                     </Heading>
@@ -117,7 +117,7 @@ async function PerQuestionGraph({ teamId, showOld }: { teamId: string; showOld: 
                 <Heading size="medium" level="3">
                     Score per spørsmål per uke
                 </Heading>
-                <div className="w-full aspect-video relative flex items-center justify-center flex-col border rounded border-border-subtle">
+                <div className="w-full aspect-video relative flex items-center justify-center flex-col border rounded-sm border-border-subtle">
                     <Heading size="medium" level="3" spacing>
                         Teamet ditt har ingen data
                     </Heading>
