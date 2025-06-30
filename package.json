@@ -21,11 +21,11 @@
         "prepare": "husky"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^7.22.0",
-        "@navikt/ds-css": "^7.22.0",
-        "@navikt/ds-react": "^7.22.0",
-        "@navikt/ds-tailwind": "^7.22.0",
-        "@navikt/next-logger": "^3.0.3",
+        "@navikt/aksel-icons": "^7.24.0",
+        "@navikt/ds-css": "^7.24.0",
+        "@navikt/ds-react": "^7.24.0",
+        "@navikt/ds-tailwind": "^7.24.0",
+        "@navikt/next-logger": "^4.1.4",
         "@navikt/oasis": "^3.8.0",
         "@prisma/client": "6.8.2",
         "@slack/bolt": "^4.4.0",
