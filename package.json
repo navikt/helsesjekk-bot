@@ -18,7 +18,7 @@
         "prisma:migrate": "NODE_OPTIONS='-r next-logger' prisma migrate deploy",
         "prisma:migrate-dev": "prisma migrate dev",
         "prisma:seed": "bun run seed/seed.ts | pino-pretty",
-        "postinstall": "husky"
+        "postinstall": "command -v husky && husky || true"
     },
     "dependencies": {
         "@navikt/aksel-icons": "^7.24.0",
