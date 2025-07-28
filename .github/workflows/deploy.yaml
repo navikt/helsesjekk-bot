@@ -118,7 +118,6 @@ jobs:
           VAR: image=${{ needs.build-and-publish.outputs.image }}
 
   deploy-bot-to-gcp-dev:
-    if: github.ref != 'refs/heads/main'
     name: Deploy to dev
     needs: [build-and-publish-dev]
     runs-on: ubuntu-latest
