@@ -33,7 +33,7 @@
         "@slack/types": "^2.14.0",
         "clsx": "^2.1.1",
         "date-fns": "^4.1.0",
-        "next": "^15.3.4",
+        "next": "^15.4.4",
         "next-logger": "^5.0.1",
         "nextleton": "^0.6.1",
         "node-cron": "^4.1.1",
@@ -51,29 +51,24 @@
         "zod": "^3.25.67"
     },
     "devDependencies": {
-        "@navikt/eslint-config-teamsykmelding": "^7.2.0",
+        "@eslint/eslintrc": "^3.3.1",
+        "@navikt/eslint-config-teamsykmelding": "^8.0.0",
         "@tailwindcss/postcss": "^4.1.11",
         "@types/bun": "^1.2.17",
         "@types/node": "^22.15.34",
         "@types/node-cron": "^3.0.11",
         "@types/react": "19.1.8",
         "@types/uuid": "^10.0.0",
-        "@typescript-eslint/eslint-plugin": "^8.35.1",
-        "@typescript-eslint/parser": "^8.35.1",
-        "eslint": "^8.57.1",
-        "eslint-config-next": "^15.3.4",
-        "eslint-plugin-import": "^2.32.0",
+        "eslint": "^9.32.0",
+        "eslint-config-next": "^15.4.4",
         "husky": "^9.1.7",
         "lint-staged": "^16.1.2",
         "pino-pretty": "^13.0.0",
         "prettier": "^3.6.2",
         "prettier-plugin-prisma": "^5.0.0",
-        "prettier-plugin-tailwindcss": "^0.6.13",
+        "prettier-plugin-tailwindcss": "^0.6.14",
         "tailwindcss": "^4.1.11",
         "typescript": "^5.8.3"
-    },
-    "resolutions": {
-        "eslint-plugin-react-hooks": "5.0.0-canary-7118f5dd7-20230705"
     },
     "prettier": "@navikt/eslint-config-teamsykmelding/prettier",
     "eslintConfig": {
