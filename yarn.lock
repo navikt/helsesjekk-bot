@@ -883,10 +883,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@slack/types@npm:^2.14.0, @slack/types@npm:^2.9.0":
-  version: 2.14.0
-  resolution: "@slack/types@npm:2.14.0"
-  checksum: 10/fa24a113b88e087f899078504c2ba50ab9795f7c2dd1a2d95b28217a3af20e554494f9cc3b8c8ce173120990d98e19400c95369f9067cecfcc46c08b59d2a46f
+"@slack/types@npm:^2.14.0, @slack/types@npm:^2.15.0, @slack/types@npm:^2.9.0":
+  version: 2.15.0
+  resolution: "@slack/types@npm:2.15.0"
+  checksum: 10/3a6b9c12ea24cb0f45fac63aa3216edce88c6fc923e2dbe733360ce9494ead33d2ee70f83f99168cf4f054bba42e7ffdf012dabf997cc7350f9ce23b27116e94
   languageName: node
   linkType: hard
 
@@ -1094,12 +1094,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/bun@npm:^1.2.17":
-  version: 1.2.17
-  resolution: "@types/bun@npm:1.2.17"
+"@types/bun@npm:^1.2.19":
+  version: 1.2.19
+  resolution: "@types/bun@npm:1.2.19"
   dependencies:
-    bun-types: "npm:1.2.17"
-  checksum: 10/5eaf5fde3925c00f3c3599eb0977fd48abb1e102bb3abcc9016f419503cd5bccf01a4908c87c8f09cb4c674d854c84510517f631f4278f4b3058def5468fad89
+    bun-types: "npm:1.2.19"
+  checksum: 10/175d73e404bd5ee336ce2e392c2632195938d8258692193161df5b865c665b0e835521f144d12d450519349ba14e2821bf0e142d8714cb3886f4f9f0672af87a
   languageName: node
   linkType: hard
 
@@ -1217,12 +1217,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=18, @types/node@npm:>=18.0.0, @types/node@npm:^22.15.34":
-  version: 22.15.34
-  resolution: "@types/node@npm:22.15.34"
+"@types/node@npm:*, @types/node@npm:>=18, @types/node@npm:>=18.0.0, @types/node@npm:^22.16.5":
+  version: 22.16.5
+  resolution: "@types/node@npm:22.16.5"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10/b0fb6674f6c17e3d515531d7f787ccd6676641ba161a6a0e6a93a2d5bc2089fde492eac24b5152a11413bf07a818055a9ec9077d3200b03cf7ea9718470a8417
+  checksum: 10/ba45b5c9113cbc5edb12960fcfe7e80db2c998af5c1931264240695b27d756570d92462150b95781bd67a03aa82111cc970ab0f4504eb99213edff8bf425354e
   languageName: node
   linkType: hard
 
@@ -1951,12 +1951,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bun-types@npm:1.2.17":
-  version: 1.2.17
-  resolution: "bun-types@npm:1.2.17"
+"bun-types@npm:1.2.19":
+  version: 1.2.19
+  resolution: "bun-types@npm:1.2.19"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 10/20f8a1fe7cb1375db22947da6ed68178058ac5895259e8ebb89b934540d523621786e831825931cf0aec87239674d839d2c108dab0ca7f258acd7a9539be5aff
+  peerDependencies:
+    "@types/react": ^19
+  checksum: 10/4dde184ab0e493af34d7faa691180de9865e1e2469508610f275abcfc7efa31e89a843ca1129a45e04ff104ce28e110a05ab5bae5abf02169d8131161a13e4b7
   languageName: node
   linkType: hard
 
@@ -3468,10 +3470,10 @@ __metadata:
     "@prisma/client": "npm:6.12.0"
     "@slack/bolt": "npm:^4.4.0"
     "@slack/logger": "npm:^4.0.0"
-    "@slack/types": "npm:^2.14.0"
+    "@slack/types": "npm:^2.15.0"
     "@tailwindcss/postcss": "npm:^4.1.11"
-    "@types/bun": "npm:^1.2.17"
-    "@types/node": "npm:^22.15.34"
+    "@types/bun": "npm:^1.2.19"
+    "@types/node": "npm:^22.16.5"
     "@types/node-cron": "npm:^3.0.11"
     "@types/react": "npm:19.1.8"
     "@types/uuid": "npm:^10.0.0"
@@ -3484,7 +3486,7 @@ __metadata:
     next: "npm:^15.4.4"
     next-logger: "npm:^5.0.1"
     nextleton: "npm:^0.6.1"
-    node-cron: "npm:^4.1.1"
+    node-cron: "npm:^4.2.1"
     nuqs: "npm:^2.4.3"
     pino: "npm:^9.7.0"
     pino-pretty: "npm:^13.0.0"
@@ -3496,8 +3498,8 @@ __metadata:
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
     recharts: "npm:^2.15.4"
-    remeda: "npm:^2.23.2"
-    sharp: "npm:^0.34.2"
+    remeda: "npm:^2.26.1"
+    sharp: "npm:^0.34.3"
     tailwind-merge: "npm:^3.3.1"
     tailwindcss: "npm:^4.1.11"
     typescript: "npm:^5.8.3"
@@ -4617,7 +4619,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-cron@npm:^4.1.1":
+"node-cron@npm:^4.2.1":
   version: 4.2.1
   resolution: "node-cron@npm:4.2.1"
   checksum: 10/7550b105e4aab772597383e24c4b31b6d5dc9604c96bcefb1a4b8a94a432b8835e3010a0dfc1d34492edfb64a2e55f334cf3ad0a76901b72de11ef506cbfd31a
@@ -5453,7 +5455,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remeda@npm:^2.23.2":
+"remeda@npm:^2.26.1":
   version: 2.26.1
   resolution: "remeda@npm:2.26.1"
   dependencies:
@@ -5743,7 +5745,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sharp@npm:^0.34.2, sharp@npm:^0.34.3":
+"sharp@npm:^0.34.3":
   version: 0.34.3
   resolution: "sharp@npm:0.34.3"
   dependencies:
