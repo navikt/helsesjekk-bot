@@ -436,55 +436,55 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/aksel-icons@npm:^7.24.0":
-  version: 7.24.0
-  resolution: "@navikt/aksel-icons@npm:7.24.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F7.24.0%2F1f3bef13a6de84402eac4341fc6b26ee9e405a60"
-  checksum: 10/2bf559427370ca01eb6234658d272db659400478a5df1186b5e7e70b96bc763088457713ba955d862dcfe31c3e1594b7340d521a009e7fdd68cca26f0e2938ff
+"@navikt/aksel-icons@npm:^7.25.1":
+  version: 7.25.1
+  resolution: "@navikt/aksel-icons@npm:7.25.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F7.25.1%2F5b2b3d04a018be264b322ccfcffcb055c33098a2"
+  checksum: 10/dc7e6b6f2f146f49b1fa7fcf016203dd2d46bf9ede88f5e8f4f50646ca92bccddcd902c1c7d3fe4bcdd91863c3b7ffc10ac582b7960cfe04b41bfadfe1ae1d64
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^7.24.0":
-  version: 7.24.0
-  resolution: "@navikt/ds-css@npm:7.24.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F7.24.0%2F1f7fdec67be88e3058a9342a237fc8b5b25d7a57"
-  checksum: 10/ad326b4a371d06b05339935c73a75a6156b23dff98256c902f32d3fc40fe6d43d5c1e20fa003024147763e8095c937d751daeb09ff7936a6ba9372c84c219faf
+"@navikt/ds-css@npm:^7.25.1":
+  version: 7.25.1
+  resolution: "@navikt/ds-css@npm:7.25.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F7.25.1%2Fd2e8ec3ea3426660a5bd7a846755c53b2b9a1090"
+  checksum: 10/e2e019e5f1a3428790b01436e624df47adfaa88c04fc9fb8fff372e35ee2ad1d40f06c38b75071dba5d834397587b95db438d002e0e2edcb170f1c4400dcb5a4
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^7.24.0":
-  version: 7.24.0
-  resolution: "@navikt/ds-react@npm:7.24.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F7.24.0%2Fb4519ca399da5c3518e236bdbfd19008131bb723"
+"@navikt/ds-react@npm:^7.25.1":
+  version: 7.25.1
+  resolution: "@navikt/ds-react@npm:7.25.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F7.25.1%2Fb764e1c23e8e98f084622b09035349d384861804"
   dependencies:
     "@floating-ui/react": "npm:0.27.8"
     "@floating-ui/react-dom": "npm:^2.0.9"
-    "@navikt/aksel-icons": "npm:^7.24.0"
-    "@navikt/ds-tokens": "npm:^7.24.0"
+    "@navikt/aksel-icons": "npm:^7.25.1"
+    "@navikt/ds-tokens": "npm:^7.25.1"
     clsx: "npm:^2.1.0"
     date-fns: "npm:^4.0.0"
     react-day-picker: "npm:9.7.0"
   peerDependencies:
     "@types/react": ">=17.0.30"
     react: ">=17.0.0 || >19.0.0-rc"
-  checksum: 10/cf01c7919f685ecdafdfdc6edd16c241683b19f05b744e0b2108fa3308291c19b629926911f4c4ab396be8ba57345056656dc3e024b52332e5ec3a1ed6af4f89
+  checksum: 10/83dc2e2d1ec6fcb975a893ae20c153c728114119cb1d4e91ed227574f5b1afb2e0a27e17d0f6c8050183b63406e32d093219cdb42f0fe2ff31ce58772797ce15
   languageName: node
   linkType: hard
 
-"@navikt/ds-tailwind@npm:^7.24.0":
-  version: 7.24.0
-  resolution: "@navikt/ds-tailwind@npm:7.24.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F7.24.0%2F26e415860b062720903093029365ee080722580f"
-  checksum: 10/222788207f8d493123f8e97d1241f2869a9c36d60507d7f77ee4e0314c21d858a4e184885648e2a55428de843564840ea7680e5119ab7286365ad1270b6c365d
+"@navikt/ds-tailwind@npm:^7.25.1":
+  version: 7.25.1
+  resolution: "@navikt/ds-tailwind@npm:7.25.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F7.25.1%2F7f14a29c907d7d2dc75886bbe90f769f8acd36c0"
+  checksum: 10/f41172073751fb4f2eb7ddcd7e5abc90734d58a9084d11faf16e6fdbf225f843306aa6e65d6b157163a5730f827e4ecfe4d4e884598aec8b84553308c3aeb69e
   languageName: node
   linkType: hard
 
-"@navikt/ds-tokens@npm:^7.24.0":
-  version: 7.24.0
-  resolution: "@navikt/ds-tokens@npm:7.24.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F7.24.0%2F1bf89ecc959cf648983c0c3441dfef3f987db4c8"
-  checksum: 10/3597e8daf6532d5135b6740e4abca1733955ebd0ac326b789daef1cd1ba9e64b242351e6fa426d1d72586d7d584f118e03594eeb67dfb5a8be36042505fe7a09
+"@navikt/ds-tokens@npm:^7.25.1":
+  version: 7.25.1
+  resolution: "@navikt/ds-tokens@npm:7.25.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F7.25.1%2F516b0728d4c1173d3440960345a23e150e46e517"
+  checksum: 10/05d060bdf5c0efb2655cb58efd9e602238ee787ccc31e801039408357a52b5efc2b119c828204b031f67c2bc6329c28674c65d444a16f54339d9b6a8ddc9b65c
   languageName: node
   linkType: hard
 
-"@navikt/eslint-config-teamsykmelding@npm:^7.1.0":
-  version: 7.1.0
-  resolution: "@navikt/eslint-config-teamsykmelding@npm:7.1.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Feslint-config-teamsykmelding%2F7.1.0%2F8891977f8bd817a5815ffc9d3fac7b3a30f5047b"
+"@navikt/eslint-config-teamsykmelding@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "@navikt/eslint-config-teamsykmelding@npm:7.2.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Feslint-config-teamsykmelding%2F7.2.0%2F3849e5e998a5427e2146b4cf1240024bb75abe90"
   dependencies:
     "@typescript-eslint/eslint-plugin": "npm:7.18.0"
     "@typescript-eslint/parser": "npm:7.18.0"
@@ -498,15 +498,15 @@ __metadata:
     eslint: ">=8"
     prettier: ">=2"
     typescript: ">=4"
-  checksum: 10/d3f946d469dc237ac1ad7644e333f05862c92bb4a4413e635895bb4efed9e44b0760de0d24455c7674209c07ba41837540c19c3935209848f92f837a317a1690
+  checksum: 10/3602ba465d6bab3be016c0b08e4185c6837c3f59ed9bcdfe259c0958dd7871aef6a0f5c94d46a5c347d103aad0d0f66055f2b06ae2f105e7b23286dcc137e101
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^4.1.4":
-  version: 4.1.4
-  resolution: "@navikt/next-logger@npm:4.1.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.1.4%2Fca5d61c38b05758bd24ca6b98e5fd329226670df"
+"@navikt/next-logger@npm:^4.1.5":
+  version: 4.1.5
+  resolution: "@navikt/next-logger@npm:4.1.5::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.1.5%2F40d028e0d8ec8a978b6e58f464f255ce7605836c"
   dependencies:
-    "@navikt/pino-logger": "npm:^4.1.4"
+    "@navikt/pino-logger": "npm:^4.1.5"
     pino-roll: "npm:3"
   peerDependencies:
     next: 14 || 15
@@ -514,7 +514,7 @@ __metadata:
   dependenciesMeta:
     pino-roll:
       optional: true
-  checksum: 10/23e51ded82d92fd98d11f433beb9e5a5477ca0b0bf20688b5e2bb6dc68f5f69c9f8a913849fa5d56737d3745facb0da57455733d454ab9ff65d366ba48fe544a
+  checksum: 10/c4c62ed72e0f951e3ca2a21bed4ff98351f13ad4ffb2cb5557cc0730e8d9eba49e2c65eee4f9eb2c27080d8c6e3644b0052be9680ad356fd72d09ba68de67603
   languageName: node
   linkType: hard
 
@@ -529,9 +529,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/pino-logger@npm:^4.1.4":
-  version: 4.1.4
-  resolution: "@navikt/pino-logger@npm:4.1.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.1.4%2Fcb70678833e4bf70631783f899c30210f34bbde7"
+"@navikt/pino-logger@npm:^4.1.5":
+  version: 4.1.5
+  resolution: "@navikt/pino-logger@npm:4.1.5::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.1.5%2F5911c77581ba052ec69878f86e6de4634c980b57"
   dependencies:
     pino-roll: "npm:3"
     pino-socket: "npm:7"
@@ -542,7 +542,7 @@ __metadata:
       optional: true
     pino-socket:
       optional: true
-  checksum: 10/c3fbc8da9ea5dce2faa8b4763c3235c21a0e5f79c7eb3405098ffa307aa9b6393fdc05c45a2208feffd1c22ac751cebf20fd745c71385655a7e66488da7bbc43
+  checksum: 10/2995fab68db26328f5d3e9b70ca781ccd7ecbb3bf45817d2ad613861f2a79d6011da5d1d75dc713ba0097f6a590fdec6b4030dd4f6527ab2ee06e90b6c7e192c
   languageName: node
   linkType: hard
 
@@ -3591,12 +3591,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "helsesjekk@workspace:."
   dependencies:
-    "@navikt/aksel-icons": "npm:^7.24.0"
-    "@navikt/ds-css": "npm:^7.24.0"
-    "@navikt/ds-react": "npm:^7.24.0"
-    "@navikt/ds-tailwind": "npm:^7.24.0"
-    "@navikt/eslint-config-teamsykmelding": "npm:^7.1.0"
-    "@navikt/next-logger": "npm:^4.1.4"
+    "@navikt/aksel-icons": "npm:^7.25.1"
+    "@navikt/ds-css": "npm:^7.25.1"
+    "@navikt/ds-react": "npm:^7.25.1"
+    "@navikt/ds-tailwind": "npm:^7.25.1"
+    "@navikt/eslint-config-teamsykmelding": "npm:^7.2.0"
+    "@navikt/next-logger": "npm:^4.1.5"
     "@navikt/oasis": "npm:^3.8.0"
     "@prisma/client": "npm:6.10.1"
     "@slack/bolt": "npm:^4.4.0"

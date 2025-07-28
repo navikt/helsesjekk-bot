@@ -21,11 +21,11 @@
         "postinstall": "command -v husky && husky || true"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^7.24.0",
-        "@navikt/ds-css": "^7.24.0",
-        "@navikt/ds-react": "^7.24.0",
-        "@navikt/ds-tailwind": "^7.24.0",
-        "@navikt/next-logger": "^4.1.4",
+        "@navikt/aksel-icons": "^7.25.1",
+        "@navikt/ds-css": "^7.25.1",
+        "@navikt/ds-react": "^7.25.1",
+        "@navikt/ds-tailwind": "^7.25.1",
+        "@navikt/next-logger": "^4.1.5",
         "@navikt/oasis": "^3.8.0",
         "@prisma/client": "6.10.1",
         "@slack/bolt": "^4.4.0",
@@ -51,7 +51,7 @@
         "zod": "^3.25.67"
     },
     "devDependencies": {
-        "@navikt/eslint-config-teamsykmelding": "^7.1.0",
+        "@navikt/eslint-config-teamsykmelding": "^7.2.0",
         "@tailwindcss/postcss": "^4.1.11",
         "@types/bun": "^1.2.17",
         "@types/node": "^22.15.34",
