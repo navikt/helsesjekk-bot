@@ -3498,13 +3498,13 @@ __metadata:
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
     recharts: "npm:^2.15.4"
-    remeda: "npm:^2.26.1"
+    remeda: "npm:^2.27.2"
     sharp: "npm:^0.34.3"
     tailwind-merge: "npm:^3.3.1"
     tailwindcss: "npm:^4.1.11"
     typescript: "npm:^5.8.3"
     uuid: "npm:^11.1.0"
-    zod: "npm:^4.0.10"
+    zod: "npm:^4.0.14"
   languageName: unknown
   linkType: soft
 
@@ -5455,12 +5455,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remeda@npm:^2.26.1":
-  version: 2.26.1
-  resolution: "remeda@npm:2.26.1"
+"remeda@npm:^2.27.2":
+  version: 2.27.2
+  resolution: "remeda@npm:2.27.2"
   dependencies:
     type-fest: "npm:^4.41.0"
-  checksum: 10/6b566fecf1451ce133b66cd7cc7eb4b2c97f302dba58164718a6b87adb8f121448c3634aae0e67a0acc501d6cded292c787f1868acdaf17fe6b477e9c876e67e
+  checksum: 10/0864b02a92960669f4e55a7033b77c04f9783bcaa677b84085b3d53f601e9997015612c85e6e949d370c19b826f850f75420af78284e1de92f7eb6f916548326
   languageName: node
   linkType: hard
 
@@ -6674,9 +6674,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^4.0.10":
-  version: 4.0.10
-  resolution: "zod@npm:4.0.10"
-  checksum: 10/65afdd6f69d636a542ecad3c468dd8f3a99264e7afdac4fdcd334fd312ee5199e509c1795c8e9115dc9cee41b068c9bec3fc466f96846ef172e9e9c3e5158ff6
+"zod@npm:^4.0.14":
+  version: 4.0.14
+  resolution: "zod@npm:4.0.14"
+  checksum: 10/7a4910c34f77a2ea8604811412ff917af8946675a84a7865c50ce071848f527719ed3a646ca7f420dc15e39bee5a249e60310405ff023d3e7222b132d2e1eb5a
   languageName: node
   linkType: hard
