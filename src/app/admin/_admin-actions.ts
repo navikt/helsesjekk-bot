@@ -13,7 +13,7 @@ export async function adminToggleTeamStatus(teamId: string, newStatus: boolean):
     try {
         await setTeamStatus(teamId, newStatus)
     } catch (e) {
-        logger.error('Unable to toggle', { cause: e })
+        logger.error(new Error('Unable to toggle', { cause: e }))
     }
 
     revalidatePath(`/admin`)
