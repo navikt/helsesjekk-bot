@@ -65,7 +65,6 @@ function GlobalScoreGraph({ data }: Props): ReactElement {
                             fontSize: 12,
                         }}
                     />
-                    {/* @ts-expect-error This typing is wack */}
                     <Tooltip content={CustomTooltip} />
                     {samletScore ? (
                         <Line

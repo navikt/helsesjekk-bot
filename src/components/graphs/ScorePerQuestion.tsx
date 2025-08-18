@@ -5,7 +5,7 @@ import React, { ReactElement } from 'react'
 import { Area, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { logger } from '@navikt/next-logger'
 import { Detail, Heading } from '@navikt/ds-react'
-import { TooltipProps } from 'recharts/types/component/Tooltip'
+import { TooltipContentProps } from 'recharts/types/component/Tooltip'
 
 import { getWeekNumber } from '../../utils/date'
 import { scoreToEmoji } from '../../utils/score'
@@ -93,7 +93,7 @@ const colorMap: Record<AnswerLevel, string> = {
 
 type CustomTooltipPayload = QuestionScorePerWeek['scoring'][number]
 
-function CustomTooltip({ payload, active }: TooltipProps<number, string>): ReactElement | null {
+function CustomTooltip({ payload, active }: TooltipContentProps<number, string>): ReactElement | null {
     if (!active || !payload || payload.length === 0) return null
 
     const relevantValues = R.pipe(
@@ -104,17 +104,6 @@ function CustomTooltip({ payload, active }: TooltipProps<number, string>): React
     )
     const firstPayload: CustomTooltipPayload =
         R.first(payload)?.payload ?? raise('Should always have at least 1 payload here')
-
-    if (!relevantValues.find(([key]) => key === 'averageScore')) {
-        return (
-            <div className="bg-white border border-border-default rounded-sm p-2">
-                <Detail>
-                    Uke {getWeekNumber(firstPayload.timestamp)}, {firstPayload.timestamp.getFullYear()}
-                </Detail>
-                <div>Ikke nok svar denne uken</div>
-            </div>
-        )
-    }
 
     return (
         <div className="bg-white border border-border-default rounded-sm p-2">

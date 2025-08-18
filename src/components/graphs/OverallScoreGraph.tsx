@@ -51,7 +51,6 @@ function OverallScoreGraph({ data }: Props): ReactElement {
                             offset: 25,
                         }}
                     />
-                    {/* @ts-expect-error This typing is wack */}
                     <Tooltip content={CustomTooltip} />
                     <Line
                         yAxisId="left"
