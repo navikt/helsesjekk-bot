@@ -17,9 +17,9 @@ function Stats(): ReactElement {
     return (
         <section aria-labelledby="stats-header" className="mt-16 max-w-prose">
             <Heading size="large" level="2">
-                Botten i NAV
+                Botten i Nav
             </Heading>
-            <Detail spacing>Noen interessante tall om botten i NAV</Detail>
+            <Detail spacing>Noen interessante tall om botten i Nav</Detail>
             <Suspense fallback={<StatsSkeleton />}>
                 <StatsView />
             </Suspense>

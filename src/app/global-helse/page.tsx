@@ -8,15 +8,15 @@ import { getGlobalScoreTimeline } from '../../db/score'
 import GlobalScoreGraph from '../../components/graphs/GlobalScoreGraph'
 
 export const metadata: Metadata = {
-    title: 'Helsesjekk | Helse i NAV',
-    description: 'Graf over helsen i hele NAV',
+    title: 'Helsesjekk | Helse i Nav',
+    description: 'Graf over helsen i hele Nav',
 }
 
 function Page(): ReactElement {
     return (
         <div>
             <BackLink href="/" />
-            <Heading size="large">Helse hele NAV</Heading>
+            <Heading size="large">Helse hele Nav</Heading>
             <Suspense
                 fallback={
                     <div className="w-full aspect-video">
@@ -41,7 +41,7 @@ async function GlobalGraph(): Promise<ReactElement> {
     return (
         <div>
             <Heading size="medium" level="3">
-                Samlet score for alle aktive team
+                Score for hele Nav
             </Heading>
             <div className="mt-4">
                 <GlobalScoreGraph data={globalScore} />

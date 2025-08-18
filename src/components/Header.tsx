@@ -35,7 +35,7 @@ function Header(): ReactElement {
                     <Link href="/kom-i-gang">Kom i gang</Link>
                 </li>
                 <li>
-                    <Link href="/global-helse">Helse i NAV</Link>
+                    <Link href="/global-helse">Helse i Nav</Link>
                 </li>
                 <li>
                     <Link href="/kom-i-gang/grupper">Mine grupper</Link>

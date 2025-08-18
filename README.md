@@ -12,7 +12,7 @@ Når helsesjekken stenges, så vil man få sammensatte tall på hvordan teamet h
 
 ![image](https://github.com/navikt/helsesjekk-bot/assets/1507032/e28d81a6-56ed-45fa-93f7-43599754bfa9)
 
-# Er du NAV ansatt?
+# Er du Nav ansatt?
 
 ## Jeg vil bruke den!
 
@@ -32,11 +32,11 @@ Det siste du må gjøre er å skrive /helsesjekk i kanalen, da får du tilgang t
 
 ## Jeg fant noe feil!
 
-Ta kontakt på #helsesjekk-bot på NAV-IT slacken!
+Ta kontakt på #helsesjekk-bot på Nav-IT slacken!
 
-# Utenfor NAV
+# Utenfor Nav
 
-Botten er hostet som en intern app på NAV sin IT-plattform. Selve bot-brukeren er en intern slack-app.
+Botten er hostet som en intern app på Nav sin IT-plattform. Selve bot-brukeren er en intern slack-app.
 
 Dersom du ønsker å bruke botten, kan du ta sette opp din egen bot-bruker på din Slack ved å bruke [slack-manifest.yml](./slack-manifest.yml) som utgangspunkt.
 
@@ -48,7 +48,7 @@ Når det kommer til selve botten, så kan du gjøre følgende:
 3. Konfigurer opp en egen CI/CD-løsning for å deploye botten i [deploy.yaml](./.github/workflows/deploy.yaml)
 4. Konfigurer opp [env.ts](./src/utils/env.ts) med miljøvariablene din platform trenger
 5. Tweak [authentication.ts](./src/auth/authentication.tsx) og [ms-graph.ts](./src/auth/ms-graph.ts) til å fungere med deres env løsning.
-    1. For eksempel libben som er brukt her, @navikt/next-auth-wonderwall har en sterk kobling til NAV sin applikasjonsplatform, og er ikke noe dere kan gjenbruke.
+    1. For eksempel libben som er brukt her, @navikt/oasis har en sterk kobling til Nav sin applikasjonsplatform, og er ikke noe dere kan gjenbruke.
 
 Det er sikkert andre ting som må justeres på også.
 
@@ -60,7 +60,7 @@ Noen av bottens avhengigheter er hostet her på Github. Github tillatter ikke an
 
 For å kunne installere avhengighetene må du opprette en Personal Access Token (PAT), som beskrevet her:
 
--   https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic
+- https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic
 
 Denne PAT-en skal _kun_ ha tilgangen `package:read`. Sett denne PAT-en som miljøvariabel på maskinen din.
 
@@ -129,4 +129,4 @@ Dette er litt enklere å jobbe med.
 
 Besøk [localhost:3000](http://localhost:3000) for å se dashboardet.
 
-Ikke nøl med å ta kontakt på #helsesjekk-bot på NAV-IT slacken om du trenger hjelp!
+Ikke nøl med å ta kontakt på #helsesjekk-bot på Nav-IT slacken om du trenger hjelp!
