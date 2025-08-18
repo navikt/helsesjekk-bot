@@ -29,7 +29,7 @@ const colors = {
 }
 
 function GlobalScoreGraph({ data }: Props): ReactElement {
-    const [samletScore, setSamletScore] = useState(false)
+    const [samletScore, setSamletScore] = useState(true)
     const CustomTooltip = useMemo(() => createCustomTooltip(samletScore), [samletScore])
 
     return (
