@@ -21,10 +21,10 @@
         "postinstall": "command -v husky && husky || true"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^7.25.1",
-        "@navikt/ds-css": "^7.25.1",
-        "@navikt/ds-react": "^7.25.1",
-        "@navikt/ds-tailwind": "^7.25.1",
+        "@navikt/aksel-icons": "^7.28.1",
+        "@navikt/ds-css": "^7.28.1",
+        "@navikt/ds-react": "^7.28.1",
+        "@navikt/ds-tailwind": "^7.28.1",
         "@navikt/next-logger": "^4.1.5",
         "@navikt/oasis": "^3.8.0",
         "@prisma/client": "6.12.0",
