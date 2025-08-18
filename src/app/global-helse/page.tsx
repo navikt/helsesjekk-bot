@@ -41,7 +41,7 @@ async function GlobalGraph(): Promise<ReactElement> {
     return (
         <div>
             <Heading size="medium" level="3">
-                Score for hele Nav
+                Score for hele Nav de siste 52 ukene
             </Heading>
             <div className="mt-4">
                 <GlobalScoreGraph data={globalScore} />
