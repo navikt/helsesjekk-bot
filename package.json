@@ -33,7 +33,7 @@
         "@slack/types": "^2.15.0",
         "clsx": "^2.1.1",
         "date-fns": "^4.1.0",
-        "next": "^15.4.6",
+        "next": "^15.4.7",
         "next-logger": "^5.0.1",
         "nextleton": "^0.6.1",
         "node-cron": "^4.2.1",
