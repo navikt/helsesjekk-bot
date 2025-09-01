@@ -14,6 +14,9 @@ spec:
   replicas:
     min: 2
     max: 3
+    scalingStrategy:
+      cpu:
+        thresholdPercentage: 90
   observability:
     autoInstrumentation:
       enabled: true
@@ -27,7 +30,7 @@ spec:
       memory: 1024Mi
     requests:
       cpu: 40m
-      memory: 320Mi
+      memory: 340Mi
   filesFrom:
     - emptyDir:
         medium: Memory
