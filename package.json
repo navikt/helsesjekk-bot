@@ -47,7 +47,6 @@
         "remeda": "^2.30.0",
         "sharp": "^0.34.3",
         "tailwind-merge": "^3.3.1",
-        "uuid": "^12.0.0",
         "zod": "^4.1.5"
     },
     "devDependencies": {
@@ -58,7 +57,6 @@
         "@types/node": "^22.18.1",
         "@types/node-cron": "^3.0.11",
         "@types/react": "19.1.12",
-        "@types/uuid": "^10.0.0",
         "eslint": "^9.35.0",
         "eslint-config-next": "^15.5.2",
         "husky": "^9.1.7",

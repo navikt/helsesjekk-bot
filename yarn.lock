@@ -1279,13 +1279,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/uuid@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "@types/uuid@npm:10.0.0"
-  checksum: 10/e3958f8b0fe551c86c14431f5940c3470127293280830684154b91dc7eb3514aeb79fe3216968833cf79d4d1c67f580f054b5be2cd562bebf4f728913e73e944
-  languageName: node
-  linkType: hard
-
 "@types/ws@npm:^8":
   version: 8.18.1
   resolution: "@types/ws@npm:8.18.1"
@@ -3558,7 +3551,6 @@ __metadata:
     "@types/node": "npm:^22.18.1"
     "@types/node-cron": "npm:^3.0.11"
     "@types/react": "npm:19.1.12"
-    "@types/uuid": "npm:^10.0.0"
     clsx: "npm:^2.1.1"
     date-fns: "npm:^4.1.0"
     eslint: "npm:^9.35.0"
@@ -3585,7 +3577,6 @@ __metadata:
     tailwind-merge: "npm:^3.3.1"
     tailwindcss: "npm:^4.1.13"
     typescript: "npm:^5.9.2"
-    uuid: "npm:^12.0.0"
     zod: "npm:^4.1.5"
   languageName: unknown
   linkType: soft
@@ -6664,15 +6655,6 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 10/474acf1146cb2701fe3b074892217553dfcf9a031280919ba1b8d651a068c9b15d863b7303cb15bd00a862b498e6cf4ad7b4a08fb134edd5a6f7641681cb54a2
-  languageName: node
-  linkType: hard
-
-"uuid@npm:^12.0.0":
-  version: 12.0.0
-  resolution: "uuid@npm:12.0.0"
-  bin:
-    uuid: dist/bin/uuid
-  checksum: 10/18079c61ec2ca899d8df034ed543dc4844ec14d3bddc3099149d4c076a28c76dfc7434bcc5fafae8799f894da6acaa055bd7e97eedb6cba2840994f02849b801
   languageName: node
   linkType: hard
 

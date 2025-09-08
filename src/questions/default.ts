@@ -1,11 +1,9 @@
-import { v4 as uuidV4 } from 'uuid'
-
 import { Question, QuestionType } from '../safe-types'
 
 export function defaultQuestions(): Question[] {
     return [
         {
-            questionId: uuidV4(),
+            questionId: crypto.randomUUID(),
             question: 'Stress',
             answers: {
                 HIGH: 'Ting er behagelige og jeg kjenner meg ikke stresset',
@@ -15,7 +13,7 @@ export function defaultQuestions(): Question[] {
             type: QuestionType.TEAM_HEALTH,
         },
         {
-            questionId: uuidV4(),
+            questionId: crypto.randomUUID(),
             question: 'Feedback',
             answers: {
                 HIGH: 'Vi støtter hverandres utvikling ved å gi hverandre positiv og kontruktiv feedback',
@@ -25,7 +23,7 @@ export function defaultQuestions(): Question[] {
             type: QuestionType.TEAM_HEALTH,
         },
         {
-            questionId: uuidV4(),
+            questionId: crypto.randomUUID(),
             question: 'Samarbeid',
             answers: {
                 HIGH: 'Vi er et godt fungerende team der samarbeidet fungerer strålende',
@@ -35,7 +33,7 @@ export function defaultQuestions(): Question[] {
             type: QuestionType.TEAM_HEALTH,
         },
         {
-            questionId: uuidV4(),
+            questionId: crypto.randomUUID(),
             question: 'Støtte',
             answers: {
                 HIGH: 'Vi får all hjelp vi trenger fra de rundt oss',
@@ -45,7 +43,7 @@ export function defaultQuestions(): Question[] {
             type: QuestionType.SPEED,
         },
         {
-            questionId: uuidV4(),
+            questionId: crypto.randomUUID(),
             question: 'Fart',
             answers: {
                 HIGH: 'Vi får gjort ting raskt',
@@ -55,7 +53,7 @@ export function defaultQuestions(): Question[] {
             type: QuestionType.SPEED,
         },
         {
-            questionId: uuidV4(),
+            questionId: crypto.randomUUID(),
             question: 'Oppdrag',
             answers: {
                 HIGH: 'Vi vet akkurat hvorfor vi er her og vi digger det',
