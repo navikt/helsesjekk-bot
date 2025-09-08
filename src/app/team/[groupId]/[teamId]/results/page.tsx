@@ -2,7 +2,8 @@ import * as R from 'remeda'
 import React, { ReactElement, Suspense } from 'react'
 import { getYear } from 'date-fns'
 import { Metadata } from 'next'
-import { Heading, Skeleton, BodyLong, Detail, BodyShort } from '@navikt/ds-react'
+import { Heading, Skeleton, BodyLong, Detail, BodyShort, Button, Link as AkselLink } from '@navikt/ds-react'
+import { FileJsonIcon } from '@navikt/aksel-icons'
 
 import { TeamNotAccesible, TeamNotFound } from '../../../../../components/errors/ErrorMessages'
 import { userHasAdGroup } from '../../../../../auth/authentication'
@@ -68,13 +69,13 @@ async function Page({ params }: Props): Promise<ReactElement> {
                     </div>
                 }
             >
-                <PreviousAskedView teamId={team.id} />
+                <PreviousAskedView teamId={team.id} groupId={pageParams.groupId} />
             </Suspense>
         </div>
     )
 }
 
-async function PreviousAskedView({ teamId }: { teamId: string }): Promise<ReactElement> {
+async function PreviousAskedView({ teamId, groupId }: { teamId: string; groupId: string }): Promise<ReactElement> {
     const scoredAsks = await getTeamsScoredAsks(teamId)
     const earliest = R.firstBy(scoredAsks, (it) => it.timestamp.getTime())
 
@@ -98,10 +99,23 @@ async function PreviousAskedView({ teamId }: { teamId: string }): Promise<ReactE
 
     return (
         <div>
-            <Detail>
-                {scoredAsks.length} målinger siden uke {getWeekNumber(earliest.timestamp)},{' '}
-                {earliest.timestamp.getFullYear()}
-            </Detail>
+            <div className="flex justify-between items-top">
+                <Detail>
+                    {scoredAsks.length} målinger siden uke {getWeekNumber(earliest.timestamp)},{' '}
+                    {earliest.timestamp.getFullYear()}
+                </Detail>
+                <Button
+                    as={AkselLink}
+                    href={`/team/${groupId}/${teamId}/results/export/json`}
+                    download={`helsesjekk-export-${teamId}-${new Date().toISOString()}.json`}
+                    size="small"
+                    variant="secondary-neutral"
+                    icon={<FileJsonIcon />}
+                    className="text-text-default -mt-4"
+                >
+                    <span className="sr-only md:not-sr-only">Eksporter data (JSON)</span>
+                </Button>
+            </div>
             <div className="mt-4 flex flex-wrap gap-4">
                 {withPrevious.map(([currentAsk, previousAsk]: [ScoredAsk, ScoredAsk | null]) => (
                     <ScoredAskView

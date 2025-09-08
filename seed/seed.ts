@@ -1,7 +1,6 @@
 import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 import { setWeek } from 'date-fns'
-import { v4 as uuidV4 } from 'uuid'
 
 import { AnswerLevel, Day, prisma, QuestionAnswer } from '../src/db'
 import { answerToJsonb, questionsFromJsonb, questionsToJsonb } from '../src/questions/jsonb-utils'
@@ -37,7 +36,7 @@ const activeTeam = await prisma().team.create({
         questions: questionsToJsonb([
             ...defaultQuestions(),
             {
-                questionId: uuidV4(),
+                questionId: crypto.randomUUID(),
                 question: 'Kodekvalitet',
                 answers: {
                     HIGH: 'Kodekvaliteten er på topp!',
