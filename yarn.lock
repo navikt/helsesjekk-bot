@@ -562,19 +562,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^4.1.5":
-  version: 4.1.5
-  resolution: "@navikt/next-logger@npm:4.1.5::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.1.5%2F40d028e0d8ec8a978b6e58f464f255ce7605836c"
+"@navikt/next-logger@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "@navikt/next-logger@npm:4.4.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.4.1%2Fad036ed76a3c856de885e680e243a8c847787706"
   dependencies:
-    "@navikt/pino-logger": "npm:^4.1.5"
+    "@navikt/pino-logger": "npm:^4.4.1"
     pino-roll: "npm:3"
   peerDependencies:
-    next: 14 || 15
-    pino: 8 || 9
+    next: 14 || 15 || 16
+    pino: 8 || 9 || 10
   dependenciesMeta:
     pino-roll:
       optional: true
-  checksum: 10/c4c62ed72e0f951e3ca2a21bed4ff98351f13ad4ffb2cb5557cc0730e8d9eba49e2c65eee4f9eb2c27080d8c6e3644b0052be9680ad356fd72d09ba68de67603
+  checksum: 10/7ff09d6cd7bf67c9b61ca4a3b336984b63659816de3be8840c3c445d5408a2ab999bb815fbdc5cb63cf59db76bf33c40b68c4edb3686f9a8fa377de1b4257e8c
   languageName: node
   linkType: hard
 
@@ -589,20 +589,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/pino-logger@npm:^4.1.5":
-  version: 4.1.5
-  resolution: "@navikt/pino-logger@npm:4.1.5::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.1.5%2F5911c77581ba052ec69878f86e6de4634c980b57"
+"@navikt/pino-logger@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "@navikt/pino-logger@npm:4.4.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.4.1%2F8fd55667f2e3180e5157641d0bac10dafe4c3613"
   dependencies:
+    "@opentelemetry/api": "npm:^1.9.0"
     pino-roll: "npm:3"
     pino-socket: "npm:7"
   peerDependencies:
-    pino: 8 || 9
+    pino: 8 || 9 || 10
   dependenciesMeta:
     pino-roll:
       optional: true
     pino-socket:
       optional: true
-  checksum: 10/2995fab68db26328f5d3e9b70ca781ccd7ecbb3bf45817d2ad613861f2a79d6011da5d1d75dc713ba0097f6a590fdec6b4030dd4f6527ab2ee06e90b6c7e192c
+  checksum: 10/04dc7c4723209ae95a0035b33c0febca5ce31ee0ad46fdc13d1f2f2f977e9fe23ff0f34a44dcc08de873058b9057b2d79b770e11fbdeb59094566d2ce5530475
   languageName: node
   linkType: hard
 
@@ -716,6 +717,13 @@ __metadata:
   version: 1.8.0
   resolution: "@opentelemetry/api@npm:1.8.0"
   checksum: 10/62f0c42711b9f0c56ea9527c2e6e609e371bfb47d0b78956c91fe27365b4744d7dcc407636ef5b19a24a1d5e2c3cfa79c1b715deca829074e24e3ffba1315ba2
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/api@npm:^1.9.0":
+  version: 1.9.0
+  resolution: "@opentelemetry/api@npm:1.9.0"
+  checksum: 10/a607f0eef971893c4f2ee2a4c2069aade6ec3e84e2a1f5c2aac19f65c5d9eeea41aa72db917c1029faafdd71789a1a040bdc18f40d63690e22ccae5d7070f194
   languageName: node
   linkType: hard
 
@@ -3533,7 +3541,7 @@ __metadata:
     "@navikt/ds-react": "npm:^7.29.1"
     "@navikt/ds-tailwind": "npm:^7.29.1"
     "@navikt/eslint-config-teamsykmelding": "npm:^8.1.1"
-    "@navikt/next-logger": "npm:^4.1.5"
+    "@navikt/next-logger": "npm:^4.4.1"
     "@navikt/oasis": "npm:^3.8.0"
     "@prisma/client": "npm:6.15.0"
     "@slack/bolt": "npm:^4.4.0"
