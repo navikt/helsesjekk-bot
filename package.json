@@ -34,7 +34,7 @@
         "clsx": "^2.1.1",
         "date-fns": "^4.1.0",
         "next": "^15.5.2",
-        "next-logger": "^5.0.1",
+        "next-logger": "^5.0.2",
         "nextleton": "^0.6.1",
         "node-cron": "^4.2.1",
         "nuqs": "^2.6.0",
