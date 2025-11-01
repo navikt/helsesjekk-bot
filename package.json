@@ -30,7 +30,7 @@
         "@prisma/client": "6.15.0",
         "@slack/bolt": "^4.4.0",
         "@slack/logger": "^4.0.0",
-        "@slack/types": "^2.16.0",
+        "@slack/types": "^2.18.0",
         "clsx": "^2.1.1",
         "date-fns": "^4.1.0",
         "next": "^15.5.2",

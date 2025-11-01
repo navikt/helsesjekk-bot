@@ -899,10 +899,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@slack/types@npm:^2.14.0, @slack/types@npm:^2.16.0, @slack/types@npm:^2.9.0":
+"@slack/types@npm:^2.14.0, @slack/types@npm:^2.9.0":
   version: 2.16.0
   resolution: "@slack/types@npm:2.16.0"
   checksum: 10/e18b568a47d94e9e7234dfd06f789224d6804edae4a2f31068b3f388ce4c482a6dbc6c035dc3dec63e5723f211f92c7694ee40b2ec83d4ac90d46bb35fa46eb5
+  languageName: node
+  linkType: hard
+
+"@slack/types@npm:^2.18.0":
+  version: 2.18.0
+  resolution: "@slack/types@npm:2.18.0"
+  checksum: 10/c4a2a2ad0934503a9932779958c2d48af9227d6bb5b1f1568e2efcaac6e612467233962cec86069f13069820a0485d608380bea1dcb23705b1d34a78d108ca0a
   languageName: node
   linkType: hard
 
@@ -3538,7 +3545,7 @@ __metadata:
     "@prisma/client": "npm:6.15.0"
     "@slack/bolt": "npm:^4.4.0"
     "@slack/logger": "npm:^4.0.0"
-    "@slack/types": "npm:^2.16.0"
+    "@slack/types": "npm:^2.18.0"
     "@tailwindcss/postcss": "npm:^4.1.13"
     "@types/bun": "npm:^1.2.21"
     "@types/node": "npm:^22.18.1"
