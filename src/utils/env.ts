@@ -16,6 +16,8 @@ export const serverEnvSchema = z.object({
     AZURE_OPENID_CONFIG_TOKEN_ENDPOINT: z.string(),
     AZURE_APP_WELL_KNOWN_URL: z.string(),
     AZURE_APP_PRE_AUTHORIZED_APPS: z.string(),
+    // Database
+    NAIS_DATABASE_HELSESJEKK_BOT_HELSESJEKK_BOT_URL: z.string(),
 })
 
 export const browserEnv = publicEnvSchema.parse({
@@ -34,6 +36,8 @@ const getRawServerConfig = (): Partial<unknown> =>
         AZURE_OPENID_CONFIG_TOKEN_ENDPOINT: process.env.AZURE_OPENID_CONFIG_TOKEN_ENDPOINT,
         AZURE_APP_WELL_KNOWN_URL: process.env.AZURE_APP_WELL_KNOWN_URL,
         AZURE_APP_PRE_AUTHORIZED_APPS: process.env.AZURE_APP_PRE_AUTHORIZED_APPS,
+        // Database
+        NAIS_DATABASE_HELSESJEKK_BOT_HELSESJEKK_BOT_URL: process.env.NAIS_DATABASE_HELSESJEKK_BOT_HELSESJEKK_BOT_URL,
     }) satisfies Record<keyof ServerEnv, string | undefined>
 
 /**

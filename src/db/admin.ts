@@ -1,4 +1,5 @@
-import { Asked, Team, prisma } from './prisma'
+import { prisma } from './prisma'
+import type { Team, Asked } from './types'
 
 export async function adminGetTeamsWithAsked(): Promise<
     (Team & {

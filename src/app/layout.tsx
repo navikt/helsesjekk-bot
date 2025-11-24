@@ -1,13 +1,13 @@
 import './global.css'
 
-import { PropsWithChildren, ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { validateWonderwallToken } from '../auth/authentication'
 
-export default async function RootLayout({ children }: PropsWithChildren): Promise<ReactElement> {
+export default async function RootLayout({ children }: LayoutProps<'/'>): Promise<ReactElement> {
     await validateWonderwallToken('/')
 
     return (

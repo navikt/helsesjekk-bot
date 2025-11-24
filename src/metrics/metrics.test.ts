@@ -1,7 +1,6 @@
 import { describe, expect, test } from 'bun:test'
-import type { Answer } from '@prisma/client'
 
-import { AnswerLevel, AskedWithAnswers, QuestionAnswer } from '../db'
+import { AnswerLevel, AskedWithAnswers, QuestionAnswer, Answer } from '../db'
 import { questionsToJsonb } from '../questions/jsonb-utils'
 import { testQuestions } from '../../tests/data'
 import { addIf } from '../bot/events/modal-utils'

@@ -1,17 +1,16 @@
+import nextVitals from 'eslint-config-next/core-web-vitals'
+import nextTs from 'eslint-config-next/typescript'
 import { defineConfig } from 'eslint/config'
-import { FlatCompat } from '@eslint/eslintrc'
-
-const compat = new FlatCompat({
-    baseDirectory: import.meta.dirname,
-})
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
+import tsmEslintReact from '@navikt/tsm-eslint-react'
 
 const eslintConfig = defineConfig([
-    ...compat.config({
-        extends: ['@navikt/teamsykmelding', 'next'],
-    }),
+    ...nextVitals,
+    ...nextTs,
+    ...tsmEslintReact,
     {
-        files: ['e2e/**'],
-        rules: { 'testing-library/prefer-screen-queries': 'off' },
+        extends: [eslintPluginPrettierRecommended],
+        rules: { 'prettier/prettier': 'warn' },
     },
 ])
 

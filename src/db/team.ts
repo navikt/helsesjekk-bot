@@ -4,9 +4,9 @@ import { questionsFromJsonb, questionsToJsonb } from '../questions/jsonb-utils'
 import { defaultQuestions } from '../questions/default'
 import { Question, QuestionType } from '../safe-types'
 
-import { Day } from './types'
-import { prisma, Team, Asked } from './prisma'
+import { Day, type Team, type Asked } from './types'
 import { getActiveAsk } from './asked'
+import { prisma } from './prisma'
 
 export async function teamStatus(channelId: string): Promise<'NEW' | 'DEACTIVATED' | 'ACTIVE'> {
     const team = await getTeam(channelId)

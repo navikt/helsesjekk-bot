@@ -11,7 +11,7 @@
         "dev:db": "docker run -e POSTGRES_PASSWORD=postgres -p 5432:5432 -it postgres:14",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint",
+        "lint": "eslint src",
         "test": "bun test",
         "start:migrate": "yarn prisma:migrate && yarn start",
         "prisma:generate": "prisma generate",
@@ -21,28 +21,30 @@
         "postinstall": "command -v husky && husky || true"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^7.33.5",
-        "@navikt/ds-css": "^7.33.5",
-        "@navikt/ds-react": "^7.33.5",
-        "@navikt/ds-tailwind": "^7.33.5",
+        "@navikt/aksel-icons": "^7.34.0",
+        "@navikt/ds-css": "^7.34.0",
+        "@navikt/ds-react": "^7.34.0",
+        "@navikt/ds-tailwind": "^7.34.0",
         "@navikt/next-logger": "^4.4.1",
         "@navikt/oasis": "^4.1.1",
-        "@prisma/client": "6.19.0",
+        "@prisma/adapter-pg": "^7.0.0",
+        "@prisma/client": "7.0.0",
         "@slack/bolt": "^4.6.0",
         "@slack/logger": "^4.0.0",
         "@slack/types": "^2.19.0",
         "clsx": "^2.1.1",
         "date-fns": "^4.1.0",
-        "next": "^15.5.6",
+        "dotenv": "^17.2.3",
+        "next": "16.0.3",
         "next-logger": "^5.0.2",
         "nextleton": "^0.6.1",
         "node-cron": "^4.2.1",
         "nuqs": "^2.8.1",
         "pino": "^10.1.0",
         "postcss": "^8.5.6",
-        "prisma": "6.19.0",
-        "react": "^19.2.0",
-        "react-dom": "^19.2.0",
+        "prisma": "7.0.0",
+        "react": "19.2.0",
+        "react-dom": "19.2.0",
         "recharts": "3.1.2",
         "remeda": "^2.32.0",
         "sharp": "^0.34.5",
@@ -50,15 +52,17 @@
         "zod": "^4.1.12"
     },
     "devDependencies": {
-        "@eslint/eslintrc": "^3.3.1",
-        "@navikt/eslint-config-teamsykmelding": "^8.1.3",
+        "@navikt/tsm-eslint-react": "^1.0.0",
+        "@navikt/tsm-prettier": "^2.0.0",
         "@tailwindcss/postcss": "^4.1.17",
         "@types/bun": "^1.3.3",
         "@types/node": "^24.10.1",
         "@types/node-cron": "^3.0.11",
         "@types/react": "19.2.6",
         "eslint": "^9.39.1",
-        "eslint-config-next": "^15.5.6",
+        "eslint-config-next": "16.0.3",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-prettier": "^5.5.4",
         "husky": "^9.1.7",
         "lint-staged": "^16.2.7",
         "pino-pretty": "^13.1.2",
@@ -68,11 +72,5 @@
         "tailwindcss": "^4.1.17",
         "typescript": "^5.9.3"
     },
-    "prettier": "@navikt/eslint-config-teamsykmelding/prettier",
-    "eslintConfig": {
-        "extends": [
-            "@navikt/eslint-config-teamsykmelding",
-            "next/core-web-vitals"
-        ]
-    }
+    "prettier": "@navikt/tsm-prettier"
 }

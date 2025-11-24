@@ -1,7 +1,7 @@
 import { describe, expect, mock, test } from 'bun:test'
-import type { Answer, Asked, Team } from '@prisma/client'
 import { addWeeks } from 'date-fns'
 
+import type { Answer, Asked, Team } from '../db/types'
 import { questionsToJsonb } from '../questions/jsonb-utils'
 import { getWeekNumber } from '../utils/date'
 import { expectNoError } from '../../tests/utils'
