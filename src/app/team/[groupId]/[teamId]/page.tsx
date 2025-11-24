@@ -1,7 +1,7 @@
 import * as R from 'remeda'
 import React, { ReactElement, Suspense } from 'react'
 import { BodyShort, Detail, Heading, Skeleton } from '@navikt/ds-react'
-import { LinkPanel, LinkPanelDescription, LinkPanelTitle } from '@navikt/ds-react/LinkPanel'
+import { LinkPanelDescription, LinkPanelTitle } from '@navikt/ds-react/LinkPanel'
 import { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -22,6 +22,7 @@ import { PingDot } from '../../../../components/core/Dots'
 import { createPermalink } from '../../../../utils/slack'
 import { dayIndexToDay } from '../../../../utils/date'
 import { getGroup } from '../../../../auth/ms-graph'
+import { AkselNextLinkPanel } from '../../../../components/core/AkselNextLinkPanel'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team',
@@ -53,8 +54,7 @@ async function Page({ params }: PageProps<'/team/[groupId]/[teamId]'>): Promise<
         <div className="max-w-prose">
             <BackLink href="/" />
             <Heading size="large">{team.name}</Heading>
-            <LinkPanel
-                as={Link}
+            <AkselNextLinkPanel
                 href={`/team/${pageParams.groupId}/${pageParams.teamId}/graph`}
                 border
                 className="my-2"
@@ -62,9 +62,8 @@ async function Page({ params }: PageProps<'/team/[groupId]/[teamId]'>): Promise<
             >
                 <LinkPanelTitle>Se helsegraf</LinkPanelTitle>
                 <LinkPanelDescription>Graf over utviklingen av teamhelse over tid</LinkPanelDescription>
-            </LinkPanel>
-            <LinkPanel
-                as={Link}
+            </AkselNextLinkPanel>
+            <AkselNextLinkPanel
                 href={`/team/${pageParams.groupId}/${pageParams.teamId}/results`}
                 border
                 className="my-2"
@@ -72,7 +71,7 @@ async function Page({ params }: PageProps<'/team/[groupId]/[teamId]'>): Promise<
             >
                 <LinkPanelTitle>Se tidligere resultater</LinkPanelTitle>
                 <LinkPanelDescription>Alle gyldige tidligere resultater</LinkPanelDescription>
-            </LinkPanel>
+            </AkselNextLinkPanel>
             <EditableTeamName teamId={team.id} name={team.name} />
             {team.activeAskTs != null && (
                 <ActiveAsk
