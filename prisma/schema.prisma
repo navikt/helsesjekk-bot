@@ -5,6 +5,7 @@ datasource db {
 generator client {
   provider = "prisma-client"
   output = "../src/db/generated"
+  binaryTargets = ["debian-openssl-1.1.x", "darwin", "darwin-arm64", "debian-openssl-3.0.x"]
 }
 
 model Team {
