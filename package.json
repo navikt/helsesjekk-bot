@@ -21,12 +21,12 @@
         "postinstall": "command -v husky && husky || true"
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^7.29.1",
-        "@navikt/ds-css": "^7.29.1",
-        "@navikt/ds-react": "^7.29.1",
-        "@navikt/ds-tailwind": "^7.29.1",
-        "@navikt/next-logger": "^4.1.5",
-        "@navikt/oasis": "^3.8.0",
+        "@navikt/aksel-icons": "^7.33.5",
+        "@navikt/ds-css": "^7.33.5",
+        "@navikt/ds-react": "^7.33.5",
+        "@navikt/ds-tailwind": "^7.33.5",
+        "@navikt/next-logger": "^4.4.1",
+        "@navikt/oasis": "^4.1.1",
         "@prisma/client": "6.15.0",
         "@slack/bolt": "^4.4.0",
         "@slack/logger": "^4.0.0",
