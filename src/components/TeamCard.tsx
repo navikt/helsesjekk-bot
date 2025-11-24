@@ -1,13 +1,13 @@
 'use client'
 
 import React, { ReactElement } from 'react'
-import Link from 'next/link'
-import { BodyShort, Detail, Heading, LinkPanel, Tooltip } from '@navikt/ds-react'
+import { BodyShort, Detail, Heading, Tooltip } from '@navikt/ds-react'
 import { GavelIcon, QuestionmarkIcon } from '@navikt/aksel-icons'
 
 import { Team } from '../db'
 import { dayIndexToDay } from '../utils/date'
 
+import { AkselNextLinkPanel } from './core/AkselNextLinkPanel'
 import { InactiveDot, PingDot } from './core/Dots'
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 
 function TeamCard({ team }: Props): ReactElement {
     return (
-        <LinkPanel as={Link} href={`/team/${team.assosiatedGroup}/${team.id}`} className="sm:max-w-sm grow relative">
+        <AkselNextLinkPanel href={`/team/${team.assosiatedGroup}/${team.id}`} className="sm:max-w-sm grow relative">
             <Tooltip content={`Teamet er ${team.active ? 'aktivt' : 'deaktivert'}`}>
                 <div className="flex gap-3 items-center">
                     {team.active ? <PingDot /> : <InactiveDot />}
@@ -43,7 +43,7 @@ function TeamCard({ team }: Props): ReactElement {
                     </BodyShort>
                 </div>
             </div>
-        </LinkPanel>
+        </AkselNextLinkPanel>
     )
 }
 
