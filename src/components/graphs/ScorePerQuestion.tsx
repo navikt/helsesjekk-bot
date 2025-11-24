@@ -2,19 +2,16 @@
 
 import * as R from 'remeda'
 import React, { ReactElement } from 'react'
-import { Area, CartesianGrid, ComposedChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { Area, CartesianGrid, ComposedChart, Legend, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { logger } from '@navikt/next-logger'
 import { Detail, Heading } from '@navikt/ds-react'
 import { TooltipContentProps } from 'recharts/types/component/Tooltip'
 
 import { getWeekNumber } from '../../utils/date'
-import { scoreToEmoji } from '../../utils/score'
 import { AnswerLevel, QuestionScorePerWeek } from '../../safe-types'
 import { raise } from '../../utils/ts-utils'
 
 type Props = QuestionScorePerWeek
-
-const toPercent = (decimal: number, fixed = 0): string => `${(decimal * 100).toFixed(fixed)}%`
 
 function ScorePerQuestion(props: Props): ReactElement {
     const { question, scoring } = props
@@ -36,17 +33,7 @@ function ScorePerQuestion(props: Props): ReactElement {
                             index % 2 === 0 ? '' : `Uke ${getWeekNumber(date)}, ${date.getFullYear()}`
                         }
                     />
-                    <YAxis domain={[0, 5]} tickCount={6} />
-                    <YAxis yAxisId="antall" orientation="right" hide={true} tickFormatter={toPercent} />
                     <CartesianGrid strokeDasharray="3 3" />
-                    <Line
-                        type="monotone"
-                        dataKey="averageScore"
-                        strokeWidth={2}
-                        isAnimationActive={false}
-                        dot={({ key, ...rest }) => <CustomDot key={key} {...rest} />}
-                    />
-
                     {Object.keys(AnswerLevel).map((level) => (
                         <Area
                             key={level}
@@ -145,28 +132,6 @@ function ScoreToDescription({ name }: { name: string }): string {
             logger.error(`Unknown score type: ${name}`)
             return 'Ukjent'
     }
-}
-
-function CustomDot({ cx, cy, value }: { cx: number; cy: number; value: number }): ReactElement | null {
-    if (value == null)
-        return (
-            <svg x={cx - 96 / 2} y="30%" width={96} height={48} fill="red">
-                <text textAnchor="middle" x="50%" y="50%" fontSize="28">
-                    ⚠️
-                </text>
-                <text textAnchor="middle" x="50%" y="78%" fontSize="12">
-                    Mindre enn 3 svar
-                </text>
-            </svg>
-        )
-
-    return (
-        <svg x={cx - 10} y={cy - 10} width={20} height={20} fill="red">
-            <text textAnchor="middle" x="50%" y="13" fontSize="8">
-                {scoreToEmoji(value)}
-            </text>
-        </svg>
-    )
 }
 
 export default ScorePerQuestion
