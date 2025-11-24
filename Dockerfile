@@ -1,44 +1,21 @@
-FROM node:24-alpine AS build
+FROM node:24-alpine
 
-ARG NPM_AUTH_TOKEN
+RUN apk add --no-cache bash openssl
 
-RUN apk add --no-cache bash
+ENV NODE_ENV=production
 
 WORKDIR /app
 
-COPY package.json /app/
-COPY .yarn /app/.yarn
+COPY .next/standalone /app
+COPY yarn.lock /app
 COPY .yarnrc.yml /app/
-COPY yarn.lock /app/
+COPY .yarn /app/.yarn
 COPY prisma /app/prisma
-
-ENV NODE_ENV=production
-
-RUN yarn workspaces focus -A --production
-RUN yarn prisma:generate
-
-FROM node:24-alpine AS runner
-
-RUN apk add --no-cache bash
-
-ENV NODE_ENV=production
-ENV YARN_CACHE_FOLDER=/tmp/yarn-cache
-
-WORKDIR /app
-
-COPY --from=build /app/yarn.lock /app/
-COPY --from=build /app/.yarnrc.yml /app/
-COPY --from=build /app/.yarn /app/.yarn
-COPY --from=build /app/package.json /app/
-COPY --from=build /app/node_modules /app/node_modules
-COPY --from=build /app/prisma /app/prisma
+COPY prisma.config.ts /app/
 COPY next-logger.config.js /app/
-COPY next.config.ts /app/
 COPY public /app/public/
-COPY .next /app/.next
-
-ENV NODE_ENV=production
+COPY run.sh /app/
 
 EXPOSE 3000
 
-CMD ["yarn", "start:migrate"]
+CMD ["/app/run.sh"]
