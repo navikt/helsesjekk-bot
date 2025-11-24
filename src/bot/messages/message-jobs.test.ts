@@ -1,7 +1,7 @@
 import { test, expect, mock, describe, Mock } from 'bun:test'
 import type { App } from '@slack/bolt'
-import type { Team } from '@prisma/client'
 
+import type { Team } from '../../db/types'
 import { defaultQuestions } from '../../questions/default'
 import { questionsToJsonb } from '../../questions/jsonb-utils'
 import { raise } from '../../utils/ts-utils'

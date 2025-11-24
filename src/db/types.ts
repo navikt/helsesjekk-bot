@@ -1,6 +1,8 @@
-import { Answer, Asked } from '@prisma/client'
-
 import { QuestionType } from '../safe-types'
+
+import { Answer, Asked } from './generated/client'
+
+export type { Answer, Asked, Team } from './generated/client'
 
 export enum Day {
     MONDAY = 0,

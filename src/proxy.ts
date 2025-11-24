@@ -4,7 +4,7 @@ import { logger } from '@navikt/next-logger'
 
 import { browserEnv, isLocal } from './utils/env'
 
-export function middleware(request: NextRequest): NextResponse | void {
+export function proxy(request: NextRequest): NextResponse | void {
     const url = new URL(request.url)
     const forwardedHostHeader = request.headers.get('x-forwarded-host')
 
@@ -20,7 +20,6 @@ export function middleware(request: NextRequest): NextResponse | void {
     }
 }
 
-// See "Matching Paths" below to learn more
 export const config = {
     matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 }

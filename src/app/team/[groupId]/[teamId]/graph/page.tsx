@@ -2,7 +2,6 @@ import * as R from 'remeda'
 import React, { ReactElement, Suspense } from 'react'
 import { Metadata } from 'next'
 import { BodyLong, Detail, Heading, Skeleton } from '@navikt/ds-react'
-import { SearchParams } from 'nuqs'
 
 import { TeamNotAccesible, TeamNotFound } from '../../../../../components/errors/ErrorMessages'
 import { userHasAdGroup } from '../../../../../auth/authentication'
@@ -21,15 +20,7 @@ export const metadata: Metadata = {
     description: 'Graf over helsesjekkene i ditt team',
 }
 
-type Props = {
-    params: Promise<{
-        groupId: string
-        teamId: string
-    }>
-    searchParams: Promise<SearchParams>
-}
-
-async function Page({ params, searchParams }: Props): Promise<ReactElement> {
+async function Page({ params, searchParams }: PageProps<'/team/[groupId]/[teamId]/graph'>): Promise<ReactElement> {
     const pageParams = await params
     const queryParams = await loadSearchParams(searchParams)
 

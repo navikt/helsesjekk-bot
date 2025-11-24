@@ -21,14 +21,7 @@ export const metadata: Metadata = {
     description: 'Alle resultater for ditt team',
 }
 
-type Props = {
-    params: Promise<{
-        groupId: string
-        teamId: string
-    }>
-}
-
-async function Page({ params }: Props): Promise<ReactElement> {
+async function Page({ params }: PageProps<'/team/[groupId]/[teamId]/results'>): Promise<ReactElement> {
     const pageParams = await params
     const team = await getTeamByAdGroupAndTeamId(pageParams.groupId, pageParams.teamId)
     if (!team) {
