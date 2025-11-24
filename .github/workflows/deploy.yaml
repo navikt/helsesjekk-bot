@@ -9,10 +9,12 @@ jobs:
       - uses: navikt/tsm-workflows/actions/yarn@main
         with:
           READER_TOKEN: ${{ secrets.READER_TOKEN }}
-      - uses: oven-sh/setup-bun@v1
+      - uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.3.3
       - run: yarn test
+        env:
+          NEXT_PUBLIC_ENVIRONMENT: local
 
   build-and-publish:
     if: github.ref == 'refs/heads/main'
