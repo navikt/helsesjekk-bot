@@ -142,3 +142,4 @@ jobs:
     uses: navikt/tsm-workflows/.github/workflows/security.yaml@main
     with:
       image: ${{ needs.build-and-publish.outputs.image }}
+      team: teamsykmelding
