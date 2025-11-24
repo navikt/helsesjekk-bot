@@ -41,6 +41,8 @@ jobs:
         with:
           team: teamsykmelding
           image_suffix: prod
+          build_args: |
+            NPM_AUTH_TOKEN=${{ secrets.READER_TOKEN }}
 
   build-and-publish-dev:
     if: github.actor != 'dependabot[bot]'
@@ -67,6 +69,8 @@ jobs:
         with:
           team: teamsykmelding
           image_suffix: dev
+          build_args: |
+            NPM_AUTH_TOKEN=${{ secrets.READER_TOKEN }}
 
   build-for-dependabot:
     if: github.actor == 'dependabot[bot]'
@@ -91,7 +95,7 @@ jobs:
   deploy-bot-to-gcp:
     if: github.ref == 'refs/heads/main'
     name: Deploy to prod
-    needs: [build-and-publish, codeql-analysis]
+    needs: [build-and-publish]
     runs-on: ubuntu-latest
     permissions:
       contents: read

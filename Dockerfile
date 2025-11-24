@@ -1,5 +1,7 @@
 FROM node:24-alpine AS build
 
+ARG NPM_AUTH_TOKEN
+
 RUN apk add --no-cache bash
 
 WORKDIR /app
