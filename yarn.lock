@@ -2017,9 +2017,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/nft@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@vercel/nft@npm:1.0.0"
+"@vercel/nft@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@vercel/nft@npm:1.1.1"
   dependencies:
     "@mapbox/node-pre-gyp": "npm:^2.0.0"
     "@rollup/pluginutils": "npm:^5.1.3"
@@ -2035,7 +2035,7 @@ __metadata:
     resolve-from: "npm:^5.0.0"
   bin:
     nft: out/cli.js
-  checksum: 10c0/5ebe2b476d192b63447c62aebd1e2e2b873899f4a9acf4d204375d359ccb517c7fcee48977302fe7e6e5d8af89618b98fb3c4ddb37c8c17b05d2131186f322b5
+  checksum: 10c0/e92d381722c436ce8adb75e9d83c2b1da5fe8f835926d0acf1c042de6d036fd4bac6dbbcb9ede1c3172925d3a2c00eb4af74de9afd39efd7578badfe0872f553
   languageName: node
   linkType: hard
 
@@ -4193,7 +4193,7 @@ __metadata:
     "@types/node": "npm:^24.10.1"
     "@types/node-cron": "npm:^3.0.11"
     "@types/react": "npm:19.2.6"
-    "@vercel/nft": "npm:^1.0.0"
+    "@vercel/nft": "npm:^1.1.1"
     clsx: "npm:^2.1.1"
     date-fns: "npm:^4.1.0"
     dotenv: "npm:^17.2.3"

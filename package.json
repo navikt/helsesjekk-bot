@@ -59,7 +59,7 @@
         "@types/node": "^24.10.1",
         "@types/node-cron": "^3.0.11",
         "@types/react": "19.2.6",
-        "@vercel/nft": "^1.0.0",
+        "@vercel/nft": "^1.1.1",
         "eslint": "^9.39.1",
         "eslint-config-next": "16.0.7",
         "eslint-config-prettier": "^10.1.8",
