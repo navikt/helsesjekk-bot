@@ -844,28 +844,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/aksel-icons@npm:^7.34.0":
-  version: 7.34.0
-  resolution: "@navikt/aksel-icons@npm:7.34.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F7.34.0%2Fe0ec5f786c00d1ec4c24973b10c52b15f62ed988"
-  checksum: 10c0/52c201d359c09bfe12032be27c8c6da2d767551a0f3ae37e51321d40fb0184bd37776b1854d3b63ab23b8645069fd3530df8ba30bc8781d78f7dd4db2c75353c
+"@navikt/aksel-icons@npm:^7.36.0":
+  version: 7.36.0
+  resolution: "@navikt/aksel-icons@npm:7.36.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Faksel-icons%2F7.36.0%2F5d01680f20cd3ad3c447ea53fd4f71d9e40056e1"
+  checksum: 10c0/ae7934eea6fd8ac85f8b2262091ca47a91224f0ae950d27622df46bfcec33b3742ba4379243bcfc2686700b6f1b0c4f2d4c1bec873113af096981f5f79fc01ac
   languageName: node
   linkType: hard
 
-"@navikt/ds-css@npm:^7.34.0":
-  version: 7.34.0
-  resolution: "@navikt/ds-css@npm:7.34.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F7.34.0%2F21d6538e7d802bc383c15471616d5b37c79777e3"
-  checksum: 10c0/faf253e49474bb9e8fddbfc19fc2ca2c4921b926b7c79395acceffeea467711363f9652f29a4a82063445fca2b42fe3f60497fab857b5677ede8946f1d11209c
+"@navikt/ds-css@npm:^7.36.0":
+  version: 7.36.0
+  resolution: "@navikt/ds-css@npm:7.36.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-css%2F7.36.0%2Fd9e4574fe73a39a74ec442ac341d22ff61aab0d4"
+  checksum: 10c0/9cd800a7bfd09fd873fa561577248a847e46503df692ba50e39af0f0627046b6b339b39bf0ec61c2dbd5ae65c71027f0d336a00d287912a7bbc1d6da16a8c4f1
   languageName: node
   linkType: hard
 
-"@navikt/ds-react@npm:^7.34.0":
-  version: 7.34.0
-  resolution: "@navikt/ds-react@npm:7.34.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F7.34.0%2F745ea1bbe609f94869a2756540b58d3f37839505"
+"@navikt/ds-react@npm:^7.36.0":
+  version: 7.36.0
+  resolution: "@navikt/ds-react@npm:7.36.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-react%2F7.36.0%2F6deea33d6483ed91e7eee9a7dc57c0d10c9185c6"
   dependencies:
     "@floating-ui/react": "npm:0.27.8"
     "@floating-ui/react-dom": "npm:^2.1.6"
-    "@navikt/aksel-icons": "npm:^7.34.0"
-    "@navikt/ds-tokens": "npm:^7.34.0"
+    "@navikt/aksel-icons": "npm:^7.36.0"
+    "@navikt/ds-tokens": "npm:^7.36.0"
     clsx: "npm:^2.1.0"
     date-fns: "npm:^4.0.0"
     react-day-picker: "npm:9.7.0"
@@ -873,21 +873,21 @@ __metadata:
     "@types/react": ^17.0.30 || ^18 || ^19
     react: ^17 || ^18 || ^19
     react-dom: ^17 || ^18 || ^19
-  checksum: 10c0/59ff6cf9c9fbe0c121b147b941aab2174ceb1db402bdab9db10e4742a7ea21c336eaf9bad3ca781a69e60497f78895d92c29f5bd7eaa6f8dd3908582814de399
+  checksum: 10c0/3074eb161a1804aea6577435978528465431700394d8709eff7dbbdac693f7211a3dd86bb1fcc5bf2c28ec11cc73a9bf6a2db77030425f410bbdf0b9b933a1eb
   languageName: node
   linkType: hard
 
-"@navikt/ds-tailwind@npm:^7.34.0":
-  version: 7.34.0
-  resolution: "@navikt/ds-tailwind@npm:7.34.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F7.34.0%2F8ab755dd6f3809b1a5a34998057f78be21285dd4"
-  checksum: 10c0/2ebd69ff70d9511a03d6e4629136676d1e30bcba236507ba180f723a1b2d97bc146532ac0187c09ae64384be089e444826b8d98efaff06cac11151f4e451c665
+"@navikt/ds-tailwind@npm:^7.36.0":
+  version: 7.36.0
+  resolution: "@navikt/ds-tailwind@npm:7.36.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tailwind%2F7.36.0%2Ff120f7679741c2be5b2a2d5eca88ff2981c5dec2"
+  checksum: 10c0/c44c664eb502ba1d43de0aca1d8d7ea7f63b0239d14e57d8b68c2a1ce52a7a897f54cfc474486d3163edad9e5e02ecf50a9113a2c44fac2588400c168a4093ae
   languageName: node
   linkType: hard
 
-"@navikt/ds-tokens@npm:^7.34.0":
-  version: 7.34.0
-  resolution: "@navikt/ds-tokens@npm:7.34.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F7.34.0%2Faea8f6932bdf5aec384d1fbbeb5930c2c69dc6d1"
-  checksum: 10c0/9bfeda07ff877ab9a7fb1847c3dd7b6d72fa076201924522050380617b55a850d4ec8abe36ba04b7c9e00851d832039b69f74057b158fbde1133f9270cbfacc3
+"@navikt/ds-tokens@npm:^7.36.0":
+  version: 7.36.0
+  resolution: "@navikt/ds-tokens@npm:7.36.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fds-tokens%2F7.36.0%2Fad3ab2a9f2179c5a4703738de33233af54336dc2"
+  checksum: 10c0/125e036406c99510a79b65a88273af1f612785a2c5f87f295f071746c9f4e3d63880e0d2599b927cf1762835ddc30ad2351be5d5a07762e1962b92e7c01a81b9
   languageName: node
   linkType: hard
 
@@ -4175,10 +4175,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "helsesjekk@workspace:."
   dependencies:
-    "@navikt/aksel-icons": "npm:^7.34.0"
-    "@navikt/ds-css": "npm:^7.34.0"
-    "@navikt/ds-react": "npm:^7.34.0"
-    "@navikt/ds-tailwind": "npm:^7.34.0"
+    "@navikt/aksel-icons": "npm:^7.36.0"
+    "@navikt/ds-css": "npm:^7.36.0"
+    "@navikt/ds-react": "npm:^7.36.0"
+    "@navikt/ds-tailwind": "npm:^7.36.0"
     "@navikt/next-logger": "npm:^4.4.1"
     "@navikt/oasis": "npm:^4.1.1"
     "@navikt/tsm-eslint-react": "npm:^1.0.0"
