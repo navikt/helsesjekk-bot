@@ -891,19 +891,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/next-logger@npm:^4.4.1":
-  version: 4.4.1
-  resolution: "@navikt/next-logger@npm:4.4.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.4.1%2Fad036ed76a3c856de885e680e243a8c847787706"
+"@navikt/next-logger@npm:^4.4.4":
+  version: 4.4.4
+  resolution: "@navikt/next-logger@npm:4.4.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fnext-logger%2F4.4.4%2Fbe4e54ba789de52393a9e66e28a43740c666eaed"
   dependencies:
-    "@navikt/pino-logger": "npm:^4.4.1"
-    pino-roll: "npm:3"
+    "@navikt/pino-logger": "npm:^4.4.4"
+    pino-roll: "npm:3.1.0"
   peerDependencies:
     next: 14 || 15 || 16
     pino: 8 || 9 || 10
   dependenciesMeta:
     pino-roll:
       optional: true
-  checksum: 10c0/aaab3ee470168622ad042bc818f8fa85aa7bd10766d3f94c72cf69a291a6dcb1327494c7f71ba0c519aa0934dc0dc9131746838ee63a75c2562d7bbfe7c6d24b
+  checksum: 10c0/e0aa668e583077b763ba54450d90280a214da2b8044de0e7ede988b78809dfc9374239aee465d12a1b1c803d33df03ac2205dd371a0f80267c5c106dd71d4a6b
   languageName: node
   linkType: hard
 
@@ -919,13 +919,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/pino-logger@npm:^4.4.1":
-  version: 4.4.1
-  resolution: "@navikt/pino-logger@npm:4.4.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.4.1%2F8fd55667f2e3180e5157641d0bac10dafe4c3613"
+"@navikt/pino-logger@npm:^4.4.4":
+  version: 4.4.4
+  resolution: "@navikt/pino-logger@npm:4.4.4::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Fpino-logger%2F4.4.4%2F003162d35f8a38dc08e8b6094e704a0ff727b409"
   dependencies:
     "@opentelemetry/api": "npm:^1.9.0"
-    pino-roll: "npm:3"
-    pino-socket: "npm:7"
+    pino-roll: "npm:3.1.0"
+    pino-socket: "npm:7.4.0"
   peerDependencies:
     pino: 8 || 9 || 10
   dependenciesMeta:
@@ -933,7 +933,7 @@ __metadata:
       optional: true
     pino-socket:
       optional: true
-  checksum: 10c0/97a36d0c55bfc7310eeec4ae32a090727592f271f13612f713da3d4c9c42fdab855a9ab949017fb37980406802b55670457ac4b155d74f764ca7d0d94d0e2d6c
+  checksum: 10c0/466a2fb3a95dc085f554fe4db701b7a1a647b7d331e4b78b8d9f517eab42be3071cb0361cc5cab9a120c7794a48d34db2911b135854e6ea813bf60ef5ae99a1d
   languageName: node
   linkType: hard
 
@@ -4179,7 +4179,7 @@ __metadata:
     "@navikt/ds-css": "npm:^7.34.0"
     "@navikt/ds-react": "npm:^7.34.0"
     "@navikt/ds-tailwind": "npm:^7.34.0"
-    "@navikt/next-logger": "npm:^4.4.1"
+    "@navikt/next-logger": "npm:^4.4.4"
     "@navikt/oasis": "npm:^4.1.1"
     "@navikt/tsm-eslint-react": "npm:^1.0.0"
     "@navikt/tsm-prettier": "npm:^2.0.0"
@@ -5974,7 +5974,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino-roll@npm:3":
+"pino-roll@npm:3.1.0":
   version: 3.1.0
   resolution: "pino-roll@npm:3.1.0"
   dependencies:
@@ -5984,7 +5984,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino-socket@npm:7":
+"pino-socket@npm:7.4.0":
   version: 7.4.0
   resolution: "pino-socket@npm:7.4.0"
   dependencies:

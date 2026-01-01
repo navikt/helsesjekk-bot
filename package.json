@@ -25,7 +25,7 @@
         "@navikt/ds-css": "^7.34.0",
         "@navikt/ds-react": "^7.34.0",
         "@navikt/ds-tailwind": "^7.34.0",
-        "@navikt/next-logger": "^4.4.1",
+        "@navikt/next-logger": "^4.4.4",
         "@navikt/oasis": "^4.1.1",
         "@prisma/adapter-pg": "^7.0.0",
         "@prisma/client": "7.0.0",
