@@ -1089,14 +1089,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/adapter-pg@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@prisma/adapter-pg@npm:7.0.0"
+"@prisma/adapter-pg@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "@prisma/adapter-pg@npm:7.2.0"
   dependencies:
-    "@prisma/driver-adapter-utils": "npm:7.0.0"
+    "@prisma/driver-adapter-utils": "npm:7.2.0"
     pg: "npm:^8.16.3"
     postgres-array: "npm:3.0.4"
-  checksum: 10c0/76106731cfea854ccae60eeb12d6d5bf05df4daad04599b7a9912d5ea5d6ba6d8f502d27970293dc861087023a53d822fdcec18f443c35f42b8d7ec562f01161
+  checksum: 10c0/964962a24d3815de0b0bd3ee47dc99d10cbb657333a7cd7d4455d328933be0663aabd339fb809639a9f9c23fe238241d2de2e3180341c065308a8436443ff693
   languageName: node
   linkType: hard
 
@@ -1150,6 +1150,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@prisma/debug@npm:7.2.0":
+  version: 7.2.0
+  resolution: "@prisma/debug@npm:7.2.0"
+  checksum: 10c0/eabdb738c2486abedb4abae510507166ee15dbe1d444bfc0b1406ed4c7145753ae17366cb2fef5ae70b0fa1a97de860ad69ddc3c43e3936722a9bce0aa375290
+  languageName: node
+  linkType: hard
+
 "@prisma/dev@npm:0.13.0":
   version: 0.13.0
   resolution: "@prisma/dev@npm:0.13.0"
@@ -1175,12 +1182,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/driver-adapter-utils@npm:7.0.0":
-  version: 7.0.0
-  resolution: "@prisma/driver-adapter-utils@npm:7.0.0"
+"@prisma/driver-adapter-utils@npm:7.2.0":
+  version: 7.2.0
+  resolution: "@prisma/driver-adapter-utils@npm:7.2.0"
   dependencies:
-    "@prisma/debug": "npm:7.0.0"
-  checksum: 10c0/bcf39427e30444b234255c5fa52ea02958d95d5b0a648d863b2e1377c5b07666ff77035154990eb495e6e10952fdd76b9987bd9ae11e98b40a942977ad841f4d
+    "@prisma/debug": "npm:7.2.0"
+  checksum: 10c0/2ecb54d66c4f98212ee42f2aa4995b1980a31468f1e144ad1e6046f7cc96155bb7eb5bfd421ea0937052dfb44bd4b2373ba1ab07f103a89746045e319d69463b
   languageName: node
   linkType: hard
 
@@ -4183,7 +4190,7 @@ __metadata:
     "@navikt/oasis": "npm:^4.1.1"
     "@navikt/tsm-eslint-react": "npm:^1.0.0"
     "@navikt/tsm-prettier": "npm:^2.0.0"
-    "@prisma/adapter-pg": "npm:^7.0.0"
+    "@prisma/adapter-pg": "npm:^7.2.0"
     "@prisma/client": "npm:7.0.0"
     "@slack/bolt": "npm:^4.6.0"
     "@slack/logger": "npm:^4.0.0"
