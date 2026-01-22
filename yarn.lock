@@ -4217,7 +4217,7 @@ __metadata:
     prisma: "npm:7.0.0"
     react: "npm:19.2.1"
     react-dom: "npm:19.2.1"
-    recharts: "npm:3.1.2"
+    recharts: "npm:3.6.0"
     remeda: "npm:^2.32.0"
     sharp: "npm:^0.34.5"
     tailwind-merge: "npm:^3.4.0"
@@ -6450,9 +6450,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"recharts@npm:3.1.2":
-  version: 3.1.2
-  resolution: "recharts@npm:3.1.2"
+"recharts@npm:3.6.0":
+  version: 3.6.0
+  resolution: "recharts@npm:3.6.0"
   dependencies:
     "@reduxjs/toolkit": "npm:1.x.x || 2.x.x"
     clsx: "npm:^2.1.1"
@@ -6469,7 +6469,7 @@ __metadata:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
     react-is: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/daf04d57a622086e9950a4e4de75b5a8713e3e37401b88373da30efd1618e83de01027ffb9069e076b516fc274954e920ce2f221228a901ca82c6f70fd6a4046
+  checksum: 10c0/39ef37ca93167bcf953b4d509fff992839dac6fb2681a5707085912eb425343063107ae3bdc9104a0c454852218e95a4fb3e64018b07347468879b806c8e9188
   languageName: node
   linkType: hard
 
