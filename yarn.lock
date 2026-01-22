@@ -1100,18 +1100,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client-runtime-utils@npm:7.0.0":
-  version: 7.0.0
-  resolution: "@prisma/client-runtime-utils@npm:7.0.0"
-  checksum: 10c0/596eb1f41cb6d3adcbff9b4a8451c7919ae72e30f633ecf3d11dd1b687a535a59b0729b3ac91ca8d7b244c97fc1e4cbf7087f67a6c5197d3ce135a0cddc96e05
+"@prisma/client-runtime-utils@npm:7.2.0":
+  version: 7.2.0
+  resolution: "@prisma/client-runtime-utils@npm:7.2.0"
+  checksum: 10c0/2d28cd04f3e8ef156d27bfc405d85603f9f4c604a54c935a9bbb8ace322c47f795223d168945e5f76ec1978dcdba10d2cef29853e91a93735fc654c69dd5deb4
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:7.0.0":
-  version: 7.0.0
-  resolution: "@prisma/client@npm:7.0.0"
+"@prisma/client@npm:7.2.0":
+  version: 7.2.0
+  resolution: "@prisma/client@npm:7.2.0"
   dependencies:
-    "@prisma/client-runtime-utils": "npm:7.0.0"
+    "@prisma/client-runtime-utils": "npm:7.2.0"
   peerDependencies:
     prisma: "*"
     typescript: ">=5.4.0"
@@ -1120,7 +1120,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 10c0/700f2596bbcbcddbfe47facd198458774a62fa65a591f12e188019b2790747a0b2b1962f526a8a5e2fa2c23a24af228017fe3fb54875576b4d63f15c5e414823
+  checksum: 10c0/3c790af2bbfbbcdcaae0f0a8d33b17e8945daa0f731007d85d95ec1c726c7f8a8ed617802e39bde905613d302eaa8eaac804ab9bce5efc4ed174d9985cdf942a
   languageName: node
   linkType: hard
 
@@ -4184,7 +4184,7 @@ __metadata:
     "@navikt/tsm-eslint-react": "npm:^1.0.0"
     "@navikt/tsm-prettier": "npm:^2.0.0"
     "@prisma/adapter-pg": "npm:^7.0.0"
-    "@prisma/client": "npm:7.0.0"
+    "@prisma/client": "npm:7.2.0"
     "@slack/bolt": "npm:^4.6.0"
     "@slack/logger": "npm:^4.0.0"
     "@slack/types": "npm:^2.19.0"
