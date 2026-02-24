@@ -59,8 +59,8 @@ export function createHealthCheckModalBlocks(
             plainHeader(questionTypeToText(QuestionType.GROUP_HEALTH)),
             ...me.map((question) => createSelectSectionBlock(question, existingAnswers)),
         ]),
-        ...addIfArray(grouped.TEAM_HEALTH, (me) => [
-            plainHeader(questionTypeToText(QuestionType.TEAM_HEALTH)),
+        ...addIfArray(grouped.SECTION_HEALTH, (me) => [
+            plainHeader(questionTypeToText(QuestionType.SECTION_HEALTH)),
             ...me.map((question) => createSelectSectionBlock(question, existingAnswers)),
         ]),
         ...addIfArray(grouped.TEMPERATURE, (me) => [
