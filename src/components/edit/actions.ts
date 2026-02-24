@@ -14,6 +14,7 @@ import {
     toggleQuestionRequiredInTeam,
     deleteAsked,
     getAsked,
+    getTeamByAdGroupAndTeamId,
 } from '../../db'
 import { userHasAdGroup } from '../../auth/authentication'
 import { raise } from '../../utils/ts-utils'
@@ -145,7 +146,20 @@ export async function deleteActiveAsk(groupId: string, teamId: string): Promise<
         throw new Error('User does not have access to edit team name')
     }
 
-    const activeAsk = await getAsked(teamId, teamId)
+    const team = await getTeamByAdGroupAndTeamId(groupId, teamId)
+    if (!team) {
+        logger.warn(`User attempted to delete active ask for team ${teamId}, but team was not found`)
+        throw new Error('Team not found')
+    }
+
+    if (!team.activeAskTs) {
+        logger.warn(
+            `User attempted to delete active ask for team ${teamId}, but no active ask timestamp was found on the team`,
+        )
+        throw new Error('No active ask found')
+    }
+
+    const activeAsk = await getAsked(team.id, team.activeAskTs)
     if (!activeAsk) {
         logger.warn(`User attempted to delete active ask for team ${teamId}, but no active ask was found`)
         throw new Error('No active ask found')
