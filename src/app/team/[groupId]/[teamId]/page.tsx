@@ -18,11 +18,9 @@ import EditableStatus from '../../../../components/edit/EditableStatus'
 import AddQuestion from '../../../../components/edit/AddQuestion'
 import DeletableQuestion from '../../../../components/edit/DeletableQuestion'
 import EditableFrequency from '../../../../components/edit/EditableFrequency'
-import { PingDot } from '../../../../components/core/Dots'
-import { createPermalink } from '../../../../utils/slack'
-import { dayIndexToDay } from '../../../../utils/date'
 import { getGroup } from '../../../../auth/ms-graph'
 import { AkselNextLinkPanel } from '../../../../components/core/AkselNextLinkPanel'
+import { DeleteableActiveAsk } from '../../../../components/edit/DeletableActiveAsk'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team',
@@ -74,7 +72,7 @@ async function Page({ params }: PageProps<'/team/[groupId]/[teamId]'>): Promise<
             </AkselNextLinkPanel>
             <EditableTeamName teamId={team.id} name={team.name} />
             {team.activeAskTs != null && (
-                <ActiveAsk
+                <DeleteableActiveAsk
                     teamId={team.id}
                     askTs={team.activeAskTs}
                     revealDay={team.revealDay}
@@ -94,39 +92,6 @@ async function Page({ params }: PageProps<'/team/[groupId]/[teamId]'>): Promise<
             <EditableTime teamId={team.id} hour={team.revealHour} day={team.revealDay} type="reveal" />
             <AssociatedGroup groupId={team.assosiatedGroup} />
             <Questions teamId={team.id} questions={questionsFromJsonb(team.questions)} />
-        </div>
-    )
-}
-
-function ActiveAsk({
-    teamId,
-    askTs,
-    revealDay,
-    revealHour,
-}: {
-    teamId: string
-    askTs: string
-    revealDay: number
-    revealHour: number
-}): ReactElement {
-    return (
-        <div className="p-3 bg-bg-subtle rounded-sm my-4">
-            <div className="flex items-center justify-between">
-                <div>
-                    <div className="flex gap-2 items-center">
-                        <div className="ml-1">
-                            <PingDot />
-                        </div>
-                        <Heading size="small">Aktiv spørring akkurat nå</Heading>
-                    </div>
-                    <BodyShort spacing>
-                        Spørringen blir lukket og vist på {dayIndexToDay(revealDay)} kl. {revealHour}
-                    </BodyShort>
-                    <a href={createPermalink(teamId, askTs)} target="_blank" rel="noreferrer">
-                        Gå til spørring (Slack)
-                    </a>
-                </div>
-            </div>
         </div>
     )
 }

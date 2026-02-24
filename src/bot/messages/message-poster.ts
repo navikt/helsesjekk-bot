@@ -129,3 +129,13 @@ export async function revealTeam(team: Team, client: App['client']): Promise<boo
 
     return true
 }
+
+export async function deleteMessage(ts: string, channel: string, client: App['client']): Promise<boolean> {
+    try {
+        await client.chat.delete({ channel: channel, ts: ts })
+
+        return true
+    } catch (e) {
+        throw new Error('Tried deleting slack message, but failed', { cause: e })
+    }
+}

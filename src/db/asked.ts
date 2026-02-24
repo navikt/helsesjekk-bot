@@ -77,3 +77,7 @@ export async function createAsked(ts: string, teamId: string, questions: Questio
         },
     })
 }
+
+export async function deleteAsked(askId: number): Promise<void> {
+    await prisma().asked.delete({ where: { id: askId } })
+}

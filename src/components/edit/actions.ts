@@ -12,9 +12,13 @@ import {
     addQuestionToTeam,
     deleteQuestionFromTeam,
     toggleQuestionRequiredInTeam,
+    deleteAsked,
+    getAsked,
 } from '../../db'
 import { userHasAdGroup } from '../../auth/authentication'
 import { raise } from '../../utils/ts-utils'
+import { deleteMessage } from '../../bot/messages/message-poster'
+import { bot } from '../../app/api/internal/is_ready/bot'
 
 const logger = baseLogger.child({ x_context: 'server-actions' })
 
@@ -132,6 +136,32 @@ export async function editFrequency(
     logger.info(`User is editing frequency for team ${teamId}, new frequency: ${frequency}, skew: ${weekSkew}`)
 
     await setTeamFrequency(teamId, frequency, weekSkew)
+
+    revalidatePath(`/team/${groupId}`)
+}
+
+export async function deleteActiveAsk(groupId: string, teamId: string): Promise<void> {
+    if (!(await userHasAdGroup(groupId))) {
+        throw new Error('User does not have access to edit team name')
+    }
+
+    const activeAsk = await getAsked(teamId, teamId)
+    if (!activeAsk) {
+        logger.warn(`User attempted to delete active ask for team ${teamId}, but no active ask was found`)
+        throw new Error('No active ask found')
+    }
+
+    if (activeAsk.revealed) {
+        logger.warn(`User attempted to delete active ask for team ${teamId}, but the ask was already revealed`)
+        throw new Error('Active ask has already been revealed')
+    }
+
+    logger.info(`User is deleting active ask for team ${teamId}`)
+    await deleteAsked(activeAsk.id)
+
+    // Delete from slack as well, can we use the bot client from here?
+    const botClient = await bot()
+    await deleteMessage(activeAsk.messageTs, activeAsk.teamId, botClient.client)
 
     revalidatePath(`/team/${groupId}`)
 }
