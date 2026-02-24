@@ -79,5 +79,8 @@ export async function createAsked(ts: string, teamId: string, questions: Questio
 }
 
 export async function deleteAsked(askId: number): Promise<void> {
-    await prisma().asked.delete({ where: { id: askId } })
+    await prisma().$transaction(async (tx) => {
+        await tx.answer.deleteMany({ where: { askedId: askId } })
+        await tx.asked.delete({ where: { id: askId } })
+    })
 }
