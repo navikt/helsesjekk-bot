@@ -1,10 +1,4 @@
-import { expect, mock } from 'bun:test'
-
-export function mockDate(date: Date): void {
-    mock.module('../src/utils/date.ts', () => ({
-        getNowInNorway: () => date,
-    }))
-}
+import { expect } from 'vitest'
 
 export function expectNoError<Result extends { error: ErrorType } | unknown, ErrorType extends Error | string>(
     result: Result,

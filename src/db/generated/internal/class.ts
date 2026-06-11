@@ -15,8 +15,8 @@ import type * as Prisma from './prismaNamespace'
 
 const config: runtime.GetPrismaClientConfig = {
     previewFeatures: [],
-    clientVersion: '7.0.0',
-    engineVersion: '0c19ccc313cf9911a90d99d2ac2eb0280c76c513',
+    clientVersion: '7.8.0',
+    engineVersion: '3c6e192761c0362d496ed980de936e2f3cebcd3a',
     activeProvider: 'postgresql',
     inlineSchema:
         'datasource db {\n  provider = "postgresql"\n}\n\ngenerator client {\n  provider = "prisma-client"\n  output   = "../src/db/generated"\n}\n\nmodel Team {\n  // Slack channel ID\n  id              String  @id\n  name            String\n  active          Boolean\n  postDay         Int\n  postHour        Int\n  revealDay       Int\n  revealHour      Int\n  assosiatedGroup String?\n  // In the future the team can edit the questions\n  questions       Json\n  Asked           Asked[]\n  frequency       Int     @default(1)\n  weekSkew        Int     @default(0)\n}\n\nmodel Asked {\n  id        Int      @id @default(autoincrement())\n  team      Team     @relation(fields: [teamId], references: [id])\n  // Slack timestamp is used as message ID in the channel\n  messageTs String\n  teamId    String\n  timestamp DateTime\n  questions Json\n  revealed  Boolean\n  nagged    Boolean  @default(false)\n  skipped   Boolean  @default(false)\n  answers   Answer[]\n}\n\nmodel Answer {\n  answeredAt DateTime\n  asked      Asked    @relation(fields: [askedId], references: [id])\n  askedId    Int\n  answers    Json\n  // Slack user ID, only used to keep answers unique per user\n  userId     String\n\n  @@id([userId, askedId])\n}\n',
@@ -25,11 +25,21 @@ const config: runtime.GetPrismaClientConfig = {
         enums: {},
         types: {},
     },
+    parameterizationSchema: {
+        strings: [],
+        graph: '',
+    },
 }
 
 config.runtimeDataModel = JSON.parse(
     '{"models":{"Team":{"fields":[{"name":"id","kind":"scalar","type":"String"},{"name":"name","kind":"scalar","type":"String"},{"name":"active","kind":"scalar","type":"Boolean"},{"name":"postDay","kind":"scalar","type":"Int"},{"name":"postHour","kind":"scalar","type":"Int"},{"name":"revealDay","kind":"scalar","type":"Int"},{"name":"revealHour","kind":"scalar","type":"Int"},{"name":"assosiatedGroup","kind":"scalar","type":"String"},{"name":"questions","kind":"scalar","type":"Json"},{"name":"Asked","kind":"object","type":"Asked","relationName":"AskedToTeam"},{"name":"frequency","kind":"scalar","type":"Int"},{"name":"weekSkew","kind":"scalar","type":"Int"}],"dbName":null},"Asked":{"fields":[{"name":"id","kind":"scalar","type":"Int"},{"name":"team","kind":"object","type":"Team","relationName":"AskedToTeam"},{"name":"messageTs","kind":"scalar","type":"String"},{"name":"teamId","kind":"scalar","type":"String"},{"name":"timestamp","kind":"scalar","type":"DateTime"},{"name":"questions","kind":"scalar","type":"Json"},{"name":"revealed","kind":"scalar","type":"Boolean"},{"name":"nagged","kind":"scalar","type":"Boolean"},{"name":"skipped","kind":"scalar","type":"Boolean"},{"name":"answers","kind":"object","type":"Answer","relationName":"AnswerToAsked"}],"dbName":null},"Answer":{"fields":[{"name":"answeredAt","kind":"scalar","type":"DateTime"},{"name":"asked","kind":"object","type":"Asked","relationName":"AnswerToAsked"},{"name":"askedId","kind":"scalar","type":"Int"},{"name":"answers","kind":"scalar","type":"Json"},{"name":"userId","kind":"scalar","type":"String"}],"dbName":null}},"enums":{},"types":{}}',
 )
+config.parameterizationSchema = {
+    strings: JSON.parse(
+        '["where","orderBy","cursor","team","asked","answers","_count","Asked","Team.findUnique","Team.findUniqueOrThrow","Team.findFirst","Team.findFirstOrThrow","Team.findMany","data","Team.createOne","Team.createMany","Team.createManyAndReturn","Team.updateOne","Team.updateMany","Team.updateManyAndReturn","create","update","Team.upsertOne","Team.deleteOne","Team.deleteMany","having","_avg","_sum","_min","_max","Team.groupBy","Team.aggregate","Asked.findUnique","Asked.findUniqueOrThrow","Asked.findFirst","Asked.findFirstOrThrow","Asked.findMany","Asked.createOne","Asked.createMany","Asked.createManyAndReturn","Asked.updateOne","Asked.updateMany","Asked.updateManyAndReturn","Asked.upsertOne","Asked.deleteOne","Asked.deleteMany","Asked.groupBy","Asked.aggregate","Answer.findUnique","Answer.findUniqueOrThrow","Answer.findFirst","Answer.findFirstOrThrow","Answer.findMany","Answer.createOne","Answer.createMany","Answer.createManyAndReturn","Answer.updateOne","Answer.updateMany","Answer.updateManyAndReturn","Answer.upsertOne","Answer.deleteOne","Answer.deleteMany","Answer.groupBy","Answer.aggregate","AND","OR","NOT","answeredAt","askedId","userId","equals","in","notIn","lt","lte","gt","gte","contains","startsWith","endsWith","not","string_contains","string_starts_with","string_ends_with","array_starts_with","array_ends_with","array_contains","id","messageTs","teamId","timestamp","questions","revealed","nagged","skipped","name","active","postDay","postHour","revealDay","revealHour","assosiatedGroup","frequency","weekSkew","every","some","none","userId_askedId","is","isNot","connectOrCreate","upsert","createMany","set","disconnect","delete","connect","updateMany","deleteMany","increment","decrement","multiply","divide"]',
+    ),
+    graph: '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_ACAEBYAAAAABQ0AAAAABRAIAAAABRQEAAAABAQ0AAEEAMAENAABBADAFBAAAfAAgBYAAAAABQ0AAeQAhRAIAewAhRQEAegAhAgAAAAkAIA0AAEQAIAQFgAAAAAFDQAB5ACFEAgB7ACFFAQB6ACECAAAABwAgDQAARgAgAgAAAAcAIA0AAEYAIAMAAAAJACAUAAA_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-Ths_TyE',
+}
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
     const { Buffer } = await import('node:buffer')
@@ -38,12 +48,14 @@ async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Modul
 }
 
 config.compilerWasm = {
-    getRuntime: async () => await import('@prisma/client/runtime/query_compiler_bg.postgresql.mjs'),
+    getRuntime: async () => await import('@prisma/client/runtime/query_compiler_fast_bg.postgresql.mjs'),
 
     getQueryCompilerWasmModule: async () => {
-        const { wasm } = await import('@prisma/client/runtime/query_compiler_bg.postgresql.wasm-base64.mjs')
+        const { wasm } = await import('@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.mjs')
         return await decodeBase64AsWasm(wasm)
     },
+
+    importName: './query_compiler_fast_bg.js',
 }
 
 export type LogOptions<ClientOptions extends Prisma.PrismaClientOptions> = 'log' extends keyof ClientOptions
@@ -59,12 +71,14 @@ export interface PrismaClientConstructor {
      * Type-safe database client for TypeScript
      * @example
      * ```
-     * const prisma = new PrismaClient()
+     * const prisma = new PrismaClient({
+     *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+     * })
      * // Fetch zero or more Teams
      * const teams = await prisma.team.findMany()
      * ```
      *
-     * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+     * Read more in our [docs](https://pris.ly/d/client).
      */
 
     new <
@@ -85,12 +99,14 @@ export interface PrismaClientConstructor {
  * Type-safe database client for TypeScript
  * @example
  * ```
- * const prisma = new PrismaClient()
+ * const prisma = new PrismaClient({
+ *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+ * })
  * // Fetch zero or more Teams
  * const teams = await prisma.team.findMany()
  * ```
  *
- * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+ * Read more in our [docs](https://pris.ly/d/client).
  */
 
 export interface PrismaClient<
@@ -122,7 +138,7 @@ export interface PrismaClient<
      * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
      * ```
      *
-     * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+     * Read more in our [docs](https://pris.ly/d/raw-queries).
      */
     $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>
 
@@ -134,7 +150,7 @@ export interface PrismaClient<
      * const result = await prisma.$executeRawUnsafe('UPDATE User SET cool = $1 WHERE email = $2 ;', true, 'user@email.com')
      * ```
      *
-     * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+     * Read more in our [docs](https://pris.ly/d/raw-queries).
      */
     $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<number>
 
@@ -145,7 +161,7 @@ export interface PrismaClient<
      * const result = await prisma.$queryRaw`SELECT * FROM User WHERE id = ${1} OR email = ${'user@email.com'};`
      * ```
      *
-     * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+     * Read more in our [docs](https://pris.ly/d/raw-queries).
      */
     $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<T>
 
@@ -157,7 +173,7 @@ export interface PrismaClient<
      * const result = await prisma.$queryRawUnsafe('SELECT * FROM User WHERE id = $1 OR email = $2;', 1, 'user@email.com')
      * ```
      *
-     * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+     * Read more in our [docs](https://pris.ly/d/raw-queries).
      */
     $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>
 
@@ -172,11 +188,11 @@ export interface PrismaClient<
      * ])
      * ```
      *
-     * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
+     * Read more in our [docs](https://www.prisma.io/docs/orm/prisma-client/queries/transactions).
      */
     $transaction<P extends Prisma.PrismaPromise<any>[]>(
         arg: [...P],
-        options?: { isolationLevel?: Prisma.TransactionIsolationLevel },
+        options?: { maxWait?: number; timeout?: number; isolationLevel?: Prisma.TransactionIsolationLevel },
     ): runtime.Types.Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
 
     $transaction<R>(

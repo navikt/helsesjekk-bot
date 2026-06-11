@@ -5,7 +5,7 @@ import { setWeek } from 'date-fns'
 import { AnswerLevel, Day, prisma, QuestionAnswer } from '../src/db'
 import { answerToJsonb, questionsFromJsonb, questionsToJsonb } from '../src/questions/jsonb-utils'
 import { defaultQuestions } from '../src/questions/default'
-import { QuestionType } from '../src/safe-types.ts'
+import { QuestionType } from '../src/safe-types'
 
 function getRandomAnswerLevel(): AnswerLevel {
     const random = Math.random()

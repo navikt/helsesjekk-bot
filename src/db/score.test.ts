@@ -1,4 +1,4 @@
-import { describe, expect, mock, test } from 'bun:test'
+import { describe, expect, vi, test } from 'vitest'
 import { addWeeks } from 'date-fns'
 
 import type { Answer, Asked, Team } from '../db/types'
@@ -15,6 +15,16 @@ const TEAM = 'ex-team'
 const HIGH = AnswerLevel.GOOD
 const MID = AnswerLevel.MEDIUM
 const LOW = AnswerLevel.BAD
+
+let _mockAsked: Asked[] = []
+
+vi.mock('./prisma.ts', () => ({
+    prisma: () => ({
+        team: {
+            findFirst: () => createTeam(_mockAsked),
+        },
+    }),
+}))
 
 describe('getTeamScoreTimeline', () => {
     const someTimeInMay = new Date('2023-05-05T10:00:00')
@@ -95,13 +105,7 @@ describe('getTeamScorePerQuestion', () => {
 })
 
 function mockDb(asked: Asked[]): void {
-    mock.module('./prisma.ts', () => ({
-        prisma: () => ({
-            team: {
-                findFirst: () => createTeam(asked),
-            },
-        }),
-    }))
+    _mockAsked = asked
 }
 
 function createTeam(asks: Asked[]): Team & { Asked: Asked[] } {
