@@ -1,13 +1,21 @@
-import { describe, expect, test } from 'bun:test'
+import { describe, expect, test, vi } from 'vitest'
 import { parseISO } from 'date-fns'
 
-import { mockDate } from '../../tests/utils'
+let _mockDate: Date = new Date()
+
+vi.mock('./date', async (importActual) => {
+    const actual = await importActual<typeof import('./date')>()
+    return {
+        ...actual,
+        getNowInNorway: () => _mockDate,
+    }
+})
 
 import { Frequency, getRelevantWeeks, nextOccurrence } from './frequency'
 
 describe('weekly frequency', () => {
     test('same day, should provide today as nextDate', () => {
-        mockDate(new Date('2023-05-05T09:37:00'))
+        _mockDate = new Date('2023-05-05T09:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -19,11 +27,11 @@ describe('weekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-05T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeTrue()
+        expect(isThisWeekRelevant).toBe(true)
     })
 
     test('same day, hour has passed, should provide next week as nextDate', () => {
-        mockDate(new Date('2023-05-05T13:37:00'))
+        _mockDate = new Date('2023-05-05T13:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -35,11 +43,11 @@ describe('weekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-05T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeTrue()
+        expect(isThisWeekRelevant).toBe(true)
     })
 
     test('day of week has passed, should provide next week as nextDate', () => {
-        mockDate(new Date('2023-05-06T09:37:00'))
+        _mockDate = new Date('2023-05-06T09:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -51,11 +59,11 @@ describe('weekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-12T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBe(false)
     })
 
     test('repro case: hour has passed but day is tomorrow, should correctly build postDates', () => {
-        mockDate(new Date('2023-11-09T09:35:41.912Z'))
+        _mockDate = new Date('2023-11-09T09:35:41.912Z')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -67,13 +75,13 @@ describe('weekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-11-10T08:35:41.912Z'))
-        expect(isThisWeekRelevant).toBeTrue()
+        expect(isThisWeekRelevant).toBe(true)
     })
 })
 
 describe('biweekly frequency', () => {
     test('same day, should provide today as nextDate', () => {
-        mockDate(new Date('2023-05-05T11:37:00'))
+        _mockDate = new Date('2023-05-05T11:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -85,11 +93,11 @@ describe('biweekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-05T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeTrue()
+        expect(isThisWeekRelevant).toBe(true)
     })
 
     test('same day, hour has passed, should provide week in two weeks as nextDate', () => {
-        mockDate(new Date('2023-05-05T14:37:00'))
+        _mockDate = new Date('2023-05-05T14:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -101,11 +109,11 @@ describe('biweekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-19T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBe(false)
     })
 
     test('day has passed, should provide week in two weeks as nextDate', () => {
-        mockDate(new Date('2023-05-06T11:37:00'))
+        _mockDate = new Date('2023-05-06T11:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -117,11 +125,11 @@ describe('biweekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-19T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBe(false)
     })
 
     test('same day, but week is skewed+1, should provide next week as nextDate', () => {
-        mockDate(new Date('2023-05-05T11:37:00'))
+        _mockDate = new Date('2023-05-05T11:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -133,12 +141,12 @@ describe('biweekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-12T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBe(false)
     })
 
     describe('year overflow', () => {
         test('week before last week (skew+0), so time is this year', () => {
-            mockDate(new Date('2023-12-22T11:37:00'))
+            _mockDate = new Date('2023-12-22T11:37:00')
 
             const { postDate, isThisWeekRelevant } = nextOccurrence({
                 team: {
@@ -150,11 +158,11 @@ describe('biweekly frequency', () => {
             })
 
             expect(postDate).toEqual(parseISO('2023-12-29T12:37:00.000Z'))
-            expect(isThisWeekRelevant).toBeFalse()
+            expect(isThisWeekRelevant).toBe(false)
         })
 
         test('relevant week, but time has passed so next ask is next year', () => {
-            mockDate(new Date('2023-12-29T13:37:00'))
+            _mockDate = new Date('2023-12-29T13:37:00')
 
             const { postDate, isThisWeekRelevant } = nextOccurrence({
                 team: {
@@ -166,11 +174,11 @@ describe('biweekly frequency', () => {
             })
 
             expect(postDate).toEqual(parseISO('2024-01-12T12:37:00.000Z'))
-            expect(isThisWeekRelevant).toBeFalse()
+            expect(isThisWeekRelevant).toBe(false)
         })
 
         test('relevant week, but time has passed, and next ask is next year because of skew+1', () => {
-            mockDate(new Date('2023-12-22T13:37:00'))
+            _mockDate = new Date('2023-12-22T13:37:00')
 
             const { postDate, isThisWeekRelevant } = nextOccurrence({
                 team: {
@@ -182,14 +190,14 @@ describe('biweekly frequency', () => {
             })
 
             expect(postDate).toEqual(parseISO('2024-01-05T12:37:00.000Z'))
-            expect(isThisWeekRelevant).toBeFalse()
+            expect(isThisWeekRelevant).toBe(false)
         })
     })
 })
 
 describe('triweekly frequency', () => {
     test('same day, should provide today as nextDate', () => {
-        mockDate(new Date('2023-05-05T11:37:00'))
+        _mockDate = new Date('2023-05-05T11:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -201,11 +209,11 @@ describe('triweekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-05T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeTrue()
+        expect(isThisWeekRelevant).toBe(true)
     })
 
     test('same day, hour has passed, should provide three weeks ahead as nextDate', () => {
-        mockDate(new Date('2023-05-05T14:37:00'))
+        _mockDate = new Date('2023-05-05T14:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -217,11 +225,11 @@ describe('triweekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-26T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBe(false)
     })
 
     test('day has passed, should provide three weeks ahead as nextDate', () => {
-        mockDate(new Date('2023-05-06T11:37:00'))
+        _mockDate = new Date('2023-05-06T11:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -233,11 +241,11 @@ describe('triweekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-26T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBe(false)
     })
 
     test('same day, but week is skewed+1, should provide week in two weeks as nextDate', () => {
-        mockDate(new Date('2023-05-05T11:37:00'))
+        _mockDate = new Date('2023-05-05T11:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -249,11 +257,11 @@ describe('triweekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-19T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBe(false)
     })
 
     test('same day, but week is skewed+2, should provide next week as nextDate', () => {
-        mockDate(new Date('2023-05-05T11:37:00'))
+        _mockDate = new Date('2023-05-05T11:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -265,12 +273,12 @@ describe('triweekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-12T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBe(false)
     })
 
     describe('year overflow', () => {
         test('week before last week (skew+2), so time is this year', () => {
-            mockDate(new Date('2023-12-22T11:37:00'))
+            _mockDate = new Date('2023-12-22T11:37:00')
 
             const { postDate, isThisWeekRelevant } = nextOccurrence({
                 team: {
@@ -282,11 +290,11 @@ describe('triweekly frequency', () => {
             })
 
             expect(postDate).toEqual(parseISO('2023-12-29T12:37:00.000Z'))
-            expect(isThisWeekRelevant).toBeFalse()
+            expect(isThisWeekRelevant).toBe(false)
         })
 
         test('relevant week, but time has passed so next ask is next year', () => {
-            mockDate(new Date('2023-12-22T13:37:00'))
+            _mockDate = new Date('2023-12-22T13:37:00')
 
             const { postDate, isThisWeekRelevant } = nextOccurrence({
                 team: {
@@ -298,11 +306,11 @@ describe('triweekly frequency', () => {
             })
 
             expect(postDate).toEqual(parseISO('2024-01-19T12:37:00.000Z'))
-            expect(isThisWeekRelevant).toBeFalse()
+            expect(isThisWeekRelevant).toBe(false)
         })
 
         test('relevant week, but time has passed, and next ask is next year because of skew+1', () => {
-            mockDate(new Date('2023-12-15T13:37:00'))
+            _mockDate = new Date('2023-12-15T13:37:00')
 
             const { postDate, isThisWeekRelevant } = nextOccurrence({
                 team: {
@@ -314,11 +322,11 @@ describe('triweekly frequency', () => {
             })
 
             expect(postDate).toEqual(parseISO('2024-01-12T12:37:00.000Z'))
-            expect(isThisWeekRelevant).toBeFalse()
+            expect(isThisWeekRelevant).toBe(false)
         })
 
         test('relevant week, but time has passed, and next ask is next year because of skew+2', () => {
-            mockDate(new Date('2023-12-29T13:37:00'))
+            _mockDate = new Date('2023-12-29T13:37:00')
 
             const { postDate, isThisWeekRelevant } = nextOccurrence({
                 team: {
@@ -330,14 +338,14 @@ describe('triweekly frequency', () => {
             })
 
             expect(postDate).toEqual(parseISO('2024-01-05T12:37:00.000Z'))
-            expect(isThisWeekRelevant).toBeFalse()
+            expect(isThisWeekRelevant).toBe(false)
         })
     })
 })
 
 describe('four-weekly frequency', () => {
     test('same day, should provide today as nextDate', () => {
-        mockDate(new Date('2023-05-19T11:37:00'))
+        _mockDate = new Date('2023-05-19T11:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -349,11 +357,11 @@ describe('four-weekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-19T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeTrue()
+        expect(isThisWeekRelevant).toBe(true)
     })
 
     test('same day, hour has passed, should provide week in four weeks as nextDate', () => {
-        mockDate(new Date('2023-05-19T14:37:00'))
+        _mockDate = new Date('2023-05-19T14:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -365,11 +373,11 @@ describe('four-weekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-06-16T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBe(false)
     })
 
     test('day has passed, should provide week in four weeks as nextDate', () => {
-        mockDate(new Date('2023-05-20T11:37:00'))
+        _mockDate = new Date('2023-05-20T11:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -381,11 +389,11 @@ describe('four-weekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-06-16T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBe(false)
     })
 
     test('same day, but week is skewed + 1, should provide week in three weeks as nextDate', () => {
-        mockDate(new Date('2023-05-19T11:37:00'))
+        _mockDate = new Date('2023-05-19T11:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -397,11 +405,11 @@ describe('four-weekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-06-09T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBe(false)
     })
 
     test('same day, but week is skewed+2, should provide week in two weeks as nextDate', () => {
-        mockDate(new Date('2023-05-19T11:37:00'))
+        _mockDate = new Date('2023-05-19T11:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -413,11 +421,11 @@ describe('four-weekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-06-02T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBe(false)
     })
 
     test('same day, but week is skewed+3, should provide next week as nextDate', () => {
-        mockDate(new Date('2023-05-19T11:37:00'))
+        _mockDate = new Date('2023-05-19T11:37:00')
 
         const { postDate, isThisWeekRelevant } = nextOccurrence({
             team: {
@@ -429,12 +437,12 @@ describe('four-weekly frequency', () => {
         })
 
         expect(postDate).toEqual(parseISO('2023-05-26T12:37:00.000Z'))
-        expect(isThisWeekRelevant).toBeFalse()
+        expect(isThisWeekRelevant).toBe(false)
     })
 
     describe('year overflow', () => {
         test('week before last week (skew 0), so time is this year', () => {
-            mockDate(new Date('2023-12-22T11:37:00'))
+            _mockDate = new Date('2023-12-22T11:37:00')
 
             const { postDate, isThisWeekRelevant } = nextOccurrence({
                 team: {
@@ -446,11 +454,11 @@ describe('four-weekly frequency', () => {
             })
 
             expect(postDate).toEqual(parseISO('2023-12-29T12:37:00.000Z'))
-            expect(isThisWeekRelevant).toBeFalse()
+            expect(isThisWeekRelevant).toBe(false)
         })
 
         test('relevant week, but time has passed so next ask is next year', () => {
-            mockDate(new Date('2023-12-29T13:37:00'))
+            _mockDate = new Date('2023-12-29T13:37:00')
 
             const { postDate, isThisWeekRelevant } = nextOccurrence({
                 team: {
@@ -462,11 +470,11 @@ describe('four-weekly frequency', () => {
             })
 
             expect(postDate).toEqual(parseISO('2024-01-26T12:37:00.000Z'))
-            expect(isThisWeekRelevant).toBeFalse()
+            expect(isThisWeekRelevant).toBe(false)
         })
 
         test('relevant week, but time has passed, and next ask is next year because of skew+1', () => {
-            mockDate(new Date('2023-12-22T13:37:00'))
+            _mockDate = new Date('2023-12-22T13:37:00')
 
             const { postDate, isThisWeekRelevant } = nextOccurrence({
                 team: {
@@ -478,11 +486,11 @@ describe('four-weekly frequency', () => {
             })
 
             expect(postDate).toEqual(parseISO('2024-01-19T12:37:00.000Z'))
-            expect(isThisWeekRelevant).toBeFalse()
+            expect(isThisWeekRelevant).toBe(false)
         })
 
         test('relevant week, but time has passed, and next ask is next year because of skew+2', () => {
-            mockDate(new Date('2023-12-22T13:37:00'))
+            _mockDate = new Date('2023-12-22T13:37:00')
 
             const { postDate, isThisWeekRelevant } = nextOccurrence({
                 team: {
@@ -494,11 +502,11 @@ describe('four-weekly frequency', () => {
             })
 
             expect(postDate).toEqual(parseISO('2024-01-12T12:37:00.000Z'))
-            expect(isThisWeekRelevant).toBeFalse()
+            expect(isThisWeekRelevant).toBe(false)
         })
 
         test('not relevant week, but next ask is next year because of skew+3', () => {
-            mockDate(new Date('2023-12-22T13:37:00'))
+            _mockDate = new Date('2023-12-22T13:37:00')
 
             const { postDate, isThisWeekRelevant } = nextOccurrence({
                 team: {
@@ -510,7 +518,7 @@ describe('four-weekly frequency', () => {
             })
 
             expect(postDate).toEqual(parseISO('2024-01-05T12:37:00.000Z'))
-            expect(isThisWeekRelevant).toBeFalse()
+            expect(isThisWeekRelevant).toBe(false)
         })
     })
 })

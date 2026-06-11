@@ -1,13 +1,57 @@
-import { test, expect, mock, describe, Mock } from 'bun:test'
+import { test, expect, vi, describe } from 'vitest'
 import type { App } from '@slack/bolt'
 
 import type { Team } from '../../db/types'
 import { defaultQuestions } from '../../questions/default'
 import { questionsToJsonb } from '../../questions/jsonb-utils'
 import { raise } from '../../utils/ts-utils'
-import { mockDate } from '../../../tests/utils'
 
 import { askRelevantTeams, revealRelevantTeams } from './message-jobs'
+
+type TeamQueries = { hasActiveAsk?: boolean; hasAskedToday?: boolean; hasActiveUnnaggedAsk?: boolean }
+type TeamWithQueries = { team: Team; queries?: TeamQueries }
+
+let _teams: TeamWithQueries[] = []
+let _revealTeams: TeamWithQueries[] = []
+let _mockDate: Date = new Date()
+
+const { postToTeam, remindTeam, revealTeam } = vi.hoisted(() => ({
+    postToTeam: vi.fn(() => void 0),
+    remindTeam: vi.fn(() => void 0),
+    revealTeam: vi.fn(() => void 0),
+}))
+
+vi.mock('../../utils/date', async (importActual) => {
+    const actual = await importActual<typeof import('../../utils/date')>()
+    return {
+        ...actual,
+        getNowInNorway: () => _mockDate,
+    }
+})
+
+vi.mock('../../db/index.ts', () => ({
+    getActiveTeams: () => _teams.map((it) => it.team),
+    getTeamsToReveal: () => _revealTeams.map((it) => it.team),
+    getBrokenAsks: () => [],
+    deactivateTeam: () => void 0,
+    hasActiveAsk: (id: string) => findTeam(id).queries?.hasActiveAsk ?? false,
+    hasAskedToday: (id: string) => findTeam(id).queries?.hasAskedToday ?? false,
+    hasActiveUnnaggedAsk: (id: string) => findTeam(id).queries?.hasActiveUnnaggedAsk ?? false,
+}))
+
+vi.mock('../../bot/messages/message-poster.ts', () => ({
+    postToTeam,
+    remindTeam,
+    revealTeam,
+}))
+
+function findTeam(id: string): TeamWithQueries {
+    return (
+        _teams.find((it) => it.team.id === id) ??
+        _revealTeams.find((it) => it.team.id === id) ??
+        raise(new Error(`No team with id ${id} found`))
+    )
+}
 
 const fakeApp: App = {} as App
 
@@ -50,11 +94,11 @@ describe('askRelevantTeams', () => {
     test('should handle active team needing to post today', async () => {
         mockDate(new Date('2023-05-05T10:00:00'))
         mockDb([{ team: createTeam() }], [])
-        const mockedSlack = mockSlack()
+        resetSlack()
 
         const askedTeams = await askRelevantTeams(fakeApp)
 
-        expect(mockedSlack.postToTeam).toHaveBeenCalledTimes(1)
+        expect(postToTeam).toHaveBeenCalledTimes(1)
         expect(askedTeams).toBe(1)
     })
 
@@ -68,11 +112,11 @@ describe('askRelevantTeams', () => {
             ],
             [],
         )
-        const mockedSlack = mockSlack()
+        resetSlack()
 
         const askedTeams = await askRelevantTeams(fakeApp)
 
-        expect(mockedSlack.postToTeam).toHaveBeenCalledTimes(3)
+        expect(postToTeam).toHaveBeenCalledTimes(3)
         expect(askedTeams).toBe(3)
     })
 
@@ -86,7 +130,7 @@ describe('askRelevantTeams', () => {
             ],
             [],
         )
-        mockSlack()
+        resetSlack()
 
         const askedTeams = await askRelevantTeams(fakeApp)
 
@@ -184,11 +228,11 @@ describe('revealRelevantTeams', () => {
                 },
             ],
         )
-        const mockedSlack = mockSlack()
+        resetSlack()
 
         const result = await revealRelevantTeams(fakeApp)
 
-        expect(mockedSlack.revealTeam).toHaveBeenCalledTimes(1)
+        expect(revealTeam).toHaveBeenCalledTimes(1)
 
         expect(result.revealedTeams).toBe(1)
         expect(result.naggedTeams).toBe(0)
@@ -209,11 +253,11 @@ describe('revealRelevantTeams', () => {
                 },
             ],
         )
-        const mockedSlack = mockSlack()
+        resetSlack()
 
         const result = await revealRelevantTeams(fakeApp)
 
-        expect(mockedSlack.remindTeam).toHaveBeenCalledTimes(1)
+        expect(remindTeam).toHaveBeenCalledTimes(1)
 
         expect(result.revealedTeams).toBe(0)
         expect(result.naggedTeams).toBe(1)
@@ -236,52 +280,31 @@ describe('revealRelevantTeams', () => {
                 },
             ],
         )
-        const mockedSlack = mockSlack()
+        resetSlack()
 
         const result = await revealRelevantTeams(fakeApp)
 
-        expect(mockedSlack.revealTeam).toHaveBeenCalledTimes(1)
-        expect(mockedSlack.remindTeam).toHaveBeenCalledTimes(1)
+        expect(revealTeam).toHaveBeenCalledTimes(1)
+        expect(remindTeam).toHaveBeenCalledTimes(1)
 
         expect(result.revealedTeams).toBe(1)
         expect(result.naggedTeams).toBe(1)
     })
 })
 
-type TeamQueries = { hasActiveAsk?: boolean; hasAskedToday?: boolean; hasActiveUnnaggedAsk?: boolean }
-type TeamWithQueries = { team: Team; queries?: TeamQueries }
-
 function mockDb(teams: TeamWithQueries[], revealTeams: TeamWithQueries[]): void {
-    const findTeam = (id: string): TeamWithQueries =>
-        teams.find((it) => it.team.id === id) ??
-        revealTeams.find((it) => it.team.id === id) ??
-        raise(new Error(`No team with id ${id} found`))
-
-    mock.module('../../db/index.ts', () => ({
-        getActiveTeams: () => teams.map((it) => it.team),
-        getTeamsToReveal: () => revealTeams.map((it) => it.team),
-        getBrokenAsks: () => [],
-        deactivateTeam: () => void 0,
-        hasActiveAsk: (id: string) => findTeam(id).queries?.hasActiveAsk ?? false,
-        hasAskedToday: (id: string) => findTeam(id).queries?.hasAskedToday ?? false,
-        hasActiveUnnaggedAsk: (id: string) => findTeam(id).queries?.hasActiveUnnaggedAsk ?? false,
-    }))
+    _teams = teams
+    _revealTeams = revealTeams
 }
 
-function mockSlack(): {
-    remindTeam: Mock<(team: Team, app: App) => void>
-    revealTeam: Mock<(team: Team, app: App) => void>
-    postToTeam: Mock<(team: Team, app: App) => void>
-} {
-    const mockedSlack = {
-        postToTeam: mock(() => void 0),
-        remindTeam: mock(() => void 0),
-        revealTeam: mock(() => void 0),
-    }
+function mockDate(date: Date): void {
+    _mockDate = date
+}
 
-    mock.module('../../bot/messages/message-poster.ts', () => mockedSlack)
-
-    return mockedSlack
+function resetSlack(): void {
+    postToTeam.mockReset()
+    remindTeam.mockReset()
+    revealTeam.mockReset()
 }
 
 function createTeam(overrides?: Partial<Team>): Team {

@@ -1,4 +1,8 @@
-import { describe, expect, test } from 'bun:test'
+import { describe, expect, test, vi } from 'vitest'
+
+vi.mock('../db/prisma.ts', () => ({
+    prisma: () => null,
+}))
 
 import { AnswerLevel, AskedWithAnswers, QuestionAnswer, Answer } from '../db'
 import { questionsToJsonb } from '../questions/jsonb-utils'
