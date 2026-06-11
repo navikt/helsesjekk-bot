@@ -15,7 +15,6 @@
         "allowSyntheticDefaultImports": true,
         "forceConsistentCasingInFileNames": true,
         "allowJs": true,
-        "types": ["bun-types"],
         "rootDir": "../src"
     },
     "include": ["./seed.ts", "../src/db/**/*.ts"]

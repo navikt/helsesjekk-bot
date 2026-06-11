@@ -12,6 +12,7 @@ COPY .yarnrc.yml /app/
 COPY yarn.lock /app/
 
 ENV NODE_ENV=production
+ENV PRISMA_CLI_BINARY_TARGETS=linux-musl-openssl-3.0.x
 
 RUN yarn workspaces focus -A --production
 
