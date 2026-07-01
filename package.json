@@ -60,7 +60,7 @@
     "devDependencies": {
         "@navikt/tsm-eslint-react": "^1.0.0",
         "@navikt/tsm-prettier": "^2.0.0",
-        "@tailwindcss/postcss": "^4.3.0",
+        "@tailwindcss/postcss": "^4.3.2",
         "@types/node": "^24.13.1",
         "@types/node-cron": "^3.0.11",
         "@types/react": "19.2.17",
