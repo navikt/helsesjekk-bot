@@ -1302,12 +1302,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@navikt/tsm-prettier@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@navikt/tsm-prettier@npm:2.0.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ftsm-prettier%2F2.0.0%2F48f457e5234d4a13586c9d61512891eeca06a383"
+"@navikt/tsm-prettier@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@navikt/tsm-prettier@npm:2.0.1::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40navikt%2Ftsm-prettier%2F2.0.1%2F282dbeee88ec6aa5c3b0cfd8ff8ab9b65a6f1683"
   peerDependencies:
     prettier: ">= 3"
-  checksum: 10c0/71e4ecc66a87ed05d58615e0b79ceff0cb8dbffdbbe65e59c6ab863be994a3e034e4e94836c487cd1cd4365afe26ab1e198117773bf3c9b09f6d2c33d0b2a862
+  checksum: 10c0/113f97b3f95076433e266fb8535ac9289cee6e203dfd906bb98a2e502745436a3851a02d58767204e369a87e9f0ec4a40d3b65215a0e98b502e7983d5148e86a
   languageName: node
   linkType: hard
 
@@ -5119,7 +5119,7 @@ __metadata:
     "@navikt/next-logger": "npm:^5.0.0"
     "@navikt/oasis": "npm:^4.1.4"
     "@navikt/tsm-eslint-react": "npm:^1.0.0"
-    "@navikt/tsm-prettier": "npm:^2.0.0"
+    "@navikt/tsm-prettier": "npm:^2.0.1"
     "@prisma/adapter-pg": "npm:^7.8.0"
     "@prisma/client": "npm:7.8.0"
     "@slack/bolt": "npm:^4.7.3"
