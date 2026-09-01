@@ -29,7 +29,7 @@ spec:
       memory: 1024Mi
     requests:
       cpu: 40m
-      memory: 450Mi
+      memory: 650Mi
   filesFrom:
     - emptyDir:
         medium: Memory
