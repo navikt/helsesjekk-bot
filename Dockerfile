@@ -1,6 +1,8 @@
-FROM gcr.io/distroless/nodejs24-debian13@sha256:2b39d276e969e32d23e7266aeb6b493ba96f13f86860a91d6f895c4e99fee25b AS build
+FROM FROM node:24-alpine@sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf AS build
 
 ARG NPM_AUTH_TOKEN
+
+RUN apk add --no-cache bash
 
 WORKDIR /app
 
@@ -14,7 +16,9 @@ ENV PRISMA_CLI_BINARY_TARGETS=linux-musl-openssl-3.0.x
 
 RUN yarn workspaces focus -A --production
 
-FROM gcr.io/distroless/nodejs24-debian13@sha256:2b39d276e969e32d23e7266aeb6b493ba96f13f86860a91d6f895c4e99fee25b AS runner
+FROM node:24-alpine@sha256:e67514e5d0f6c46656005e1b693b2ec9d52e80b641307de684d4a015ba7a4eaf AS runner
+
+RUN apk add --no-cache bash
 
 ENV NODE_ENV=production
 ENV YARN_CACHE_FOLDER=/tmp/yarn-cache
