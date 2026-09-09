@@ -26,9 +26,10 @@ spec:
         - id: loki
   resources:
     limits:
+      cpu: 1000m
       memory: 1024Mi
     requests:
-      cpu: 40m
+      cpu: 90m
       memory: 650Mi
   filesFrom:
     - emptyDir:
