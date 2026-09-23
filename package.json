@@ -14,7 +14,7 @@
     },
     "scripts": {
         "dev": "next dev | pino-pretty --messageKey=message",
-        "dev:db": "docker run -e POSTGRES_PASSWORD=postgres -p 5432:5432 -it postgres:14",
+        "dev:db": "docker run -e POSTGRES_PASSWORD=postgres -p 5432:5432 -it postgres:16",
         "build": "next build",
         "start": "next start",
         "lint": "eslint src",
