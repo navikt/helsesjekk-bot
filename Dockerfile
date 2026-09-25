@@ -1,7 +1,7 @@
 FROM node:24-alpine@sha256:333f6b3eca25980d5682c26207665b93c9417786b21760b2764d5821d9704c8a AS build
 
 ARG NPM_AUTH_TOKEN
-
+RUN apk update && apk upgrade --no-cache openssl libssl3 ssl_client
 RUN apk add --no-cache bash
 
 WORKDIR /app
@@ -17,7 +17,7 @@ ENV PRISMA_CLI_BINARY_TARGETS=linux-musl-openssl-3.0.x
 RUN yarn workspaces focus -A --production
 
 FROM node:24-alpine@sha256:333f6b3eca25980d5682c26207665b93c9417786b21760b2764d5821d9704c8a AS runner
-
+RUN apk update && apk upgrade --no-cache openssl libssl3 ssl_client
 RUN apk add --no-cache bash
 
 ENV NODE_ENV=production
