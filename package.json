@@ -12,6 +12,10 @@
     "engines": {
         "node": "24"
     },
+    "resolutions": {
+        "deepmerge-ts@npm:7.1.5": "npm:7.1.6",
+        "mysql2@npm:3.15.3": "npm:3.24.4"
+    },
     "scripts": {
         "dev": "next dev | pino-pretty --messageKey=message",
         "dev:db": "docker run -e POSTGRES_PASSWORD=postgres -p 5432:5432 -it postgres:16",
