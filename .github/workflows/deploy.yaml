@@ -71,6 +71,7 @@ jobs:
     if: github.actor == 'dependabot[bot]'
     name: 'Build for dependabot'
     runs-on: ubuntu-latest
+    needs: test
     permissions:
       packages: 'write'
       contents: 'read'
@@ -82,7 +83,6 @@ jobs:
       - uses: navikt/tsm-workflows/actions/yarn@main
         with:
           READER_TOKEN: ${{ secrets.READER_TOKEN }}
-      - run: yarn lint
       - run: yarn build
         env:
           NEXT_PUBLIC_ENVIRONMENT: dev
