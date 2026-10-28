@@ -50,21 +50,23 @@ function EditableStatus({ teamId, frequency, weekSkew, postDay, postHour, hasAct
                 </Tooltip>
             ) : edit ? (
                 <Button
+                    data-color="neutral"
                     className="absolute top-2 right-2"
                     icon={<XMarkIcon />}
                     title="Lukk redigering"
                     onClick={() => setEdit(false)}
                     size="xsmall"
-                    variant="tertiary-neutral"
+                    variant="tertiary"
                 />
             ) : (
                 <Button
+                    data-color="neutral"
                     className="absolute top-2 right-2"
                     icon={<PencilIcon />}
                     title="Rediger frekvens"
                     onClick={() => setEdit(true)}
                     size="small"
-                    variant="tertiary-neutral"
+                    variant="tertiary"
                 />
             )}
         </div>
@@ -159,7 +161,7 @@ function EditableFrequencyForm({
                         {newFrequency > 3 && <option value="3">+3</option>}
                     </Select>
                 )}
-                <Button type="submit" variant="secondary-neutral">
+                <Button data-color="neutral" type="submit" variant="secondary">
                     Lagre
                 </Button>
             </div>

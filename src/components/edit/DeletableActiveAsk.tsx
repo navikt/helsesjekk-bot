@@ -50,7 +50,8 @@ export function DeleteableActiveAsk({ teamId, askTs, revealDay, revealHour }: Pr
                     Jeg vil slette
                 </Switch>
                 <Button
-                    variant="danger"
+                    data-color="danger"
+                    variant="primary"
                     size="small"
                     disabled={!lemmeDelete}
                     loading={isDeleting}

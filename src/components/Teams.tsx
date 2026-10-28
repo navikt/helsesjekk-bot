@@ -20,7 +20,7 @@ async function Teams(): Promise<ReactElement> {
                     Du er ikke logget inn
                 </Heading>
                 <BodyShort spacing>Du må være logget inn for å se dine team.</BodyShort>
-                <Button as="a" href="/oauth2/login?redirect=/" variant="secondary-neutral" size="small">
+                <Button data-color="neutral" as="a" href="/oauth2/login?redirect=/" variant="secondary" size="small">
                     Logg inn
                 </Button>
             </div>
