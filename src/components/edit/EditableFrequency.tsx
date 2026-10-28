@@ -31,7 +31,7 @@ function EditableStatus({ teamId, frequency, weekSkew, postDay, postHour, hasAct
     const [edit, setEdit] = useState(false)
 
     return (
-        <div className="p-3 bg-bg-subtle rounded-sm my-4 relative">
+        <div className="p-3 bg-ax-bg-neutral-soft rounded-sm my-4 relative">
             {!edit ? (
                 <FrequencyStatus frequency={frequency} weekSkew={weekSkew} postDay={postDay} postHour={postHour} />
             ) : (
@@ -186,7 +186,7 @@ function WeeksToPostGrid({ frequency, offset }: { frequency: number; offset: num
                     <div
                         key={week}
                         className={cn('border rounded-sm flex items-center justify-center text-xs transition-colors', {
-                            'bg-green-200': relevantWeeks.includes(week),
+                            'bg-ax-success-300': relevantWeeks.includes(week),
                             'border-2 border-dotted': week === currentWeek,
                         })}
                     >
@@ -200,7 +200,7 @@ function WeeksToPostGrid({ frequency, offset }: { frequency: number; offset: num
                     <div
                         key={week}
                         className={cn('border rounded-sm flex items-center justify-center text-xs transition-colors', {
-                            'bg-green-200': relevantWeeks.includes(week),
+                            'bg-ax-success-300': relevantWeeks.includes(week),
                         })}
                     >
                         {week}

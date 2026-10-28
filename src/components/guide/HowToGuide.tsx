@@ -20,7 +20,7 @@ function HowToGuide(): ReactElement {
                 Det første du må gjøre er å legge til slack-integrasjonen i ditt team sin kanal.
             </BodyLong>
             <BodyLong spacing>
-                <span className="font-bold">
+                <span className="font-ax-bold">
                     Det er sterkt anbefalt å legge til integrasjonen i en kanal som er dedikert til teamet ditt.
                 </span>{' '}
                 Dette kan være en kanal som heter noe alà <Code>#team-ditt-navn</Code>. Gjerne en kanal som er lukket
@@ -28,7 +28,7 @@ function HowToGuide(): ReactElement {
             </BodyLong>
 
             <BodyShort spacing>
-                <span className="font-bold mr-2">1.</span>
+                <span className="font-ax-bold mr-2">1.</span>
                 {`Klikk på navnet når du er inne på kanalen, deretter gå til 'Integrations', deretter 'Add apps':`}`
             </BodyShort>
             <Image
@@ -38,7 +38,7 @@ function HowToGuide(): ReactElement {
             />
 
             <BodyShort spacing>
-                <span className="font-bold mr-2">2.</span>
+                <span className="font-ax-bold mr-2">2.</span>
                 {`Deretter søker du etter 'Helsesjekk':`}
             </BodyShort>
             <Image
@@ -48,7 +48,7 @@ function HowToGuide(): ReactElement {
             />
 
             <BodyShort spacing>
-                <span className="font-bold mr-2">3.</span>
+                <span className="font-ax-bold mr-2">3.</span>
                 Så som integrasjonen er registrert, må du aktivere Helsesjekk for teamet ditt. Dette gjør du ved å kjøre
                 kommandoen <Code>/helsesjekk</Code> i kanalen hvor du la til integrasjonen.
             </BodyShort>
@@ -59,7 +59,7 @@ function HowToGuide(): ReactElement {
             />
 
             <BodyShort spacing>
-                <span className="font-bold mr-2">4.</span>
+                <span className="font-ax-bold mr-2">4.</span>
                 Når du gjør dette, vil du få opp innstillingene for teamet ditt. Her kan du sette opp når teamet ditt
                 skal få spørsmål, og når svarene skal vises. Du kan også legge til bonus-spørsmål samt deaktivere appen
                 dersom du har behov for å hoppe over en uke.

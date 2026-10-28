@@ -123,7 +123,7 @@ function ScoredAskView({
     const hasOptionalQuestion = ask.scoredQuestions.some((it) => it.optional)
 
     return (
-        <div className="bg-bg-subtle rounded-sm p-4 grow max-w-sm">
+        <div className="bg-ax-bg-neutral-soft rounded-sm p-4 grow max-w-sm">
             <Heading size="medium" level="4">
                 Uke {getWeekNumber(ask.timestamp)} {getYear(ask.timestamp)}
             </Heading>
@@ -187,7 +187,7 @@ function ScoredAskView({
                     href={createPermalink(channelId, ask.messageTs)}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-gray-800 hover:underline"
+                    className="text-ax-neutral-900 hover:underline"
                 >
                     Gå til spørring (Slack)
                 </a>

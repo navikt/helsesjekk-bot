@@ -112,7 +112,10 @@ function Questions({ teamId, questions }: { teamId: string; questions: Question[
                         </Heading>
                         <ul className="flex flex-col gap-3">
                             {questions.map((question) => (
-                                <li key={question.questionId} className="bg-bg-subtle p-3 pt-2 rounded-sm relative">
+                                <li
+                                    key={question.questionId}
+                                    className="bg-ax-bg-neutral-soft p-3 pt-2 rounded-sm relative"
+                                >
                                     <DeletableQuestion teamId={teamId} question={question} />
                                 </li>
                             ))}
@@ -127,7 +130,7 @@ function Questions({ teamId, questions }: { teamId: string; questions: Question[
 
 function AssociatedGroup({ groupId }: { groupId: string | null }): ReactElement {
     return (
-        <div className="p-3 bg-bg-subtle rounded-sm my-4">
+        <div className="p-3 bg-ax-bg-neutral-soft rounded-sm my-4">
             <div className="flex gap-2 items-center justify-between">
                 <Heading size="small">Assosiert gruppe</Heading>
                 <Detail>ID: {groupId}</Detail>

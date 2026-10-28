@@ -6,9 +6,9 @@ import logo from '../images/logo.png'
 
 function Footer(): ReactElement {
     return (
-        <footer className="border-t border-t-border-subtle mt-4 p-4 flex">
+        <footer className="border-t border-t-ax-border-neutral-subtle mt-4 p-4 flex">
             <Image
-                className="object-contain grayscale hover:grayscale-0 transition-all hidden sm:block"
+                className="object-contain grayscale hover:grayscale-0 transition-all hidden ax-sm:block"
                 src={logo}
                 alt=""
                 aria-hidden

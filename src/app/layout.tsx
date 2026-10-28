@@ -14,7 +14,7 @@ export default async function RootLayout({ children }: LayoutProps<'/'>): Promis
         <html lang="en">
             <body className="flex flex-col min-h-screen">
                 <Header />
-                <main className="container p-4 sm:p-16 sm:pt-4 min-h-fit grow">
+                <main className="container p-4 ax-sm:p-16 ax-sm:pt-4 min-h-fit grow">
                     <NuqsAdapter>{children}</NuqsAdapter>
                 </main>
                 <Footer />

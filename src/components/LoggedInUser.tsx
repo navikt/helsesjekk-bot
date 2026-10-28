@@ -18,12 +18,12 @@ async function LoggedInUser(): Promise<ReactElement> {
 
     return (
         <div className="flex gap-4 p-4">
-            <div className="hidden sm:block text-right">
+            <div className="hidden ax-sm:block text-right">
                 <BodyShort>{user.name}</BodyShort>
                 <Detail className="whitespace-nowrap">{user.email}</Detail>
             </div>
             <Tooltip content={`Logget in som ${user.name} (${user.email})`}>
-                <div className="w-[48px] h-[48px] bg-gray-400 rounded-full flex items-center justify-center text-2xl">
+                <div className="w-[48px] h-[48px] bg-ax-neutral-500 rounded-full flex items-center justify-center text-2xl">
                     {user.name[0]}
                 </div>
             </Tooltip>

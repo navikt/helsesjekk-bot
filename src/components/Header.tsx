@@ -24,7 +24,7 @@ function Header(): ReactElement {
                     </Suspense>
                 </div>
             </header>
-            <ul className="list-disc sm:list-none list-inside ml-4 sm:ml-20 mb-6 sm:mb-8 flex gap-3 sm:gap-6 flex-col sm:flex-row">
+            <ul className="list-disc ax-sm:list-none list-inside ml-4 ax-sm:ml-20 mb-6 ax-sm:mb-8 flex gap-3 ax-sm:gap-6 flex-col ax-sm:flex-row">
                 <li>
                     <Link href="/">Mine team</Link>
                 </li>
