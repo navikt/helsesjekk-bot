@@ -101,11 +101,11 @@ jobs:
       url: https://helsesjekk-bot.nav.no
     steps:
       - uses: actions/checkout@v7
-      - uses: nais/deploy/actions/deploy@v2
+      - uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: prod-gcp
           RESOURCE: .nais/nais-prod.yaml
-          VAR: image=${{ needs.build-and-publish.outputs.image }}
+          WORKLOAD_IMAGE: ${{ needs.build-and-publish.outputs.image }}
 
   deploy-bot-to-gcp-dev:
     name: Deploy to dev
@@ -120,11 +120,11 @@ jobs:
       url: https://helsesjekk-bot.intern.dev.nav.no
     steps:
       - uses: actions/checkout@v7
-      - uses: nais/deploy/actions/deploy@v2
+      - uses: nais/deploy/actions/deploy@v3
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/nais-dev.yaml
-          VAR: image=${{ needs.build-and-publish-dev.outputs.image }}
+          WORKLOAD_IMAGE: ${{ needs.build-and-publish-dev.outputs.image }}
 
   security:
     name: Security
