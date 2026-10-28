@@ -23,7 +23,7 @@ export function DeleteableActiveAsk({ teamId, askTs, revealDay, revealHour }: Pr
     const [lemmeDelete, setLemmeDelete] = useState(false)
 
     return (
-        <div className="p-3 bg-bg-subtle rounded-sm my-4">
+        <div className="p-3 bg-ax-bg-neutral-soft rounded-sm my-4">
             <div className="flex items-center justify-between">
                 <div>
                     <div className="flex gap-2 items-center">
@@ -40,7 +40,7 @@ export function DeleteableActiveAsk({ teamId, askTs, revealDay, revealHour }: Pr
                     </a>
                 </div>
             </div>
-            <div className="mt-4 flex gap-3 border-2 border-dotted justify-between items-center rounded-md p-2 border-border-subtle">
+            <div className="mt-4 flex gap-3 border-2 border-dotted justify-between items-center rounded-md p-2 border-ax-border-neutral-subtle">
                 <Switch
                     checked={lemmeDelete}
                     onChange={() => setLemmeDelete((prev) => !prev)}

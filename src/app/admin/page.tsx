@@ -31,7 +31,7 @@ async function Page(): Promise<ReactElement> {
             <Heading size="large">Alle team</Heading>
             <div className="flex gap-3 flex-wrap">
                 {sortedTeams.map((team) => (
-                    <div key={team.id} className="bg-bg-subtle p-4 pt-2 rounded-sm">
+                    <div key={team.id} className="bg-ax-bg-neutral-soft p-4 pt-2 rounded-sm">
                         <div className="flex justify-between mb-2">
                             <Heading level="2" size="medium" className="flex items-center gap-2">
                                 {team.active ? <PingDot /> : <InactiveDot />}
@@ -39,7 +39,7 @@ async function Page(): Promise<ReactElement> {
                                     href={createChannelPermalink(team.id)}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-gray-900"
+                                    className="text-ax-neutral-1000"
                                 >
                                     {team.name}
                                 </a>
@@ -47,7 +47,7 @@ async function Page(): Promise<ReactElement> {
                             </Heading>
                             <AdminTeamToggler id={team.id} active={team.active} />
                         </div>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div className="grid grid-cols-2 ax-md:grid-cols-4 gap-3">
                             <TeamDetail
                                 text="Spør"
                                 detail={`${dayIndexToDay(team.postDay)}, kl. ${team.postHour}:00`}

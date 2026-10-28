@@ -93,7 +93,7 @@ function CustomTooltip({ payload, active }: TooltipContentProps<number, string>)
         R.first(payload)?.payload ?? raise('Should always have at least 1 payload here')
 
     return (
-        <div className="bg-white border border-border-default rounded-sm p-2">
+        <div className="bg-white border border-ax-border-neutral rounded-sm p-2">
             <Detail>
                 Uke {getWeekNumber(firstPayload.timestamp)}, {firstPayload.timestamp.getFullYear()}
             </Detail>
