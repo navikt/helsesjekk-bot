@@ -28,8 +28,9 @@ function SortableGroups({ groups }: Props): ReactElement {
                     onChange={(event) => setSearch(event.target.value)}
                 />
                 <Button
+                    data-color="neutral"
                     size="small"
-                    variant="secondary-neutral"
+                    variant="secondary"
                     onClick={() => setSearch('')}
                     icon={<XMarkIcon title="Resett søkefelt" />}
                 />

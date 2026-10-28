@@ -59,10 +59,11 @@ function DeletableQuestion({ teamId, question }: Props): ReactElement {
                             </BodyShort>
                         )}
                         <Button
+                            data-color="neutral"
                             className=""
                             icon={<TrashIcon title="Slett spørsmål" />}
                             size="small"
-                            variant="tertiary-neutral"
+                            variant="tertiary"
                             onClick={() => setIsDeleting(true)}
                         />
                     </div>
@@ -88,10 +89,11 @@ function DeletableQuestion({ teamId, question }: Props): ReactElement {
                     {hasChecked && (
                         <div>
                             <Button
+                                data-color="danger"
                                 className="mt-2"
                                 icon={<TrashIcon />}
                                 iconPosition="right"
-                                variant="danger"
+                                variant="primary"
                                 onClick={() => {
                                     startTransition(() => {
                                         deleteQuestion(params.groupId, teamId, question.questionId)
@@ -114,12 +116,13 @@ function DeletableQuestion({ teamId, question }: Props): ReactElement {
             )}
             {isDeleting && (
                 <Button
+                    data-color="neutral"
                     className="absolute top-1 right-1"
                     icon={<XMarkIcon />}
                     title="Lukk sletting"
                     onClick={() => setIsDeleting(false)}
                     size="small"
-                    variant="tertiary-neutral"
+                    variant="tertiary"
                 />
             )}
         </>

@@ -131,12 +131,13 @@ function AddQuestion({ teamId }: Props): ReactElement {
                         />
 
                         <div className="flex gap-3 mt-4">
-                            <Button type="submit" variant="secondary-neutral" loading={saving}>
+                            <Button data-color="neutral" type="submit" variant="secondary" loading={saving}>
                                 Lagre
                             </Button>
                             <Button
+                                data-color="neutral"
                                 type="button"
-                                variant="tertiary-neutral"
+                                variant="tertiary"
                                 disabled={saving}
                                 onClick={() => setAdding(false)}
                             >
@@ -144,12 +145,13 @@ function AddQuestion({ teamId }: Props): ReactElement {
                             </Button>
                         </div>
                         <Button
+                            data-color="neutral"
                             className="absolute top-2 right-2"
                             icon={<XMarkIcon />}
                             title="Lukk redigering"
                             onClick={() => setAdding(false)}
                             size="xsmall"
-                            variant="tertiary-neutral"
+                            variant="tertiary"
                             disabled={saving}
                         />
                     </form>

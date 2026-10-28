@@ -31,7 +31,7 @@ export default function Error({ error, reset }: Props): ReactElement {
             </BodyLong>
 
             <div>
-                <Button variant="secondary-neutral" onClick={() => reset()}>
+                <Button data-color="neutral" variant="secondary" onClick={() => reset()}>
                     Prøv å laste på nytt
                 </Button>
             </div>
