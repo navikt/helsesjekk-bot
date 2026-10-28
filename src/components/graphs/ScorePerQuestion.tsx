@@ -1,19 +1,19 @@
 'use client'
 
-import * as R from 'remeda'
+import { Detail, Heading } from '@navikt/ds-react'
+import { logger } from '@navikt/next-logger'
 import React, { ReactElement } from 'react'
 import { Area, CartesianGrid, ComposedChart, Legend, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
-import { logger } from '@navikt/next-logger'
-import { Detail, Heading } from '@navikt/ds-react'
 import { TooltipContentProps } from 'recharts/types/component/Tooltip'
+import * as R from 'remeda'
 
-import { getWeekNumber } from '../../utils/date'
 import { AnswerLevel, QuestionScorePerWeek } from '../../safe-types'
+import { getWeekNumber } from '../../utils/date'
 import { raise } from '../../utils/ts-utils'
 
 type Props = QuestionScorePerWeek
 
-function ScorePerQuestion(props: Props): ReactElement {
+export function ScorePerQuestion(props: Props): ReactElement {
     const { question, scoring } = props
 
     return (
@@ -133,5 +133,3 @@ function ScoreToDescription({ name }: { name: string }): string {
             return 'Ukjent'
     }
 }
-
-export default ScorePerQuestion

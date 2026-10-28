@@ -1,8 +1,8 @@
 'use client'
 
-import React, { ReactElement, useState } from 'react'
 import { Checkbox } from '@navikt/ds-react'
 import { Switch } from '@navikt/ds-react'
+import React, { ReactElement, useState } from 'react'
 
 import { adminToggleTeamStatus } from './_admin-actions'
 

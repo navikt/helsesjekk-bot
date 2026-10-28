@@ -1,15 +1,15 @@
-import React, { ReactElement, Suspense } from 'react'
-import Link from 'next/link'
 import { Button } from '@navikt/ds-react'
 import { BodyShort, Heading, Skeleton } from '@navikt/ds-react'
+import Link from 'next/link'
+import React, { ReactElement, Suspense } from 'react'
 
-import { getTeamsByAdGroups } from '../db'
 import { getUsersGroups, isUserLoggedIn } from '../auth/authentication'
+import { getTeamsByAdGroups } from '../db'
 
-import Code from './core/Code'
-import TeamCard from './TeamCard'
+import { Code } from './core/Code'
+import { TeamCard } from './TeamCard'
 
-async function Teams(): Promise<ReactElement> {
+export async function Teams(): Promise<ReactElement> {
     if (!(await isUserLoggedIn())) {
         return (
             <div className="max-w-prose">
@@ -81,5 +81,3 @@ async function TeamsView(): Promise<ReactElement> {
         </div>
     )
 }
-
-export default Teams

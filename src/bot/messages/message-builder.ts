@@ -1,13 +1,13 @@
 import type { Block, KnownBlock } from '@slack/types'
 import * as R from 'remeda'
 
-import { dayIndexToDay, getWeekNumber } from '../../utils/date'
-import type { ScoredAsk, ScoredQuestion } from '../../metrics/metrics'
-import { addIf, plainHeader, textSection } from '../events/modal-utils'
-import { questionTypeToText } from '../../utils/asked'
-import { scoreToEmoji } from '../../utils/score'
-import { QuestionType } from '../../safe-types'
 import type { Team, Asked, Answer } from '../../db'
+import type { ScoredAsk, ScoredQuestion } from '../../metrics/metrics'
+import { QuestionType } from '../../safe-types'
+import { questionTypeToText } from '../../utils/asked'
+import { dayIndexToDay, getWeekNumber } from '../../utils/date'
+import { scoreToEmoji } from '../../utils/score'
+import { addIf, plainHeader, textSection } from '../events/modal-utils'
 
 export const MessageActions = {
     FillButtonClicked: 'open_health_check_modal-action',
@@ -170,7 +170,7 @@ function createScoreMrkdwn(scoredAsk: ScoredAsk, previousScoredAsk: ScoredAsk | 
     const grouped = R.pipe(scoredAsk.scoredQuestions, R.groupBy(R.prop('type')), R.entries())
 
     const createScoreLine = (question: ScoredQuestion): string => {
-        const optionalQuestionMarker = question.optional ? ` _(${question.answerCount}\*)_` : ''
+        const optionalQuestionMarker = question.optional ? ` _(${question.answerCount}*)_` : ''
         if (question.score === 0) {
             return `:warning: *${question.question}*${optionalQuestionMarker}: _Ikke nok svar_`
         }

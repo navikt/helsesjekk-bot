@@ -1,8 +1,8 @@
 'use client'
 
-import React, { ReactElement } from 'react'
-import { BodyShort, Detail, Heading, Tooltip } from '@navikt/ds-react'
 import { GavelIcon, QuestionmarkIcon } from '@navikt/aksel-icons'
+import { BodyShort, Detail, Heading, Tooltip } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
 import { Team } from '../db'
 import { dayIndexToDay } from '../utils/date'
@@ -14,7 +14,7 @@ type Props = {
     team: Team
 }
 
-function TeamCard({ team }: Props): ReactElement {
+export function TeamCard({ team }: Props): ReactElement {
     return (
         <AkselNextLinkPanel href={`/team/${team.assosiatedGroup}/${team.id}`} className="sm:max-w-sm grow relative">
             <Tooltip content={`Teamet er ${team.active ? 'aktivt' : 'deaktivert'}`}>
@@ -46,5 +46,3 @@ function TeamCard({ team }: Props): ReactElement {
         </AkselNextLinkPanel>
     )
 }
-
-export default TeamCard

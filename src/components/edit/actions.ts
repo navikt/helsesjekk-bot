@@ -1,8 +1,13 @@
 'use server'
 
+// oxlint-disable typescript/no-base-to-string
+
 import { logger as baseLogger } from '@navikt/next-logger'
 import { revalidatePath } from 'next/cache'
 
+import { bot } from '../../app/api/internal/is_ready/bot'
+import { userHasAdGroup } from '../../auth/authentication'
+import { deleteMessage } from '../../bot/messages/message-poster'
 import {
     setTeamName,
     setRevealTime,
@@ -16,10 +21,7 @@ import {
     getAsked,
     getTeamByAdGroupAndTeamId,
 } from '../../db'
-import { userHasAdGroup } from '../../auth/authentication'
 import { raise } from '../../utils/ts-utils'
-import { deleteMessage } from '../../bot/messages/message-poster'
-import { bot } from '../../app/api/internal/is_ready/bot'
 
 const logger = baseLogger.child({ x_context: 'server-actions' })
 

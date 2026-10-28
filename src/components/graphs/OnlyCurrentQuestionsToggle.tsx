@@ -1,12 +1,12 @@
 'use client'
 
-import React, { ReactElement, startTransition } from 'react'
 import { Switch } from '@navikt/ds-react'
 import { useQueryState } from 'nuqs'
+import React, { ReactElement, startTransition } from 'react'
 
 import { showOldSearchParams } from './only-current-search-params'
 
-function OnlyCurrentQuestionsToggle(): ReactElement {
+export function OnlyCurrentQuestionsToggle(): ReactElement {
     const [showOld, setShowOld] = useQueryState('show-old', showOldSearchParams['show-old'])
 
     return (
@@ -23,5 +23,3 @@ function OnlyCurrentQuestionsToggle(): ReactElement {
         </Switch>
     )
 }
-
-export default OnlyCurrentQuestionsToggle

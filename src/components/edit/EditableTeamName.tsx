@@ -1,9 +1,9 @@
 'use client'
 
-import React, { ReactElement } from 'react'
-import { useParams } from 'next/navigation'
-import { Button, TextField, BodyShort, Heading } from '@navikt/ds-react'
 import { PencilIcon, PersonTallShortIcon, XMarkIcon } from '@navikt/aksel-icons'
+import { Button, TextField, BodyShort, Heading } from '@navikt/ds-react'
+import { useParams } from 'next/navigation'
+import React, { ReactElement } from 'react'
 
 import { editTeamName } from './actions'
 
@@ -12,7 +12,7 @@ type Props = {
     name: string
 }
 
-function EditableTeamName({ teamId, name }: Props): ReactElement {
+export function EditableTeamName({ teamId, name }: Props): ReactElement {
     const params = useParams<{ groupId: string }>()
     const [edit, setEdit] = React.useState(false)
 
@@ -52,6 +52,7 @@ function EditableTeamName({ teamId, name }: Props): ReactElement {
                             className="grow"
                             label="Nytt team navn"
                             defaultValue={name}
+                            // oxlint-disable-next-line jsx-a11y/no-autofocus
                             autoFocus
                             onKeyUp={(e) => {
                                 if (e.keyCode === 27) {
@@ -77,5 +78,3 @@ function EditableTeamName({ teamId, name }: Props): ReactElement {
         </div>
     )
 }
-
-export default EditableTeamName

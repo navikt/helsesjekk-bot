@@ -1,7 +1,3 @@
-import React, { ReactElement, Suspense } from 'react'
-import { unstable_noStore as noStore } from 'next/cache'
-import { Skeleton } from '@navikt/ds-react'
-import { Detail, Heading, BodyShort } from '@navikt/ds-react'
 import {
     PersonTallShortIcon,
     QuestionmarkIcon,
@@ -10,10 +6,14 @@ import {
     HandShakeHeartIcon,
     TenancyIcon,
 } from '@navikt/aksel-icons'
+import { Skeleton } from '@navikt/ds-react'
+import { Detail, Heading, BodyShort } from '@navikt/ds-react'
+import { unstable_noStore as noStore } from 'next/cache'
+import React, { ReactElement, Suspense } from 'react'
 
 import { funStats } from '../db/stats'
 
-function Stats(): ReactElement {
+export function Stats(): ReactElement {
     return (
         <section aria-labelledby="stats-header" className="mt-16 max-w-prose">
             <Heading size="large" level="2">
@@ -106,5 +106,3 @@ function StatsSkeleton(): ReactElement {
         </div>
     )
 }
-
-export default Stats

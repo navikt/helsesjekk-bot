@@ -1,8 +1,8 @@
-import { schedule } from 'node-cron'
 import { logger } from '@navikt/next-logger'
+import { schedule } from 'node-cron'
 
-import { App } from '../app'
 import { isLeader } from '../../utils/leader'
+import { App } from '../app'
 
 import { askRelevantTeams, inspectForBrokenAsks, revealRelevantTeams } from './message-jobs'
 
@@ -20,7 +20,9 @@ export function configureMessageScheduler(app: App): void {
 export async function cronJob(
     app: App,
 ): Promise<
-    'skipped' | 'completed' | { partialError: { ask: unknown | null; reveal: unknown | null; inspect: unknown | null } }
+    | 'skipped'
+    | 'completed'
+    | { partialError: { ask: string | Error | null; reveal: string | Error | null; inspect: string | Error | null } }
 > {
     try {
         const isPodLeader = await isLeader()
@@ -36,9 +38,9 @@ export async function cronJob(
     cronLogger.info('Running scheduled job, checking for messages to post')
 
     const jobsResult: {
-        ask: string | unknown | null
-        reveal: string | unknown | null
-        inspect: string | unknown | null
+        ask: string | Error | null
+        reveal: string | Error | null
+        inspect: string | Error | null
     } = {
         ask: null,
         reveal: null,
@@ -49,7 +51,7 @@ export async function cronJob(
         await askRelevantTeams(app)
         jobsResult.ask = 'completed'
     } catch (e) {
-        jobsResult.ask = e
+        jobsResult.ask = e as Error
         cronLogger.error(new Error('Error occured during team ask', { cause: e }))
     }
 
@@ -57,7 +59,7 @@ export async function cronJob(
         await revealRelevantTeams(app)
         jobsResult.reveal = 'completed'
     } catch (e) {
-        jobsResult.reveal = e
+        jobsResult.reveal = e as Error
         cronLogger.error(new Error('Error occured during team reveal', { cause: e }))
     }
 
@@ -65,7 +67,7 @@ export async function cronJob(
         await inspectForBrokenAsks()
         jobsResult.inspect = 'completed'
     } catch (e) {
-        jobsResult.inspect = e
+        jobsResult.inspect = e as Error
         cronLogger.error(new Error('Scheduled job failed at dirty check', { cause: e }))
     }
 

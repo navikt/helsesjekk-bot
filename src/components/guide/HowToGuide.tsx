@@ -1,16 +1,16 @@
-import React, { ReactElement } from 'react'
-import Image from 'next/image'
-import { CopyButton, Heading, BodyLong, BodyShort } from '@navikt/ds-react'
 import { LinkIcon } from '@navikt/aksel-icons'
+import { CopyButton, Heading, BodyLong, BodyShort } from '@navikt/ds-react'
+import Image from 'next/image'
+import React, { ReactElement } from 'react'
 
-import Code from '../core/Code'
+import { Code } from '../core/Code'
 
 import step1 from './step1.png'
 import step2 from './step2.png'
 import step3 from './step3.png'
 import step4 from './step4.png'
 
-function HowToGuide(): ReactElement {
+export function HowToGuide(): ReactElement {
     return (
         <section aria-labelledby="main-title" className="max-w-prose">
             <Heading size="medium" level="2" id="main-title">
@@ -34,7 +34,7 @@ function HowToGuide(): ReactElement {
             <Image
                 className="mb-4 rounded-xl"
                 src={step1}
-                alt={`Skjermbilde av slack, som viser at man trykker på knappen for å legge til en integrasjon med navn "Helsesjekk"`}
+                alt='Skjermbilde av slack, som viser at man trykker på knappen for å legge til en integrasjon med navn "Helsesjekk"'
             />
 
             <BodyShort spacing>
@@ -44,7 +44,7 @@ function HowToGuide(): ReactElement {
             <Image
                 className="mb-4 rounded-xl"
                 src={step2}
-                alt={`Skjermbilde som viser søk etter helsesjekk botten, deretter at man trykker på knappen "Add"`}
+                alt='Skjermbilde som viser søk etter helsesjekk botten, deretter at man trykker på knappen "Add"'
             />
 
             <BodyShort spacing>
@@ -107,5 +107,3 @@ function HowToGuide(): ReactElement {
         </section>
     )
 }
-
-export default HowToGuide

@@ -1,15 +1,15 @@
 'use client'
 
-import * as R from 'remeda'
-import React, { ReactElement, useMemo, useState } from 'react'
-import { Bar, ComposedChart, CartesianGrid, Line, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from 'recharts'
 import { Switch } from '@navikt/ds-react'
 import { Detail } from '@navikt/ds-react'
+import React, { ReactElement, useMemo, useState } from 'react'
+import { Bar, ComposedChart, CartesianGrid, Line, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from 'recharts'
+import * as R from 'remeda'
 
-import { getWeekNumber } from '../../utils/date'
-import { scoreToEmoji } from '../../utils/score'
 import { QuestionType } from '../../safe-types'
 import { questionTypeToText } from '../../utils/asked'
+import { getWeekNumber } from '../../utils/date'
+import { scoreToEmoji } from '../../utils/score'
 
 type Props = {
     data: ({
@@ -31,7 +31,7 @@ const colors = {
     [QuestionType.OTHER]: 'rgba(255, 140, 0, 0.65)',
 }
 
-function GlobalScoreGraph({ data }: Props): ReactElement {
+export function GlobalScoreGraph({ data }: Props): ReactElement {
     const [samletScore, setSamletScore] = useState(true)
     const CustomTooltip = useMemo(() => createCustomTooltip(samletScore), [samletScore])
 
@@ -162,5 +162,3 @@ function CustomDot({ cx, cy, value }: { cx: number; cy: number; value: number })
         </svg>
     )
 }
-
-export default GlobalScoreGraph

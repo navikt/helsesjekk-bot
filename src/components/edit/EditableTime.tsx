@@ -1,10 +1,10 @@
 'use client'
 
-import * as R from 'remeda'
-import React, { ReactElement } from 'react'
-import { useParams } from 'next/navigation'
-import { Button, Select, Heading, BodyShort } from '@navikt/ds-react'
 import { PencilIcon, QuestionmarkIcon, GavelIcon, XMarkIcon } from '@navikt/aksel-icons'
+import { Button, Select, Heading, BodyShort } from '@navikt/ds-react'
+import { useParams } from 'next/navigation'
+import React, { ReactElement } from 'react'
+import * as R from 'remeda'
 
 import { dayIndexToDay } from '../../utils/date'
 
@@ -17,7 +17,7 @@ type Props = {
     day: number
 }
 
-function EditableTime({ teamId, type, hour, day }: Props): ReactElement {
+export function EditableTime({ teamId, type, hour, day }: Props): ReactElement {
     const params = useParams<{ groupId: string }>()
     const [edit, setEdit] = React.useState(false)
 
@@ -54,7 +54,14 @@ function EditableTime({ teamId, type, hour, day }: Props): ReactElement {
                         }}
                         className="flex gap-2 items-end"
                     >
-                        <Select label="Dag" name="day" className="grow" defaultValue={day} autoFocus>
+                        <Select
+                            label="Dag"
+                            name="day"
+                            className="grow"
+                            defaultValue={day}
+                            // oxlint-disable-next-line jsx-a11y/no-autofocus
+                            autoFocus
+                        >
                             {R.range(0, 7).map((it) => (
                                 <option key={it} value={it}>
                                     {dayIndexToDay(it)}
@@ -94,5 +101,3 @@ function Icon({ type }: { type: Props['type'] }): ReactElement {
         return <GavelIcon aria-hidden />
     }
 }
-
-export default EditableTime

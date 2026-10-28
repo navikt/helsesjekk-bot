@@ -1,5 +1,5 @@
-import { App } from '../app'
 import { deactivateTeam } from '../../db'
+import { App } from '../app'
 import { botLogger } from '../bot-logger'
 
 export function configureEventsHandler(app: App): void {

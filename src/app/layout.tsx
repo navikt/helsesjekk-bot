@@ -1,11 +1,10 @@
 import './global.css'
-
-import { ReactElement } from 'react'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import { ReactElement } from 'react'
 
-import Header from '../components/Header'
-import Footer from '../components/Footer'
 import { validateWonderwallToken } from '../auth/authentication'
+import { Footer } from '../components/Footer'
+import { Header } from '../components/Header'
 
 export default async function RootLayout({ children }: LayoutProps<'/'>): Promise<ReactElement> {
     await validateWonderwallToken('/')

@@ -1,12 +1,12 @@
 'use client'
 
-import React, { ReactElement, useState, useTransition } from 'react'
 import { BodyShort, Button, Heading, Switch } from '@navikt/ds-react'
 import { useParams } from 'next/navigation'
+import React, { ReactElement, useState, useTransition } from 'react'
 
-import { PingDot } from '../core/Dots'
 import { dayIndexToDay } from '../../utils/date'
 import { createPermalink } from '../../utils/slack'
+import { PingDot } from '../core/Dots'
 
 import { deleteActiveAsk } from './actions'
 

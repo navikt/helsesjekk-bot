@@ -1,10 +1,10 @@
-import * as R from 'remeda'
 import { getYear, subYears } from 'date-fns'
+import * as R from 'remeda'
 
 import { scoreAsked, ScoredAsk, ScoredQuestion } from '../metrics/metrics'
-import { getWeekNumber } from '../utils/date'
-import { QuestionScorePerWeek, QuestionType } from '../safe-types'
 import { questionsFromJsonb } from '../questions/jsonb-utils'
+import { QuestionScorePerWeek, QuestionType } from '../safe-types'
+import { getWeekNumber } from '../utils/date'
 
 import { prisma } from './prisma'
 

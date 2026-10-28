@@ -1,7 +1,7 @@
-import React, { ReactElement } from 'react'
 import { BodyLong, BodyShort, Heading } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
-import Code from '../core/Code'
+import { Code } from '../core/Code'
 
 export function TeamNotAccesible(): ReactElement {
     return (

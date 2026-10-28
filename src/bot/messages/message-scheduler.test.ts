@@ -1,5 +1,5 @@
-import { test, expect, vi } from 'vitest'
 import type { App } from '@slack/bolt'
+import { test, expect, vi } from 'vitest'
 
 let _isLeader = false
 

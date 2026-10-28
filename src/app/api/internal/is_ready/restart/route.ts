@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server'
-import { notFound } from 'next/navigation'
 import { logger } from '@navikt/next-logger'
+import { notFound } from 'next/navigation'
+import { NextResponse } from 'next/server'
 
 import { bot } from '../bot'
 

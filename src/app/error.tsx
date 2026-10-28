@@ -1,9 +1,9 @@
 'use client'
 
-import React, { ReactElement, useEffect } from 'react'
-import { logger } from '@navikt/next-logger'
 import { Heading, BodyLong } from '@navikt/ds-react'
 import { Button } from '@navikt/ds-react'
+import { logger } from '@navikt/next-logger'
+import React, { ReactElement, useEffect } from 'react'
 
 type Props = {
     error: Error & {

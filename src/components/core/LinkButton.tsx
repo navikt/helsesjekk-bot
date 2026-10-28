@@ -1,8 +1,8 @@
 'use client'
 
-import React, { PropsWithChildren, ReactElement } from 'react'
-import Link from 'next/link'
 import { Button } from '@navikt/ds-react'
+import Link from 'next/link'
+import React, { PropsWithChildren, ReactElement } from 'react'
 
 type Props = {
     className?: string
@@ -10,12 +10,10 @@ type Props = {
     href: string
 }
 
-function LinkButton({ className, prefetch, children, href }: PropsWithChildren<Props>): ReactElement {
+export function LinkButton({ className, prefetch, children, href }: PropsWithChildren<Props>): ReactElement {
     return (
         <Button as={Link} href={href} className={className} prefetch={prefetch}>
             {children}
         </Button>
     )
 }
-
-export default LinkButton

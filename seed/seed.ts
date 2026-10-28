@@ -1,10 +1,10 @@
-import * as R from 'remeda'
 import { logger } from '@navikt/next-logger'
 import { setWeek } from 'date-fns'
+import * as R from 'remeda'
 
 import { AnswerLevel, Day, prisma, QuestionAnswer } from '../src/db'
-import { answerToJsonb, questionsFromJsonb, questionsToJsonb } from '../src/questions/jsonb-utils'
 import { defaultQuestions } from '../src/questions/default'
+import { answerToJsonb, questionsFromJsonb, questionsToJsonb } from '../src/questions/jsonb-utils'
 import { QuestionType } from '../src/safe-types'
 
 function getRandomAnswerLevel(): AnswerLevel {
@@ -102,13 +102,11 @@ async function createAskWithNAnswers(
                         if (required) return true
                         return shouldAnswerOptional
                     }),
-                    R.map(
-                        (q): QuestionAnswer => ({
-                            questionId: q.questionId,
-                            answer: getRandomAnswerLevel(),
-                            type: q.type,
-                        }),
-                    ),
+                    R.map((q): QuestionAnswer => ({
+                        questionId: q.questionId,
+                        answer: getRandomAnswerLevel(),
+                        type: q.type,
+                    })),
                 ),
             ),
         })),

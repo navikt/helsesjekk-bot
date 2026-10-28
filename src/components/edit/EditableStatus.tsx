@@ -1,9 +1,9 @@
 'use client'
 
-import React, { ReactElement, startTransition } from 'react'
-import { useParams } from 'next/navigation'
 import { Heading, BodyShort } from '@navikt/ds-react'
 import { Switch } from '@navikt/ds-react'
+import { useParams } from 'next/navigation'
+import React, { ReactElement, startTransition } from 'react'
 
 import { InactiveDot, PingDot } from '../core/Dots'
 
@@ -14,7 +14,7 @@ type Props = {
     active: boolean
 }
 
-function EditableStatus({ teamId, active }: Props): ReactElement {
+export function EditableStatus({ teamId, active }: Props): ReactElement {
     const params = useParams<{ groupId: string }>()
     const [loading, setLoading] = React.useState(false)
 
@@ -38,7 +38,7 @@ function EditableStatus({ teamId, active }: Props): ReactElement {
                     onChange={(event) => {
                         setLoading(true)
                         startTransition(() => {
-                            toggleTeamStatus(params.groupId, teamId, event.target.checked).finally(() => {
+                            void toggleTeamStatus(params.groupId, teamId, event.target.checked).finally(() => {
                                 setLoading(false)
                             })
                         })
@@ -50,5 +50,3 @@ function EditableStatus({ teamId, active }: Props): ReactElement {
         </div>
     )
 }
-
-export default EditableStatus

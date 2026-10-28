@@ -1,8 +1,8 @@
-import { ReactElement } from 'react'
 import { Metadata } from 'next'
+import { ReactElement } from 'react'
 
-import Stats from '../components/Stats'
-import Teams from '../components/Teams'
+import { Stats } from '../components/Stats'
+import { Teams } from '../components/Teams'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Dine team',

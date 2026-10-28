@@ -7,10 +7,10 @@ registries:
     token: ${{ secrets.READER_TOKEN }}
 
 updates:
-  - package-ecosystem: "docker"
-    directory: "/"
+  - package-ecosystem: 'docker'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     cooldown:
       default-days: 7
   - package-ecosystem: npm

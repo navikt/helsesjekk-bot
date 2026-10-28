@@ -1,14 +1,14 @@
-import React, { ReactElement, Suspense } from 'react'
+import { Heading, Detail } from '@navikt/ds-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Heading, Detail } from '@navikt/ds-react'
+import React, { ReactElement, Suspense } from 'react'
 
 import logo from '../images/logo.png'
 
-import LoggedInUser, { LoggedInUserSkeleton } from './LoggedInUser'
 import { AkselNextLink } from './AkselNextLink'
+import { LoggedInUser, LoggedInUserSkeleton } from './LoggedInUser'
 
-function Header(): ReactElement {
+export function Header(): ReactElement {
     return (
         <div>
             <header className="flex justify-between">
@@ -55,5 +55,3 @@ function Header(): ReactElement {
         </div>
     )
 }
-
-export default Header

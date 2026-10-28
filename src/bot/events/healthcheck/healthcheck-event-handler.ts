@@ -1,11 +1,11 @@
 import * as R from 'remeda'
 
-import { App } from '../../app'
-import { MessageActions } from '../../messages/message-builder'
-import { answerFromJsonb } from '../../../questions/jsonb-utils'
 import { getTeam, getActiveAsk, getAsked, answerQuestions, getAnswer } from '../../../db'
-import { updateResponseCount } from '../../messages/message-poster'
+import { answerFromJsonb } from '../../../questions/jsonb-utils'
+import { App } from '../../app'
 import { botLogger } from '../../bot-logger'
+import { MessageActions } from '../../messages/message-builder'
+import { updateResponseCount } from '../../messages/message-poster'
 
 import { createHealthCheckModal, getIdValueFromAnswer, HealthcheckModalActions } from './healthcheck-modal-builder'
 

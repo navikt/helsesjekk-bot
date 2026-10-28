@@ -1,12 +1,12 @@
 import { randomUUID } from 'crypto'
 
-import { questionsFromJsonb, questionsToJsonb } from '../questions/jsonb-utils'
 import { defaultQuestions } from '../questions/default'
+import { questionsFromJsonb, questionsToJsonb } from '../questions/jsonb-utils'
 import { Question, QuestionType } from '../safe-types'
 
-import { Day, type Team, type Asked } from './types'
 import { getActiveAsk } from './asked'
 import { prisma } from './prisma'
+import { Day, type Team, type Asked } from './types'
 
 export async function teamStatus(channelId: string): Promise<'NEW' | 'DEACTIVATED' | 'ACTIVE'> {
     const team = await getTeam(channelId)

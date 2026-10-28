@@ -1,8 +1,8 @@
 'use client'
 
-import React, { ReactElement, useState } from 'react'
-import { CopyButton, Button, TextField, BodyLong, Detail, Heading } from '@navikt/ds-react'
 import { XMarkIcon } from '@navikt/aksel-icons'
+import { CopyButton, Button, TextField, BodyLong, Detail, Heading } from '@navikt/ds-react'
+import React, { ReactElement, useState } from 'react'
 
 type Props = {
     groups: {
@@ -12,7 +12,7 @@ type Props = {
     }[]
 }
 
-function SortableGroups({ groups }: Props): ReactElement {
+export function SortableGroups({ groups }: Props): ReactElement {
     const [search, setSearch] = useState('')
 
     return (
@@ -59,5 +59,3 @@ function GroupListItem({ group }: { group: Props['groups'][number] }): ReactElem
         </div>
     )
 }
-
-export default SortableGroups

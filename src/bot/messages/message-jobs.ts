@@ -1,6 +1,5 @@
 import { getHours, getMinutes } from 'date-fns'
 
-import { App } from '../app'
 import {
     getActiveTeams,
     getBrokenAsks,
@@ -12,6 +11,7 @@ import {
 } from '../../db'
 import { dayIndexToDay, getDayCorrect, getNowInNorway } from '../../utils/date'
 import { nextOccurrence } from '../../utils/frequency'
+import { App } from '../app'
 
 import { postToTeam, remindTeam, revealTeam } from './message-poster'
 import { cronLogger } from './message-scheduler'

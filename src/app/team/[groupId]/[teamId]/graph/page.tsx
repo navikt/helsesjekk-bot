@@ -1,19 +1,19 @@
-import * as R from 'remeda'
-import React, { ReactElement, Suspense } from 'react'
-import { Metadata } from 'next'
 import { BodyLong, Detail, Heading, Skeleton } from '@navikt/ds-react'
+import { Metadata } from 'next'
+import React, { ReactElement, Suspense } from 'react'
+import * as R from 'remeda'
 
-import { TeamNotAccesible, TeamNotFound } from '../../../../../components/errors/ErrorMessages'
 import { userHasAdGroup } from '../../../../../auth/authentication'
-import BackLink from '../../../../../components/core/BackLink'
+import { BackLink } from '../../../../../components/core/BackLink'
+import { TeamNotAccesible, TeamNotFound } from '../../../../../components/errors/ErrorMessages'
+import { loadSearchParams } from '../../../../../components/graphs/only-current-search-params'
+import { OnlyCurrentQuestionsToggle } from '../../../../../components/graphs/OnlyCurrentQuestionsToggle'
+import { OverallScoreGraph } from '../../../../../components/graphs/OverallScoreGraph'
+import { ScorePerQuestion } from '../../../../../components/graphs/ScorePerQuestion'
 import { getTeamByAdGroupAndTeamId } from '../../../../../db'
 import { getTeamScorePerQuestion, getTeamScoreTimeline } from '../../../../../db/score'
-import OverallScoreGraph from '../../../../../components/graphs/OverallScoreGraph'
 import { getWeekNumber } from '../../../../../utils/date'
-import ScorePerQuestion from '../../../../../components/graphs/ScorePerQuestion'
 import { raise } from '../../../../../utils/ts-utils'
-import OnlyCurrentQuestionsToggle from '../../../../../components/graphs/OnlyCurrentQuestionsToggle'
-import { loadSearchParams } from '../../../../../components/graphs/only-current-search-params'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Team | Graf',
@@ -121,6 +121,7 @@ async function PerQuestionGraph({ teamId, showOld }: { teamId: string; showOld: 
         )
     }
 
+    // oxlint-disable-next-line react/purity
     const earliest = { timestamp: new Date() }
 
     return (

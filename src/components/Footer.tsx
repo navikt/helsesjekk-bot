@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react'
-import Image from 'next/image'
 import { Heading, BodyShort } from '@navikt/ds-react'
+import Image from 'next/image'
+import React, { ReactElement } from 'react'
 
 import logo from '../images/logo.png'
 
-function Footer(): ReactElement {
+export function Footer(): ReactElement {
     return (
         <footer className="border-t border-t-ax-border-neutral-subtle mt-4 p-4 flex">
             <Image
@@ -35,5 +35,3 @@ function Footer(): ReactElement {
         </footer>
     )
 }
-
-export default Footer

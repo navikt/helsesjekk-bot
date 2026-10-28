@@ -4,10 +4,10 @@ vi.mock('../db/prisma.ts', () => ({
     prisma: () => null,
 }))
 
-import { AnswerLevel, AskedWithAnswers, QuestionAnswer, Answer } from '../db'
-import { questionsToJsonb } from '../questions/jsonb-utils'
 import { testQuestions } from '../../tests/data'
 import { addIf } from '../bot/events/modal-utils'
+import { AnswerLevel, AskedWithAnswers, QuestionAnswer, Answer } from '../db'
+import { questionsToJsonb } from '../questions/jsonb-utils'
 
 import { scoreAsked } from './metrics'
 

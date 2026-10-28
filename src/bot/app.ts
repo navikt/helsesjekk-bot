@@ -1,7 +1,7 @@
-import { Logger, LogLevel } from '@slack/logger'
-import { App as BoltApp } from '@slack/bolt'
-import { lazyNextleton } from 'nextleton'
 import { logger } from '@navikt/next-logger'
+import { App as BoltApp } from '@slack/bolt'
+import { Logger, LogLevel } from '@slack/logger'
+import { lazyNextleton } from 'nextleton'
 
 const slackLogger = logger.child({ x_context: 'slack-bot', x_isSlack: true })
 

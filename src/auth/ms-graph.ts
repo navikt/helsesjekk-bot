@@ -1,11 +1,11 @@
-import { headers } from 'next/headers'
-import { requestOboToken } from '@navikt/oasis'
 import { logger } from '@navikt/next-logger'
+import { requestOboToken } from '@navikt/oasis'
+import { headers } from 'next/headers'
 
 import { isLocal } from '../utils/env'
 
-import { fakeMembersOfResponse } from './fake-members-of-response'
 import { getUserToken } from './authentication'
+import { fakeMembersOfResponse } from './fake-members-of-response'
 
 export async function getMembersOf(): Promise<
     MsGraphGroupsResponse | { error: string; status?: number; statusText?: string }

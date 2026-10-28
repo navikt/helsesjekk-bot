@@ -32,7 +32,7 @@ COPY --from=build /app/node_modules /app/node_modules
 COPY prisma /app/prisma
 COPY prisma.config.ts /app/
 COPY next-logger.config.js /app/
-COPY next.config.mjs /app/
+COPY next.config.ts /app/
 COPY public /app/public/
 COPY .next /app/.next
 

@@ -1,11 +1,11 @@
-import { describe, expect, vi, test } from 'vitest'
 import { addWeeks } from 'date-fns'
+import { describe, expect, vi, test } from 'vitest'
 
+import { testQuestions } from '../../tests/data'
+import { expectNoError } from '../../tests/utils'
 import type { Answer, Asked, Team } from '../db/types'
 import { questionsToJsonb } from '../questions/jsonb-utils'
 import { getWeekNumber } from '../utils/date'
-import { expectNoError } from '../../tests/utils'
-import { testQuestions } from '../../tests/data'
 
 import { getTeamScorePerQuestion, getTeamScoreTimeline } from './score'
 

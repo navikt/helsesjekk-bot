@@ -1,8 +1,8 @@
 import { answerToJsonb, questionsFromJsonb } from '../questions/jsonb-utils'
 import { Question } from '../safe-types'
 
-import type { Answer, Asked, AnswerLevel, QuestionAnswer } from './types'
 import { prisma } from './prisma'
+import type { Answer, Asked, AnswerLevel, QuestionAnswer } from './types'
 
 function mapToAnswers(answers: [questionId: string, value: string][], questions: Question[]): QuestionAnswer[] {
     return answers.map(([questionId, value]) => {

@@ -1,5 +1,5 @@
-import { PrismaPg } from '@prisma/adapter-pg'
 import { logger } from '@navikt/next-logger'
+import { PrismaPg } from '@prisma/adapter-pg'
 import { lazyNextleton } from 'nextleton'
 
 import { getServerEnv } from '../utils/env'

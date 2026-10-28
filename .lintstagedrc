@@ -1,4 +1,0 @@
-{
-    "*.{md,html,css,json,graphql,graphqls,md,mdx,js,yml,yaml}": "yarn prettier --write",
-    "*.{ts,tsx}": "yarn eslint --no-ignore --fix --max-warnings=0"
-}

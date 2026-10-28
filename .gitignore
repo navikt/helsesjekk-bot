@@ -13,6 +13,8 @@ tsconfig.tsbuildinfo
 
 # idea
 .idea
+!.idea/OxcSettings.xml
+!.idea/OxfmtSettings.xml
 
 # env
 .env

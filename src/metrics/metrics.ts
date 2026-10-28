@@ -1,7 +1,7 @@
 import * as R from 'remeda'
 
-import { answerFromJsonb, questionsFromJsonb } from '../questions/jsonb-utils'
 import { AnswerLevel, AskedWithAnswers, QuestionAnswer, Answer } from '../db'
+import { answerFromJsonb, questionsFromJsonb } from '../questions/jsonb-utils'
 import { QuestionScoreDistributrion, QuestionType } from '../safe-types'
 
 export interface ScoredQuestion {

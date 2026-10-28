@@ -1,15 +1,15 @@
 'use client'
 
-import React, { ReactElement, useState } from 'react'
-import { Button, Checkbox } from '@navikt/ds-react'
-import { useParams } from 'next/navigation'
-import * as R from 'remeda'
-import { logger } from '@navikt/next-logger'
-import { Heading, Select, TextField } from '@navikt/ds-react'
 import { PlusIcon, XMarkIcon } from '@navikt/aksel-icons'
+import { Button, Checkbox } from '@navikt/ds-react'
+import { Heading, Select, TextField } from '@navikt/ds-react'
+import { logger } from '@navikt/next-logger'
+import { useParams } from 'next/navigation'
+import React, { ReactElement, useState } from 'react'
+import * as R from 'remeda'
 
-import { questionTypeToText } from '../../utils/asked'
 import { QuestionType } from '../../safe-types'
+import { questionTypeToText } from '../../utils/asked'
 
 import { addQuestion } from './actions'
 
@@ -17,7 +17,7 @@ type Props = {
     teamId: string
 }
 
-function AddQuestion({ teamId }: Props): ReactElement {
+export function AddQuestion({ teamId }: Props): ReactElement {
     const params = useParams<{ groupId: string }>()
     const [adding, setAdding] = useState(false)
     const [saving, setSaving] = useState(false)
@@ -78,6 +78,7 @@ function AddQuestion({ teamId }: Props): ReactElement {
                             className="grow"
                             label="Spørsmål"
                             placeholder="Hvordan ..."
+                            // oxlint-disable-next-line jsx-a11y/no-autofocus
                             autoFocus
                             required
                             type="text"
@@ -160,5 +161,3 @@ function AddQuestion({ teamId }: Props): ReactElement {
         </section>
     )
 }
-
-export default AddQuestion

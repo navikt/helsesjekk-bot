@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react'
-import { Metadata } from 'next'
-import { CopyButton, Heading, BodyLong } from '@navikt/ds-react'
 import { LinkIcon } from '@navikt/aksel-icons'
+import { CopyButton, Heading, BodyLong } from '@navikt/ds-react'
+import { Metadata } from 'next'
+import React, { ReactElement } from 'react'
 
-import LinkButton from '../../components/core/LinkButton'
-import HowToGuide from '../../components/guide/HowToGuide'
+import { LinkButton } from '../../components/core/LinkButton'
+import { HowToGuide } from '../../components/guide/HowToGuide'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Kom i gang',

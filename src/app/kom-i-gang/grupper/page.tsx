@@ -1,11 +1,11 @@
+import { Alert, Detail, Heading, Skeleton, BodyLong } from '@navikt/ds-react'
+import { Metadata } from 'next'
 import React, { ReactElement, Suspense } from 'react'
 import * as R from 'remeda'
-import { Metadata } from 'next'
-import { Alert, Detail, Heading, Skeleton, BodyLong } from '@navikt/ds-react'
 
 import { getMembersOf } from '../../../auth/ms-graph'
-import BackLink from '../../../components/core/BackLink'
-import SortableGroups from '../../../components/groups/SortableGroups'
+import { BackLink } from '../../../components/core/BackLink'
+import { SortableGroups } from '../../../components/groups/SortableGroups'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Dine grupper',

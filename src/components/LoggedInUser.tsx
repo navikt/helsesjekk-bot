@@ -1,10 +1,10 @@
-import React, { ReactElement } from 'react'
 import { Skeleton, BodyShort, Detail, Link as AkselLink } from '@navikt/ds-react'
 import { Tooltip } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
 import { getUser, isUserLoggedIn } from '../auth/authentication'
 
-async function LoggedInUser(): Promise<ReactElement> {
+export async function LoggedInUser(): Promise<ReactElement> {
     if (!(await isUserLoggedIn())) {
         return (
             <div className="flex flex-col items-end p-4">
@@ -42,5 +42,3 @@ export function LoggedInUserSkeleton(): ReactElement {
         </div>
     )
 }
-
-export default LoggedInUser

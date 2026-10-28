@@ -1,4 +1,3 @@
-import * as R from 'remeda'
 import {
     getISOWeeksInYear,
     setWeekWithOptions,
@@ -12,6 +11,7 @@ import {
     isValid,
 } from 'date-fns/fp'
 import { nb } from 'date-fns/locale'
+import * as R from 'remeda'
 
 import { daysUntil, getNowInNorway, getWeekNumber, hoursUntil } from './date'
 import { raise } from './ts-utils'

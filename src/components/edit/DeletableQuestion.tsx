@@ -1,10 +1,10 @@
 'use client'
 
-import React, { ReactElement, useState, useTransition } from 'react'
-import { BodyLong, BodyShort, Switch } from '@navikt/ds-react'
-import { useParams } from 'next/navigation'
-import { Alert, Heading, Tooltip, Button, ConfirmationPanel } from '@navikt/ds-react'
 import { SparklesIcon, TrashIcon, XMarkIcon } from '@navikt/aksel-icons'
+import { BodyLong, BodyShort, Switch } from '@navikt/ds-react'
+import { Alert, Heading, Tooltip, Button, ConfirmationPanel } from '@navikt/ds-react'
+import { useParams } from 'next/navigation'
+import React, { ReactElement, useState, useTransition } from 'react'
 
 import { Question } from '../../safe-types'
 
@@ -15,7 +15,7 @@ type Props = {
     question: Question
 }
 
-function DeletableQuestion({ teamId, question }: Props): ReactElement {
+export function DeletableQuestion({ teamId, question }: Props): ReactElement {
     const params = useParams<{ groupId: string }>()
     const [isDeleting, setIsDeleting] = useState(false)
     const [hasChecked, setHasChecked] = useState(false)
@@ -84,6 +84,7 @@ function DeletableQuestion({ teamId, question }: Props): ReactElement {
                         checked={hasChecked}
                         label="Ja, jeg vil slette dette spørsmålet"
                         onChange={() => setHasChecked((x) => !x)}
+                        // oxlint-disable-next-line jsx-a11y/no-autofocus
                         autoFocus
                     />
                     {hasChecked && (
@@ -96,7 +97,7 @@ function DeletableQuestion({ teamId, question }: Props): ReactElement {
                                 variant="primary"
                                 onClick={() => {
                                     startTransition(() => {
-                                        deleteQuestion(params.groupId, teamId, question.questionId)
+                                        void deleteQuestion(params.groupId, teamId, question.questionId)
                                     })
                                 }}
                             >
@@ -137,5 +138,3 @@ function QuestionListItem({ text, emoji }: { text: string; emoji: string }): Rea
         </li>
     )
 }
-
-export default DeletableQuestion

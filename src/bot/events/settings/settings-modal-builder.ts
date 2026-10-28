@@ -2,12 +2,12 @@ import { InputBlock, ModalView, Option, PlainTextOption, SectionBlock } from '@s
 import { Block, KnownBlock } from '@slack/types'
 
 import { Team } from '../../../db'
-import { addIf, plainHeader, textSection } from '../modal-utils'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
-import { text } from '../../../utils/bolt-utils'
 import { QuestionType } from '../../../safe-types'
+import { text } from '../../../utils/bolt-utils'
 import { dayIndexToDay } from '../../../utils/date'
 import { nextOccurenceText, nextOccurrence } from '../../../utils/frequency'
+import { addIf, plainHeader, textSection } from '../modal-utils'
 
 export const SettingsKeys = {
     modalSubmit: 'helsesjekk_settings_modal-submit',

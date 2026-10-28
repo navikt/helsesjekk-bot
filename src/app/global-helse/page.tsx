@@ -1,11 +1,11 @@
-import React, { ReactElement, Suspense } from 'react'
-import { unstable_noStore as noStore } from 'next/cache'
-import { Metadata } from 'next'
 import { Heading, Skeleton } from '@navikt/ds-react'
+import { Metadata } from 'next'
+import { unstable_noStore as noStore } from 'next/cache'
+import React, { ReactElement, Suspense } from 'react'
 
-import BackLink from '../../components/core/BackLink'
+import { BackLink } from '../../components/core/BackLink'
+import { GlobalScoreGraph } from '../../components/graphs/GlobalScoreGraph'
 import { getGlobalScoreTimeline } from '../../db/score'
-import GlobalScoreGraph from '../../components/graphs/GlobalScoreGraph'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Helse i Nav',

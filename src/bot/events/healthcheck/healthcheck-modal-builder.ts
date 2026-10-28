@@ -4,9 +4,9 @@ import { groupBy } from 'remeda'
 
 import { AnswerLevel, Team, Asked, QuestionAnswer } from '../../../db'
 import { questionsFromJsonb } from '../../../questions/jsonb-utils'
-import { addIf, addIfArray, plainHeader, textSection } from '../modal-utils'
-import { questionTypeToText } from '../../../utils/asked'
 import { Question, QuestionType } from '../../../safe-types'
+import { questionTypeToText } from '../../../utils/asked'
+import { addIf, addIfArray, plainHeader, textSection } from '../modal-utils'
 
 export const HealthcheckModalActions = {
     modalSubmit: 'helsesjekk_form_modal-submit',

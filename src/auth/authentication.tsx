@@ -1,6 +1,6 @@
-import { headers } from 'next/headers'
 import { logger } from '@navikt/next-logger'
 import { validateToken, getToken } from '@navikt/oasis'
+import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 import { isLocal } from '../utils/env'

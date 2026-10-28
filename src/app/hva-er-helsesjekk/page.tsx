@@ -1,12 +1,12 @@
-import React, { ReactElement } from 'react'
+import { Heading, BodyLong } from '@navikt/ds-react'
+import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Metadata } from 'next'
-import { Heading, BodyLong } from '@navikt/ds-react'
+import React, { ReactElement } from 'react'
 
 import ask from './ask.png'
-import reveal from './reveal.png'
 import locked from './locked.png'
+import reveal from './reveal.png'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Hva er helsesjekk',

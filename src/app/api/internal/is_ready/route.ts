@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server'
 import { logger } from '@navikt/next-logger'
+import { NextResponse } from 'next/server'
 
 import { getServerEnv } from '../../../../utils/env'
 

@@ -1,11 +1,12 @@
 'use client'
 
-import React, { ReactElement, useState } from 'react'
-import { useParams } from 'next/navigation'
-import { getYear } from 'date-fns'
-import { Button, Select, Tooltip, Heading, BodyShort, Detail } from '@navikt/ds-react'
 import { PencilIcon, PersonTallShortIcon, XMarkIcon, PadlockLockedIcon } from '@navikt/aksel-icons'
+import { Button, Select, Tooltip, Heading, BodyShort, Detail } from '@navikt/ds-react'
+import { getYear } from 'date-fns'
+import { useParams } from 'next/navigation'
+import React, { ReactElement, useState } from 'react'
 
+import { dayIndexToDay, getNowInNorway, getWeekNumber } from '../../utils/date'
 import {
     Frequency,
     getRelevantWeeks,
@@ -13,7 +14,6 @@ import {
     nextOccurenceText,
     nextOccurrence,
 } from '../../utils/frequency'
-import { dayIndexToDay, getNowInNorway, getWeekNumber } from '../../utils/date'
 import { cn } from '../../utils/tw-utils'
 
 import { editFrequency } from './actions'
@@ -27,7 +27,7 @@ type Props = {
     hasActiveAsk: boolean
 }
 
-function EditableStatus({ teamId, frequency, weekSkew, postDay, postHour, hasActiveAsk }: Props): ReactElement {
+export function EditableStatus({ teamId, frequency, weekSkew, postDay, postHour, hasActiveAsk }: Props): ReactElement {
     const [edit, setEdit] = useState(false)
 
     return (
@@ -136,6 +136,7 @@ function EditableFrequencyForm({
                     label="Frekvens"
                     name="frequency"
                     className="grow"
+                    // oxlint-disable-next-line jsx-a11y/no-autofocus
                     autoFocus
                     value={newFrequency}
                     onChange={(e) => {
@@ -213,5 +214,3 @@ function WeeksToPostGrid({ frequency, offset }: { frequency: number; offset: num
         </div>
     )
 }
-
-export default EditableStatus

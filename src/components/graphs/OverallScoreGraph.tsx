@@ -1,8 +1,8 @@
 'use client'
 
+import { Detail } from '@navikt/ds-react'
 import React, { ReactElement } from 'react'
 import { Bar, ComposedChart, CartesianGrid, Line, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from 'recharts'
-import { Detail } from '@navikt/ds-react'
 
 import { getWeekNumber } from '../../utils/date'
 import { scoreToEmoji } from '../../utils/score'
@@ -14,7 +14,7 @@ type Props = {
     }[]
 }
 
-function OverallScoreGraph({ data }: Props): ReactElement {
+export function OverallScoreGraph({ data }: Props): ReactElement {
     return (
         <div className="w-full aspect-video">
             <ResponsiveContainer width="100%" height="100%">
@@ -100,5 +100,3 @@ function CustomDot({ cx, cy, value }: { cx: number; cy: number; value: number })
         </svg>
     )
 }
-
-export default OverallScoreGraph

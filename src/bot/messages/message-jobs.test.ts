@@ -1,5 +1,5 @@
-import { test, expect, vi, describe } from 'vitest'
 import type { App } from '@slack/bolt'
+import { test, expect, vi, describe } from 'vitest'
 
 import type { Team } from '../../db/types'
 import { defaultQuestions } from '../../questions/default'
@@ -16,9 +16,9 @@ let _revealTeams: TeamWithQueries[] = []
 let _mockDate: Date = new Date()
 
 const { postToTeam, remindTeam, revealTeam } = vi.hoisted(() => ({
-    postToTeam: vi.fn(() => void 0),
-    remindTeam: vi.fn(() => void 0),
-    revealTeam: vi.fn(() => void 0),
+    postToTeam: vi.fn<() => void>(() => void 0),
+    remindTeam: vi.fn<() => void>(() => void 0),
+    revealTeam: vi.fn<() => void>(() => void 0),
 }))
 
 vi.mock('../../utils/date', async (importActual) => {
