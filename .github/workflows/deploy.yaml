@@ -2,13 +2,15 @@ name: Build and deploy
 on: push
 jobs:
   test:
-    name: 'Run tests'
+    name: 'Run tests and lint'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/yarn@main
         with:
           READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      - run: yarn next typegen
+      - run: yarn lint
       - run: yarn test
 
   build-and-publish:
@@ -26,7 +28,6 @@ jobs:
       - uses: navikt/tsm-workflows/actions/yarn@main
         with:
           READER_TOKEN: ${{ secrets.READER_TOKEN }}
-      - run: yarn lint
       - run: yarn build
         env:
           NEXT_PUBLIC_ENVIRONMENT: production
@@ -54,7 +55,6 @@ jobs:
       - uses: navikt/tsm-workflows/actions/yarn@main
         with:
           READER_TOKEN: ${{ secrets.READER_TOKEN }}
-      - run: yarn lint
       - run: yarn build
         env:
           NEXT_PUBLIC_ENVIRONMENT: dev
@@ -90,7 +90,7 @@ jobs:
   deploy-bot-to-gcp:
     if: github.ref == 'refs/heads/main'
     name: Deploy to prod
-    needs: [build-and-publish]
+    needs: [build-and-publish, test]
     runs-on: ubuntu-latest
     permissions:
       contents: read
