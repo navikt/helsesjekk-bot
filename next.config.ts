@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
         'prom-client',
     ],
     experimental: {
-        optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons', 'remeda', 'recharts'],
+        optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons', 'remeda'],
     },
 }
 

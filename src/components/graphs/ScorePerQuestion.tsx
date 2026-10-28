@@ -1,135 +1,24 @@
 'use client'
 
-import { Detail, Heading } from '@navikt/ds-react'
-import { logger } from '@navikt/next-logger'
-import React, { ReactElement } from 'react'
-import { Area, CartesianGrid, ComposedChart, Legend, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
-import { TooltipContentProps } from 'recharts/types/component/Tooltip'
-import * as R from 'remeda'
+import { Heading } from '@navikt/ds-react'
+import { Chart } from '@tanstack/charts/react'
+import React, { ReactElement, useMemo } from 'react'
 
-import { AnswerLevel, QuestionScorePerWeek } from '../../safe-types'
-import { getWeekNumber } from '../../utils/date'
-import { raise } from '../../utils/ts-utils'
+import { QuestionScorePerWeek } from '../../safe-types'
+
+import { createQuestionChart } from './chart-definitions'
 
 type Props = QuestionScorePerWeek
 
-export function ScorePerQuestion(props: Props): ReactElement {
-    const { question, scoring } = props
+export function ScorePerQuestion({ question, scoring }: Props): ReactElement {
+    const definition = useMemo(() => createQuestionChart({ question, scoring }), [question, scoring])
 
     return (
-        <div className="w-full aspect-video relative">
-            {question && (
-                <Heading size="small" level="4">
-                    {question.question}
-                </Heading>
-            )}
-            <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={scoring} stackOffset="expand">
-                    <XAxis
-                        dataKey="timestamp"
-                        angle={10}
-                        fontSize={12}
-                        tickFormatter={(date: Date, index): string =>
-                            index % 2 === 0 ? '' : `Uke ${getWeekNumber(date)}, ${date.getFullYear()}`
-                        }
-                    />
-                    <CartesianGrid strokeDasharray="3 3" />
-                    {Object.keys(AnswerLevel).map((level) => (
-                        <Area
-                            key={level}
-                            type="monotone"
-                            yAxisId="antall"
-                            dataKey={`distribution.${level}`}
-                            stackId={1}
-                            // @ts-expect-error TODO: improve typing
-                            stroke={colorMap[level]}
-                            // @ts-expect-error TODO: improve typing
-                            fill={colorMap[level]}
-                            isAnimationActive={false}
-                        />
-                    ))}
-
-                    <Legend
-                        layout="vertical"
-                        iconType="circle"
-                        formatter={(value) => {
-                            switch (value) {
-                                case 'distribution.GOOD':
-                                    return question.answers[AnswerLevel.GOOD]
-                                case 'distribution.MEDIUM':
-                                    return question.answers[AnswerLevel.MEDIUM]
-                                case 'distribution.BAD':
-                                    return question.answers[AnswerLevel.BAD]
-                                case 'averageScore':
-                                    return 'Gjennomsnitt'
-                            }
-                        }}
-                    />
-                    <Tooltip content={CustomTooltip} />
-                </ComposedChart>
-            </ResponsiveContainer>
+        <div className="w-full">
+            <Heading size="small" level="4">
+                {question.question}
+            </Heading>
+            <Chart definition={definition} height={320} ariaLabel={`Svarfordeling per uke: ${question.question}`} />
         </div>
     )
-}
-
-const colorMap: Record<AnswerLevel, string> = {
-    GOOD: 'rgba(107, 142, 35, 0.65)',
-    MEDIUM: 'rgba(255, 140, 0, 0.65)',
-    BAD: 'rgba(179, 0, 12, 0.65)',
-}
-
-type CustomTooltipPayload = QuestionScorePerWeek['scoring'][number]
-
-function CustomTooltip({ payload, active }: TooltipContentProps<number, string>): ReactElement | null {
-    if (!active || !payload || payload.length === 0) return null
-
-    const relevantValues = R.pipe(
-        payload,
-        R.map((item) => R.pick(item, ['value', 'name'])),
-        R.flatMap((item) => [{ [item.name ?? 'unknown']: item.value ?? 0 }]),
-        R.flatMap(R.entries()),
-    )
-    const firstPayload: CustomTooltipPayload =
-        R.first(payload)?.payload ?? raise('Should always have at least 1 payload here')
-
-    return (
-        <div className="bg-white border border-ax-border-neutral rounded-sm p-2">
-            <Detail>
-                Uke {getWeekNumber(firstPayload.timestamp)}, {firstPayload.timestamp.getFullYear()}
-            </Detail>
-            {R.pipe(
-                relevantValues,
-                R.map(([key, value]) => {
-                    const dist = key.split('.')
-                    const color = dist ? colorMap[dist[1] as AnswerLevel] : 'black'
-                    return (
-                        <div key={key}>
-                            <div className="flex gap-2">
-                                <span style={{ color }}>
-                                    <ScoreToDescription name={key} />
-                                </span>
-                                <span>{Number.isInteger(value) ? value : value.toFixed(2)}</span>
-                            </div>
-                        </div>
-                    )
-                }),
-            )}
-        </div>
-    )
-}
-
-function ScoreToDescription({ name }: { name: string }): string {
-    switch (name) {
-        case 'averageScore':
-            return 'Gjennomsnitt'
-        case 'distribution.GOOD':
-            return 'Bra'
-        case 'distribution.MEDIUM':
-            return 'Middels'
-        case 'distribution.BAD':
-            return 'Dårlig'
-        default:
-            logger.error(`Unknown score type: ${name}`)
-            return 'Ukjent'
-    }
 }
