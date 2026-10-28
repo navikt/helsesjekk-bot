@@ -47,7 +47,7 @@
         "@slack/types": "^2.22.0",
         "clsx": "^2.1.1",
         "date-fns": "^4.4.0",
-        "dotenv": "^17.4.2",
+        "dotenv": "^18.0.9",
         "next": "^16.4.3",
         "next-logger": "^5.0.2",
         "nextleton": "^0.6.1",
