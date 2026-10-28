@@ -6,6 +6,7 @@ import { Heading, Detail } from '@navikt/ds-react'
 import logo from '../images/logo.png'
 
 import LoggedInUser, { LoggedInUserSkeleton } from './LoggedInUser'
+import { AkselNextLink } from './AkselNextLink'
 
 function Header(): ReactElement {
     return (
@@ -26,19 +27,29 @@ function Header(): ReactElement {
             </header>
             <ul className="list-disc ax-sm:list-none list-inside ml-4 ax-sm:ml-20 mb-6 ax-sm:mb-8 flex gap-3 ax-sm:gap-6 flex-col ax-sm:flex-row">
                 <li>
-                    <Link href="/">Mine team</Link>
+                    <AkselNextLink className="no-underline hover:underline" href="/">
+                        Mine team
+                    </AkselNextLink>
                 </li>
                 <li>
-                    <Link href="/hva-er-helsesjekk">Hva er helsesjekk</Link>
+                    <AkselNextLink className="no-underline hover:underline" href="/hva-er-helsesjekk">
+                        Hva er helsesjekk
+                    </AkselNextLink>
                 </li>
                 <li>
-                    <Link href="/kom-i-gang">Kom i gang</Link>
+                    <AkselNextLink className="no-underline hover:underline" href="/kom-i-gang">
+                        Kom i gang
+                    </AkselNextLink>
                 </li>
                 <li>
-                    <Link href="/global-helse">Helse i Nav</Link>
+                    <AkselNextLink className="no-underline hover:underline" href="/global-helse">
+                        Helse i Nav
+                    </AkselNextLink>
                 </li>
                 <li>
-                    <Link href="/kom-i-gang/grupper">Mine grupper</Link>
+                    <AkselNextLink className="no-underline hover:underline" href="/kom-i-gang/grupper">
+                        Mine grupper
+                    </AkselNextLink>
                 </li>
             </ul>
         </div>
