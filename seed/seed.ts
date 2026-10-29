@@ -2,9 +2,9 @@ import { logger } from '@navikt/next-logger'
 import { setWeek } from 'date-fns'
 import * as R from 'remeda'
 
+import { AnswerLevel, Day, QuestionAnswer } from '../src/db'
 import { drizzle } from '../src/db/drizzle/db.ts'
 import { answer, asked, team } from '../src/db/drizzle/schema.ts'
-import { AnswerLevel, Day, QuestionAnswer } from '../src/db/types'
 import { defaultQuestions } from '../src/questions/default'
 import { Question, QuestionType } from '../src/safe-types'
 

@@ -1,6 +1,6 @@
 version: v1
 type: Postgres
-name: helsesjekk-bot
+name: helsesjekk-bot-db
 spec:
   majorVersion: '18'
   highAvailability: false

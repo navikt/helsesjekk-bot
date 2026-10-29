@@ -104,7 +104,7 @@ jobs:
           environment: dev-gcp
       - name: deploy to dev-gcp
         run: |
-          nais apply .nais/nais-postgres.yaml --wait
+          # nais apply .nais/nais-postgres.yaml --wait
           nais apply .nais/app.yaml --set spec.image="${{ needs.build-dev.outputs.image }}" --wait
 
   deploy-production:
@@ -123,7 +123,7 @@ jobs:
           environment: prod-gcp
       - name: deploy to prod-gcp
         run: |
-          nais apply .nais/nais-postgres.yaml --wait
+          # nais apply .nais/nais-postgres.yaml --wait
           nais apply .nais/app.yaml --set spec.image="${{ needs.build-prod.outputs.image }}" --wait
 
   security:
