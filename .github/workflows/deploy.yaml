@@ -1,9 +1,15 @@
 name: Build and deploy
 on: push
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
 jobs:
-  test:
+  test-and-lint:
     name: 'Run tests and lint'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
       - uses: navikt/tsm-workflows/actions/yarn@main
@@ -13,69 +19,11 @@ jobs:
       - run: yarn lint
       - run: yarn test
 
-  build-and-publish:
-    if: github.ref == 'refs/heads/main'
-    name: 'Prod: Bygg, test og push Docker image'
-    runs-on: ubuntu-latest
-    permissions:
-      packages: 'write'
-      contents: 'read'
-      id-token: 'write'
-    outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
-    steps:
-      - uses: actions/checkout@v7
-      - uses: navikt/tsm-workflows/actions/yarn@main
-        with:
-          READER_TOKEN: ${{ secrets.READER_TOKEN }}
-      - run: yarn build
-        env:
-          NEXT_PUBLIC_ENVIRONMENT: production
-      - name: Push docker image to GAR
-        uses: nais/docker-build-push@v0
-        id: docker-build-push
-        with:
-          team: teamsykmelding
-          image_suffix: prod
-          build_args: |
-            NPM_AUTH_TOKEN=${{ secrets.READER_TOKEN }}
-
-  build-and-publish-dev:
-    if: github.actor != 'dependabot[bot]'
-    name: 'Dev: Bygg, test og push Docker image'
-    runs-on: ubuntu-latest
-    permissions:
-      packages: 'write'
-      contents: 'read'
-      id-token: 'write'
-    outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
-    steps:
-      - uses: actions/checkout@v7
-      - uses: navikt/tsm-workflows/actions/yarn@main
-        with:
-          READER_TOKEN: ${{ secrets.READER_TOKEN }}
-      - run: yarn build
-        env:
-          NEXT_PUBLIC_ENVIRONMENT: dev
-      - name: Push docker image to GAR
-        uses: nais/docker-build-push@v0
-        id: docker-build-push
-        with:
-          team: teamsykmelding
-          image_suffix: dev
-          build_args: |
-            NPM_AUTH_TOKEN=${{ secrets.READER_TOKEN }}
-
   build-for-dependabot:
     if: github.actor == 'dependabot[bot]'
     name: 'Build for dependabot'
     runs-on: ubuntu-latest
-    needs: test
-    permissions:
-      packages: 'write'
-      contents: 'read'
-      id-token: 'write'
+    needs: test-and-lint
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
     steps:
@@ -87,44 +35,92 @@ jobs:
         env:
           NEXT_PUBLIC_ENVIRONMENT: dev
 
-  deploy-bot-to-gcp:
-    if: github.ref == 'refs/heads/main'
-    name: Deploy to prod
-    needs: [build-and-publish, test]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-      packages: write
-    environment:
-      name: production
-      url: https://helsesjekk-bot.nav.no
+  build-dev:
+    name: Build for dev
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v7
-      - uses: nais/deploy/actions/deploy@v3
-        env:
-          CLUSTER: prod-gcp
-          RESOURCE: .nais/nais-prod.yaml
-          WORKLOAD_IMAGE: ${{ needs.build-and-publish.outputs.image }}
+      - uses: navikt/tsm-workflows/actions/next/build@main
+        id: next-build
+        with:
+          app: helsesjekk-bot
+          team: 'teamsykmelding'
+          env: dev
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          salsa: false
+    outputs:
+      image: ${{ steps.next-build.outputs.image }}
 
-  deploy-bot-to-gcp-dev:
-    name: Deploy to dev
-    needs: [build-and-publish-dev]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-      packages: write
+  build-prod:
+    if: github.ref_name == 'main'
+    name: Build for prod
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: navikt/tsm-workflows/actions/next/build@main
+        id: next-build
+        with:
+          app: helsesjekk-bot
+          team: 'teamsykmelding'
+          env: prod
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          salsa: false
+    outputs:
+      image: ${{ steps.next-build.outputs.image }}
+
+  sbom-dev:
+    name: Upload SBOM for dev build
+    needs: build-dev
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: navikt/tsm-workflows/actions/attest-sign@main
+        with:
+          image_ref: ${{ needs.build-dev.outputs.image }}
+          team: teamsykmelding
+
+  sbom-prod:
+    name: Upload SBOM for prod build
+    needs: build-prod
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: navikt/tsm-workflows/actions/attest-sign@main
+        with:
+          image_ref: ${{ needs.build-prod.outputs.image }}
+          team: teamsykmelding
+
+  deploy-dev:
+    name: Deploy main to dev
+    if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev/')
     environment:
       name: development
       url: https://helsesjekk-bot.intern.dev.nav.no
+    runs-on: ubuntu-26.04
+    needs: [build-dev]
     steps:
       - uses: actions/checkout@v7
-      - uses: nais/deploy/actions/deploy@v3
-        env:
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/nais-dev.yaml
-          WORKLOAD_IMAGE: ${{ needs.build-and-publish-dev.outputs.image }}
+      - uses: nais/setup@v1
+        with:
+          team: teamsykmelding
+          environment: dev-gcp
+      - name: deploy to dev-gcp
+        run: nais apply .nais/app.yaml --set spec.image="${{ needs.build-dev.outputs.image }}" --wait
+
+  deploy-production:
+    name: Deploy main to dev
+    if: github.ref_name == 'main'
+    environment:
+      name: production
+      url: https://helsesjekk-bot.nav.no
+    runs-on: ubuntu-26.04
+    needs: [build-dev, test-and-lint]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: nais/setup@v1ø
+        with:
+          team: teamsykmelding
+          environment: prod-gcp
+      - name: deploy to prod-gcp
+        run: nais apply .nais/app.yaml --set spec.image="${{ needs.build-prod.outputs.image }}" --wait
 
   security:
     name: Security
@@ -133,8 +129,7 @@ jobs:
       contents: read
       id-token: write
       security-events: write
-    needs: build-and-publish
+    needs: build-prod
     uses: navikt/tsm-workflows/.github/workflows/security.yaml@main
     with:
-      image: ${{ needs.build-and-publish.outputs.image }}
-      team: teamsykmelding
+      image: ${{ needs.build-prod.outputs.image }}

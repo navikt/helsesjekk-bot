@@ -2,8 +2,10 @@ import { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
     output: 'standalone',
+    assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX,
     images: {
         qualities: [100],
+        remotePatterns: [new URL('https://cdn.nav.no/**')],
     },
     serverExternalPackages: [
         '@slack/bolt',
