@@ -15,5 +15,5 @@
         "forceConsistentCasingInFileNames": true,
         "allowJs": true
     },
-    "include": ["./seed.ts", "../src/db/**/*.ts"]
+    "include": ["./seed.ts", "../src/questions/default.ts", "../src/db/**/*.ts", "../src/db2/**/*.ts"]
 }
