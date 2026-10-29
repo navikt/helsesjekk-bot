@@ -103,7 +103,9 @@ jobs:
           team: teamsykmelding
           environment: dev-gcp
       - name: deploy to dev-gcp
-        run: nais apply .nais/app.yaml --set spec.image="${{ needs.build-dev.outputs.image }}" --wait
+        run: |
+          nais apply .nais/nais-postgres.yaml --wait
+          nais apply .nais/app.yaml --set spec.image="${{ needs.build-dev.outputs.image }}" --wait
 
   deploy-production:
     name: Deploy main to dev
@@ -115,12 +117,14 @@ jobs:
     needs: [build-dev, test-and-lint]
     steps:
       - uses: actions/checkout@v7
-      - uses: nais/setup@v1ø
+      - uses: nais/setup@v1
         with:
           team: teamsykmelding
           environment: prod-gcp
       - name: deploy to prod-gcp
-        run: nais apply .nais/app.yaml --set spec.image="${{ needs.build-prod.outputs.image }}" --wait
+        run: |
+          nais apply .nais/nais-postgres.yaml --wait
+          nais apply .nais/app.yaml --set spec.image="${{ needs.build-prod.outputs.image }}" --wait
 
   security:
     name: Security
