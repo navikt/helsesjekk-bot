@@ -1,0 +1,45 @@
+apiVersion: 'nais.io/v1alpha1'
+kind: 'Application'
+metadata:
+  name: helsesjekk-bot
+  namespace: teamsykmelding
+  labels:
+    team: teamsykmelding
+spec:
+  port: 3000
+  leaderElection: true
+
+  azure:
+    application:
+      allowAllUsers: true
+      enabled: true
+      tenant: nav.no
+    sidecar:
+      enabled: true
+
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: nodejs
+  liveness:
+    path: /api/internal/is_alive
+    initialDelay: 10
+  readiness:
+    path: /api/internal/is_ready
+    initialDelay: 10
+
+  filesFrom:
+    - emptyDir:
+        medium: Memory
+      mountPath: /app/.next/cache
+
+  accessPolicy:
+    outbound:
+      external:
+        - host: cdn.nav.no
+        - host: slack.com
+        - host: api.slack.com
+        - host: wss-primary.slack.com
+
+  envFrom:
+    - secret: helsesjekk-bot-secrets
