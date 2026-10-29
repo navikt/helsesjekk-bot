@@ -1,0 +1,455 @@
+{
+    "type": "base",
+    "version": "9",
+    "dialect": "postgres",
+    "id": "88651cc9-9d8a-4630-b6e2-4f826bcea3ca",
+    "prevIds": ["00000000-0000-0000-0000-000000000000"],
+    "footprints": [
+        {
+            "statementType": "create_table",
+            "statementTarget": ["table", "public", "Answer"],
+            "writes": [
+                "s|tbl|public.Answer",
+                "n|tbl|public.Answer",
+                "e|tbl|public.Answer",
+                "n|rel|public.Answer",
+                "n|type|public.Answer",
+                "n|rel|public.Answer_pkey"
+            ],
+            "reads": ["n|sch|public"]
+        },
+        {
+            "statementType": "create_table",
+            "statementTarget": ["table", "public", "Asked"],
+            "writes": [
+                "s|tbl|public.Asked",
+                "n|tbl|public.Asked",
+                "e|tbl|public.Asked",
+                "n|rel|public.Asked",
+                "n|type|public.Asked",
+                "n|rel|public.Asked_pkey"
+            ],
+            "reads": ["n|sch|public"]
+        },
+        {
+            "statementType": "create_table",
+            "statementTarget": ["table", "public", "Team"],
+            "writes": [
+                "s|tbl|public.Team",
+                "n|tbl|public.Team",
+                "e|tbl|public.Team",
+                "n|rel|public.Team",
+                "n|type|public.Team",
+                "n|rel|public.Team_pkey"
+            ],
+            "reads": ["n|sch|public"]
+        },
+        {
+            "statementType": "create_fk",
+            "statementTarget": ["table", "public", "Asked"],
+            "writes": [
+                "s|fk|public.Asked.Asked_teamId_fkey",
+                "n|fk|public.Asked.Asked_teamId_fkey",
+                "e|fk|public.Asked.Asked_teamId_fkey",
+                "n|con|public.Asked.Asked_teamId_fkey"
+            ],
+            "reads": [
+                "n|tbl|public.Asked",
+                "n|sch|public",
+                "n|tbl|public.Team",
+                "n|sch|public",
+                "n|col|public.Asked.teamId",
+                "n|col|public.Team.id",
+                "e|uniqueness|public.Team.id"
+            ]
+        },
+        {
+            "statementType": "create_fk",
+            "statementTarget": ["table", "public", "Answer"],
+            "writes": [
+                "s|fk|public.Answer.Answer_askedId_fkey",
+                "n|fk|public.Answer.Answer_askedId_fkey",
+                "e|fk|public.Answer.Answer_askedId_fkey",
+                "n|con|public.Answer.Answer_askedId_fkey"
+            ],
+            "reads": [
+                "n|tbl|public.Answer",
+                "n|sch|public",
+                "n|tbl|public.Asked",
+                "n|sch|public",
+                "n|col|public.Answer.askedId",
+                "n|col|public.Asked.id",
+                "e|uniqueness|public.Asked.id"
+            ]
+        }
+    ],
+    "ddl": [
+        {
+            "schema": "public",
+            "name": "Answer",
+            "isRlsEnabled": false,
+            "entityType": "tables"
+        },
+        {
+            "schema": "public",
+            "name": "Asked",
+            "isRlsEnabled": false,
+            "entityType": "tables"
+        },
+        {
+            "schema": "public",
+            "name": "Team",
+            "isRlsEnabled": false,
+            "entityType": "tables"
+        },
+        {
+            "schema": "public",
+            "table": "Team",
+            "name": "id",
+            "type": "text",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Asked",
+            "name": "id",
+            "type": "serial",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Answer",
+            "name": "answeredAt",
+            "type": "timestamp(3)",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Asked",
+            "name": "messageTs",
+            "type": "text",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Team",
+            "name": "name",
+            "type": "text",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Answer",
+            "name": "askedId",
+            "type": "integer",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Team",
+            "name": "active",
+            "type": "boolean",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Answer",
+            "name": "answers",
+            "type": "jsonb",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Asked",
+            "name": "teamId",
+            "type": "text",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Answer",
+            "name": "userId",
+            "type": "text",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Team",
+            "name": "postDay",
+            "type": "integer",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Asked",
+            "name": "timestamp",
+            "type": "timestamp(3)",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Team",
+            "name": "postHour",
+            "type": "integer",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Asked",
+            "name": "questions",
+            "type": "jsonb",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Asked",
+            "name": "revealed",
+            "type": "boolean",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Team",
+            "name": "revealDay",
+            "type": "integer",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Team",
+            "name": "revealHour",
+            "type": "integer",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Asked",
+            "name": "nagged",
+            "type": "boolean",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": "false",
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Team",
+            "name": "questions",
+            "type": "jsonb",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Asked",
+            "name": "skipped",
+            "type": "boolean",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": "false",
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Team",
+            "name": "assosiatedGroup",
+            "type": "text",
+            "typeSchema": null,
+            "notNull": false,
+            "dimensions": 0,
+            "default": null,
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Team",
+            "name": "frequency",
+            "type": "integer",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": "1",
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Team",
+            "name": "weekSkew",
+            "type": "integer",
+            "typeSchema": null,
+            "notNull": true,
+            "dimensions": 0,
+            "default": "0",
+            "generated": null,
+            "identity": null,
+            "entityType": "columns"
+        },
+        {
+            "schema": "public",
+            "table": "Asked",
+            "name": "Asked_teamId_fkey",
+            "nameExplicit": true,
+            "columns": ["teamId"],
+            "schemaTo": "public",
+            "tableTo": "Team",
+            "columnsTo": ["id"],
+            "onUpdate": "CASCADE",
+            "onDelete": "RESTRICT",
+            "entityType": "fks"
+        },
+        {
+            "schema": "public",
+            "table": "Answer",
+            "name": "Answer_askedId_fkey",
+            "nameExplicit": true,
+            "columns": ["askedId"],
+            "schemaTo": "public",
+            "tableTo": "Asked",
+            "columnsTo": ["id"],
+            "onUpdate": "CASCADE",
+            "onDelete": "RESTRICT",
+            "entityType": "fks"
+        },
+        {
+            "schema": "public",
+            "table": "Team",
+            "name": "Team_pkey",
+            "columns": ["id"],
+            "nameExplicit": true,
+            "entityType": "pks"
+        },
+        {
+            "schema": "public",
+            "table": "Asked",
+            "name": "Asked_pkey",
+            "columns": ["id"],
+            "nameExplicit": true,
+            "entityType": "pks"
+        },
+        {
+            "schema": "public",
+            "table": "Answer",
+            "name": "Answer_pkey",
+            "columns": ["userId", "askedId"],
+            "nameExplicit": true,
+            "entityType": "pks"
+        }
+    ]
+}

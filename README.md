@@ -88,7 +88,7 @@ Du skal nå kunne kjøre `yarn` for å installere avhengighetene uten 401-feil.
    kickstarte alle permissions du trenger.
 3. Opprett en `.env`-fil på rot i repoet, og legg til følgende:
    ```env
-   NAIS_DATABASE_HELSESJEKK_BOT_HELSESJEKK_BOT_URL="postgresql://postgres:postgres@localhost:5432/postgres"
+   NAIS_DATABASE_HELSESJEKK_BOT_HELSESJEKK_BOT_URL="postgresql://postgres:password@localhost:5499/helsesjekk"
    SLACK_SIGNING_SECRET=<secret>
    SLACK_BOT_TOKEN=<secret>
    SLACK_APP_TOKEN=<secret>
@@ -124,7 +124,7 @@ Dette er litt enklere å jobbe med.
 
 1. Opprett en `.env`-fil på rot i repoet, og legg til følgende:
    ```env
-   NAIS_DATABASE_HELSESJEKK_BOT_HELSESJEKK_BOT_URL="postgresql://postgres:postgres@localhost:5432/postgres"
+   NAIS_DATABASE_HELSESJEKK_BOT_HELSESJEKK_BOT_URL="postgresql://postgres:password@localhost:5499/helsesjekk"
    ```
 2. Start opp en lokal postgres-database:
    ```bash

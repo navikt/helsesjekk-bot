@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: helsesjekk-bot-dev-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: helsesjekk
+    ports:
+      - '5499:5432'
