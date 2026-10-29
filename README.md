@@ -97,9 +97,9 @@ Du skal nå kunne kjøre `yarn` for å installere avhengighetene uten 401-feil.
    ```bash
    yarn dev:db
    ```
-5. Kjør prisma-migreringene mot databasen:
+5. Kjør drizzle-migreringene mot databasen:
    ```bash
-   yarn prisma:migrate-dev
+   yarn db:migrate
    ```
 6. Endelig kan vi starte development-serveren:
    ```bash
@@ -130,13 +130,13 @@ Dette er litt enklere å jobbe med.
    ```bash
    yarn dev:db
    ```
-3. Kjør prisma-migreringene mot databasen:
+3. Kjør drizzle-migreringene mot databasen:
    ```bash
-   yarn prisma:migrate-dev
+   yarn db:migrate
    ```
 4. Seed databasen:
    ```bash
-   yarn prisma:seed
+   yarn db:seed
    ```
 5. Kjør opp nextjs dev server:
    ```bash
