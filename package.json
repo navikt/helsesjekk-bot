@@ -4,17 +4,8 @@
     "license": "MIT",
     "type": "module",
     "packageManager": "yarn@4.18.0",
-    "dependenciesMeta": {
-        "@prisma/engines": {
-            "built": true
-        }
-    },
     "engines": {
         "node": "24"
-    },
-    "resolutions": {
-        "deepmerge-ts@npm:7.1.5": "npm:7.1.6",
-        "mysql2@npm:3.15.3": "npm:3.24.4"
     },
     "scripts": {
         "dev": "next dev | pino-pretty --messageKey=message",
@@ -27,10 +18,9 @@
         "fmt:check": "oxfmt --check",
         "test": "vitest",
         "start:migrate": "yarn prisma:migrate && yarn start",
-        "prisma:generate": "prisma generate && yarn prettier --write src/db/generated/**/*.{ts,mjs}",
-        "prisma:migrate": "NODE_OPTIONS='-r next-logger' prisma migrate deploy",
-        "prisma:migrate-dev": "prisma migrate dev",
-        "prisma:seed": "node --env-file=.env --env-file=.env.development --import tsx/esm seed/seed.ts | pino-pretty --messageKey=message",
+        "db:generate": "drizzle-kit generate",
+        "db:migrate": "drizzle-kit migrate",
+        "db:seed": "node --env-file=.env --env-file=.env.development --import tsx/esm seed/seed.ts | pino-pretty --messageKey=message",
         "postinstall": "command -v husky && husky || true"
     },
     "dependencies": {
@@ -40,8 +30,6 @@
         "@navikt/ds-tailwind": "^8.20.1",
         "@navikt/next-logger": "^5.0.1",
         "@navikt/oasis": "^4.2.2",
-        "@prisma/adapter-pg": "^7.10.1",
-        "@prisma/client": "7.10.1",
         "@slack/bolt": "^4.7.3",
         "@slack/logger": "^4.0.1",
         "@slack/types": "^2.22.0",
@@ -58,7 +46,6 @@
         "pg": "^8.23.1",
         "pino": "^10.4.0",
         "postcss": "^8.5.31",
-        "prisma": "7.10.1",
         "react": "19.3.1",
         "react-dom": "19.3.1",
         "react-is": "^19.3.1",
