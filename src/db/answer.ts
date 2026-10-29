@@ -1,7 +1,10 @@
+import { and, eq } from 'drizzle-orm'
+
 import { answerToJsonb, questionsFromJsonb } from '../questions/jsonb-utils'
 import { Question } from '../safe-types'
 
-import { prisma } from './prisma'
+import { drizzle } from './drizzle/db'
+import { answer } from './drizzle/schema'
 import type { Answer, Asked, AnswerLevel, QuestionAnswer } from './types'
 
 function mapToAnswers(answers: [questionId: string, value: string][], questions: Question[]): QuestionAnswer[] {
@@ -26,27 +29,26 @@ export async function answerQuestions(
     userId: string,
 ): Promise<void> {
     const mappedAnswers = answerToJsonb(mapToAnswers(answers, questionsFromJsonb(asked.questions)))
-    await prisma().answer.upsert({
-        create: {
+    await drizzle()
+        .insert(answer)
+        .values({
             userId,
             askedId: asked.id,
             answeredAt: new Date(),
             answers: mappedAnswers,
-        },
-        update: {
-            answers: mappedAnswers,
-        },
-        where: {
-            userId_askedId: {
-                userId,
-                askedId: asked.id,
-            },
-        },
-    })
+        })
+        .onConflictDoUpdate({
+            target: [answer.userId, answer.askedId],
+            set: { answers: mappedAnswers },
+        })
 }
 
 export async function getAnswer(userId: string, askedId: number): Promise<Answer | null> {
-    return prisma().answer.findFirst({
-        where: { userId: userId, askedId: askedId },
-    })
+    const [result] = await drizzle()
+        .select()
+        .from(answer)
+        .where(and(eq(answer.userId, userId), eq(answer.askedId, askedId)))
+        .limit(1)
+
+    return result ?? null
 }

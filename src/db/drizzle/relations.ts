@@ -10,13 +10,13 @@ export const relations = defineRelations(schema, (r) => ({
         }),
     },
     asked: {
-        answersRelation: r.many.answer(),
+        answers: r.many.answer(),
         team: r.one.team({
             from: r.asked.teamId,
             to: r.team.id,
         }),
     },
     team: {
-        askeds: r.many.asked(),
+        Asked: r.many.asked(),
     },
 }))

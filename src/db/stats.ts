@@ -1,4 +1,7 @@
-import { prisma } from './prisma'
+import { and, count, desc, eq, isNotNull, sql } from 'drizzle-orm'
+
+import { drizzle } from './drizzle/db'
+import { answer, asked, team } from './drizzle/schema'
 
 export async function funStats(): Promise<{
     activeTeams: number
@@ -8,22 +11,31 @@ export async function funStats(): Promise<{
     dashboardTeams: number
     mostQuestions: number
 }> {
-    const db = prisma()
+    const db = drizzle()
+    const completedAsk = and(eq(asked.revealed, true), eq(asked.skipped, false))
 
     const [activeTeams, totalAsks, totalAnswers, biggestTeam, dashboardTeams, mostQuestions] = await Promise.all([
-        db.team.count({ where: { active: true } }),
-        db.asked.count({ where: { revealed: true, skipped: false } }),
-        db.answer.count({ where: { asked: { revealed: true, skipped: false } } }),
-        db.asked
-            .findFirst({
-                orderBy: { answers: { _count: 'desc' } },
-                include: { _count: { select: { answers: true } } },
-            })
-            .then((it) => it?._count.answers ?? -1),
-        db.team.count({ where: { active: true, assosiatedGroup: { not: null } } }),
-        db.$queryRaw`SELECT MAX(jsonb_array_length(questions)) FROM "Team";`.then(
-            (it) => (it as { max: number }[])[0]?.max ?? -1,
-        ),
+        db.$count(team, eq(team.active, true)),
+        db.$count(asked, completedAsk),
+        db
+            .select({ count: count() })
+            .from(answer)
+            .innerJoin(asked, eq(answer.askedId, asked.id))
+            .where(completedAsk)
+            .then(([it]) => it?.count ?? 0),
+        db
+            .select({ answers: count(answer.userId) })
+            .from(asked)
+            .leftJoin(answer, eq(answer.askedId, asked.id))
+            .groupBy(asked.id)
+            .orderBy(desc(count(answer.userId)))
+            .limit(1)
+            .then(([it]) => it?.answers ?? -1),
+        db.$count(team, and(eq(team.active, true), isNotNull(team.assosiatedGroup))),
+        db
+            .select({ max: sql<number | null>`MAX(jsonb_array_length(${team.questions}))`.mapWith(Number) })
+            .from(team)
+            .then(([it]) => it?.max ?? -1),
     ])
 
     return {

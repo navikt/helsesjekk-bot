@@ -17,7 +17,6 @@
         "fmt": "oxfmt",
         "fmt:check": "oxfmt --check",
         "test": "vitest",
-        "start:migrate": "yarn prisma:migrate && yarn start",
         "db:generate": "drizzle-kit generate",
         "db:migrate": "drizzle-kit migrate",
         "db:seed": "node --env-file=.env --env-file=.env.development --import tsx/esm seed/seed.ts | pino-pretty --messageKey=message",

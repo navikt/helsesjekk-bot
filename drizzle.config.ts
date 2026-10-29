@@ -5,7 +5,7 @@ import { defineConfig } from 'drizzle-kit'
 
 export default defineConfig({
     out: './drizzle',
-    schema: './src/db2/*.ts',
+    schema: './src/db/drizzle/*.ts',
     dialect: 'postgresql',
     tablesFilter: ['!_prisma_migrations'],
     dbCredentials: {

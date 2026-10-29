@@ -3,11 +3,11 @@ import { describe, expect, vi, test } from 'vitest'
 
 import { testQuestions } from '../../tests/data'
 import { expectNoError } from '../../tests/utils'
-import type { Answer, Asked, Team } from '../db/types'
 import { questionsToJsonb } from '../questions/jsonb-utils'
 import { getWeekNumber } from '../utils/date'
 
 import { getTeamScorePerQuestion, getTeamScoreTimeline } from './score'
+import type { Answer, Asked, Team } from './types'
 
 import { AnswerLevel, AskedWithAnswers, QuestionAnswer } from './'
 
@@ -18,10 +18,12 @@ const LOW = AnswerLevel.BAD
 
 let _mockAsked: Asked[] = []
 
-vi.mock('./prisma.ts', () => ({
-    prisma: () => ({
-        team: {
-            findFirst: () => createTeam(_mockAsked),
+vi.mock('../db/drizzle/db.ts', () => ({
+    drizzle: () => ({
+        query: {
+            team: {
+                findFirst: () => createTeam(_mockAsked),
+            },
         },
     }),
 }))

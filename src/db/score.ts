@@ -6,7 +6,8 @@ import { questionsFromJsonb } from '../questions/jsonb-utils'
 import { QuestionScorePerWeek, QuestionType } from '../safe-types'
 import { getWeekNumber } from '../utils/date'
 
-import { prisma } from './prisma'
+import { drizzle } from './drizzle/db'
+import { AskedWithAnswers, Team } from './types'
 
 export async function getTeamScoreTimeline(teamId: string): Promise<
     | {
@@ -16,15 +17,7 @@ export async function getTeamScoreTimeline(teamId: string): Promise<
       }[]
     | { error: string }
 > {
-    const team = await prisma().team.findFirst({
-        where: { id: teamId },
-        include: {
-            Asked: {
-                where: { revealed: true, skipped: false },
-                include: { answers: true },
-            },
-        },
-    })
+    const team = await getTeamWithCompletedAsks(teamId)
 
     if (team == null) {
         return {
@@ -57,15 +50,7 @@ export async function getTeamScoreTimeline(teamId: string): Promise<
 }
 
 export async function getTeamScorePerQuestion(teamId: string): Promise<QuestionScorePerWeek[] | { error: string }> {
-    const team = await prisma().team.findFirst({
-        where: { id: teamId },
-        include: {
-            Asked: {
-                where: { revealed: true, skipped: false },
-                include: { answers: true },
-            },
-        },
-    })
+    const team = await getTeamWithCompletedAsks(teamId)
 
     if (team == null) {
         return {
@@ -138,14 +123,14 @@ type ScoredWeek = {
 } & Partial<Record<QuestionType, number>>
 
 export async function getGlobalScoreTimeline(): Promise<ScoredWeek[]> {
-    const completedAsks = await prisma().asked.findMany({
+    const completedAsks = await drizzle().query.asked.findMany({
         where: {
             revealed: true,
             skipped: false,
             team: { active: true },
             timestamp: { gte: subYears(new Date(), 1) },
         },
-        include: { answers: true },
+        with: { answers: true },
     })
 
     return R.pipe(
@@ -178,11 +163,9 @@ export async function getGlobalScoreTimeline(): Promise<ScoredWeek[]> {
 }
 
 export async function getTeamsScoredAsks(teamId: string): Promise<ScoredAsk[]> {
-    const asks = await prisma().asked.findMany({
+    const asks = await drizzle().query.asked.findMany({
         where: { teamId, revealed: true, skipped: false },
-        include: {
-            answers: true,
-        },
+        with: { answers: true },
     })
 
     return R.pipe(
@@ -191,4 +174,18 @@ export async function getTeamsScoredAsks(teamId: string): Promise<ScoredAsk[]> {
         R.map(scoreAsked),
         R.sortBy([R.prop('timestamp'), 'desc']),
     )
+}
+
+async function getTeamWithCompletedAsks(teamId: string): Promise<(Team & { Asked: AskedWithAnswers[] }) | null> {
+    const team = await drizzle().query.team.findFirst({
+        where: { id: teamId },
+        with: {
+            Asked: {
+                where: { revealed: true, skipped: false },
+                with: { answers: true },
+            },
+        },
+    })
+
+    return team ?? null
 }

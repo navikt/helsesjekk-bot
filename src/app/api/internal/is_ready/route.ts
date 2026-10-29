@@ -2,7 +2,7 @@ import { logger } from '@navikt/next-logger'
 import { NextResponse } from 'next/server'
 import { nextleton } from 'nextleton'
 
-import { migrateDb } from '../../../../db2/migrate'
+import { migrateDb } from '../../../../db/drizzle/migrate'
 import { getServerEnv } from '../../../../utils/env'
 
 import { bot } from './bot'

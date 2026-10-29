@@ -1,4 +1,12 @@
-import { createTeam, getPreviousAsk, getTeam, hasActiveUnnaggedAsk, prisma, updateTeamGroupAssociation } from '../../db'
+import {
+    createTeam,
+    getLatestAsk,
+    getPreviousAsk,
+    getTeam,
+    hasActiveUnnaggedAsk,
+    markAskedUnrevealed,
+    updateTeamGroupAssociation,
+} from '../../db'
 import { scoreAsked } from '../../metrics/metrics'
 import { App } from '../app'
 import { botLogger } from '../bot-logger'
@@ -76,16 +84,10 @@ export function configureCommandsHandler(app: App): void {
                 if (event.text.endsWith('unlock')) {
                     const team = await getTeam(event.channel)
                     if (team != null) {
-                        const toUpdate = await prisma().asked.findFirst({
-                            where: { teamId: team.id },
-                            orderBy: { timestamp: 'desc' },
-                        })
+                        const toUpdate = await getLatestAsk(team.id)
                         if (!toUpdate) return
 
-                        await prisma().asked.update({
-                            data: { revealed: false },
-                            where: { id: toUpdate.id },
-                        })
+                        await markAskedUnrevealed(toUpdate.id)
                         botLogger.info(`Unlocked ${team.name} (${team.id})`)
                         await updateResponseCount(team, app.client)
                     }
@@ -105,11 +107,7 @@ export function configureCommandsHandler(app: App): void {
                         return
                     }
 
-                    const ask = await prisma().asked.findFirst({
-                        where: { teamId: team.id },
-                        orderBy: { timestamp: 'desc' },
-                        include: { answers: true },
-                    })
+                    const ask = await getLatestAsk(team.id)
 
                     if (ask == null) {
                         return

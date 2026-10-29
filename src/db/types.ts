@@ -1,8 +1,10 @@
 import { QuestionType } from '../safe-types'
 
-import { Answer, Asked } from './generated/client'
+import { answer, asked, team } from './drizzle/schema'
 
-export type { Answer, Asked, Team } from './generated/client'
+export type Team = typeof team.$inferSelect
+export type Asked = typeof asked.$inferSelect
+export type Answer = typeof answer.$inferSelect
 
 export enum Day {
     MONDAY = 0,

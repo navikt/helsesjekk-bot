@@ -2,12 +2,12 @@ import { logger } from '@navikt/next-logger'
 import { PostgreSqlContainer, StartedPostgreSqlContainer } from '@testcontainers/postgresql'
 import { subDays, subWeeks, subYears } from 'date-fns'
 import { sql } from 'drizzle-orm'
-import { expect, beforeAll, afterAll, beforeEach, describe, test } from 'vitest'
+import { expect, beforeAll, afterAll, beforeEach, describe, test, vi, type Mock } from 'vitest'
 
 import { testQuestions } from '../../tests/data'
-import { drizzle } from '../db2/db'
-import { migrateDb } from '../db2/migrate'
-import * as schema from '../db2/schema'
+import type { App } from '../bot/app'
+import { createScoreBlocks } from '../bot/messages/message-builder'
+import { revealTeam } from '../bot/messages/message-poster'
 import { questionsFromJsonb, questionsToJsonb } from '../questions/jsonb-utils'
 import { QuestionType } from '../safe-types'
 
@@ -25,6 +25,9 @@ import {
     markAskedAsNagged,
     markAskedRevealed,
 } from './asked'
+import { drizzle } from './drizzle/db'
+import { migrateDb } from './drizzle/migrate'
+import * as schema from './drizzle/schema'
 import { getGlobalScoreTimeline, getTeamScorePerQuestion, getTeamScoreTimeline, getTeamsScoredAsks } from './score'
 import { funStats } from './stats'
 import {
@@ -52,6 +55,11 @@ import {
 } from './team'
 import { AnswerLevel, type Asked, Day, QuestionAnswer } from './types'
 
+vi.mock('../bot/messages/message-builder', async (importActual) => {
+    const actual = await importActual<typeof import('../bot/messages/message-builder')>()
+    return { ...actual, createScoreBlocks: vi.fn<typeof actual.createScoreBlocks>(actual.createScoreBlocks) }
+})
+
 /**
  * These tests verify how the prisma database wrapper function operate today.
  *
@@ -61,7 +69,7 @@ import { AnswerLevel, type Asked, Day, QuestionAnswer } from './types'
  * Seeding and cleanup is done directly with drizzle, so that the setup is independent of the
  * implementation being verified.
  */
-describe('prisma → prisma database verification tests', async () => {
+describe('prisma → drizzle database verification tests', async () => {
     let container: StartedPostgreSqlContainer | null = null
 
     beforeAll(async () => {
@@ -769,6 +777,269 @@ describe('prisma → prisma database verification tests', async () => {
             expect(second[QuestionType.TECH]).toBe(3)
         })
     })
+
+    /**
+     * These tests seed "distractor" data (other teams, other asks with answers) so that a join or relation
+     * that ignores its foreign key, or a filter that ignores the team, would pick up the wrong rows.
+     */
+    describe('relations and joins', () => {
+        const G = AnswerLevel.GOOD
+        const M = AnswerLevel.MEDIUM
+        const B = AnswerLevel.BAD
+
+        test('getActiveAsk only includes answers belonging to the active ask', async () => {
+            await seedTeam({ id: 'C1' })
+            await seedTeam({ id: 'C2' })
+
+            const old = await seedAsked({ teamId: 'C1', revealed: true, timestamp: subWeeks(new Date(), 1) })
+            const active = await seedAsked({ teamId: 'C1', revealed: false })
+            const otherTeamActive = await seedAsked({ teamId: 'C2', revealed: false })
+
+            await seedAnswer({ askedId: old.id, userId: 'U1', levels: [B, B, B] })
+            await seedAnswer({ askedId: old.id, userId: 'U3', levels: [B, B, B] })
+            await seedAnswer({ askedId: active.id, userId: 'U1', levels: [G, M, B] })
+            await seedAnswer({ askedId: active.id, userId: 'U2', levels: [G, G, G] })
+            await seedAnswer({ askedId: otherTeamActive.id, userId: 'U1', levels: [M, M, M] })
+            await seedAnswer({ askedId: otherTeamActive.id, userId: 'U2', levels: [M, M, M] })
+            await seedAnswer({ askedId: otherTeamActive.id, userId: 'U4', levels: [M, M, M] })
+
+            const c1 = await getActiveAsk('C1')
+            expect(c1?.id).toBe(active.id)
+            expect(answerSummary(c1?.answers ?? [])).toEqual([
+                { askedId: active.id, userId: 'U1', levels: [G, M, B] },
+                { askedId: active.id, userId: 'U2', levels: [G, G, G] },
+            ])
+
+            const c2 = await getActiveAsk('C2')
+            expect(c2?.id).toBe(otherTeamActive.id)
+            expect(answerSummary(c2?.answers ?? [])).toEqual([
+                { askedId: otherTeamActive.id, userId: 'U1', levels: [M, M, M] },
+                { askedId: otherTeamActive.id, userId: 'U2', levels: [M, M, M] },
+                { askedId: otherTeamActive.id, userId: 'U4', levels: [M, M, M] },
+            ])
+        })
+
+        test('getPreviousAsk only includes answers belonging to the previous ask of the same team', async () => {
+            await seedTeam({ id: 'C1' })
+            await seedTeam({ id: 'C2' })
+
+            const older = await seedAsked({ teamId: 'C1', revealed: true, timestamp: subWeeks(new Date(), 3) })
+            const previous = await seedAsked({ teamId: 'C1', revealed: true, timestamp: subWeeks(new Date(), 2) })
+            // Newer than "previous", but belongs to another team
+            const otherTeam = await seedAsked({ teamId: 'C2', revealed: true, timestamp: subWeeks(new Date(), 1) })
+            const current = await seedAsked({ teamId: 'C1', revealed: false, timestamp: new Date() })
+
+            await seedAnswer({ askedId: older.id, userId: 'U5', levels: [B, B, B] })
+            await seedAnswer({ askedId: previous.id, userId: 'U1', levels: [G, G, G] })
+            await seedAnswer({ askedId: previous.id, userId: 'U2', levels: [G, M, G] })
+            await seedAnswer({ askedId: previous.id, userId: 'U3', levels: [M, M, M] })
+            await seedAnswer({ askedId: otherTeam.id, userId: 'U9', levels: [B, B, B] })
+            await seedAnswer({ askedId: current.id, userId: 'U1', levels: [B, B, B] })
+
+            const result = await getPreviousAsk(current)
+            expect(result?.id).toBe(previous.id)
+            expect(answerSummary(result?.answers ?? [])).toEqual([
+                { askedId: previous.id, userId: 'U1', levels: [G, G, G] },
+                { askedId: previous.id, userId: 'U2', levels: [G, M, G] },
+                { askedId: previous.id, userId: 'U3', levels: [M, M, M] },
+            ])
+        })
+
+        test('getTeamByAdGroupAndTeamId only considers asks of the requested team', async () => {
+            await seedTeam({ id: 'C1', assosiatedGroup: 'group-a' })
+            await seedTeam({ id: 'C2', assosiatedGroup: 'group-a' })
+            await seedAsked({ teamId: 'C1', messageTs: 'c1-revealed', revealed: true })
+            await seedAsked({ teamId: 'C2', messageTs: 'c2-active', revealed: false })
+
+            expect((await getTeamByAdGroupAndTeamId('group-a', 'C1'))?.activeAskTs).toBeNull()
+            expect((await getTeamByAdGroupAndTeamId('group-a', 'C2'))?.activeAskTs).toBe('c2-active')
+        })
+
+        test('getTeamByAdGroupAndTeamId matches case-sensitively and treats LIKE wildcards literally', async () => {
+            await seedTeam({ id: 'C1', assosiatedGroup: 'abc' })
+
+            expect(await getTeamByAdGroupAndTeamId('b', 'C1')).not.toBeNull()
+            expect(await getTeamByAdGroupAndTeamId('abc', 'C1')).not.toBeNull()
+            expect(await getTeamByAdGroupAndTeamId('ABC', 'C1')).toBeNull()
+            expect(await getTeamByAdGroupAndTeamId('%', 'C1')).toBeNull()
+            expect(await getTeamByAdGroupAndTeamId('_', 'C1')).toBeNull()
+            expect(await getTeamByAdGroupAndTeamId('a_c', 'C1')).toBeNull()
+        })
+
+        test('getTeamScoreTimeline and getTeamScorePerQuestion only use the given team', async () => {
+            await seedTeam({ id: 'C1' })
+            await seedTeam({ id: 'C2' })
+            const timestamp = subWeeks(new Date(), 1)
+            const c1 = await seedAsked({ teamId: 'C1', revealed: true, timestamp })
+            const c2 = await seedAsked({ teamId: 'C2', revealed: true, timestamp })
+            await seedAnswers(c1.id, 3, [G, G, G])
+            await seedAnswers(c2.id, 5, [B, B, B])
+
+            expect(await getTeamScoreTimeline('C1')).toEqual([{ timestamp: c1.timestamp, score: 5, answers: 3 }])
+            expect(await getTeamScoreTimeline('C2')).toEqual([{ timestamp: c2.timestamp, score: 1, answers: 5 }])
+
+            const perQuestion = await getTeamScorePerQuestion('C1')
+            if ('error' in perQuestion) throw new Error(perQuestion.error)
+            expect(perQuestion).toHaveLength(3)
+            for (const question of perQuestion) {
+                expect(question.scoring).toEqual([
+                    { timestamp: c1.timestamp, averageScore: 5, distribution: { GOOD: 3, MEDIUM: 0, BAD: 0 } },
+                ])
+            }
+        })
+
+        test('deactivateTeam does not touch other teams active asks', async () => {
+            await seedTeam({ id: 'C1' })
+            await seedTeam({ id: 'C2' })
+            const c1 = await seedAsked({ teamId: 'C1', revealed: false })
+            const c2 = await seedAsked({ teamId: 'C2', revealed: false })
+
+            await deactivateTeam('C1')
+
+            expect(await getAskedRow(c1.id)).toMatchObject({ revealed: true, nagged: true, skipped: true })
+            expect(await getAskedRow(c2.id)).toMatchObject({ revealed: false, nagged: false, skipped: false })
+            expect((await getTeam('C2'))?.active).toBe(true)
+        })
+
+        test('funStats.biggestTeam is 0 when asks exist but have no answers', async () => {
+            await seedTeam({ id: 'C1' })
+            await seedAsked({ teamId: 'C1', revealed: true })
+
+            expect((await funStats()).biggestTeam).toBe(0)
+        })
+
+        test('answerQuestions keys answers on (userId, askedId)', async () => {
+            await seedTeam({ id: 'C1' })
+            const first = await createAsked('ts-1', 'C1', ASK_QUESTIONS)
+            const second = await createAsked('ts-2', 'C1', ASK_QUESTIONS)
+
+            await answerQuestions(first, [['question-1', G]], 'U1')
+            await answerQuestions(second, [['question-1', B]], 'U1')
+            await answerQuestions(first, [['question-1', M]], 'U2')
+
+            expect((await getAnswer('U1', first.id))?.answers).toEqual([
+                { questionId: 'question-1', answer: G, type: QuestionType.TEAM_HEALTH },
+            ])
+            expect((await getAnswer('U1', second.id))?.answers).toEqual([
+                { questionId: 'question-1', answer: B, type: QuestionType.TEAM_HEALTH },
+            ])
+            expect((await getAnswer('U2', first.id))?.answers).toEqual([
+                { questionId: 'question-1', answer: M, type: QuestionType.TEAM_HEALTH },
+            ])
+            expect(await getAnswer('U2', second.id)).toBeNull()
+            expect(await drizzle().select().from(schema.answer)).toHaveLength(3)
+        })
+    })
+
+    /**
+     * Runs the actual reveal flow against the database, with only the Slack client mocked.
+     */
+    describe('reveal flow', () => {
+        const G = AnswerLevel.GOOD
+        const M = AnswerLevel.MEDIUM
+        const B = AnswerLevel.BAD
+
+        beforeEach(() => {
+            vi.mocked(createScoreBlocks).mockClear()
+        })
+
+        test('reveals with the correct answers, scores and previous scores', async () => {
+            const team = await seedTeam({ id: 'C1', questions: ASK_QUESTIONS })
+            await seedTeam({ id: 'C2', questions: ASK_QUESTIONS })
+
+            const previous = await seedAsked({ teamId: 'C1', revealed: true, timestamp: subWeeks(new Date(), 1) })
+            const active = await seedAsked({ teamId: 'C1', revealed: false, messageTs: 'active-ts' })
+            const otherTeam = await seedAsked({ teamId: 'C2', revealed: false })
+
+            await seedAnswers(previous.id, 4, [B, B, B])
+            await seedAnswers(active.id, 3, [G, M, B])
+            await seedAnswers(otherTeam.id, 5, [G, G, G])
+
+            const client = mockSlackClient()
+            expect(await revealTeam(team, client)).toBe(true)
+
+            expect(createScoreBlocks).toHaveBeenCalledTimes(1)
+            const [blockTeam, blockAsked, scoredAsk, previousScoredAsk] = vi.mocked(createScoreBlocks).mock.calls[0]
+
+            expect(blockTeam.id).toBe('C1')
+            expect(blockAsked.id).toBe(active.id)
+            expect(answerSummary(blockAsked.answers)).toEqual(
+                ['U1', 'U2', 'U3'].map((userId) => ({ askedId: active.id, userId, levels: [G, M, B] })),
+            )
+
+            expect(scoredAsk.answerCount).toBe(3)
+            expect(scoredAsk.totalScore.toFixed(2)).toBe('2.83')
+            expect(scoredAsk.scoredQuestions.map((it) => [it.id, it.score, it.distribution])).toEqual([
+                ['question-1', 5, { GOOD: 3, MEDIUM: 0, BAD: 0 }],
+                ['question-2', 2.5, { GOOD: 0, MEDIUM: 3, BAD: 0 }],
+                ['question-3', 1, { GOOD: 0, MEDIUM: 0, BAD: 3 }],
+            ])
+
+            expect(previousScoredAsk?.timestamp).toEqual(previous.timestamp)
+            expect(previousScoredAsk?.answerCount).toBe(4)
+            expect(previousScoredAsk?.totalScore).toBe(1)
+
+            expect(client.chat.update).toHaveBeenCalledWith(expect.objectContaining({ channel: 'C1', ts: 'active-ts' }))
+            expect(client.chat.postMessage).toHaveBeenCalledWith(
+                expect.objectContaining({ channel: 'C1', thread_ts: 'active-ts', reply_broadcast: true }),
+            )
+
+            expect(await getAskedRow(active.id)).toMatchObject({ revealed: true, skipped: false })
+            expect(await getAskedRow(otherTeam.id)).toMatchObject({ revealed: false, skipped: false })
+            expect(await getActiveAsk('C1')).toBeNull()
+        })
+
+        test('reveals without previous ask', async () => {
+            const team = await seedTeam({ id: 'C1', questions: ASK_QUESTIONS })
+            const active = await seedAsked({ teamId: 'C1', revealed: false })
+            await seedAnswers(active.id, 3, [G, G, G])
+
+            expect(await revealTeam(team, mockSlackClient())).toBe(true)
+
+            const [, , scoredAsk, previousScoredAsk] = vi.mocked(createScoreBlocks).mock.calls[0]
+            expect(scoredAsk.totalScore).toBe(5)
+            expect(previousScoredAsk).toBeNull()
+        })
+
+        test('skips when the active ask has fewer than 3 answers, ignoring answers on other asks', async () => {
+            const team = await seedTeam({ id: 'C1', questions: ASK_QUESTIONS })
+            await seedTeam({ id: 'C2', questions: ASK_QUESTIONS })
+
+            const previous = await seedAsked({ teamId: 'C1', revealed: true, timestamp: subWeeks(new Date(), 1) })
+            const active = await seedAsked({ teamId: 'C1', revealed: false, messageTs: 'active-ts' })
+            const otherTeam = await seedAsked({ teamId: 'C2', revealed: false })
+
+            // Plenty of answers elsewhere, a broken join would push the count above 3
+            await seedAnswers(previous.id, 5, [G, G, G])
+            await seedAnswers(otherTeam.id, 5, [G, G, G])
+            await seedAnswers(active.id, 2, [G, G, G])
+
+            const client = mockSlackClient()
+            expect(await revealTeam(team, client)).toBe(false)
+
+            expect(createScoreBlocks).not.toHaveBeenCalled()
+            expect(client.chat.postMessage).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    channel: 'C1',
+                    thread_ts: 'active-ts',
+                    text: expect.stringContaining('kun 2 svar'),
+                }),
+            )
+            expect(await getAskedRow(active.id)).toMatchObject({ revealed: true, skipped: true })
+            expect(await getAskedRow(otherTeam.id)).toMatchObject({ revealed: false, skipped: false })
+            expect(await getActiveAsk('C1')).toBeNull()
+        })
+
+        test('returns false when there is no active ask', async () => {
+            const team = await seedTeam({ id: 'C1' })
+            await seedAsked({ teamId: 'C1', revealed: true })
+
+            const client = mockSlackClient()
+            expect(await revealTeam(team, client)).toBe(false)
+            expect(client.chat.postMessage).not.toHaveBeenCalled()
+            expect(client.chat.update).not.toHaveBeenCalled()
+        })
+    })
 })
 
 /**
@@ -839,6 +1110,29 @@ async function seedAnswers(askedId: number, count: number, levels: AnswerLevel[]
     for (let i = 0; i < count; i++) {
         await seedAnswer({ askedId, userId: `U${i + 1}`, levels })
     }
+}
+
+function answerSummary(
+    answers: { askedId: number; userId: string; answers: unknown }[],
+): { askedId: number; userId: string; levels: AnswerLevel[] }[] {
+    return answers
+        .map((it) => ({
+            askedId: it.askedId,
+            userId: it.userId,
+            levels: (it.answers as QuestionAnswer[]).map((answer) => answer.answer),
+        }))
+        .sort((a, b) => a.userId.localeCompare(b.userId))
+}
+
+type SlackPost = (args: { ts?: string }) => Promise<{ ok: boolean; ts: string | undefined }>
+type SlackPostMock = Mock<SlackPost>
+type MockSlackClient = App['client'] & { chat: { postMessage: SlackPostMock; update: SlackPostMock } }
+
+function mockSlackClient(): MockSlackClient {
+    const postMessage: SlackPostMock = vi.fn<SlackPost>(async () => ({ ok: true, ts: 'posted-ts' }))
+    const update: SlackPostMock = vi.fn<SlackPost>(async (args) => ({ ok: true, ts: args.ts }))
+
+    return { chat: { postMessage, update } } as unknown as MockSlackClient
 }
 
 async function getAskedRow(id: number): Promise<typeof schema.asked.$inferSelect | undefined> {

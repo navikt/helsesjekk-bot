@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from 'vitest'
 
-vi.mock('../db/prisma.ts', () => ({
-    prisma: () => null,
+vi.mock('../db/drizzle/db.ts', () => ({
+    drizzle: () => null,
 }))
 
 import { testQuestions } from '../../tests/data'
