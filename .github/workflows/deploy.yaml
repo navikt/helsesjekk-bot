@@ -137,4 +137,5 @@ jobs:
     needs: build-prod
     uses: navikt/tsm-workflows/.github/workflows/security.yaml@main
     with:
+      team: 'teamsykmelding'
       image: ${{ needs.build-prod.outputs.image }}
