@@ -4,8 +4,9 @@ import { unstable_noStore as noStore } from 'next/cache'
 import React, { ReactElement, Suspense } from 'react'
 
 import { BackLink } from '../../components/core/BackLink'
+import { GlobalAskedCountGraph } from '../../components/graphs/GlobalAskedCountGraph'
 import { GlobalScoreGraph } from '../../components/graphs/GlobalScoreGraph'
-import { getGlobalScoreTimeline } from '../../db/score'
+import { getGlobalAskedCountTimeline, getGlobalScoreTimeline } from '../../db/score'
 
 export const metadata: Metadata = {
     title: 'Helsesjekk | Helse i Nav',
@@ -29,6 +30,18 @@ function Page(): ReactElement {
             >
                 <GlobalGraph />
             </Suspense>
+            <Suspense
+                fallback={
+                    <div className="w-full aspect-video mt-8">
+                        <Heading size="medium" level="3">
+                            Antall helsesjekker per uke
+                        </Heading>
+                        <Skeleton height="100%" width="100%" variant="rounded" />
+                    </div>
+                }
+            >
+                <AskedCountGraph />
+            </Suspense>
         </div>
     )
 }
@@ -45,6 +58,23 @@ async function GlobalGraph(): Promise<ReactElement> {
             </Heading>
             <div className="mt-4">
                 <GlobalScoreGraph data={globalScore} />
+            </div>
+        </div>
+    )
+}
+
+async function AskedCountGraph(): Promise<ReactElement> {
+    noStore()
+
+    const askedCount = await getGlobalAskedCountTimeline()
+
+    return (
+        <div className="mt-8">
+            <Heading size="medium" level="3">
+                Antall helsesjekker per uke
+            </Heading>
+            <div className="mt-4">
+                <GlobalAskedCountGraph data={askedCount} />
             </div>
         </div>
     )

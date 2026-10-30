@@ -162,6 +162,21 @@ export async function getGlobalScoreTimeline(): Promise<ScoredWeek[]> {
     )
 }
 
+export async function getGlobalAskedCountTimeline(): Promise<{ timestamp: Date; count: number }[]> {
+    const asks = await drizzle().query.asked.findMany({
+        columns: { timestamp: true },
+        where: { timestamp: { gte: subYears(new Date(), 1) } },
+    })
+
+    return R.pipe(
+        asks,
+        R.sortBy(R.prop('timestamp')),
+        R.groupBy((it) => `${getYear(it.timestamp)}-${getWeekNumber(it.timestamp)}`),
+        R.values(),
+        R.map((week) => ({ timestamp: week[0].timestamp, count: week.length })),
+    )
+}
+
 export async function getTeamsScoredAsks(teamId: string): Promise<ScoredAsk[]> {
     const asks = await drizzle().query.asked.findMany({
         where: { teamId, revealed: true, skipped: false },

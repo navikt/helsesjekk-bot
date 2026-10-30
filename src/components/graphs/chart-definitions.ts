@@ -128,6 +128,56 @@ export function createScoreChart(
     })
 }
 
+export type AskedCountRow = {
+    timestamp: Date
+    count: number
+}
+
+export function createAskedCountChart(
+    data: AskedCountRow[],
+): StaticChartDefinition<AskedCountRow, Date, number, 'dom'> {
+    return defineChart({
+        marks: [
+            barY(data, {
+                id: 'asked',
+                x: 'timestamp',
+                y: 'count',
+                color: () => 'Antall helsesjekker',
+            }),
+        ],
+        scales: {
+            x: {
+                scale: () => scaleBand<Date>().padding(0.25),
+                axis: { ticks: { format: formatWeek } },
+            },
+            y: {
+                scale: scaleLinear().domain([0, Math.max(1, ...data.map((row) => row.count))]),
+                nice: true,
+                grid: true,
+                axis: {
+                    label: 'Antall helsesjekker',
+                    ticks: { format: (value: number) => (Number.isInteger(value) ? String(value) : '') },
+                },
+            },
+        },
+        color: {
+            domain: ['Antall helsesjekker'],
+            range: ['#0067c5'],
+        },
+        focus: 'group-x',
+        tooltip: {
+            use: tooltip,
+            content: (points) => {
+                const row = points[0]?.datum
+                return {
+                    title: row ? formatWeek(row.timestamp) : undefined,
+                    rows: row ? [{ label: 'Antall helsesjekker', value: String(row.count), color: '#0067c5' }] : [],
+                }
+            },
+        },
+    })
+}
+
 type QuestionRow = {
     timestamp: Date
     level: AnswerLevel
