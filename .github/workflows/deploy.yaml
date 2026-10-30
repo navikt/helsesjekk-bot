@@ -115,7 +115,7 @@ jobs:
       name: production
       url: https://helsesjekk-bot.nav.no
     runs-on: ubuntu-26.04
-    needs: [build-dev, test-and-lint]
+    needs: [build-prod, test-and-lint]
     steps:
       - uses: actions/checkout@v7
       - uses: nais/setup@v1
