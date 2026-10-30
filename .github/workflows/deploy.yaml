@@ -17,6 +17,7 @@ jobs:
           READER_TOKEN: ${{ secrets.READER_TOKEN }}
       - run: yarn next typegen
       - run: yarn lint
+      - run: yarn tsc
       - run: yarn test
 
   build-for-dependabot:
@@ -108,7 +109,7 @@ jobs:
           nais apply .nais/app.yaml --set spec.image="${{ needs.build-dev.outputs.image }}" --wait
 
   deploy-production:
-    name: Deploy main to dev
+    name: Deploy production
     if: github.ref_name == 'main'
     environment:
       name: production
