@@ -1460,10 +1460,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@slack/types@npm:^2.21.0, @slack/types@npm:^2.21.1, @slack/types@npm:^2.22.0":
+"@slack/types@npm:^2.21.0, @slack/types@npm:^2.21.1":
   version: 2.22.0
   resolution: "@slack/types@npm:2.22.0"
   checksum: 10c0/0630feebb790957b227821ce4c474c174d9a4473481b9f04bfa589b2dc4f52a615b9f80664222c8a44090590fd1e1aaf5427986eb2c3a98dc75a5fabce3e2d53
+  languageName: node
+  linkType: hard
+
+"@slack/types@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@slack/types@npm:3.2.0"
+  checksum: 10c0/348ba8fcf2831982dd46642810daf29223b21c5a3a0a205def4b8a5ddbeb7c57cadfa056be5767b35166886bc592db3d79875f5828897325cdee2da80e69411f
   languageName: node
   linkType: hard
 
@@ -3981,7 +3988,7 @@ __metadata:
     "@navikt/tsm-prettier": "npm:^2.0.1"
     "@slack/bolt": "npm:^4.7.3"
     "@slack/logger": "npm:^4.0.1"
-    "@slack/types": "npm:^2.22.0"
+    "@slack/types": "npm:^3.2.0"
     "@tailwindcss/postcss": "npm:^4.3.3"
     "@tanstack/charts": "npm:^1.1.0"
     "@testcontainers/postgresql": "npm:^12.2.1"
